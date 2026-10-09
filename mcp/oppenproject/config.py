@@ -1,0 +1,185 @@
+from __future__ import annotations
+
+import json
+import logging
+import os
+import re
+from dataclasses import dataclass, field
+from pathlib import Path
+from urllib.parse import urlsplit
+
+from dotenv import dotenv_values
+
+ROOT = Path(__file__).resolve().parent.parent
+APP_NAME = "OppenSteward-MCP"
+ENV_FIELDS = {
+    "TRANSPORT": "transport",
+    "PUBLIC_URL": "public_url",
+    "HOST": "host",
+    "PORT": "port",
+    "PROJECTS_FILE": "projects_file",
+    "EXCLUDE_ROOTS": "exclude_roots",
+    "STATE_DIR": "state_dir",
+    "SKILL_ROOT": "skill_root",
+    "EXTRA_REDIRECT_URIS": "extra_redirect_uris",
+    "TUNNEL_ID": "tunnel_id",
+    "TUNNEL_PROFILE": "tunnel_profile",
+    "TUNNEL_CLIENT": "tunnel_client",
+    "DISCUSSION_MODE": "discussion_mode",
+    "FREEZE_MODE": "freeze_mode",
+    "FREEZE_PROJECTS": "freeze_projects",
+}
+INTEGER_FIELDS = {"port"}
+LIST_FIELDS = {"exclude_roots", "extra_redirect_uris", "freeze_projects"}
+LEGACY_SCAN_FIELDS = {"scan_roots", "scan_interval", "scan_seconds", "max_scan_dirs"}
+
+
+def runtime_environment(directory: Path = ROOT) -> dict[str, str]:
+    """Read exactly this checkout's .env, without shell evaluation or interpolation."""
+    values = {k: v for k, v in dotenv_values(directory / ".env", interpolate=False).items() if v is not None}
+    return {**values, **os.environ}
+
+
+@dataclass
+class Settings:
+    transport: str = "http"
+    public_url: str = "http://127.0.0.1:8766"
+    host: str = "127.0.0.1"
+    port: int = 8766
+    projects_file: Path = ROOT / "projects.local.json"
+    exclude_roots: list[str] = field(default_factory=list)
+    state_dir: Path = ROOT / ".runtime"
+    skill_root: Path | None = None
+    extra_redirect_uris: list[str] = field(default_factory=list)
+    tunnel_id: str = ""
+    tunnel_profile: str = "oppen-steward"
+    tunnel_client: str = "tunnel-client"
+    discussion_mode: str = "off"
+    freeze_mode: str = "off"
+    freeze_projects: list[str] = field(default_factory=list)
+
+    def __post_init__(self):
+        if self.transport not in {"http", "stdio"}:
+            raise ValueError("OPPEN_TRANSPORT must be http or stdio")
+        if self.discussion_mode not in {"off", "read", "write"}:
+            raise ValueError("OPPEN_DISCUSSION_MODE must be off, read or write")
+        if self.freeze_mode not in {"off", "read", "write"}:
+            raise ValueError("OPPEN_FREEZE_MODE must be off, read or write")
+        self.public_url = self.public_url.rstrip("/")
+        u = urlsplit(self.public_url)
+        local = u.scheme == "http" and u.hostname in {"localhost", "127.0.0.1", "::1"}
+        if not (u.scheme == "https" or local) or not u.hostname:
+            raise ValueError("public_url must be HTTPS (HTTP is allowed only on loopback for local tests)")
+        if u.path or u.query or u.fragment or u.username or u.password:
+            raise ValueError("Use a dedicated origin for public_url, without a path, query or credentials")
+        if self.host not in {"127.0.0.1", "::1"}:
+            raise ValueError("Bind only to loopback; a proxy may forward to this listener")
+        if not 1024 <= self.port <= 65535:
+            raise ValueError("port must be between 1024 and 65535")
+        if not self.state_dir:
+            raise ValueError("state_dir must not be empty")
+        if not self.projects_file:
+            raise ValueError("projects_file must not be empty")
+        # Do not resolve through a symlink: the catalog opens this exact file safely.
+        self.projects_file = Path(os.path.abspath(Path(self.projects_file).expanduser()))
+        self.state_dir = Path(self.state_dir).expanduser().resolve()
+        self.skill_root = Path(self.skill_root).expanduser().resolve() if self.skill_root else None
+        for name in LIST_FIELDS:
+            value = getattr(self, name)
+            if not isinstance(value, list) or not all(
+                isinstance(item, str) and item.strip() for item in value
+            ):
+                raise ValueError(f"{name} must be a JSON array of nonempty strings")
+        self.exclude_roots = [str(Path(p).expanduser().resolve()) for p in self.exclude_roots]
+        # Keep exact lexical paths: the catalog also rejects symlinked roots.
+        self.freeze_projects = [str(Path(os.path.abspath(Path(p).expanduser())))
+                                for p in self.freeze_projects]
+        if len(set(self.freeze_projects)) != len(self.freeze_projects):
+            raise ValueError("freeze_projects contains duplicate roots")
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}", self.tunnel_profile):
+            raise ValueError("Invalid tunnel profile name")
+
+    def skill_guide(self, skill: str, resource: str = "SKILL.md") -> Path:
+        if skill not in {"oppen-project-steward", "stepwise-r-project"}:
+            raise ValueError("Unknown skill")
+        if resource != "SKILL.md" and not re.fullmatch(
+            r"references/[A-Za-z0-9][A-Za-z0-9_-]*\.md", resource
+        ):
+            raise ValueError("Only SKILL.md or a named references/*.md guide is available")
+        roots = (
+            [self.skill_root]
+            if self.skill_root
+            else [ROOT.parent / "skills", Path.home() / ".codex/skills", Path.home() / ".agents/skills"]
+        )
+        for root in roots:
+            path = root / skill / "SKILL.md"
+            if path.is_file():
+                if resource == "SKILL.md":
+                    return path
+                # Resolve the installed skill directory once, including supported skill symlinks.
+                # A reference must stay in this installation, never another fallback root.
+                base = path.parent.resolve()
+                reference = base / resource
+                if reference.parent.is_symlink() or reference.is_symlink():
+                    raise ValueError("Skill reference symlinks are not exposed")
+                if reference.resolve().parent != base / "references" or not reference.is_file():
+                    raise ValueError("Skill reference not installed in the selected skill")
+                return reference
+        raise ValueError(
+            "Skill guide not installed; configure OPPEN_SKILL_ROOT. Registered projects remain accessible."
+        )
+
+    @property
+    def resource(self):
+        return self.public_url + "/mcp"
+
+    @property
+    def secure_cookie(self):
+        return self.public_url.startswith("https://")
+
+    def freeze_allowed(self, root: str | Path) -> bool:
+        return self.freeze_mode != "off" and str(root) in self.freeze_projects
+
+    @classmethod
+    def load(cls, path: Path = ROOT / "config.local.json"):
+        path = Path(path).expanduser().resolve()
+        values = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {"transport": "stdio"}
+        if not isinstance(values, dict) or set(values) - set(cls.__dataclass_fields__) - LEGACY_SCAN_FIELDS:
+            raise ValueError("Config must be an object containing documented settings only")
+        env = runtime_environment(path.parent)
+        if set(values) & LEGACY_SCAN_FIELDS or any("OPPEN_" + k.upper() in env for k in LEGACY_SCAN_FIELDS):
+            logging.getLogger(__name__).warning(
+                "Automatic scanning has been removed. Old scan settings are ignored; "
+                "register exact project roots in projects.local.json (OPPEN_PROJECTS_FILE)."
+            )
+        values = {k: v for k, v in values.items() if k not in LEGACY_SCAN_FIELDS}
+        for suffix, name in ENV_FIELDS.items():
+            raw = env.get("OPPEN_" + suffix)
+            if raw is None:
+                continue
+            try:
+                values[name] = (
+                    int(raw) if name in INTEGER_FIELDS else json.loads(raw) if name in LIST_FIELDS else raw
+                )
+            except (ValueError, TypeError) as e:
+                raise ValueError(
+                    f"Invalid OPPEN_{suffix}; expected an integer or JSON array as documented"
+                ) from e
+        # Resolve paths against the selected config directory, independent of caller cwd.
+        for name in ("state_dir", "skill_root", "projects_file"):
+            defaults = {"state_dir": ".runtime", "skill_root": None, "projects_file": "projects.local.json"}
+            value = values.get(name, defaults[name])
+            if value:
+                p = Path(value).expanduser()
+                values[name] = str(p if p.is_absolute() else path.parent / p)
+            else:
+                values[name] = None
+        for name in ("exclude_roots", "freeze_projects"):
+            if name in values and isinstance(values[name], list):
+                values[name] = [
+                    str(Path(p).expanduser() if Path(p).expanduser().is_absolute() else path.parent / p)
+                    if isinstance(p, str)
+                    else p
+                    for p in values[name]
+                ]
+        return cls(**values)

@@ -1,0 +1,11 @@
+# Content quality examples
+
+Read only when an example is needed to calibrate the content gate. All invented values are teaching fixtures, never defaults for a real project.
+
+## Engineering example: a slogan versus a save contract
+
+“Save reliably and retry errors” leaves implementations free to duplicate messages or lose edits. A complete **synthetic proposal** for a comment-save contract is:
+
+“For each newly submitted comment, the client creates one request ID and retains it with the exact payload until an outcome is known. The server atomically stores the comment and a receipt under (project, actor, request ID), then acknowledges success. Repeating that key with the same payload returns the original receipt and creates no second comment; the same key with a different payload is rejected without mutation. A new intentional comment, even with identical text, receives a new ID. After a lost response, the client keeps the draft and retries the original key/payload only. It displays saved and clears that draft only after a matching receipt; if the user edited the draft meanwhile, the newer text remains unsaved. Receipt retention and the supported retry horizon are bound to the retention contract; until that dependency is confirmed, long-delayed retry behavior is unresolved.”
+
+This identifies concrete behavior without pretending its final dependency is closed. Lost acknowledgement followed by a same-key retry must yield one comment; same key with changed text must reject; a new same-text comment with a new key must yield a second comment; an edit after submission must remain unsaved. A fully ready contract must also bind the actual retention owner/version and handle retries outside that horizon. In a synthetic project with no existing retention owner, one concrete proposal would replace that dependency with: “Retain comment receipts for the entire project lifetime, including after a comment is hidden. Project deletion removes comments and receipts together and closes the endpoint; requests to the deleted project are rejected and cannot recreate it.” This closes that specific uncertainty, with the cost of retained receipt storage; it is not a mandate to change any real project's retention policy. A receipt or a passing happy-path save test alone cannot establish content completeness.

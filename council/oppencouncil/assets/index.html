@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OppenCouncil · 项目目录</title>
+<style>
+[hidden]{display:none!important}
+.header-actions{display:flex;gap:8px}
+:root {
+  --ink:#243047;
+  --muted:#657087;
+  --accent:#5b4bdb;
+  --line:#e3e7ef
+}
+* {
+  box-sizing:border-box
+}
+body {
+  margin:0;
+  background:#f6f7fb;
+  color:var(--ink);
+  font:17px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif
+}
+header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:17px 32px;
+  background:#fff;
+  border-bottom:1px solid var(--line)
+}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:21px;
+  font-weight:750
+}
+.logo {
+  display:grid;
+  place-items:center;
+  flex:none;
+  width:40px;
+  height:40px;
+  background:transparent
+}
+button {
+  min-height:42px;
+  padding:9px 16px;
+  border:1px solid #d6ddeb;
+  border-radius:8px;
+  background:#fff;
+  color:#505e77;
+  font:inherit;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer
+}
+button:disabled {
+  opacity:.5;
+  cursor:default
+}
+button:focus-visible,a:focus-visible {
+  outline:3px solid #8c7cf0;
+  outline-offset:3px
+}
+main {
+  max-width:1640px;
+  margin:0 auto;
+  padding:40px 32px;
+  min-height:calc(100dvh - 78px)
+}
+.heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:8px
+}
+h1 {
+  font-size:29px;
+  margin:0
+}
+#count {
+  color:var(--muted);
+  font-weight:400;
+  font-size:21px
+}
+.intro {
+  color:var(--muted);
+  margin:0 0 30px
+}
+.status {
+  font-size:14px;
+  color:var(--muted)
+}
+#projects {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,350px),1fr));
+  gap:20px
+}
+.card {
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  min-height:260px;
+  padding:24px;
+  border:1px solid var(--line);
+  border-top:3px solid var(--accent);
+  border-radius:12px;
+  background:#fff;
+  color:inherit;
+  text-decoration:none;
+  overflow-wrap:anywhere;
+  transition:box-shadow .15s,border-color .15s
+}
+.card:hover {
+  border-color:var(--accent);
+  box-shadow:0 10px 28px #2b3b6212
+}
+.card h2 {
+  font-size:24px;
+  line-height:1.5;
+  margin:0
+}
+.meta {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  font-size:14px;
+  color:var(--muted)
+}
+.stats {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  padding:14px 0;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line)
+}
+.stat {
+  text-align:left;
+  font-size:14px;
+  color:var(--muted)
+}
+.stat strong {
+  display:block;
+  font-size:30px;
+  line-height:1.35;
+  font-variant-numeric:tabular-nums
+}
+.open strong {
+  color:#ae6a0f
+}
+.talk strong {
+  color:#c04672
+}
+.answered strong {
+  color:#198469
+}
+.enter {
+  font-size:15px;
+  font-weight:650;
+  color:var(--accent);
+  margin-top:auto;
+  display:flex;
+  justify-content:space-between
+}
+.empty {
+  padding:28px;
+  background:#fff;
+  border-radius:12px;
+  border:1px dashed #ccd5e3;
+  color:var(--muted)
+}
+.empty strong {
+  display:block;
+  color:var(--ink);
+  font-size:20px;
+  margin-bottom:6px
+}
+.unavailable {
+  color:#966213;
+  background:#fff5e1;
+  border-radius:8px;
+  padding:12px;
+  font-size:15px
+}
+[hidden] {
+  display:none!important
+}
+@media(max-width:680px) {
+  header {
+    padding:16px
+  }
+  .brand {
+    font-size:20px
+  }
+  main {
+    padding:26px 16px
+  }
+  .heading {
+    align-items:flex-start;
+    flex-direction:column;
+    gap:4px
+  }
+  .intro {
+    margin:12px 0 24px
+  }
+  .card {
+    padding:20px
+  }
+  button {
+    font-size:14px;
+    padding:8px 12px
+  }
+}
+</style></head>
+<body><header><div class="brand"><span class="logo" data-logo="council-mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="10 10 100 100" width="100%" height="100%" aria-hidden="true" focusable="false">
+<path fill="#14B8A6" d="M69.56 15.01A46 46 0 0 1 99.70 36.76A6 6 0 0 1 89.34 42.82A34 34 0 0 0 67.07 26.74A6 6 0 0 1 69.56 15.01Z"/>
+<path fill="#3B9CF0" d="M105.75 55.19A46 46 0 0 1 94.37 90.57A6 6 0 0 1 85.40 82.60A34 34 0 0 0 93.81 56.45A6 6 0 0 1 105.75 55.19Z"/>
+<path fill="#7C6CF0" d="M78.71 102.02A46 46 0 0 1 41.54 102.13A6 6 0 0 1 46.36 91.14A34 34 0 0 0 73.83 91.06A6 6 0 0 1 78.71 102.02Z"/>
+<path fill="#F59E0B" d="M25.82 90.78A46 46 0 0 1 14.22 55.47A6 6 0 0 1 26.17 56.65A34 34 0 0 0 34.73 82.75A6 6 0 0 1 25.82 90.78Z"/>
+<path fill="#6BBF59" d="M20.16 37.00A46 46 0 0 1 50.17 15.06A6 6 0 0 1 52.73 26.79A34 34 0 0 0 30.56 43.00A6 6 0 0 1 20.16 37.00Z"/>
+<path fill="#172033" fill-rule="evenodd" d="M39 60a21 21 0 1 0 42 0a21 21 0 1 0 -42 0ZM48.73 62.27L55.73 69.27A2.5 2.5 0 0 0 59.39 69.13L71.89 54.63A2.5 2.5 0 0 0 68.11 51.37L57.36 63.83L52.27 58.73A2.5 2.5 0 0 0 48.73 62.27Z"/>
+</svg></span>OppenCouncil</div><div class="header-actions"><button id="refresh" type="button">刷新目录</button><button id="logout" type="button" hidden>退出</button></div></header>
+<main><div class="heading"><h1>项目目录 <span id="count"></span></h1><span class="status" id="status" role="status" aria-live="polite">正在读取项目…</span></div><p class="intro">集中审阅项目口径，保留每一次讨论与确认。</p><section id="projects" aria-label="已登记项目"></section></main>
+<script src="/index.js" defer></script></body></html>

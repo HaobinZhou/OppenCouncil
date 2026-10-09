@@ -1,0 +1,4 @@
+interface:
+  display_name: "Stepwise R Project v4"
+  short_description: "Scientific R governance with Council definition authority"
+  default_prompt: "Use $stepwise-r-project to maintain this scientific R workspace with canonical ownership, pending decisions, Decision Memory, and strict validation."

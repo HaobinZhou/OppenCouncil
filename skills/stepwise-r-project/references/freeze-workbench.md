@@ -1,0 +1,125 @@
+# OppenCouncil freeze workflow
+
+Use this document for normal question rounds and candidate drafting. For MCP-only access, read it with `get_skill_guide(skill, resource="references/freeze-workbench.md")`; use the same tool for linked references. If the installed MCP lacks the resource argument, report the missing guide access rather than guessing the workflow. Read extra references only for the active operation:
+
+- Recovering missing historical records or correcting an import: [freeze-recovery.md](freeze-recovery.md).
+- Service setup, forwarding, MCP configuration or full payload examples: [freeze-operations.md](freeze-operations.md).
+- Calibrating content quality with teaching examples: [freeze-examples.md](freeze-examples.md). These examples are not project rules.
+
+## Prepare and continue a round
+
+1. Read the current registry, relevant Canonical rules, implementation/source evidence and saved `Freeze/` records. Use Memory, Attention and Discussion indices to select relevant evidence. Distinguish confirmed decisions, verified facts, recommendations and unresolved choices. Preserve the project's governing skill.
+2. Reuse existing question IDs and settled answers. If an old project's decisions/discussion are missing from Council, recover them before asking those questions again; use the recovery reference. An absent `Freeze/` is normal, and importing history never makes a new human decision.
+3. List **all currently identifiable questions** together. Explain each viable option sufficiently to choose now. Later rounds are for genuinely new information, not detail that could have been supplied this round.
+4. Before handing over a review round, write complete proposed candidate wording for every newly proposed or reopened question in its scope, including every group member. For a first version or a human-opened revision, use the reasoned recommendation as the proposed candidate without treating it as accepted; explain its alternatives in discussion. If effective wording needs a revision that the human has not opened, preserve it, discuss the proposed change and mark that item awaiting revision opening rather than attempting a replacement write. A question, an option matrix or a long discussion does not replace its candidate document. Read back all in-scope records and identify any missing candidate. Return the project URL, port, current scope and unresolved items together only after this preparation is complete. The user manually invokes AI to continue; saving the webpage does not start an AI turn.
+5. On continuation, read the latest snapshot and evidence, answer disagreements, complete requested checks and add newly discovered questions in one batch. An unfinished investigation remains work to do, not a reason to repeat a generic question.
+
+## Choice-readiness check for every round
+
+The reviewer must be able to tell what choosing A instead of B changes. State the project-specific decision and constraints; explain unfamiliar terms. For each viable option, give its concrete rule/actions, prerequisites, relevant edge cases, practical consequences and trade-offs on comparable dimensions. Recommend an option with reasons and state when an alternative fits better. Separate expected consequences from measured project results.
+
+For research choices, compare who is included, time zero and follow-up, treatment/event assignment, exclusions, the estimand and required data/work. Do not imply day-level ordering from month-level observations.
+
+When consequences are difficult to infer, work through the **same concrete case under all options** now. Label invented data as illustrative. Explain the consequences directly in the discussion with prose or a comparison table. Do not create HTML simulations, example files or a separate demonstration workflow. “先看示例再选”, “之后再细化” and a method name alone are not substantive choices. A factual question should specify the needed input and format, not invent alternatives. Read available evidence before asking the user to supply it. Necessary decision detail takes priority over brevity.
+
+For an ungrouped question, use `why` for context and a short `source_summary` for facts that constrain the choice. Write AI discussion as Markdown: use a real Markdown heading hierarchy (## for topics, ### for subtopics), lists for rules, and tables for comparable alternatives; reserve inline/fenced code for actual fields or code rather than wrapping the entire discussion. Store the Markdown source directly in discussion text, never HTML. Keep short human replies valid and preserve existing history. Discussion carries the complete comparison; `suggestions` are short labels tied to those explained options. Update both together through `presentation`, which retains the previous discussion. For a joint group, use `group-change` / `freeze_change_group`: `update` changes the option matrix and `comment` adds the matching shared explanation. Question `presentation` does not update group options. A rationale such as “which people or events this includes” belongs in discussion; a hash, tool log, skill-version announcement or “self-check passed” does not. Keep objective verification receipts in backend `review_note` or Audit, outside the webpage; never put hidden reasoning in those records. Technical details needed to judge the actual choice remain visible and explained.
+
+## Readable comparisons and local parameter choices
+
+Organize long discussion, comparison fields and candidate/formal wording into Markdown sections: use ## for the main rule areas and ### for their subrules, followed by short paragraphs or lists. Within one F question, separate independent meanings this way; bold is for emphasis, not a substitute for heading levels. Keep a short single-point reply or comparison cell simple, and do not add empty headings or duplicate the page title. Use the same labels/order across compared options; distinguish scope, operation, timing, exceptions and missing/conflict handling when relevant. Apply the same segmentation to candidate/formal wording without omitting detail or turning it into a summary. Do not put the entire rule set into one paragraph or insert line breaks after every sentence mechanically.
+
+Before writing option columns, identify the decision dimensions, their dependencies and the rules shared by all routes:
+
+- **Shared rules:** explain them once in the current group discussion under a clear heading. In each required member cell, state the relevant shared rule briefly and point to that named section when needed. Do not paste the full candidate into every option, or make the person search older messages or infer what “same as A” means. Complete normative text remains in each member's candidate.
+- **Independent dimensions:** use labeled rows or paragraphs with inline choices. Numeric thresholds, durations and counts within the same approach belong here; do not create an option column per value. A meaningful subchoice such as an effect measure can also be one explained selector when its alternatives and downstream consequences are self-contained. Being scientifically different does not alone require duplicating the whole group.
+- **Coupled approaches:** retain separate columns when a choice changes several rules that must be understood together, or when a selector cannot explain the compatible combinations clearly. State that distinguishing change first. Do not enumerate the Cartesian product of independent dimensions. A single approach with several selectors is a valid comparison; there is no minimum number of columns.
+
+Use the extension in comparison fields or discussion, outside code formatting:
+
+```text
+## 重试策略
+
+### 等待时长
+
+{{choice:retry_seconds;重试等待;5秒;10秒;30秒}}
+
+### 次数上限
+
+{{choice:retry_limit;最多重试;1次;2次;3次}}
+```
+
+For example, a fixed analysis route with a still-open evaluation horizon can use `{{choice:horizon_months;评价时点;36个月;60个月}}` in one row, with the population, observation-window and precision consequences explained alongside. If the project has already chosen both horizons or assigned primary/secondary roles, preserve that decision instead of reopening an either/or choice. Probability difference and RMST difference are different quantities, not unit substitutions; they can be compared in a labeled effect-measure row with definitions, units and required model/evaluation changes, provided all offered settings are compatible. Death handling or another dependency may require separate whole-route comparisons. These illustrate presentation choices, not scientific defaults.
+
+Syntax: `{{choice:stable_id;label;value1;value2}}` with 2–12 nonempty distinct values, explicit units where applicable, no braces/newlines/semicolons inside a field, and a stable ASCII ID starting with a letter. Keep IDs unique within each question/group, reusing one ID only for the same parameter with identical label/values. Semicolons keep the extension compatible with Markdown tables. Explain each value's meaningful impact nearby and state the recommendation in prose; the first value is not an accepted default. The widget does not enforce dependencies or recompute text. Offer independently compatible choices, or combine coupled settings into one explained choice/route; never imply that arbitrary selector combinations are valid.
+
+**Read back the saved comparison before handoff.** For each column, identify the whole-route difference that justifies it. Merge value-only duplicates and independently configurable variations; retain justified coupled alternatives. Check that actual `rules`/`consequences`/`tradeoffs` or discussion strings contain working `{{choice:...}}` where appropriate, not just a promise to use selectors. No artificial selector is needed when no open independent choice exists. Remove repeated candidate-length passages from comparison cells, keep shared rules accessible in the current discussion, and retain every complete candidate. Fix the presentation and option labels together. This is an AI content review, not a text-similarity or word-count gate.
+Selection is a browser-local preference. “添加到讨论” drafts a labeled statement; only the discussion save sends it to the project. On continuation, read the saved preferences, check their combined effects and update all affected candidates. Keep candidate and effective wording concrete: replace choice notation with the proposed/confirmed value and complete dependent rules. Do not treat a selected widget, drafted message or saved discussion as formal confirmation.
+
+## Operational completeness of formal wording
+
+Apply this check before presenting any initial, revised or bulk-formalized candidate as ready to confirm:
+
+1. **Resolve the referenced evidence.** A short human answer sets direction. Read the named existing definition, actual implementation and verification; distinguish an authoritative rule from exploratory code or a recommendation. A source name or field's existence does not establish its algorithm. Complete accessible checks requested by the user. If blocked, state sources checked, exact missing/conflicting facts and their effect; do not evade the task by declaring those details outside this question.
+2. **Specify the rule.** Write the actual predicate or operation for the intended use. Include the relevant inputs/source mappings, allowed values/units, thresholds and equality, logical combinations, time anchors/windows, ordering/aggregation, exceptions and missing/conflicting-input behavior. Include dimensions that can change the result, not a generic long template. New decisions remain explicit proposals until confirmed; “do not invent parameters” is not permission to merely paraphrase the user's answer.
+3. **Close dependencies.** Read and bind the exact consumed rule: Council ID/version/hash in structured dependencies, or another registered owner's path/section and revision/hash in verification evidence. Explain the operative meaning to the reviewer without creating a second editable authority. Distinguish required, conditional and reference relationships. Unconfirmed external prerequisites block confirmation; coupled members of one decision group can be confirmed in the same transaction. A bare source name or mutable “latest” is insufficient. Reassess consumers when an upstream version changes.
+4. **Try competing interpretations.** Work through concrete normal, boundary and missing/conflicting-input cases relevant to the rule. Record each input, expected outcome and the clause/dependency that determines it. If two materially different results still fit the same wording, supply the missing rule or surface that decision now.
+5. **Report the content result.** In discussion, explain the proposed rule, case consequences, what the person must decide and any unresolved fact that changes that choice. Keep hashes, checklists, source-read reports and software validation results in backend `review_note` or Audit; do not render them on the webpage, even in collapsed panels. Do not make the reviewer read implementation bookkeeping. Keep the candidate a clean normative document. A scoped decision may be settled while its downstream algorithm remains incomplete; do not narrow the scope just to report success. Incomplete work stays in discussion or a clearly identified unfinished draft and is not offered as ready to confirm.
+
+Saved text, headings, length, keyword checks, hashes, confirmation and passing software tests do not establish semantic completeness. If a confirmed version fails this check, preserve its exact history, explain the gap and prepare corrections under the revision workflow; do not silently overwrite it or clear a human dispute.
+
+## Coupled choices and prerequisites
+
+Use a joint decision group for a complete human decision, such as deciding who enters a cohort, when observation begins and how boundary events affect that decision. Start from the actual choice and follow its active blocking dependencies. Include every unresolved rule whose alternatives must be understood together to choose a coherent scenario, even when the dependency is one-way. Group size is a consequence of decision completeness, not a target to minimize. Shared vocabulary alone is insufficient, and graph connectivity alone must not automatically merge independent topics.
+
+- Review every unresolved dependency outside the proposed group. Either bring the coupled rule into the topic or establish that it is an independently decidable, reusable upstream topic and prepare that topic first. A singleton group with a list of open prerequisites is not a completed grouping merely because it has a title. Do not make the person follow links to assemble the choice. Preserve real dependency bindings; never delete or downgrade them merely to remove warnings.
+- Check the resulting topic dependency graph as well as individual questions. If topics would require each other's decisions, regroup the coupled choices or correct an evidenced dependency error before handoff. Existing confirmed rules can remain referenced without invented revisions. Present independent upstream topics before their consumers, with their complete candidates and comparable options prepared in the same round wherever the facts allow.
+- Prepare decision-complete comparisons using the decomposition above. Cover every member with concise, labeled rules and differences, and explain actual consequences and trade-offs using the same concrete case. Keep each full candidate separate. Independent dimensions use inline choices; coupled alternatives use coherent routes. Do not turn every parameter combination into another plan.
+- Group discussion is shared. AI creates and adjusts groups and dependencies through CLI/MCP; the webpage has no group-management form. If the person requests regrouping, make that change for them. A comment can target the whole group or one member. Each member retains its stable question ID, complete candidate, current formal version and history. The group stores membership, options, conversation and version references, never a second copy of formal authority.
+- Clicking a preference only prepares an editable discussion message; the person explicitly saves it. A saved preference is still not confirmation. Prepare all needed member candidates before asking the human to review and confirm the group. After the person chooses a different combination, revise every affected candidate consistently before the next review; do not ask the person to assemble formal wording from option cells. Unchanged members do not acquire artificial new versions. Later revisions are still human-opened; if no revision is open, discuss the proposed changes and ask the human to open it before saving replacement candidates.
+- Required dependencies block when unresolved; conditional dependencies block only under their stated, explicitly active condition; references inform without blocking. Explain why the prerequisite matters. Draft and discuss downstream possibilities while waiting, but do not call them ready to confirm.
+- Bind exact upstream versions through structured candidate dependencies. Group confirmation binds changed internal prerequisites together and checks external prerequisites. After an upstream change the dependent record is visibly marked for review, with its previous text intact. If meaning changes, request a revision; if verified compatible, record `dependency_review` with exact bindings and an explanation. This records an impact check, never a new human choice.
+
+Load [freeze-groups.md](freeze-groups.md) only when creating groups or managing dependency payloads. Group confirmation is a human web operation; AI/MCP cannot approve it.
+
+## Independent formal definition versions
+
+OppenCouncil stores the only formal wording in project `Freeze/questions/F-NNNNNN.json`. `definition.current_version` selects the effective full text in `definition.versions`; `definition.draft` holds the editable candidate. Discussion holds advice, examples, replies and disagreements. Legacy `user_answer` and recovered summaries are not new formal versions.
+
+AI writes complete candidates with `definition_draft`; people may edit them. Saving is not confirmation. The human's explicit confirmation atomically appends an immutable version with its exact text/hash and updates the current pointer. After a formal version exists, the human opens the next revision; the old version remains effective until replacement confirmation. Withdrawal preserves candidate history. AI/MCP cannot confirm, open or withdraw revisions. Confirmation does not itself authorize analysis execution or deployment.
+
+Read current authority with `oppencouncil definition TARGET --question F-000001` (or `--version-number N` for history); record its ID, version and hash when using it in authorized work. Register the JSON `definition` scope through the original governing helper:
+
+```text
+python ABSOLUTE_SKILL/scripts/HELPER.py canonical TARGET --topic TOPIC --path Freeze/questions/F-000001.json --section definition --verification TEST_PATH
+```
+
+Use the actual helper and relevant executable verification. Registration maps ownership; it is not a second approval/synchronization gate. Documents reference the record or generate read-only views. For a former Markdown owner, explicitly move ownership with `canonical --replace` and remove its competing current wording, retaining history in Git. Read the full old definition and confirmation evidence when adopting it; do not replace it with a summary or promote legacy replies automatically.
+
+## Routine commands and writes
+
+Use the installed `oppencouncil` CLI or the product's `council/.venv` Python with `-m oppencouncil`. From the product root, `uv run --project council oppencouncil` is equivalent. Preserve an existing site's directory and permissions. For discovery, forwarding, compatibility wrappers or MCP setup, read [freeze-operations.md](freeze-operations.md).
+
+```text
+oppencouncil snapshot TARGET
+oppencouncil import TARGET --input batch.json
+oppencouncil open TARGET
+oppencouncil ai-change TARGET --input update.json
+oppencouncil definition TARGET --question F-000001
+```
+
+An import uses `{"request_id":"stable-batch-id","questions":[...]}`. Each question supplies `group`, `title`, `why`, `source_summary`, `ai_position` and optional `suggestions`. Import creates only genuinely new questions and advances the round; revise existing IDs through `ai-change`.
+
+An update supplies `question_id`, `operation`, `value`, latest `expected_revision` and a stable `request_id`. Operations include `comment`, `presentation`, `review_note`, `definition_draft`, `dependency_review` and `reopen`. For changed advice use `presentation` with `{"text":"complete discussion","suggestions":["option A","option B"]}`; this saves both atomically. `review_note` takes objective verification text. Legacy `ai_position` is still supported but does not update buttons. A draft's value is its complete text or `{text, dependencies}`; dependency payloads are described in [freeze-groups.md](freeze-groups.md). Reopening discussion preserves earlier answers and never opens a formal revision. Reuse the same request ID/content on an uncertain retry; refresh a stale revision before reconciling human changes. Do not hand-edit question JSON.
+
+Local writes record Codex. MCP writes explicitly declare `actor: "codex"` or `"chatgpt"`; leave uncertain historical authors unknown. Use the configured MCP Freeze tools when available. Website registration does not grant MCP access or authorize changing its allowlist. Free-form MCP Discussion is separate and not changed by routine governance.
+
+## Handoff and acceptance
+
+- Verify grouping from the reviewer's perspective: can the person choose a whole scenario without reconstructing it from unresolved questions elsewhere? Check every cross-topic prerequisite against the boundary rule above. An incomplete topic stays unprepared even if all its individual candidate files are nonempty.
+- Audit the entire announced review scope, not only the records just changed. For each pending question verify that a substantive candidate was actually saved, and for each group verify all member candidates. Existing unchanged formal versions and historical recovered records do not need invented revisions. A genuinely missing fact that prevents a responsible proposal must be named with its affected IDs and effects, and the item must be marked unprepared rather than offered as ready for review; complete accessible investigation first. Do not return a bare workbench link claiming the round is ready while candidate documents are empty.
+- Read back every changed question and group. Verify that visible advice matches the option buttons; required dependencies and affected downstream uses are accurately shown. Preserve historical discussion and all formal versions. Confirm complete question coverage, understandable alternatives and the content gate above. Distinguish discussion saved, candidate ready, confirmed wording and implementation verified.
+- Read only manifest-listed question IDs; `Freeze/manifest.json` is the question index. Unsaved browser inputs are not project records. Handoff must save them or explicitly list excluded draft IDs. Never infer a saved decision from a text box or toast.
+- Return the intended `project_url`, `site_url` and port, including when reusing a running service. Verify the returned page when browser access is available; claim remote forwarding only when actually tested. `localhost` is the machine opening the link. Use `刷新项目记录` to reread the project while preserving local drafts after restoring a lost connection.
+- For a discussion-only round, accept content and persistence; do not run research or rebuild the application just to declare the round done. When implementation is authorized, carry the exact confirmed rules into code and linked verification, then run the governing skill's `index`/`validate`. Material disagreements, missing confirmations and unresolved dependencies remain explicit. Use synthetic projects for application testing.
+
+Application layout/cache specifications are maintained in OppenCouncil’s `council/docs/workbench-ui.md`; ordinary decision rounds do not load them.

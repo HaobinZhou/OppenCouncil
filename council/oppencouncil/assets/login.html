@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OppenCouncil 登录</title><style>
+*{box-sizing:border-box} [hidden]{display:none!important}
+body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 12% 12%,#ebe8ff 0,transparent 48%),radial-gradient(ellipse at 88% 85%,#def5ef 0,transparent 45%),#f6f7fb;color:#243047;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif}
+main{width:min(440px,100%);padding:34px;background:#fff;border:1px solid #e3e7ef;border-radius:20px;box-shadow:0 16px 48px #2636500d}
+.brand{display:flex;align-items:center;gap:12px;font-size:21px;font-weight:700}.logo{display:grid;place-items:center;flex:none;width:42px;height:42px}
+.tag{display:inline-block;margin-top:26px;padding:3px 10px;border-radius:6px;background:#e8f7f1;color:#218168;font-size:13px;font-weight:600}
+h1{font-size:26px;line-height:1.35;margin:12px 0 10px}p{color:#657087;margin:0}.intro{font-size:15px}
+form{margin-top:24px}label{display:block;font-size:14px;font-weight:600;margin:18px 0 7px}.input-wrap{display:flex;align-items:center;border:1px solid #cbd2e0;border-radius:10px;background:#fff;transition:border-color 160ms,box-shadow 160ms}.input-wrap:focus-within{border-color:#7863de;box-shadow:0 0 0 3px #eeeafd}
+input{appearance:none;width:100%;min-width:0;padding:12px 14px;border:0;outline:0;background:transparent;color:#243047;font:inherit}input::-ms-reveal{display:none}
+button{border:0;font:inherit;cursor:pointer}button:disabled{cursor:default;opacity:.6}.reveal{padding:10px 12px;background:none;color:#6554c6;font-size:13px;white-space:nowrap;border-radius:8px}button:focus-visible{outline:3px solid #c5baf5;outline-offset:2px}
+.submit{width:100%;margin-top:24px;padding:12px 18px;border-radius:10px;background:#6550d7;color:#fff;font-weight:650;transition:background 160ms,transform 160ms}.submit:hover:not(:disabled){background:#5340bf}.submit:active:not(:disabled){transform:translateY(1px)}
+#message{font-size:14px;margin-top:16px}#message[data-error=true]{padding:10px 12px;background:#fff1f1;color:#b54545;border:1px solid #f4d5d5;border-radius:8px}.footnote{font-size:12px;margin-top:20px;color:#8690a2}
+@media(max-width:480px){body{padding:16px}main{padding:26px 22px}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><main><div class="brand"><span class="logo" data-logo="council-mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="10 10 100 100" width="100%" height="100%" aria-hidden="true" focusable="false">
+<path fill="#14B8A6" d="M69.56 15.01A46 46 0 0 1 99.70 36.76A6 6 0 0 1 89.34 42.82A34 34 0 0 0 67.07 26.74A6 6 0 0 1 69.56 15.01Z"/>
+<path fill="#3B9CF0" d="M105.75 55.19A46 46 0 0 1 94.37 90.57A6 6 0 0 1 85.40 82.60A34 34 0 0 0 93.81 56.45A6 6 0 0 1 105.75 55.19Z"/>
+<path fill="#7C6CF0" d="M78.71 102.02A46 46 0 0 1 41.54 102.13A6 6 0 0 1 46.36 91.14A34 34 0 0 0 73.83 91.06A6 6 0 0 1 78.71 102.02Z"/>
+<path fill="#F59E0B" d="M25.82 90.78A46 46 0 0 1 14.22 55.47A6 6 0 0 1 26.17 56.65A34 34 0 0 0 34.73 82.75A6 6 0 0 1 25.82 90.78Z"/>
+<path fill="#6BBF59" d="M20.16 37.00A46 46 0 0 1 50.17 15.06A6 6 0 0 1 52.73 26.79A34 34 0 0 0 30.56 43.00A6 6 0 0 1 20.16 37.00Z"/>
+<path fill="#172033" fill-rule="evenodd" d="M39 60a21 21 0 1 0 42 0a21 21 0 1 0 -42 0ZM48.73 62.27L55.73 69.27A2.5 2.5 0 0 0 59.39 69.13L71.89 54.63A2.5 2.5 0 0 0 68.11 51.37L57.36 63.83L52.27 58.73A2.5 2.5 0 0 0 48.73 62.27Z"/>
+</svg></span><span>OppenCouncil</span></div>
+<span class="tag" id="mode-tag">站点访问</span><h1 id="heading">打开工作台</h1><p class="intro" id="intro">正在检查登录状态…</p>
+<form id="login-form" novalidate hidden>
+<label for="password" id="password-label">站点密码</label><div class="input-wrap"><input type="password" id="password" name="password" autocomplete="current-password" maxlength="128" required aria-describedby="intro"><button type="button" class="reveal" id="reveal" aria-label="显示密码" aria-pressed="false">显示</button></div>
+<div id="confirmation-row" hidden><label for="confirmation">再次输入密码</label><div class="input-wrap"><input type="password" id="confirmation" name="confirmation" autocomplete="new-password" maxlength="128"></div></div>
+<button type="submit" class="submit" id="submit">进入工作台</button></form>
+<p id="message" role="status" aria-live="polite"></p><p class="footnote">一个站点，一个密码，无需用户名。</p>
+</main><script src="/login.js" defer></script></body></html>

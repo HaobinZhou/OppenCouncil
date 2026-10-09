@@ -1,0 +1,12 @@
+.venv/
+.runtime/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+projects.local.json
+.projects.lock
+.oppen-project-steward/
+.DS_Store
+dist/
