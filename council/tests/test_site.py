@@ -15,6 +15,27 @@ from oppencouncil.service import info, stop
 from oppencouncil.store import FreezeError, FreezeStore
 
 
+def test_service_info_tolerates_state_removed_during_shutdown(tmp_path, monkeypatch):
+    from oppencouncil import store
+
+    state = tmp_path / ".runtime/server.json"
+    state.parent.mkdir()
+    state.write_text("{}", encoding="utf-8")
+    inspect = store.ordinary_file_info
+
+    def removed_after_inspection(path, limit):
+        metadata = inspect(path, limit)
+        path.unlink()
+        return metadata
+
+    monkeypatch.setattr(store, "ordinary_file_info", removed_after_inspection)
+    assert info(tmp_path) is None
+    # Missing transient state is expected; unsafe state must still be rejected.
+    state.write_bytes(b"x" * 16385)
+    with pytest.raises(FreezeError, match="oversized"):
+        info(tmp_path)
+
+
 def test_listener_startup_does_not_require_reverse_dns(tmp_path, monkeypatch):
     import socket
 

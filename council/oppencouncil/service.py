@@ -26,7 +26,11 @@ def runtime(directory: Path) -> Path:
 
 
 def info(directory: Path) -> dict | None:
-    raw = ordinary_file(directory / ".runtime/server.json", 16384)
+    try:
+        raw = ordinary_file(directory / ".runtime/server.json", 16384)
+    except FileNotFoundError:
+        # The serving process removes this state while stop() checks for exit.
+        return None
     if raw is None:
         return None
     try:
