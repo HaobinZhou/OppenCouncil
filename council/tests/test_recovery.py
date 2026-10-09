@@ -73,6 +73,18 @@ def files(store):
     return {p.name: p.read_bytes() for p in store.root.rglob("*.json")}
 
 
+def test_crlf_sources_preserve_raw_hash_and_match_multiline_quotes(legacy):
+    for path in (legacy.project / "Protocol/design.md", legacy.project / "Discussion/prior.md"):
+        raw = path.read_bytes().replace(b"\r\n", b"\n")
+        path.write_bytes(raw.replace(b"\n", b"\r\n"))
+    item = frozen(legacy)
+    expected = item["sources"][1]["sha256"]
+    result = recover_records(legacy, [item])
+    recovered = legacy.read_question(result["ids"][0])["recovered_records"][0]
+    assert recovered["sources"][1]["sha256"] == expected
+    assert expected == hashlib.sha256((legacy.project / "Discussion/prior.md").read_bytes()).hexdigest()
+
+
 def test_restore_frozen_discussion_and_uncertain_without_inventing_human_answer(legacy):
     before = (legacy.project / "Protocol/design.md").read_bytes()
     uncertain = copy.deepcopy(discussion(legacy))
@@ -433,8 +445,8 @@ def test_steward_recovery_uses_native_status_and_exact_owner(tmp_path, status):
         "<!-- oppen-project-steward:canonical:start -->\n"
         f"| time-zero | design.md | 时间零点 | {status} | test.py |\n"
         "<!-- oppen-project-steward:canonical:end -->\n"
-    )
-    (tmp_path / "design.md").write_text("# 方案\n## 时间零点\n首次处方日作为时间零点。\n")
+    , encoding="utf-8")
+    (tmp_path / "design.md").write_text("# 方案\n## 时间零点\n首次处方日作为时间零点。\n", encoding="utf-8")
     store = FreezeStore(tmp_path)
     item = {
         "key": "canonical-time-zero", "kind": "frozen", "group": "时间与策略",
@@ -449,7 +461,9 @@ def test_steward_recovery_uses_native_status_and_exact_owner(tmp_path, status):
         assert store.snapshot()["questions"][0]["status"] == "frozen"
         assert recover_records(store, [item])["replayed"] == 1
         # Registry approval cannot override a conflicting live owner status.
-        (tmp_path / "design.md").write_text("# 方案\n## 时间零点\nStatus: draft\n首次处方日作为时间零点。\n")
+        (tmp_path / "design.md").write_text(
+            "# 方案\n## 时间零点\nStatus: draft\n首次处方日作为时间零点。\n", encoding="utf-8"
+        )
         item["key"] = "conflicting-current-status"
         item["sources"] = [source(store, "design.md", "首次处方日作为时间零点。", "时间零点")]
         with pytest.raises(FreezeError, match="not unambiguously frozen"):

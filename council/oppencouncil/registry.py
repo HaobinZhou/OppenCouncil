@@ -11,7 +11,7 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .store import MAX_JSON, FreezeError, FreezeStore, atomic_json, ordinary_file
+from .store import MAX_JSON, FreezeError, FreezeStore, atomic_json, file_lock, ordinary_file
 
 
 def default_directory() -> Path:
@@ -68,29 +68,8 @@ class Registry:
         self.directory.mkdir(parents=True, exist_ok=True)
         if self.directory.is_symlink():
             raise FreezeError("Site directory must not be linked")
-        lock = self.directory / ".projects.lock"
-        ordinary_file(lock, 128)
-        fd = os.open(lock, os.O_RDWR | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0), 0o600)
-        try:
-            if os.name == "nt":
-                import msvcrt
-
-                if os.fstat(fd).st_size == 0:
-                    os.write(fd, b"\0")
-                os.lseek(fd, 0, os.SEEK_SET)
-                msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
-            else:
-                import fcntl
-
-                fcntl.flock(fd, fcntl.LOCK_EX)
+        with file_lock(self.directory / ".projects.lock"):
             yield
-        finally:
-            if os.name == "nt":
-                os.lseek(fd, 0, os.SEEK_SET)
-                msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
-            else:
-                fcntl.flock(fd, fcntl.LOCK_UN)
-            os.close(fd)
 
     def register(self, project: str | Path, name: str | None = None) -> dict:
         lexical = Path(project).expanduser().absolute()

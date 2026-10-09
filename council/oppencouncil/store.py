@@ -43,13 +43,20 @@ def request_fingerprint(operation: str, payload: object) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
-def ordinary_file(path: Path, limit: int) -> bytes | None:
+def ordinary_file_info(path: Path, limit: int):
     try:
         info = path.lstat()
     except FileNotFoundError:
         return None
     if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or info.st_size > limit:
         raise FreezeError(f"Unsafe or oversized freeze file: {path.name}")
+    return info
+
+
+def ordinary_file(path: Path, limit: int) -> bytes | None:
+    info = ordinary_file_info(path, limit)
+    if info is None:
+        return None
     with path.open("rb") as source:
         if os.fstat(source.fileno()).st_ino != info.st_ino:
             raise FreezeError("Freeze file changed during read")
@@ -57,6 +64,40 @@ def ordinary_file(path: Path, limit: int) -> bytes | None:
     if len(data) > limit:
         raise FreezeError(f"Oversized freeze file: {path.name}")
     return data
+
+
+@contextmanager
+def file_lock(path: Path):
+    """Validate metadata without reading a byte another Windows process has locked."""
+    ordinary_file_info(path, 128)
+    fd = os.open(path, os.O_RDWR | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0), 0o600)
+    acquired = False
+    try:
+        info = ordinary_file_info(path, 128)
+        opened = os.fstat(fd)
+        if info is None or (info.st_dev, info.st_ino) != (opened.st_dev, opened.st_ino):
+            raise FreezeError("Lock file changed during open")
+        if os.name == "nt":
+            import msvcrt
+
+            # Windows permits byte-range locks beyond EOF; never write before locking.
+            msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
+        else:
+            import fcntl
+
+            fcntl.flock(fd, fcntl.LOCK_EX)
+        acquired = True
+        yield
+    finally:
+        try:
+            if acquired:
+                if os.name == "nt":
+                    os.lseek(fd, 0, os.SEEK_SET)
+                    msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+                else:
+                    fcntl.flock(fd, fcntl.LOCK_UN)
+        finally:
+            os.close(fd)
 
 
 def atomic_write(path: Path, data: bytes) -> None:
@@ -144,37 +185,16 @@ class FreezeStore:
         self._directory(self.questions, create)
         self._directory(self.examples, create)
         lock_path = self.root / ".lock"
-        if ordinary_file(lock_path, 128) is None and not create:
+        if ordinary_file_info(lock_path, 128) is None and not create:
             if ordinary_file(self.root / ".decision-transaction.json", 16 * MAX_JSON) is not None:
                 raise FreezeError("Decision journal is missing its project lock; recovery required")
             yield True
             return
-        flags = os.O_RDWR | os.O_CREAT
-        if hasattr(os, "O_NOFOLLOW"):
-            flags |= os.O_NOFOLLOW
-        descriptor = os.open(lock_path, flags, 0o600)
-        try:
-            if os.name == "nt":
-                import msvcrt
-
-                os.write(descriptor, b"\0") if os.fstat(descriptor).st_size == 0 else None
-                os.lseek(descriptor, 0, os.SEEK_SET)
-                msvcrt.locking(descriptor, msvcrt.LK_LOCK, 1)
-            else:
-                import fcntl
-
-                fcntl.flock(descriptor, fcntl.LOCK_EX)
+        with file_lock(lock_path):
             from .decisions import recover_transaction
 
             recover_transaction(self)
             yield True
-        finally:
-            if os.name == "nt":
-                os.lseek(descriptor, 0, os.SEEK_SET)
-                msvcrt.locking(descriptor, msvcrt.LK_UNLCK, 1)
-            else:
-                fcntl.flock(descriptor, fcntl.LOCK_UN)
-            os.close(descriptor)
 
     def _manifest(self) -> dict:
         raw = ordinary_file(self.manifest, MAX_JSON)

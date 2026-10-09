@@ -18,7 +18,7 @@ def store(tmp_path, request):
     marker = tmp_path / ("project.md" if skill == "stepwise-r-project"
                          else ".oppen-project-steward/registry.md")
     marker.parent.mkdir(exist_ok=True)
-    marker.write_text(f"<!-- {skill}:v{version} -->\n")
+    marker.write_text(f"<!-- {skill}:v{version} -->\n", encoding="utf-8")
     result = FreezeStore(tmp_path)
     result.add_questions([{"title": "何时刷新？", "why": "决定可见性", "ai_position": "比较刷新方案"},
                           {"title": "失败如何恢复？", "why": "独立决策"}], request_id="round")
@@ -46,7 +46,7 @@ def test_confirm_immediately_makes_exact_text_the_only_source(store):
     assert version["text"] == text and version["effective"]
     assert render_definition(version).endswith(text + "\n")
     assert store.snapshot()["questions"][0]["definition"]["versions"][0]["text"] == text
-    disk = json.loads((store.questions / f"{q['id']}.json").read_text())
+    disk = json.loads((store.questions / f"{q['id']}.json").read_text(encoding="utf-8"))
     assert disk["definition"] == q["definition"]
     assert q["canonical_ref"] == f"Freeze/questions/{q['id']}.json#/definition"
     assert not (store.project / "policy.md").exists()
@@ -124,7 +124,7 @@ def test_every_reader_rejects_corrupted_formal_records(store, damage):
         q["definition"]["versions"][0]["approval"]["by"] = "codex"
     else:
         q["definition"]["current_version"] = 0
-    (store.questions / f"{q['id']}.json").write_text(json.dumps(q))
+    (store.questions / f"{q['id']}.json").write_text(json.dumps(q), encoding="utf-8")
     readers = (store.snapshot, lambda: store.read_question(q["id"]),
                lambda: read_definition(store, q["id"]))
     for read in readers:
@@ -136,7 +136,7 @@ def test_recovering_old_discussion_cannot_replace_the_formal_source(store):
     q = approve(store, "当前完整规则。")
     original = copy.deepcopy(q["definition"])
     note = store.project / "note.md"
-    note.write_text("旧的讨论")
+    note.write_text("旧的讨论", encoding="utf-8")
     recover_records(store, [{
         "key": "older-note", "kind": "discussion", "title": "旧讨论",
         "question_id": q["id"], "expected_revision": q["revision"], "summary": "旧的讨论",

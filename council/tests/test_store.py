@@ -6,6 +6,21 @@ from oppencouncil import store as MODULE
 from oppencouncil.store import FreezeError, FreezeStore
 
 
+def test_competing_project_writes_remain_serialized(store):
+    from concurrent.futures import ThreadPoolExecutor
+
+    def append(index):
+        independent = FreezeStore(store.project)
+        return independent.add_questions(
+            [question(f"Concurrent question {index}")], request_id=f"write-{index}"
+        )
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        results = list(pool.map(append, range(12)))
+    assert len({result["ids"][0] for result in results}) == 12
+    assert len(store.snapshot()["questions"]) == 12
+
+
 @pytest.fixture
 def store(tmp_path):
     (tmp_path / "project.md").write_text("<!-- stepwise-r-project:v3 -->\n", encoding="utf-8")

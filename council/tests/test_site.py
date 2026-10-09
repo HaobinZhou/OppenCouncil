@@ -15,6 +15,20 @@ from oppencouncil.service import info, stop
 from oppencouncil.store import FreezeError, FreezeStore
 
 
+def test_listener_startup_does_not_require_reverse_dns(tmp_path, monkeypatch):
+    import socket
+
+    def unavailable(*args):
+        raise AssertionError("Listener startup must not depend on reverse DNS")
+
+    monkeypatch.setattr(socket, "getfqdn", unavailable)
+    server = create_server(tmp_path, no_auth=True)
+    try:
+        assert server.server_port > 0 and server.server_name == "127.0.0.1"
+    finally:
+        server.server_close()
+
+
 def make_project(path, title="时间零点？", skill="stepwise-r-project"):
     path.mkdir()
     if skill == "oppen-project-steward":
@@ -257,7 +271,8 @@ def test_cli_import_registers_and_open_reuses_one_service(tmp_path, capsys):
     assert result["registered"] and result["round"] == 2
     assert len(Registry(directory).read()) == 1
     try:
-        assert main(prefix + ["open", str(first), "--port", "0", "--no-auth"]) == 0
+        status = main(prefix + ["open", str(first), "--port", "0", "--no-auth"])
+        assert status == 0, (directory / ".runtime/server.log").read_text(encoding="utf-8")
         first_info = json.loads(capsys.readouterr().out)
         assert first_info["project_url"].endswith(f"/projects/{result['project_id']}/freeze")
         assert main(prefix + ["open", str(second)]) == 0

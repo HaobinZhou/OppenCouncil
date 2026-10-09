@@ -1,0 +1,10 @@
+{
+  "oppen-project-steward": {
+    "memory_contract_sha256": "cee4a09baf5d7b9659cb03d7c96023117bb2f52c33cc477b2ade4e7ceeb5fa4d",
+    "preserved_helper_ast_sha256": "54b5c549f0878f32e14828240a1422e70fee51481fe796cd00a394be283cefaa"
+  },
+  "stepwise-r-project": {
+    "memory_contract_sha256": "72655b0c1bd3a46e945dcfd62a2ed34c4f35b213a0d499ec5d9c90086009b08e",
+    "preserved_helper_ast_sha256": "d317a9a00511ed4fd0192f720d3a764e811605b8aa1705673aded841abfc0e82"
+  }
+}

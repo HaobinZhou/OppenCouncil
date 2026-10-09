@@ -79,6 +79,8 @@ uv run --project council oppencouncil open /absolute/path/to/project --port 5322
 
 密码用于网页访问；本地 CLI 和已经授权的 MCP 仍按各自权限读取项目文件。
 
+站点密码设置、项目登记和口径写入均使用文件锁协调并发操作；不读取其他进程已锁定的字节。项目文本采用 UTF-8，恢复历史资料时兼容 LF 和 Windows CRLF 换行，并仍以文件原始字节核对来源。服务启动不依赖地址的反向 DNS 查询。
+
 ### 免密访问
 
 需要免密访问的可信环境可以显式使用：

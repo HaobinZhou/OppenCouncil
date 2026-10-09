@@ -7,6 +7,7 @@ import html
 import json
 import re
 import secrets
+import socketserver
 import threading
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -46,6 +47,13 @@ def public_origin(value: str) -> str:
 
 
 GROUP_ROUTE = re.compile(r"/api/projects/([0-9a-f]{20})/groups(?:/(B-\d{6}))?/(change|example)")
+
+
+class CouncilServer(ThreadingHTTPServer):
+    def server_bind(self):
+        # The listener uses numeric addresses and does not need reverse DNS at startup.
+        socketserver.TCPServer.server_bind(self)
+        self.server_name, self.server_port = self.server_address[:2]
 
 
 class CouncilHandler(BaseHTTPRequestHandler):
@@ -290,7 +298,7 @@ def create_server(
     auth = SiteAuth(directory)
     if no_auth and auth.record is not None:
         raise FreezeError("This site has a password; remove --no-auth to start it")
-    server = ThreadingHTTPServer((host, port), CouncilHandler)
+    server = CouncilServer((host, port), CouncilHandler)
     server.daemon_threads = True
     server.registry = registry
     server.public_origin = origin

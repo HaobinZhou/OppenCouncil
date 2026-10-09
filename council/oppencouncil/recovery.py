@@ -41,7 +41,7 @@ def source_text(store: FreezeStore, source: dict) -> tuple[dict, str]:
     if source.get("sha256") != digest:
         raise FreezeError("Recovery source changed; read it again before importing")
     try:
-        text = raw.decode("utf-8")
+        text = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
     except UnicodeDecodeError as error:
         raise FreezeError("Recovery sources must be UTF-8 text") from error
     section = source.get("section")
@@ -58,7 +58,7 @@ def source_text(store: FreezeStore, source: dict) -> tuple[dict, str]:
             len(text),
         )
         text = text[heading.start() : end]
-    excerpt = require_text(source.get("excerpt"), "source.excerpt")
+    excerpt = require_text(source.get("excerpt"), "source.excerpt").replace("\r\n", "\n").replace("\r", "\n")
     if excerpt not in text:
         raise FreezeError("Recovery quote is absent from its source")
     return {"path": path, "section": section or None, "sha256": digest, "excerpt": excerpt}, text

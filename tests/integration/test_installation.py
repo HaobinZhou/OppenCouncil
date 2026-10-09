@@ -57,26 +57,34 @@ def test_dry_run_has_no_filesystem_side_effects(tmp_path, options, components):
 
 
 def test_memory_contract_and_implementation_match_imported_baseline():
-    # No dependency on the user's old checkout or private project Memory records.
+    # Source fingerprints retain the import check without publishing old Git history
+    # or any private project Memory records. Other tests exercise Memory behavior.
     import ast
+    import hashlib
     import re
 
-    baselines = {"oppen-project-steward": "b4ba3fd6a978fdb76abda64940f5262cf3ae1de6",
-                 "stepwise-r-project": "7862191808b4149bd0b8d8ed039d70a3308d18c7"}
-    for skill, revision in baselines.items():
-        def original(path, revision=revision):
-            return subprocess.check_output(["git", "show", f"{revision}:{path}"], cwd=ROOT).decode()
+    baselines = json.loads((Path(__file__).with_name("governance-baseline.json")).read_text(encoding="utf-8"))
 
-        entry = (ROOT / "skills" / skill / "SKILL.md").read_text()
+    def structure(node):
+        if isinstance(node, ast.AST):
+            return {"type": type(node).__name__, **{
+                key: structure(value) for key, value in ast.iter_fields(node)
+                if value is not None and value != []
+            }}
+        if isinstance(node, list):
+            return [structure(item) for item in node]
+        if isinstance(node, (bytes, complex)) or node is Ellipsis:
+            return {"literal": repr(node)}
+        return node
+
+    for skill, baseline in baselines.items():
+        entry = (ROOT / "skills" / skill / "SKILL.md").read_text(encoding="utf-8")
         pattern = r"^## Decision Memory\n.*?(?=^## |\Z)"
-        assert re.search(pattern, entry, re.M | re.S).group() == re.search(
-            pattern, original("SKILL.md"), re.M | re.S).group()
+        section = re.search(pattern, entry, re.M | re.S).group()
+        assert hashlib.sha256(section.encode()).hexdigest() == baseline["memory_contract_sha256"]
         script = "scripts/" + skill.replace("-", "_") + ".py"
-        # Only the pending-decision view changes for dependency readiness. All Memory
-        # implementation and every other governance operation remain identical.
-        def preserved(source):
-            tree = ast.parse(source)
-            tree.body = [node for node in tree.body
-                         if not isinstance(node, ast.FunctionDef) or node.name != "list_pending_decisions"]
-            return ast.dump(tree)
-        assert preserved(original(script)) == preserved((ROOT / "skills" / skill / script).read_text())
+        tree = ast.parse((ROOT / "skills" / skill / script).read_text(encoding="utf-8"))
+        tree.body = [node for node in tree.body
+                     if not isinstance(node, ast.FunctionDef) or node.name != "list_pending_decisions"]
+        semantic_source = json.dumps(structure(tree), sort_keys=True, ensure_ascii=True)
+        assert hashlib.sha256(semantic_source.encode()).hexdigest() == baseline["preserved_helper_ast_sha256"]
