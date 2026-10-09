@@ -18,7 +18,7 @@ HELPER = Path(__file__).parents[1] / "scripts/oppen_project_steward.py"
 
 def steward(*arguments):
     result = subprocess.run([sys.executable, str(HELPER), *map(str, arguments)],
-                            capture_output=True, text=True, check=False)
+                            capture_output=True, text=True, encoding="utf-8", check=False)
     assert result.returncode == 0, result.stdout + result.stderr
 
 

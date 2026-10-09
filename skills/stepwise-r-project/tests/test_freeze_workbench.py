@@ -40,14 +40,14 @@ def test_skill_recovery_restores_existing_canonical_without_a_human_answer(tmp_p
     directory = tmp_path / "site"
     command = [sys.executable, str(SOURCE / "freeze_workbench.py"), "recover", str(project),
                "--input", str(history), "--directory", str(directory)]
-    result = subprocess.run(command, text=True, capture_output=True)
+    result = subprocess.run(command, text=True, encoding="utf-8", capture_output=True)
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout)["created"] == 1
     q = FreezeStore(project).snapshot()["questions"][0]
     assert q["status"] == "frozen" and q["user_answer"] is None
     assert q["canonical_ref"] == "protocol.md"
     assert len(Registry(directory).read()) == 1
-    result = subprocess.run(command, text=True, capture_output=True)
+    result = subprocess.run(command, text=True, encoding="utf-8", capture_output=True)
     assert result.returncode == 0 and json.loads(result.stdout)["replayed"] == 1
 
 
@@ -73,7 +73,7 @@ def test_partial_item_recovery_and_in_place_correction_use_shared_cli(tmp_path):
     directory = tmp_path / "site"
     result = subprocess.run([sys.executable, str(SOURCE / "freeze_workbench.py"),
         "recover", str(project), "--input", str(history), "--directory", str(directory)],
-        text=True, capture_output=True)
+        text=True, encoding="utf-8", capture_output=True)
     assert result.returncode == 2
     assert "not unambiguously frozen" in result.stderr
     assert source.read_bytes() == before
@@ -87,7 +87,7 @@ def test_partial_item_recovery_and_in_place_correction_use_shared_cli(tmp_path):
     history.write_text(json.dumps(payload), encoding="utf-8")
     base = [sys.executable, str(SOURCE / "freeze_workbench.py")]
     args = [str(project), "--input", str(history), "--directory", str(directory)]
-    checked = subprocess.run(base + ["recover"] + args + ["--check"], text=True, capture_output=True)
+    checked = subprocess.run(base + ["recover"] + args + ["--check"], text=True, encoding="utf-8", capture_output=True)
     assert checked.returncode == 0, checked.stderr
     assert json.loads(checked.stdout)["dry_run"]
     assert FreezeStore(project).snapshot()["questions"] == []
@@ -103,7 +103,7 @@ def test_partial_item_recovery_and_in_place_correction_use_shared_cli(tmp_path):
                      request_id="human-comment", actor="user")
     item.update(question_id=qid, expected_revision=q["revision"], supersedes="bad-classification")
     history.write_text(json.dumps(payload), encoding="utf-8")
-    result = subprocess.run(base + ["reconcile"] + args, text=True, capture_output=True)
+    result = subprocess.run(base + ["reconcile"] + args, text=True, encoding="utf-8", capture_output=True)
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout)["created"] == 0
     after = store.read_question(qid)
@@ -125,7 +125,7 @@ def test_skill_cli_import_and_start_register_one_project(tmp_path):
     command = [sys.executable, str(SOURCE / "freeze_workbench.py")]
     def run(*args):
         result = subprocess.run(command + list(args) + ["--directory", str(directory)],
-                                text=True, capture_output=True)
+                                text=True, encoding="utf-8", capture_output=True)
         assert result.returncode == 0, result.stderr
         return json.loads(result.stdout)
     imported = run("import", str(project), "--input", str(batch))

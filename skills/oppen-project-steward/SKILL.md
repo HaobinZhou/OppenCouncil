@@ -1,7 +1,7 @@
 ---
 name: oppen-project-steward
 metadata:
-  version: "4.2.9"
+  version: "4.2.10"
 description: Maintain durable, non-scientific AI-assisted projects with canonical ownership, Git-owned history, current Deliverables, recoverable machine Audit evidence, one pending-decision view, consequential Decision Memory, deterministic registries, and path-scoped dirty-work protection. Use when initializing or adopting an existing project, governing, opening OppenCouncil batch decision discussions, recovering Audit staging, indexing, escalating material unresolved concerns, recording non-reconstructable decision context, or validating long-lived software, AI application, quantitative engineering, infrastructure, or mixed code/document projects.
 ---
 

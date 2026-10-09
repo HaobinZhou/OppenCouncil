@@ -10,6 +10,8 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
+from scripts.test_filesystem import sparse_truncate
+
 
 SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "oppen_project_steward.py"
 SKILL_PATH = Path(__file__).parents[1] / "SKILL.md"
@@ -58,7 +60,7 @@ class Stage41TransactionMaterializationTestCase(unittest.TestCase):
         path = root / "models/huge-model.bin"
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("wb") as handle:
-            handle.truncate(size)
+            sparse_truncate(handle, size)
         return path
 
     def test_large_unrelated_artifact_is_never_materialized(self) -> None:

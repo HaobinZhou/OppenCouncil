@@ -86,7 +86,7 @@ def overlaps(path: str, other: str) -> bool:
 def validate_candidate(root: Path, commit: str) -> None:
     """Check skill identities and Python syntax without executing downloaded code."""
     for name in SKILLS:
-        skill = git(root, "show", f"{commit}:skills/{name}/SKILL.md")
+        skill = git(root, "show", f"{commit}:skills/{name}/SKILL.md").replace("\r\n", "\n")
         frontmatter = skill.split("---", 2)
         if (not skill.startswith("---\n") or len(frontmatter) < 3
                 or not re.search(rf"^name: {re.escape(name)}$", frontmatter[1], re.M)):

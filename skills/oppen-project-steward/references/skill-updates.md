@@ -20,3 +20,5 @@ python ABSOLUTE_SKILL_PATH/scripts/update_skill.py --check
 - After `UPDATED`, if OppenSteward-MCP is available, follow the skill-guide refresh check in [MCP publication and refresh](mcp-publication.md).
 
 After `UPDATED`, run the product `scripts/install.py` using the installation’s previous components (add `--with-mcp` only if MCP is already installed). This refreshes locked runtime dependencies; it does not restart services or change project permissions. A requested skill update does not authorize project data migration. Old academic-skills installations follow the product `docs/migration.md`; do not reset local commits or replace copied skills.
+
+Windows command output uses UTF-8, including redirected output and Chinese project paths. Candidate skill frontmatter accepts LF or CRLF; validation still checks the same skill identity and Python syntax.

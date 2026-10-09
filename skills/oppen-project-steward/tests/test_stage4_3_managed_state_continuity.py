@@ -11,6 +11,8 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
+from scripts.test_filesystem import sparse_truncate
+
 
 SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "oppen_project_steward.py"
 SPEC = importlib.util.spec_from_file_location(
@@ -94,7 +96,7 @@ class Stage43ManagedStateContinuityTestCase(unittest.TestCase):
         return subprocess.run(
             ["git", "-C", str(self.root), *args],
             check=True,
-            text=True,
+            text=True, encoding="utf-8",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
@@ -416,13 +418,13 @@ class Stage43ManagedStateContinuityTestCase(unittest.TestCase):
         model = self.root / "models/huge-model.bin"
         model.parent.mkdir()
         with model.open("wb") as handle:
-            handle.truncate(5 * 1024**4)
+            sparse_truncate(handle, 5 * 1024**4)
         audit = (
             self.root / steward.STEWARD_NAMESPACE / "Audit/Runs/build/current/huge.bin"
         )
         audit.parent.mkdir(parents=True)
         with audit.open("wb") as handle:
-            handle.truncate(4 * 1024**4)
+            sparse_truncate(handle, 4 * 1024**4)
         original_hash = steward.file_sha256
 
         def reject_large_hash(path: Path) -> str:

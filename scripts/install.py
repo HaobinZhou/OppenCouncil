@@ -12,6 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ("oppen-project-steward", "stepwise-r-project")
+IS_WINDOWS = os.name == "nt"
 
 
 def python_in(component: str) -> Path:
@@ -39,7 +40,7 @@ def skill_plan(destination: Path, replace_links: bool = False) -> list[dict]:
 
 
 def install_links(plan: list[dict]) -> None:
-    """Create sibling links before atomic replacement; never remove source directories."""
+    """Preserve source directories and roll back failed Windows link replacements."""
     for entry in plan:
         if entry["action"] == "unchanged":
             continue
@@ -50,7 +51,20 @@ def install_links(plan: list[dict]) -> None:
             raise ValueError(f"Unresolved installer link at {temporary}")
         try:
             temporary.symlink_to(source, target_is_directory=True)
-            temporary.replace(target)
+            if IS_WINDOWS and entry["action"] == "replace-link":
+                previous = target.with_name(target.name + ".previous-link")
+                if previous.exists() or previous.is_symlink() or not target.is_symlink():
+                    raise ValueError(f"Unresolved or changed installer link at {target}")
+                # Windows cannot replace an existing directory symlink via os.replace.
+                target.rename(previous)
+                try:
+                    temporary.rename(target)
+                except OSError:
+                    previous.rename(target)
+                    raise
+                previous.unlink()
+            else:
+                temporary.replace(target)
         finally:
             if temporary.is_symlink():
                 temporary.unlink()

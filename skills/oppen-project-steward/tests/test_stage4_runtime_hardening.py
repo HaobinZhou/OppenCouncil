@@ -114,7 +114,7 @@ class Stage4RuntimeHardeningTestCase(unittest.TestCase):
         return subprocess.run(
             ["git", "-C", str(self.root), *args],
             check=True,
-            text=True,
+            text=True, encoding="utf-8",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
@@ -251,7 +251,7 @@ class Stage4RuntimeHardeningTestCase(unittest.TestCase):
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         self.assertEqual(manifest["stage"], "build")
         self.assertEqual(manifest["file_count"], 1)
-        self.assertEqual(manifest["total_size"], len('{"pass": false}\n'))
+        self.assertEqual(manifest["total_size"], recovered.stat().st_size)
         self.assertEqual(steward.validate_project(self.root).status, "MANAGED_READY")
         self.assertEqual(
             {path.name for path in current.parent.parent.iterdir()}, {"current"}

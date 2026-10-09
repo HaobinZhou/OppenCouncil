@@ -94,6 +94,17 @@ def test_check_then_apply_and_repeat(setup):
     assert module.update(skill, apply=True)["status"] == "UP_TO_DATE"
 
 
+def test_crlf_frontmatter_is_valid_without_rewriting_upstream(setup):
+    module, source, clone, skill, _ = setup
+    for name in SKILLS:
+        path = source / "skills" / name / "SKILL.md"
+        path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))
+    expected = commit(source, "CRLF skill metadata")
+    report = module.update(skill, apply=True)
+    assert report["status"] == "UPDATED"
+    assert report["after"] == git(clone, "rev-parse", "HEAD") == expected
+
+
 def test_no_update_preserves_local_edits(setup):
     module, _, clone, skill, before = setup
     write(clone, "skills/oppen-project-steward/SKILL.md", "local instructions\n")
@@ -216,6 +227,6 @@ def test_cli_defaults_to_its_skill_not_cwd(setup, tmp_path):
     # remote get-url expands insteadOf, so prove source via a second literal URL form.
     git(clone, "remote", "add", "identity", "git@github.com:HaobinZhou/OppenCouncil.git")
     result = subprocess.run([sys.executable, str(script), "--check"], cwd=tmp_path,
-                            capture_output=True, text=True, timeout=30)
+                            capture_output=True, text=True, encoding="utf-8", timeout=30)
     assert result.returncode == 0, result.stdout + result.stderr
     assert json.loads(result.stdout)["repository"] == str(clone.resolve())

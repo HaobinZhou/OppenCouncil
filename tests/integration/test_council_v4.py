@@ -107,7 +107,7 @@ def test_cli_entry_points_complete_a_v4_council_owner_workflow(helper, tmp_path)
     root = tmp_path / "项目"
     def invoke(*args):
         result = subprocess.run([sys.executable, helper.__file__, *map(str, args)],
-                                capture_output=True, text=True)
+                                capture_output=True, text=True, encoding="utf-8")
         assert result.returncode == 0, result.stderr + result.stdout
         return result.stdout
     invoke("init", root)
@@ -117,7 +117,7 @@ def test_cli_entry_points_complete_a_v4_council_owner_workflow(helper, tmp_path)
         {"title": "共同项目口径", "why": "唯一来源", "ai_position": "建议保存完整规则并由人类确认。"}
     ]}))
     run = subprocess.run([sys.executable, "-m", "oppencouncil", "--directory", str(tmp_path / "site"),
-                          "import", str(root), "--input", str(batch)], capture_output=True, text=True)
+                          "import", str(root), "--input", str(batch)], capture_output=True, text=True, encoding="utf-8")
     assert run.returncode == 0, run.stderr
     store = FreezeStore(root)
     q = store.change("F-000001", "definition_draft", "所有读取者使用项目内的当前确认版本。",
@@ -125,7 +125,7 @@ def test_cli_entry_points_complete_a_v4_council_owner_workflow(helper, tmp_path)
     store.change(q["id"], "definition_approve", q["definition"]["draft"]["text_sha256"],
                  actor="user", expected_revision=q["revision"], request_id="approve")
     result = subprocess.run([sys.executable, "-m", "oppencouncil", "definition", str(root),
-                             "--question", q["id"]], capture_output=True, text=True)
+                             "--question", q["id"]], capture_output=True, text=True, encoding="utf-8")
     assert result.returncode == 0, result.stderr
     exact = json.loads(result.stdout)
     assert exact["text"] == read_definition(store, q["id"])["text"]

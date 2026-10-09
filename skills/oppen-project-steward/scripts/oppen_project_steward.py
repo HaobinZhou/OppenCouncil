@@ -4635,7 +4635,15 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def configure_cli_output() -> None:
+    """Emit UTF-8 even when Windows redirects output through a legacy code page."""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
+
+
 def main(argv: list[str] | None = None) -> int:
+    configure_cli_output()
     args = build_parser().parse_args(argv)
     root = args.target_dir.expanduser().resolve()
     if args.command == "upgrade-v4":

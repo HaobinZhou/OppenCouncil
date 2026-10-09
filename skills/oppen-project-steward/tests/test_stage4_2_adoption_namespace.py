@@ -12,6 +12,8 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
+from scripts.test_filesystem import sparse_truncate
+
 
 SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "oppen_project_steward.py"
 SPEC = importlib.util.spec_from_file_location(
@@ -78,7 +80,7 @@ class Stage42AdoptionNamespaceTestCase(unittest.TestCase):
         return subprocess.run(
             ["git", "-C", str(self.root), *args],
             check=True,
-            text=True,
+            text=True, encoding="utf-8",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
@@ -217,7 +219,7 @@ class Stage42AdoptionNamespaceTestCase(unittest.TestCase):
         huge = self.root / "models/huge-model.bin"
         huge.parent.mkdir()
         with huge.open("wb") as handle:
-            handle.truncate(5 * 1024**4)
+            sparse_truncate(handle, 5 * 1024**4)
         before = huge.stat()
 
         with (

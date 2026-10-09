@@ -14,6 +14,8 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from unittest import mock
 
+from scripts.test_filesystem import sparse_truncate
+
 
 SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "stepwise_r_project.py"
 SPEC = importlib.util.spec_from_file_location("stepwise_r_project", SCRIPT_PATH)
@@ -1342,10 +1344,10 @@ pass
             )
             huge_data = root / "Data/huge_dataset.rds"
             with huge_data.open("wb") as handle:
-                handle.truncate(1024 * 1024)
+                sparse_truncate(handle, 1024 * 1024)
             small = stepwise.migration_preflight(root)["transaction_plan"]
             with huge_data.open("r+b") as handle:
-                handle.truncate(5 * 1024**4)
+                sparse_truncate(handle, 5 * 1024**4)
             large = stepwise.migration_preflight(root)["transaction_plan"]
             self.assertEqual(small, large)
             self.assertEqual(large["full_project_materialization"], "NO")
@@ -1384,7 +1386,7 @@ pass
             )
             huge_data = root / "Data/huge_dataset.rds"
             with huge_data.open("wb") as handle:
-                handle.truncate(5 * 1024**4)
+                sparse_truncate(handle, 5 * 1024**4)
             payload = {
                 "legacy_memory": [self.migration_record("Memory/design.md")]
             }
@@ -1540,7 +1542,7 @@ pass
             )
             huge_data = root / "Data/huge_dataset.rds"
             with huge_data.open("wb") as handle:
-                handle.truncate(5 * 1024**4)
+                sparse_truncate(handle, 5 * 1024**4)
             preserved = {
                 path: (root / path).read_bytes()
                 for path in ("R/analysis.R", "Results/table1.csv")

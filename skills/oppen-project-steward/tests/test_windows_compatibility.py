@@ -122,13 +122,15 @@ class WindowsCompatibilityTestCase(unittest.TestCase):
         )
 
     def test_path_identity_uses_platform_case_normalization(self) -> None:
+        resolved = os.path.normpath(str(self.root.resolve()))
         with mock.patch.object(
             steward.os.path, "normcase", return_value="normalized-project"
         ) as normcase:
             identity = steward.normalized_path_identity(self.root)
 
         self.assertEqual(identity, "normalized-project")
-        normcase.assert_called_once_with(os.path.normpath(str(self.root.resolve())))
+        # Windows pathlib may itself use normcase while resolving this same path.
+        normcase.assert_any_call(resolved)
 
     def test_existing_crlf_baseline_can_continue_without_reinitialization(self) -> None:
         namespace = self.root / steward.STEWARD_NAMESPACE

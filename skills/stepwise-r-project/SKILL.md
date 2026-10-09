@@ -1,7 +1,7 @@
 ---
 name: stepwise-r-project
 metadata:
-  version: "4.2.9"
+  version: "4.2.10"
 description: Maintain strict, human-readable scientific R analysis projects with canonical ownership, Results, Audit, pending decisions and Decision Memory. Use for scientific freeze rounds, opening OppenCouncil discussions and recovering existing decisions and discussions, or when initializing, migrating, modifying, indexing, validating or reviewing an R analysis workspace.
 ---
 

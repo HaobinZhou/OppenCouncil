@@ -103,7 +103,7 @@ class Stage3IntegrationTestCase(unittest.TestCase):
             cwd=self.root,
             check=True,
             capture_output=True,
-            text=True,
+            text=True, encoding="utf-8",
         )
 
     def test_software_ai_product_end_to_end(self) -> None:
