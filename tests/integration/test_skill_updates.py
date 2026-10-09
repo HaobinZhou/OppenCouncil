@@ -96,10 +96,16 @@ def test_check_then_apply_and_repeat(setup):
 
 def test_crlf_frontmatter_is_valid_without_rewriting_upstream(setup):
     module, source, clone, skill, _ = setup
+    git(source, "config", "core.autocrlf", "false")
     for name in SKILLS:
         path = source / "skills" / name / "SKILL.md"
-        path.write_bytes(path.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))
+        content = path.read_bytes().replace(b"\r\n", b"\n")
+        # Windows fixtures already use CRLF; include a real upstream change too.
+        content += b"\nUpdated CRLF instructions\n"
+        path.write_bytes(content.replace(b"\n", b"\r\n"))
     expected = commit(source, "CRLF skill metadata")
+    for name in SKILLS:
+        assert "\r\n" in git(source, "show", f"{expected}:skills/{name}/SKILL.md")
     report = module.update(skill, apply=True)
     assert report["status"] == "UPDATED"
     assert report["after"] == git(clone, "rev-parse", "HEAD") == expected

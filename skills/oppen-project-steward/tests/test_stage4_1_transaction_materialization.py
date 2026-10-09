@@ -291,6 +291,7 @@ class Stage41TransactionMaterializationTestCase(unittest.TestCase):
         source = self.temp_root / "audit-input"
         source.mkdir()
         (source / "summary.json").write_text('{"ready": true}\n', encoding="utf-8")
+        source_size = (source / "summary.json").stat().st_size
         plans: list[steward.ManagedTransactionPlan] = []
         original_plan = steward.build_transaction_plan
 
@@ -314,7 +315,7 @@ class Stage41TransactionMaterializationTestCase(unittest.TestCase):
         )
         self.assertEqual(
             audit_plan.estimated_staged_regular_file_bytes,
-            len('{"ready": true}\n'.encode("utf-8")),
+            source_size,
         )
         self.assertEqual((huge.stat().st_size, huge.stat().st_mtime_ns), huge_before)
         self.assertEqual(
