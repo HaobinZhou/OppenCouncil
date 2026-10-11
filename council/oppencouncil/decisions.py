@@ -153,18 +153,39 @@ def requirements(q, draft=True):
 
 
 def candidate_for_approval(qid, questions):
-    """Resolve initially unbound prerequisites in the reviewed candidate, without writes.
+    """Prepare current prerequisite bindings for explicit human review, without writes.
 
-    The approval token covers these exact bindings. Existing version bindings are
-    never advanced implicitly, and a concurrent upstream change invalidates review.
+    Views disclose changed bindings beside the candidate. Only confirmation stores
+    them; the token prevents an upstream change from silently changing that choice.
     """
     candidate = copy.deepcopy(state(questions[qid])["draft"])
     if candidate:
         for dep in candidate.get("dependencies", []):
             live = current(questions[dep["question_id"]])
-            if blocking(dep) and dep["version"] is None and dep["text_sha256"] is None and live:
+            if blocking(dep) and live:
                 dep.update(version=live["number"], text_sha256=live["text_sha256"])
     return candidate
+
+
+def candidate_dependency_updates(qid, questions):
+    original = state(questions[qid])["draft"]
+    candidate = candidate_for_approval(qid, questions)
+    updates = []
+    if candidate:
+        for old, new in zip(
+            original.get("dependencies", []), candidate.get("dependencies", []), strict=True
+        ):
+            if old["version"] == new["version"] and old["text_sha256"] == new["text_sha256"]:
+                continue
+            upstream = questions[new["question_id"]]
+            prior = next((v for v in state(upstream)["versions"] if v["number"] == old["version"]), None)
+            updates.append({
+                "question_id": new["question_id"], "title": upstream["title"],
+                "from_version": old["version"], "to_version": new["version"],
+                "from_text": prior["text"] if prior else "此前尚未确认前序版本。",
+                "to_text": current(upstream)["text"],
+            })
+    return updates
 
 
 def dependency_status(qid, questions, trail=(), use_draft=True):
@@ -420,6 +441,7 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
             for qid in group["member_ids"]:
                 q, d = questions[qid], state(questions[qid])
                 if d["draft"]:
+                    d["draft"] = candidate_for_approval(qid, questions)
                     if not d["draft"]["text"].strip():
                         raise FreezeError("请先补齐组内候选：" + q["title"])
                     old = current(q)

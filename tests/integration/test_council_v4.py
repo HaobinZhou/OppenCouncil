@@ -79,9 +79,17 @@ def test_canonical_reads_exact_confirmed_version_and_detects_corruption(helper, 
     helper.refresh_index(root)
     assert helper.validate_project(root).ok
     assert helper.council_definition(root, root / owner, "definition") == read_definition(store, q["id"])["text"]
-    q = store.change(q["id"], "definition_begin", None, actor="user",
+    old = read_definition(store, q["id"])
+    q = store.change(q["id"], "definition_draft", "修订规则：保存后刷新，断线时保留输入并重试。", actor="codex",
                      expected_revision=q["revision"], request_id="revision")
     assert helper.validate_project(root).ok  # Candidate does not revoke the current authority.
+    assert helper.council_definition(root, root / owner, "definition") == old["text"]
+    q = store.change(q["id"], "definition_approve", q["definition"]["draft"]["approval_token"],
+                     actor="user", expected_revision=q["revision"], request_id="confirm-revision")
+    helper.refresh_index(root)
+    assert helper.validate_project(root).ok
+    assert helper.council_definition(root, root / owner, "definition") == read_definition(store, q["id"])["text"]
+    assert not read_definition(store, q["id"], old["number"])["effective"]
     q["definition"]["versions"][0]["text"] = "Changed outside version management"
     (root / owner).write_text(json.dumps(q))
     assert not helper.validate_project(root).ok

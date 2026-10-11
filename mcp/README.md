@@ -223,7 +223,7 @@ OppenCouncil 0.1.2 支持由本地 Codex 恢复已有冻结口径和可复原的
 
 网页版 ChatGPT 访问记录使用本 MCP 服务。先在本 MCP 的 `projects.local.json` 登记具体原生 Stepwise R v3/v4 或 Steward v3/v4 项目，并配置 `OPPEN_FREEZE_MODE=write`、`OPPEN_FREEZE_PROJECTS=["/该项目的绝对根目录"]`。`OPPEN_SKILL_ROOT` 只用于提供 skill 指南，不用于加载存储实现。只有同时登记且列入 Freeze 允许列表的项目可以使用这些工具。`project_overview.freeze_access` 可检查当前连接的读写授权。网站登记不会授予 MCP 访问；支持两种治理项目不增加 OAuth scopes，也不改动实际项目允许列表。
 
-`Freeze/manifest.json` 记录轮次与问题 ID；`Freeze/questions/F-000001.json` 等文件保存各题的答复和讨论。OppenCouncil 0.1.3 将讨论、候选与正式版本分开：`definition.current_version` 所指向的完整版本是唯一正式口径。人类在网页确认即生效，两个 v4 skill 将同一 JSON 的 `definition` 登记为 Canonical；其他文档只引用或生成只读展示。MCP 与网页读取同一文件。`definition_draft` 允许 AI 提交完整候选，MCP 不允许确认、开启后续修订或撤回候选。每题独立管理版本，旧版在新版确认前保持有效，之后保留原文。
+`Freeze/manifest.json` 记录轮次与问题 ID；`Freeze/questions/F-000001.json` 等文件保存各题的答复和讨论。OppenCouncil 将讨论、候选与正式版本分开：`definition.current_version` 所指向的完整版本是唯一正式口径。人类在网页确认即生效，两个 v4 skill 将同一 JSON 的 `definition` 登记为 Canonical；其他文档只引用或生成只读展示。MCP 与网页读取同一文件。`definition_draft` 允许 AI 提交完整候选，也可直接为已冻结口径提出修订，无需人类先开启。省略依赖字段时保留现有候选或当前正式版本的绑定；显式依赖列表才替换。MCP 不允许确认或撤回候选，也不能改写正式版本。每题独立管理版本：新版确认前旧版保持有效；确认后只有新版当前有效，旧版保留原文及确认记录。
 
 Freeze 写工具的提示要求每轮达到可选择的清晰度：在 `ai_position` 解释每个方案的具体做法、实际影响、条件与代价，并给出建议依据；`suggestions` 仅作已有说明的选项标签。在同轮通过清晰文字或对照表比较相同情境下的实际结果，不再生成独立 HTML 推演。不得用“先看示例”或“之后细化”替代实质方案，也不以节省篇幅省略决策信息；缺少事实时明确指出。工具保存校验负责数据完整性，内容是否足够支持选择仍由 AI 核对。
 

@@ -128,6 +128,28 @@ async def test_stdio_freeze_tools_share_project_files_and_preserve_human_answer(
     )
     assert store.read(pid, q["id"])["definition"] == confirmed["definition"]
     assert store.snapshot(pid)["questions"][0]["definition"]["current_version"] == 1
+    for number, author in enumerate(("chatgpt", "codex"), 2):
+        previous = store.read(pid, q["id"])
+        text = f"第 {number} 版完整修订：保存后刷新；断线时保留输入并核对保存回执。"
+        await mcp.call_tool("freeze_change_question", {
+            "project_id": pid, "question_id": q["id"], "operation": "definition_draft",
+            "value": text, "expected_revision": previous["revision"],
+            "request_id": f"mcp-revision-{number}", "actor": author,
+        })
+        pending = store.read(pid, q["id"])
+        assert pending["definition"]["draft"]["text"] == text
+        assert pending["definition"]["current_version"] == number - 1
+        assert pending["definition"]["versions"] == previous["definition"]["versions"]
+        with pytest.raises(AccessDenied):
+            store.change(pid, q["id"], "definition_approve", pending["definition"]["draft"]["approval_token"],
+                         pending["revision"], f"ai-cannot-confirm-{number}", actor=author)
+        published = store.store(pid).change(
+            q["id"], "definition_approve", pending["definition"]["draft"]["approval_token"],
+            actor="user", expected_revision=pending["revision"], request_id=f"human-confirm-{number}",
+        )
+        assert published["definition"]["current_version"] == number
+        assert published["definition"]["versions"][:-1] == previous["definition"]["versions"]
+        assert store.snapshot(pid)["questions"][0]["definition"] == published["definition"]
     await mcp.call_tool(
         "freeze_add_questions",
         {"project_id": pid, "questions": items, "request_id": "mcp-codex-round", "actor": "codex"},

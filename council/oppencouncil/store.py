@@ -243,11 +243,17 @@ class FreezeStore:
     def _view(self, question, questions):
         import copy
 
-        from .decisions import candidate_for_approval, group_membership, readiness
+        from .decisions import (
+            candidate_dependency_updates,
+            candidate_for_approval,
+            group_membership,
+            readiness,
+        )
         from .definitions import approval_token
 
         result = copy.deepcopy(question)
         result["readiness"] = readiness(question["id"], questions)
+        result["candidate_dependency_updates"] = candidate_dependency_updates(question["id"], questions)
         group = group_membership(self, question["id"])
         result["decision_group_id"] = group["id"] if group else None
         if result.get("definition", {}).get("draft"):
@@ -414,7 +420,7 @@ class FreezeStore:
 
                 questions = all_questions(self)
                 questions[question_id] = question
-                if operation == "definition_draft" and isinstance(value, dict):
+                if operation == "definition_draft" and isinstance(value, dict) and "dependencies" in value:
                     value = {
                         "text": value.get("text"),
                         "dependencies": bind_dependencies(

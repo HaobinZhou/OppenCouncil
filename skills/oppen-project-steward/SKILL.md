@@ -1,7 +1,7 @@
 ---
 name: oppen-project-steward
 metadata:
-  version: "4.2.12"
+  version: "4.3.0"
 description: Maintain durable, non-scientific AI-assisted projects with canonical ownership, Git-owned history, current Deliverables, recoverable machine Audit evidence, one pending-decision view, consequential Decision Memory, deterministic registries, and path-scoped dirty-work protection. Use when initializing or adopting an existing project, governing, opening OppenCouncil batch decision discussions, recovering Audit staging, indexing, escalating material unresolved concerns, recording non-reconstructable decision context, or validating long-lived software, AI application, quantitative engineering, infrastructure, or mixed code/document projects.
 ---
 
@@ -70,7 +70,7 @@ For a Council round, read [freeze-workbench.md](references/freeze-workbench.md),
 - **Review coupled rules together.** AI organizes groups around a complete decision, including the unresolved prerequisites needed to understand it. Prepare independently decidable upstream topics first. Preserve real dependencies and each member's separate ID, wording and history. Group management belongs to AI; people review and discuss together, but may confirm each member separately. Grouping alone never requires batch freezing; only real prerequisites can block an individual confirmation.
 - **Prepare complete candidates.** Verify available evidence, write concrete rules and relevant boundary/missing/conflict handling, and read back every in-scope candidate and group member before declaring the round ready. A genuinely blocked item is explicitly unprepared. Discussion, preference, software tests and confirmation alone do not establish semantic completeness.
 
-For Council-managed definitions, `Freeze/questions/F-NNNNNN.json` → `definition.current_version` selects the sole effective wording. Human confirmation makes the exact candidate effective immediately; later revisions are human-opened and preserve the current version until replacement. AI edits candidates and discussion, never confirms or overwrites effective text. Canonical registers this same JSON scope; other documents reference it or render read-only views. Confirmation does not itself authorize implementation or execution.
+For Council-managed definitions, `Freeze/questions/F-NNNNNN.json` → `definition.current_version` selects the sole effective wording. AI may submit a changed complete candidate after a version is frozen, without waiting for a human to open revision. Human confirmation makes that candidate the sole current effective version; the previous version becomes read-only history. Until confirmation, the existing version remains effective. AI edits candidates and discussion, never confirms or overwrites formal text. Canonical registers this same JSON scope; other documents reference it or render read-only views. Confirmation does not itself authorize implementation or execution.
 
 ## Existing Projects
 

@@ -581,6 +581,7 @@
     if (confirm && q) {
       const reason = confirmationProblem(q);
       confirm.disabled = state.busy || Boolean(reason); confirm.title = reason;
+      confirm.textContent = q.candidate_dependency_updates?.length ? '确认并采用新版前序' : '确认并冻结本条口径';
       const hint = root.querySelector('#sw2-confirm-hint');
       if (hint) hint.textContent = state.busy ? '正在保存，请稍候…' : reason || '确认后，以上完整文字成为正式口径。';
     }
@@ -750,7 +751,7 @@
       (groupUI?.dependencies(q) || '') + workflowHTML([q]) + '</header>' + '<div class="sw2-review-body"><section class="sw2-decision-column" aria-label="正式口径与候选文档"><div class="sw2-section-title">口径</div><div class="sw2-opinion-scroll" tabindex="0" aria-label="口径版本内容">',
       !draft && !current ? (q.recovered_records?.length ? '<div class="sw2-empty"><strong>已保留历史依据</strong>尚未建立正式版本，既有决定沿用原有依据。</div>' : '<div class="sw2-empty"><strong>候选尚未备齐</strong>AI 尚未写入完整候选口径；应先补齐内容，再交付你审阅。</div>') : '',
       !def.versions.length && q.recovered_records?.length ? recoverySummary(q) : "",
-      draft ? '<article class="sw2-definition-candidate sw2-record" data-state="draft">' + recordHeading(def.versions.length + 1, true) + '<div class="sw2-definition-text sw2-record-body" data-quote-source="' + q.id + ' · 候选口径 v' + (def.versions.length + 1) + '">' + renderMarkdown(draft.text || "候选已开启，等待编写完整口径。") + '</div><div class="sw2-definition-actions"><button class="sw2-button sw2-button-outline" data-action="edit-definition">修改候选</button><button class="sw2-button sw2-button-outline" data-action="discard-definition">' + (current ? "取消修订" : "撤回候选") + '</button></div><div class="sw2-confirm-actions"><span id="sw2-confirm-hint" role="status">' + escape(confirmationProblem(q) || '仅冻结本条，其他口径保持原状态。') + '</span><button class="sw2-button sw2-button-primary" aria-describedby="sw2-confirm-hint" data-action="approve-definition">确认并冻结本条口径</button></div><div class="sw2-record-end"><details class="sw2-record-details" data-record="candidate-meta"><summary>详情</summary><div class="sw2-record-detail-text">编号：' + q.id + '<br>状态：候选 · 尚未生效</div>' + currentHTML + historyHTML + '</details></div></article>' : '',
+      draft ? '<article class="sw2-definition-candidate sw2-record" data-state="draft">' + recordHeading(def.versions.length + 1, true) + (groupUI?.dependencyReview(q) || '') + '<div class="sw2-definition-text sw2-record-body" data-quote-source="' + q.id + ' · 候选口径 v' + (def.versions.length + 1) + '">' + renderMarkdown(draft.text || "候选已开启，等待编写完整口径。") + '</div><div class="sw2-definition-actions"><button class="sw2-button sw2-button-outline" data-action="edit-definition">修改候选</button><button class="sw2-button sw2-button-outline" data-action="discard-definition">' + (current ? "取消修订" : "撤回候选") + '</button></div><div class="sw2-confirm-actions"><span id="sw2-confirm-hint" role="status">' + escape(confirmationProblem(q) || '仅冻结本条，其他口径保持原状态。') + '</span><button class="sw2-button sw2-button-primary" aria-describedby="sw2-confirm-hint" data-action="approve-definition">确认并冻结本条口径</button></div><div class="sw2-record-end"><details class="sw2-record-details" data-record="candidate-meta"><summary>详情</summary><div class="sw2-record-detail-text">编号：' + q.id + '<br>状态：候选 · 尚未生效</div>' + currentHTML + historyHTML + '</details></div></article>' : '',
       !draft ? currentHTML : '',
       !draft && !jointGroup ? '<button class="sw2-button sw2-button-outline sw2-begin-definition" data-action="' + (def.current_version ? "begin-definition" : "edit-definition") + '">' + (def.current_version ? '开启 v' + (def.versions.length + 1) + ' 修订' : "起草候选口径") + '</button>' : '',
       !draft && !current ? historyHTML : '',
@@ -871,8 +872,8 @@
       "2. 回应已保存的反馈并核查可取得的依据，一次列齐当前可识别的问题。讨论使用 Markdown，写清做法、实际影响、条件与建议；独立含义分段，引用完整编号如 F-000013。机器日志、哈希和自检报告只存 review_note 或 Audit。",
       "3. 比较区集中说明共同规则，用 ## / ### 分级标题组织长讨论、方案和口径，再以短段落或列表展开，不仅靠加粗分段。独立子选择或局部数值使用 {{choice:wait_seconds;等待时长;5秒;10秒}}，解释取值影响和兼容性；只有需要整体比较的联动路线另列，不展开所有组合、不复制整份候选。选择仅表达偏好，不会自动重算或确认规则。",
       "4. AI 将同一决策所需的联动规则组成主题，保留真实依赖并先备齐独立上游。单题正文及建议用 presentation 更新；共同方案用 group-change / freeze_change_group 的 update 更新，并以 comment 保存共同讨论。",
-      "5. 对首次候选或人类已开启的修订，按有依据的建议为本轮待决题及组成员保存完整 definition_draft，核对具体条件、单位、时间、边界及缺失/冲突处理。切换偏好后同步检查受影响规则。读回候选和实际比较内容；未备齐项列明编号、缺口和影响，不声称已可确认。",
-      "6. 人类确认后，项目问题 JSON 的 definition.current_version 所指版本立即成为唯一正式口径；其他文档引用它。AI 不确认、不覆盖有效版本。新修订需人类开启；旧版保持有效。参数偏好、讨论保存和测试通过都不等于内容完整或已获执行授权。"
+      "5. 对首次候选或确有修改的已冻结口径，直接按有依据的建议为本轮待决题及组成员保存完整 definition_draft，核对具体条件、单位、时间、边界及缺失/冲突处理。切换偏好后同步检查受影响规则。读回候选和实际比较内容；未备齐项列明编号、缺口和影响，不声称已可确认。",
+      "6. 人类确认后，项目问题 JSON 的 definition.current_version 所指版本立即成为唯一正式口径；其他文档引用它。AI 不确认、不覆盖有效版本。AI 可直接提交完整修订候选并说明变化，无需人类先开启；未修改的口径不新建候选。新候选确认前旧版保持有效，确认后新版是唯一当前版本，旧版保留只读历史。参数偏好、讨论保存和测试通过都不等于内容完整或已获执行授权。"
     );
     return lines.join("\n");
   }

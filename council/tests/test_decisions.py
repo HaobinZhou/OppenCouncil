@@ -437,19 +437,40 @@ def test_initial_binding_rejects_upstream_change_after_individual_review(store):
     assert store.read_question("F-000002")["definition"]["current_version"] is None
 
 
-def test_existing_member_dependency_binding_is_not_silently_advanced(store):
+@pytest.mark.parametrize("batch", [False, True])
+def test_existing_binding_changes_only_after_explicit_latest_version_confirmation(store, batch):
     setup_group(store)
     draft(store, "F-000001")
     approve(store, "F-000001")
     draft(store, "F-000002", [dep("F-000001")])
-    change(store, "F-000001", "definition_begin", actor="user")
+    approve(store, "F-000002")
+    formal = read_definition(store, "F-000002")
+    change(store, "F-000002", "definition_draft", "Revised consumer rule")
+    old_token = store.read_question("F-000002")["definition"]["draft"]["approval_token"]
     draft(store, "F-000001", text="Updated upstream rule")
     approve(store, "F-000001")
+    raw_before = (store.root / "questions/F-000002.json").read_bytes()
     q = store.read_question("F-000002")
-    assert q["definition"]["draft"]["dependencies"][0]["version"] == 1
-    assert q["readiness"]["status"] == "needs_review"
-    with pytest.raises(FreezeError, match="前序口径已变化"):
-        approve(store, "F-000002")
+    assert q["definition"]["draft"]["dependencies"][0]["version"] == 2
+    assert q["readiness"]["status"] == "ready"
+    assert q["candidate_dependency_updates"] == [{
+        "question_id": "F-000001", "title": "Timing", "from_version": 1, "to_version": 2,
+        "from_text": "Full rule for F-000001", "to_text": "Updated upstream rule",
+    }]
+    assert (store.root / "questions/F-000002.json").read_bytes() == raw_before
+    assert json.loads(raw_before)["definition"]["draft"]["dependencies"][0]["version"] == 1
+    assert read_definition(store, "F-000002")["number"] == 1
+    with pytest.raises(FreezeError, match="changed since read"):
+        change(store, "F-000002", "definition_approve", old_token, "user")
+    confirm(store) if batch else approve(store, "F-000002")
+    updated = read_definition(store, "F-000002")
+    assert updated["number"] == 2
+    assert updated["dependencies"][0]["version"] == 2
+    assert updated["readiness"]["status"] == "effective"
+    history = store.read_question("F-000002")["definition"]["versions"][0]
+    assert history["text"] == formal["text"]
+    assert history["dependencies"] == formal["dependencies"]
+    assert store.read_question("F-000002")["candidate_dependency_updates"] == []
 
 
 def test_optional_batch_after_individual_confirmation_keeps_existing_version(store):
@@ -461,3 +482,59 @@ def test_optional_batch_after_individual_confirmation_keeps_existing_version(sto
     confirm(store)
     assert (store.root / "questions/F-000001.json").read_bytes() == before
     assert read_definition(store, "F-000002")["number"] == 1
+
+
+@pytest.mark.parametrize("as_object", [False, True])
+def test_ai_revision_inherits_dependencies_and_preserves_group_siblings(store, as_object):
+    setup_group(store)
+    draft(store, "F-000001")
+    approve(store, "F-000001")
+    draft(store, "F-000002", [dep("F-000001")])
+    approve(store, "F-000002")
+    original = read_definition(store, "F-000002")
+    sibling = (store.root / "questions/F-000001.json").read_bytes()
+    groups = (store.root / "decision-groups.json").read_bytes()
+    unchanged = {"text": original["text"]} if as_object else original["text"]
+    assert change(store, "F-000002", "definition_draft", unchanged)["definition"]["draft"] is None
+    text = "Changed complete consumer rule"
+    value = {"text": text} if as_object else text
+    candidate = change(store, "F-000002", "definition_draft", value)
+    assert candidate["definition"]["draft"]["dependencies"] == original["dependencies"]
+    assert read_definition(store, "F-000002")["text"] == original["text"]
+    approve(store, "F-000002")
+    assert read_definition(store, "F-000002")["number"] == 2
+    assert read_definition(store, "F-000002")["dependencies"] == original["dependencies"]
+    assert not read_definition(store, "F-000002", 1)["effective"]
+    assert (store.root / "questions/F-000001.json").read_bytes() == sibling
+    assert (store.root / "decision-groups.json").read_bytes() == groups
+
+
+def test_ai_revision_with_explicit_dependency_change_is_pending_even_with_same_text(store):
+    draft(store, "F-000001")
+    approve(store, "F-000001")
+    draft(store, "F-000002", [dep("F-000001")])
+    approve(store, "F-000002")
+    original = read_definition(store, "F-000002")
+    candidate = change(store, "F-000002", "definition_draft", {
+        "text": original["text"], "dependencies": [],
+    })
+    assert candidate["definition"]["draft"]["dependencies"] == []
+    assert read_definition(store, "F-000002")["dependencies"] == original["dependencies"]
+    approve(store, "F-000002")
+    assert read_definition(store, "F-000002")["number"] == 2
+    assert read_definition(store, "F-000002")["dependencies"] == []
+
+
+def test_candidate_cannot_adopt_an_upstream_version_with_unreviewed_own_dependencies(store):
+    draft(store, 'F-000001')
+    approve(store, 'F-000001')
+    draft(store, 'F-000002', [dep('F-000001')])
+    approve(store, 'F-000002')
+    draft(store, 'F-000003', [dep('F-000002')])
+    draft(store, 'F-000001', text='Changed original prerequisite')
+    approve(store, 'F-000001')
+    assert store.read_question('F-000002')['readiness']['status'] == 'needs_review'
+    assert store.read_question('F-000003')['readiness']['status'] == 'needs_review'
+    with pytest.raises(FreezeError, match='前序口径仍需复核'):
+        approve(store, 'F-000003')
+    assert store.read_question('F-000003')['definition']['current_version'] is None

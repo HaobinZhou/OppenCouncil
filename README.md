@@ -16,7 +16,7 @@
 - **把相关决定放在一起**：同一个主题下比较完整组合；相互依赖的规则一起决定，每条规则仍有自己的版本。
 - **持续讨论**：方案、讨论和候选正文支持 Markdown；建议、疑问和回复留在原话题里，方便下次继续。
 - **明确什么已经生效**：讨论、候选与正式口径分开。表达偏好和保存草稿后，仍需审阅并确认完整文本。
-- **保留修订历史**：确认后的规则有独立版本。打开修订时旧版继续有效，新版确认后替换；也可以取消修订。
+- **保留修订历史**：确认后的规则有独立版本。AI 可直接提交完整修订候选；确认前旧版继续有效，确认后新版成为唯一当前版本，旧版保留在历史中。
 - **在多个项目间切换**：一个本地站点提供项目目录，每个项目的记录保存在自己的目录中。
 
 典型流程：
@@ -49,6 +49,8 @@ git clone https://github.com/HaobinZhou/OppenCouncil.git
 cd OppenCouncil
 uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents/skills"
 ```
+
+也可以从 [Releases](https://github.com/HaobinZhou/OppenCouncil/releases/latest) 下载 `OppenCouncil-4.3.0.zip`，解压到固定目录后进入该目录，运行上面的 `uv run ... scripts/install.py` 安装命令。完整包包含两个 skill、工作台和可选 MCP。
 
 `uv` 会按需准备 Python 3.12。安装器创建 Council 的本地运行环境，并把两个 skill **以软链接方式**接入用户级全局目录：
 

@@ -592,12 +592,16 @@ def create_mcp(settings: Settings, catalog: Catalog, provider=None):
             a complete document string or {text, dependencies}; dependencies name question_id,
             kind (required/conditional/reference), reason and optional condition/active/version.
             Read freeze_snapshot for decision_groups and readiness. AI and humans may edit the candidate.
-            Each question has its own definition versions. A user must
-            explicitly open a revision before changing an existing effective version. Only the user
-            confirms wording in the web UI, making that exact text immediately effective in the same JSON.
+            Each question has its own definition versions. definition_draft can directly propose a
+            changed complete candidate after confirmation; no human revision-opening step is needed.
+            Omitted dependencies preserve the candidate's or current version's exact bindings;
+            an explicit dependencies list replaces them. Unchanged effective wording creates no candidate.
+            Only the user confirms wording in the web UI, making that exact text immediately effective
+            in the same JSON.
             Canonical registers this record; documents reference it or render read-only views. Never
             maintain another authoritative copy. Drafts are not effective. The previous version stays
-            effective during revision; confirmation appends a new version and preserves the old text.
+            effective during revision; confirmation appends the sole current version and preserves
+            all prior versions as read-only history. Explain the proposed changes in discussion.
             Revised and reopened questions must already support an informed choice: explain each
             option's actions, consequences and trade-offs, with recommendation reasons. Supply any
             needed prose or table comparison in this round rather than deferring explanation.

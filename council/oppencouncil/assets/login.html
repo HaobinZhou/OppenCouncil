@@ -12,6 +12,10 @@ button{border:0;font:inherit;cursor:pointer}button:disabled{cursor:default;opaci
 .submit{width:100%;margin-top:24px;padding:12px 18px;border-radius:10px;background:#6550d7;color:#fff;font-weight:650;transition:background 160ms,transform 160ms}.submit:hover:not(:disabled){background:#5340bf}.submit:active:not(:disabled){transform:translateY(1px)}
 #message{font-size:14px;margin-top:16px}#message[data-error=true]{padding:10px 12px;background:#fff1f1;color:#b54545;border:1px solid #f4d5d5;border-radius:8px}.footnote{font-size:12px;margin-top:20px;color:#8690a2}
 @media(max-width:480px){body{padding:16px}main{padding:26px 22px}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Keep native scrolling while hiding visual scrollbar chrome on every surface. */
+*{scrollbar-width:none}
+*::-webkit-scrollbar{display:none;width:0;height:0}
 </style></head><body><main><div class="brand"><span class="logo" data-logo="council-mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="10 10 100 100" width="100%" height="100%" aria-hidden="true" focusable="false">
 <path fill="#14B8A6" d="M69.56 15.01A46 46 0 0 1 99.70 36.76A6 6 0 0 1 89.34 42.82A34 34 0 0 0 67.07 26.74A6 6 0 0 1 69.56 15.01Z"/>
 <path fill="#3B9CF0" d="M105.75 55.19A46 46 0 0 1 94.37 90.57A6 6 0 0 1 85.40 82.60A34 34 0 0 0 93.81 56.45A6 6 0 0 1 105.75 55.19Z"/>

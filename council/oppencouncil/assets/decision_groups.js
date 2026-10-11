@@ -40,6 +40,11 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
   function pending() {
     return Object.entries(local).filter(([, d]) => d.message?.trim()).map(([id]) => ({ id, title: find(id)?.title || id }));
   }
+  function dependencyReview(q) {
+    const updates = q.candidate_dependency_updates || [];
+    return updates.length ? '<section class="dg-dependencies dg-dependency-review"><strong>确认时采用以下已生效的前序版本</strong><p>请核对新旧正文与本候选是否一致。确认前不会更改当前正式口径。</p>' + updates.map(d => `<details data-record="${q.id}-dependency-${d.question_id}"><summary>${esc(d.question_id)} · ${d.from_version == null ? '未绑定' : 'V'+d.from_version} → V${d.to_version} · ${esc(d.title)}</summary><h4>原引用正文</h4><div class="sw2-record-body">${renderMarkdown(d.from_text)}</div><h4>将采用的当前正文 · V${d.to_version}</h4><div class="sw2-record-body">${renderMarkdown(d.to_text)}</div></details>`).join('') + '</section>' : '';
+  }
+  const memberConfirmLabel = q => q?.candidate_dependency_updates?.length ? '确认并采用新版前序' : '确认并冻结本条口径';
   function dependencies(q) {
     const deps = (q.readiness?.dependencies || []).filter(d => d.status === 'waiting' || d.status === 'needs_review');
     return deps.length ? '<div class="dg-dependencies">' + deps.map(d =>
@@ -78,7 +83,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
   function approvalHTML(g, location, q = null) {
     const reason = q ? memberProblem(q) : approvalProblem(g), id = 'dg-confirm-' + location;
     const hint = q ? `data-dg-member-hint="${q.id}"` : 'data-dg-confirm-hint';
-    return `<div class="sw2-confirm-actions"><span id="${id}" ${hint} role="status">${esc(reason || (q ? '仅冻结本条，其他口径保持原状态' : '本组关联口径将一并生效'))}</span>${button(q ? 'approve-member' : 'approve',q ? '确认并冻结本条口径' : '确认本组 '+g.member_ids.length+' 条口径',`${q ? 'data-question="'+q.id+'" ' : ''}aria-describedby="${id}"${state.busy || reason ? ' disabled' : ''}`)}</div>`;
+    return `<div class="sw2-confirm-actions"><span id="${id}" ${hint} role="status">${esc(reason || (q ? '仅冻结本条，其他口径保持原状态' : '本组关联口径将一并生效'))}</span>${button(q ? 'approve-member' : 'approve',q ? memberConfirmLabel(q) : '确认本组 '+g.member_ids.length+' 条口径',`${q ? 'data-question="'+q.id+'" ' : ''}aria-describedby="${id}"${state.busy || reason ? ' disabled' : ''}`)}</div>`;
   }
   function memberHTML(q) {
     const d = q.definition || { versions: [], draft: null }, current = d.versions.find(v => v.number === d.current_version);
@@ -91,7 +96,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     const currentReference = current ? `<details class="dg-current-reference" data-record="${q.id}-current"><summary>查看当前生效的正式口径 · v${current.number}</summary><section class="sw2-record-revision">${heading(current.number)}<div class="dg-text sw2-record-body" data-quote-source="${q.id} · 正式口径 v${current.number}">${renderMarkdown(current.text)}</div>${footer(current)}</section></details>` : '';
     const candidate = d.draft ? `<div class="dg-candidate"><div class="dg-text sw2-record-body" data-quote-source="${q.id} · 候选口径 v${d.versions.length + 1}">${renderMarkdown(d.draft.text || '等待完整候选')}</div></div><details class="dg-editor" data-record="${q.id}-editor"><summary>修改候选 · Markdown</summary><textarea aria-label="${esc(q.title)}的候选口径" class="dg-definition" data-question="${q.id}">${esc(getDraft(q.id))}</textarea><details class="sw2-markdown-preview" data-record="${q.id}-preview"><summary>预览排版（未保存）</summary><div class="sw2-record-body" data-preview="${q.id}">${renderMarkdown(getDraft(q.id))}</div></details><div class="dg-actions"><span class="dg-muted">保存后仍需确认才会生效</span>${button('save-candidate','保存候选',`data-question="${q.id}"`)}</div></details>` : '';
     const body = d.draft ? candidate + footer(null, currentReference + history) : current ? `<div class="dg-text sw2-record-body" data-quote-source="${q.id} · 正式口径 v${current.number}">${renderMarkdown(current.text)}</div>${footer(current, history)}` : '<p class="dg-muted">等待 AI 根据讨论起草完整口径</p>';
-    return `<article class="dg-card sw2-record" data-state="${d.draft ? 'draft' : current ? 'effective' : 'empty'}">${heading(d.draft ? d.versions.length + 1 : current?.number, Boolean(d.draft))}${dependencies(q)}${body}${d.draft ? approvalHTML(find(active), q.id, q) : ''}</article>`;
+    return `<article class="dg-card sw2-record" data-state="${d.draft ? 'draft' : current ? 'effective' : 'empty'}">${heading(d.draft ? d.versions.length + 1 : current?.number, Boolean(d.draft))}${dependencies(q)}${dependencyReview(q)}${body}${d.draft ? approvalHTML(find(active), q.id, q) : ''}</article>`;
   }
   function updateControls() {
     const postButton = root.querySelector('[data-action="dg-post"]');
@@ -116,7 +121,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     }
     for (const b of root.querySelectorAll?.('[data-action="dg-approve-member"]') || []) {
       const reason = memberProblem(question(b.dataset.question));
-      b.disabled = state.busy || Boolean(reason); b.title = reason;
+      b.disabled = state.busy || Boolean(reason); b.title = reason; b.textContent = memberConfirmLabel(question(b.dataset.question));
     }
     for (const hint of root.querySelectorAll?.('[data-dg-member-hint]') || []) {
       hint.textContent = state.busy ? '正在保存，请稍候…' : memberProblem(question(hint.dataset.dgMemberHint)) || '仅冻结本条，其他口径保持原状态';
@@ -287,7 +292,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
       }
     }
   });
-  return { listHTML, renderDetail, dependencies, pending, saveAll, reconcile, updateControls, appendDiscussion,
+  return { listHTML, renderDetail, dependencies, dependencyReview, pending, saveAll, reconcile, updateControls, appendDiscussion,
     message: id => local[id]?.message || '',
     openDiscussion: id => { active = id; views[id] = 'discussion'; composing[id] = true; saveLocal(); render(); onOpen(); root.querySelector('#dg-message')?.focus(); },
     select: id => { active = find(id) ? id : null; saveLocal(); },

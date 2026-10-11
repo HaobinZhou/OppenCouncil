@@ -52,16 +52,17 @@ def test_confirm_immediately_makes_exact_text_the_only_source(store):
     assert not (store.project / "policy.md").exists()
 
 
-def test_independent_revisions_preserve_effective_version_until_next_confirmation(store):
+@pytest.mark.parametrize("actor", ["codex", "chatgpt"])
+def test_independent_revisions_preserve_effective_version_until_next_confirmation(store, actor):
     first = approve(store, "第一版完整规则。")
     old = copy.deepcopy(first["definition"]["versions"][0])
     assert store.read_question("F-000002")["definition"]["current_version"] is None
-    with pytest.raises(FreezeError, match="Open a revision"):
-        change(store, "definition_draft", "悄悄替换", actor="chatgpt")
     change(store, "reopen", "讨论另一种策略", actor="codex")
     assert read_definition(store, first["id"])["text"] == old["text"]
-    change(store, "definition_begin")
-    change(store, "definition_draft", "第二版完整规则。", actor="chatgpt")
+    proposed = change(store, "definition_draft", "第二版完整规则。", actor=actor)
+    assert proposed["definition"]["draft"]["base_version"] == 1
+    assert proposed["definition"]["draft"]["updated_by"] == actor
+    assert proposed["definition"]["versions"] == [old]
     assert read_definition(store, first["id"])["text"] == old["text"]
     second = approve(store, "第二版完整规则。")
     assert second["definition"]["current_version"] == 2
@@ -69,6 +70,29 @@ def test_independent_revisions_preserve_effective_version_until_next_confirmatio
     assert second["definition"]["versions"][1]["supersedes"] == 1
     assert not read_definition(store, first["id"], 1)["effective"]
     assert store.read_question("F-000002")["definition"]["current_version"] is None
+
+
+@pytest.mark.parametrize("as_object", [False, True])
+def test_unchanged_ai_submission_does_not_open_a_candidate(store, as_object):
+    first = approve(store, "第一版完整规则。")
+    value = {"text": "第一版完整规则。"} if as_object else "第一版完整规则。"
+    result = change(store, "definition_draft", value, actor="chatgpt")
+    assert result["definition"] == first["definition"]
+    assert result["status"] == "frozen"
+
+
+def test_ai_revision_retry_and_human_withdrawal_preserve_current(store):
+    first = approve(store, "已确认规则。")
+    before = store.read_question(first["id"])
+    candidate = change(store, "definition_draft", "修订候选。", actor="codex", request_id="ai-revision")
+    retry = store.change(first["id"], "definition_draft", "修订候选。", actor="codex",
+                         expected_revision=before["revision"], request_id="ai-revision")
+    assert retry["replayed"] and retry["definition"] == candidate["definition"]
+    withdrawn = change(store, "definition_discard")
+    assert withdrawn["definition"]["draft"] is None
+    assert withdrawn["definition"]["versions"] == first["definition"]["versions"]
+    assert withdrawn["definition"]["withdrawn_drafts"][0]["text"] == "修订候选。"
+    assert read_definition(store, first["id"])["text"] == "已确认规则。"
 
 
 def test_ai_cannot_confirm_begin_or_withdraw_and_stale_writes_fail(store):

@@ -323,8 +323,10 @@ class OAuthProvider:
             action = "授权读取项目口径与讨论"
         if FREEZE_WRITE in scopes:
             discussion += (
-                "<p><strong>允许为 Freeze/ 追加问题和 AI 讨论，修订候选文档及 AI 意见。</strong>"
-                "不能代替用户确认、开启修订或撤回候选，也不能改写当前正式版本。</p>"
+                "<p><strong>允许为 Freeze/ 追加问题和 AI 讨论，修订候选文档及 AI 意见，"
+                "并为已冻结口径提交新候选版本。</strong>"
+                "新候选由用户确认后成为唯一当前版本；确认前旧版继续有效。"
+                "不能代替用户确认或撤回候选，也不能改写已确认的正式版本。</p>"
             )
             action = "授权参与冻结口径讨论"
         return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">

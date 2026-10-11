@@ -46,14 +46,21 @@ def change_definition(question: dict, operation: str, value: object, actor: str)
             else [],
         }
     elif operation == "definition_draft":
+        effective = definition["versions"][-1] if current else None
+        baseline = draft if draft is not None else effective or {}
         dependencies = (
-            value.get("dependencies", [])
+            value.get("dependencies", baseline.get("dependencies", []))
             if isinstance(value, dict)
-            else (draft.get("dependencies", []) if draft else [])
+            else baseline.get("dependencies", [])
         )
         text = require_text(value.get("text") if isinstance(value, dict) else value, "definition text", 20000)
-        if draft is None and current is not None:
-            raise FreezeError("Open a revision explicitly before editing an effective definition")
+        # A complete proposal can open the next revision without changing authority.
+        # Re-sending the effective rule does not create a redundant candidate.
+        if (
+            draft is None and effective and effective["text"] == text
+            and effective.get("dependencies", []) == dependencies
+        ):
+            return
         if draft is not None and draft["text"] == text and draft.get("dependencies", []) == dependencies:
             return
         if draft is None:

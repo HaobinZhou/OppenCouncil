@@ -229,7 +229,7 @@ html,body{height:100%;margin:0}
 #sw-freeze-v2 .sw2-talk-header{flex:none;padding:20px 22px 16px;border-bottom:1px solid var(--line)}
 #sw-freeze-v2 .sw2-talk-header .sw2-section-title{font-size:17px;margin-bottom:3px}
 #sw-freeze-v2 .sw2-talk-header p{font-size:12px;color:var(--muted)}
-#sw-freeze-v2 :is(.sw2-thread,.dg-thread){flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:22px;padding:20px 22px;scrollbar-width:thin}
+#sw-freeze-v2 :is(.sw2-thread,.dg-thread){flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:22px;padding:20px 22px}
 #sw-freeze-v2 .sw2-bubble{font-size:14px;line-height:1.75;flex:none;overflow-wrap:anywhere}
 #sw-freeze-v2 .sw2-bubble-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--ink);line-height:1.5}
 #sw-freeze-v2 .sw2-bubble-head>:first-child{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;margin-left:0}
@@ -373,7 +373,7 @@ html,body{height:100%;margin:0}
 #sw-freeze-v2 .sw2-select-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px 10px;border-bottom:1px solid var(--line);background:#faf9fe;color:var(--ink)}
 #sw-freeze-v2 .sw2-select-close{flex:none;width:28px;height:28px;display:grid;place-items:center;border-radius:6px;color:var(--muted);font-size:19px}
 #sw-freeze-v2 .sw2-select-close:hover{background:var(--accent-soft);color:var(--accent)}
-#sw-freeze-v2 .sw2-select-list{flex:1;min-height:0;overflow:auto;padding:6px;outline:none;scrollbar-width:thin;overscroll-behavior:contain}
+#sw-freeze-v2 .sw2-select-list{flex:1;min-height:0;overflow:auto;padding:6px;outline:none;overscroll-behavior:contain}
 #sw-freeze-v2 .sw2-select-option{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;min-height:42px;border-radius:8px;text-align:left;overflow-wrap:anywhere;transition:background 160ms,color 160ms}
 #sw-freeze-v2 .sw2-select-option:before{content:"";flex:none;width:14px;height:14px;border:1px solid var(--line-strong);border-radius:50%}
 #sw-freeze-v2 .sw2-select-option[aria-selected=true]{color:var(--accent);font-weight:600;background:#f5f3ff}
@@ -455,5 +455,9 @@ html,body{height:100%;margin:0}
 #sw-freeze-v2 .dg-member-list .sw2-question-name{font-size:13px}
 #sw-freeze-v2 .dg-preparation{background:#fff3dc;border:1px solid #ead3a7;border-radius:10px;color:#805313;padding:14px 16px;margin-bottom:16px;font-size:13px}
 #sw-freeze-v2 .dg-preparation p{margin-top:8px;line-height:1.75}
+
+/* Keep native scrolling while hiding visual scrollbar chrome on every surface. */
+*{scrollbar-width:none}
+*::-webkit-scrollbar{display:none;width:0;height:0}
 </style>
 <script src="/markdown-it.js" defer></script><script src="/markdown.js" defer></script><script src="/decision-groups.js" defer></script><script src="/workbench.js" defer></script></body></html>

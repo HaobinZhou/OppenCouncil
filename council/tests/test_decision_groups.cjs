@@ -345,3 +345,16 @@ test('member confirmation blocks only its own pending edit or real prerequisite'
   q.readiness={status:'ready',dependencies:[]};s.ui.updateControls();
   assert.equal(s.memberButtons[0].disabled,false);
 });
+
+test('updated prerequisites show reviewed old/new wording and explicit enabled confirmation', async()=>{
+  const s=setup(), q=s.state.snapshot.questions[0];
+  q.candidate_dependency_updates=[{question_id:'F-000003',title:'Upstream',from_version:1,to_version:2,from_text:'## Old rule',to_text:'## New rule'}];
+  const panel={dataset:{},querySelector(){return null;}};
+  s.ui.renderDetail(panel); s.ui.updateControls();
+  for(const value of ['V1 → V2','<h2>Old rule</h2>','<h2>New rule</h2>','确认并采用新版前序']) assert.ok(panel.innerHTML.includes(value),value);
+  assert.equal(s.memberButtons[0].disabled,false);
+  assert.equal(s.memberButtons[0].textContent,'确认并采用新版前序');
+  await s.click('approve-member',{question:'F-000001'});
+  assert.equal(s.calls.at(-1).body.operation,'definition_approve');
+  assert.equal(s.calls.at(-1).body.value,'member-token');
+});
