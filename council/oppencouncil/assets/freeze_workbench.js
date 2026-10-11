@@ -402,7 +402,11 @@
     const incomplete = items.some(q => !definition(q).draft?.text?.trim() && !definition(q).current_version);
     const hasDraft = items.some(q => definition(q).draft);
     const effective = items.length > 0 && items.every(q => definition(q).current_version);
-    const needsReview = items.some(q => ['waiting','needs_review'].includes(q.readiness?.status));
+    const needsReview = items.some(q => {
+      if (!['waiting','needs_review'].includes(q.readiness?.status)) return false;
+      const unresolved = (q.readiness.dependencies || []).filter(d => ['waiting','needs_review'].includes(d.status));
+      return !unresolved.length || unresolved.some(d => !items.some(member => member.id === d.question_id && definition(member).draft?.text?.trim()));
+    });
     const step = hasDraft && !incomplete ? 1 : effective ? 2 : 0;
     const note = incomplete && items.length > 1 ? 'AI 尚未补齐本组候选口径' : needsReview ? '前序依据需要确定或复核' : hasDraft ? (effective ? '修订中，原正式版本继续有效' : '审阅完整候选后确认') : effective ? '正式口径已记录，可开启下一版修订' : '讨论清楚后，由 AI 整理完整候选';
     return '<div class="sw2-workflow" data-effective="'+(effective && !hasDraft)+'"><ol aria-label="口径进度">' + ['讨论与比较','审阅候选','确认生效'].map((text,i) => '<li'+(i === step ? ' aria-current="step"' : '')+'><b>'+(i+1)+'</b>'+text+'</li>').join('')+' </ol><span class="sw2-workflow-note">'+note+'</span></div>';
@@ -537,6 +541,15 @@
     persistDrafts(); updateDraftUI();
   }
 
+  function confirmationProblem(q) {
+    if (!definition(q).draft?.text?.trim()) return '请先补齐并保存完整候选口径。';
+    if (Object.hasOwn(drafts, q.id)) return '候选口径有未保存修改，请先保存候选，再确认。';
+    if (messageDrafts[q.id]?.trim()) return '本题有未保存留言，请先保存或清空留言，再确认。';
+    const deps = (q.readiness?.dependencies || []).filter(d => ['waiting','needs_review'].includes(d.status));
+    if (deps.length) return '请先确认或复核前序口径：' + deps.map(d => d.question_id).join('、') + '。';
+    return '';
+  }
+
   function updateDraftUI() {
     updateChoiceControls();
     groupUI?.updateControls();
@@ -565,7 +578,12 @@
     const hint = root.querySelector("#sw2-answer-hint");
     if (hint && q) hint.textContent = Object.hasOwn(drafts, q.id) ? "候选口径未保存" : definition(q).draft ? "候选已保存 · 尚未确认" : definition(q).current_version ? "当前有效 v" + definition(q).current_version : "尚无正式版本";
     const confirm = root.querySelector('[data-action="approve-definition"]');
-    if (confirm && q) confirm.disabled = state.busy || !definition(q).draft?.text || Object.hasOwn(drafts, q.id) || Boolean(messageDrafts[q.id]?.trim());
+    if (confirm && q) {
+      const reason = confirmationProblem(q);
+      confirm.disabled = state.busy || Boolean(reason); confirm.title = reason;
+      const hint = root.querySelector('#sw2-confirm-hint');
+      if (hint) hint.textContent = state.busy ? '正在保存，请稍候…' : reason || '确认后，以上完整文字成为正式口径。';
+    }
     const saveAnswerButton = root.querySelector('[data-action="save-answer"]');
     if (saveAnswerButton && q) saveAnswerButton.disabled = state.busy || !drafts[q.id]?.trim();
     const postButton = root.querySelector('[data-action="post"]');
@@ -602,7 +620,7 @@
     if (error.network || /Failed to fetch|NetworkError|Load failed/i.test(message)) {
       return "工作台连接中断，内容尚未确认保存。恢复服务或转发连接后，点击“刷新项目记录”，再重试保存。未保存输入仍在本窗口。";
     }
-    if (message.includes("changed since read")) return "这题已被其他窗口更新。点击“刷新项目记录”后比较候选文本，再重试；本地草稿会保留。";
+    if (message.includes("changed since read")) return "候选口径或前序依据已更新。点击“刷新项目记录”后重新审阅，再确认；本地草稿会保留。";
     if (message.includes("Login required")) return "登录已失效，请点击上方“重新登录”，登录后刷新项目记录；本窗口草稿会保留。";
     if (message.includes("CSRF check failed")) return "页面会话已失效。点击“刷新项目记录”后再保存；本窗口草稿会保留。";
     if (error.status >= 500) return "工作台服务暂时无法完成操作。恢复服务后点击“刷新项目记录”，再重试；本地草稿会保留。";
@@ -732,7 +750,7 @@
       (groupUI?.dependencies(q) || '') + workflowHTML([q]) + '</header>' + '<div class="sw2-review-body"><section class="sw2-decision-column" aria-label="正式口径与候选文档"><div class="sw2-section-title">口径</div><div class="sw2-opinion-scroll" tabindex="0" aria-label="口径版本内容">',
       !draft && !current ? (q.recovered_records?.length ? '<div class="sw2-empty"><strong>已保留历史依据</strong>尚未建立正式版本，既有决定沿用原有依据。</div>' : '<div class="sw2-empty"><strong>候选尚未备齐</strong>AI 尚未写入完整候选口径；应先补齐内容，再交付你审阅。</div>') : '',
       !def.versions.length && q.recovered_records?.length ? recoverySummary(q) : "",
-      draft ? '<article class="sw2-definition-candidate sw2-record" data-state="draft">' + recordHeading(def.versions.length + 1, true) + '<div class="sw2-definition-text sw2-record-body" data-quote-source="' + q.id + ' · 候选口径 v' + (def.versions.length + 1) + '">' + renderMarkdown(draft.text || "候选已开启，等待编写完整口径。") + '</div><div class="sw2-definition-actions"><button class="sw2-button sw2-button-outline" data-action="edit-definition">修改候选</button><button class="sw2-button sw2-button-outline" data-action="discard-definition">' + (current ? "取消修订" : "撤回候选") + '</button><button class="sw2-button sw2-button-primary" data-action="' + (q.decision_group_id ? "dg-open" : "approve-definition") + '" data-reading="wording" data-id="' + (q.decision_group_id || "") + '">' + (q.decision_group_id ? "前往整组确认" : "确认并生效") + '</button></div><div class="sw2-record-end"><details class="sw2-record-details" data-record="candidate-meta"><summary>详情</summary><div class="sw2-record-detail-text">编号：' + q.id + '<br>状态：候选 · 尚未生效</div>' + currentHTML + historyHTML + '</details></div></article>' : '',
+      draft ? '<article class="sw2-definition-candidate sw2-record" data-state="draft">' + recordHeading(def.versions.length + 1, true) + '<div class="sw2-definition-text sw2-record-body" data-quote-source="' + q.id + ' · 候选口径 v' + (def.versions.length + 1) + '">' + renderMarkdown(draft.text || "候选已开启，等待编写完整口径。") + '</div><div class="sw2-definition-actions"><button class="sw2-button sw2-button-outline" data-action="edit-definition">修改候选</button><button class="sw2-button sw2-button-outline" data-action="discard-definition">' + (current ? "取消修订" : "撤回候选") + '</button></div><div class="sw2-confirm-actions"><span id="sw2-confirm-hint" role="status">' + escape(confirmationProblem(q) || '仅冻结本条，其他口径保持原状态。') + '</span><button class="sw2-button sw2-button-primary" aria-describedby="sw2-confirm-hint" data-action="approve-definition">确认并冻结本条口径</button></div><div class="sw2-record-end"><details class="sw2-record-details" data-record="candidate-meta"><summary>详情</summary><div class="sw2-record-detail-text">编号：' + q.id + '<br>状态：候选 · 尚未生效</div>' + currentHTML + historyHTML + '</details></div></article>' : '',
       !draft ? currentHTML : '',
       !draft && !jointGroup ? '<button class="sw2-button sw2-button-outline sw2-begin-definition" data-action="' + (def.current_version ? "begin-definition" : "edit-definition") + '">' + (def.current_version ? '开启 v' + (def.versions.length + 1) + ' 修订' : "起草候选口径") + '</button>' : '',
       !draft && !current ? historyHTML : '',
@@ -1041,7 +1059,8 @@
         reconcileDrafts(); persistDrafts(); editing[id] = false; render();
         showNotice("已取消修订，候选内容已留存；原正式口径和讨论未变。", "success", "answer", id);
       } else if (action === "approve-definition") {
-        if (Object.hasOwn(drafts, id) || messageDrafts[id]?.trim()) throw new Error("请先保存候选修改和讨论，再确认完整文本。");
+        const reason = confirmationProblem(byId(id));
+        if (reason) throw new Error(reason);
         await change(id, "definition_approve", (definition(byId(id)).draft?.approval_token || definition(byId(id)).draft?.text_sha256)); editing[id] = false; render();
         showNotice("正式口径已生效；网页与项目读取同一版本。", "success", "answer", id);
       }

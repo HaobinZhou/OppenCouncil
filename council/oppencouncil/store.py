@@ -243,7 +243,7 @@ class FreezeStore:
     def _view(self, question, questions):
         import copy
 
-        from .decisions import group_membership, readiness
+        from .decisions import candidate_for_approval, group_membership, readiness
         from .definitions import approval_token
 
         result = copy.deepcopy(question)
@@ -251,6 +251,7 @@ class FreezeStore:
         group = group_membership(self, question["id"])
         result["decision_group_id"] = group["id"] if group else None
         if result.get("definition", {}).get("draft"):
+            result["definition"]["draft"] = candidate_for_approval(question["id"], questions)
             result["definition"]["draft"]["approval_token"] = approval_token(result["definition"]["draft"])
         return result
 
@@ -403,8 +404,13 @@ class FreezeStore:
                 "definition_approve",
                 "definition_discard",
             }:
-                from .decisions import all_questions, bind_dependencies, check_approval, group_membership
-                from .definitions import change_definition
+                from .decisions import (
+                    all_questions,
+                    bind_dependencies,
+                    candidate_for_approval,
+                    check_approval,
+                )
+                from .definitions import approval_token, change_definition
 
                 questions = all_questions(self)
                 questions[question_id] = question
@@ -416,8 +422,13 @@ class FreezeStore:
                         ),
                     }
                 if operation == "definition_approve":
-                    if group_membership(self, question_id):
-                        raise FreezeError("请在共同决策组中审阅并整组确认")
+                    candidate = candidate_for_approval(question_id, questions)
+                    if candidate and value != approval_token(candidate):
+                        raise FreezeError(
+                            "Candidate wording or prerequisites changed since read; review again"
+                        )
+                    if candidate:
+                        question["definition"]["draft"] = candidate
                     check_approval(question_id, questions)
                 change_definition(question, operation, value, actor)
             elif operation == "presentation" and actor in AI_ACTORS:

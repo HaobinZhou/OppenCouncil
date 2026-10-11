@@ -6,18 +6,18 @@ const path = require('node:path');
 const markdown = require('../oppencouncil/assets/markdown.js');
 const source = fs.readFileSync(path.join(__dirname, '../oppencouncil/assets/decision_groups.js'), 'utf8');
 function setup(saved) {
-  const handlers={}, storage=new Map(), calls=[], notices=[];
+  const handlers={}, storage=new Map(), calls=[], notices=[], unsavedQuestions=[], approveButtons=[{},{}], confirmHints=[{},{}], memberButtons=[{dataset:{question:'F-000001'}}], memberHints=[{dataset:{dgMemberHint:'F-000001'}}];
   if (saved) storage.set('council-groups:drafts:/synthetic/group', saved);
   let count=0, fail=false, resume, waitForResponse;
   const group={id:'B-000001',title:'Together',purpose:'Combined',member_ids:['F-000001'],options:[],messages:[],confirmations:[],revision:1,approval_token:'read-token'};
-  const state={snapshot:{project:'/synthetic/group',questions:[{id:'F-000001',title:'One',readiness:{status:'ready'},definition:{draft:{text:'Exact rule'},versions:[]}}],decision_groups:[group]},busy:false};
-  const root={addEventListener:(name,fn)=>handlers[name]=fn,contains:()=>true,querySelector:()=>({textContent:''})};
+  const state={snapshot:{project:'/synthetic/group',questions:[{id:'F-000001',title:'One',revision:1,readiness:{status:'ready'},definition:{draft:{text:'Exact rule',approval_token:'member-token'},versions:[]}}],decision_groups:[group]},busy:false};
+  const root={addEventListener:(name,fn)=>handlers[name]=fn,contains:()=>true,querySelector:()=>({textContent:''}),querySelectorAll:selector=>selector==='[data-action="dg-approve"]'?approveButtons:selector==='[data-dg-confirm-hint]'?confirmHints:selector==='[data-action="dg-approve-member"]'?memberButtons:selector==='[data-dg-member-hint]'?memberHints:[]};
   const context={window:{CouncilMarkdown:markdown},crypto:{randomUUID:()=>`request-${++count}`},sessionStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)}};
   vm.runInNewContext(source,context);
   const api=async (url,body)=>{calls.push({url,body});if(waitForResponse)await waitForResponse;if(body.operation==='comment')group.messages.push({id:body.request_id,actor:'user',text:body.value.text});if(fail){fail=false;throw new Error('response lost');}return{group,snapshot:state.snapshot};};
-  const ui=context.window.CouncilGroups({root,state,api,refresh:async()=>ui.reconcile(),render(){},notice:(...args)=>notices.push(args),escape:s=>s||'',setDraft(){},getDraft:()=>'',discardEdits:()=>({'F-000001':{text:'Unfinished wording',request_id:'edit-1'}}),pendingQuestions:()=>[]});
+  const ui=context.window.CouncilGroups({root,state,api,refresh:async()=>ui.reconcile(),render(){ui.updateControls();},notice:(...args)=>notices.push(args),escape:s=>s||'',setDraft(){},getDraft:()=>'',discardEdits:()=>({'F-000001':{text:'Unfinished wording',request_id:'edit-1'}}),pendingQuestions:()=>unsavedQuestions});
   ui.listHTML();
-  return {ui,state,group,calls,notices,storage,loseResponse(){fail=true;}, holdResponse(){waitForResponse=new Promise(resolve=>resume=resolve);}, releaseResponse(){resume();waitForResponse=null;},
+  return {ui,state,group,calls,notices,storage,unsavedQuestions,approveButtons,confirmHints,memberButtons,memberHints,loseResponse(){fail=true;}, holdResponse(){waitForResponse=new Promise(resolve=>resume=resolve);}, releaseResponse(){resume();waitForResponse=null;},
     type(text){handlers.input({target:{id:'dg-message',value:text,classList:{contains:()=>false}}});},
     async click(action, data={}){const b={dataset:{action:'dg-'+action,...data}};await handlers.click({target:{closest:()=>b},stopImmediatePropagation(){}});}};
 }
@@ -191,9 +191,10 @@ test('an incomplete group exposes missing member IDs and cannot confirm a partia
   s.state.snapshot.questions.push({id:'F-000002',title:'Missing candidate',definition:{draft:null,versions:[]}});
   const panel={dataset:{},querySelector(){return null;}};s.ui.renderDetail(panel);
   assert.match(panel.innerHTML,/待 AI 补齐 1 条候选口径/);assert.match(panel.innerHTML,/F-000002 · Missing candidate/);
-  assert.doesNotMatch(panel.innerHTML,/data-action="dg-approve"/);
+  assert.match(panel.innerHTML,/data-action="dg-approve-member"/);
+  assert.equal(s.memberButtons[0].disabled,false);
   await s.click('approve'); assert.equal(s.calls.length,0);
-  assert.match(s.notices.at(-1)[0],/补齐本组全部候选/);
+  assert.match(s.notices.at(-1)[0],/补齐本组候选：F-000002/);
 });
 
 test('group navigation nests each matched member once and filters unrelated groups',()=>{
@@ -259,4 +260,88 @@ test('shared quotes append with provenance, preserve pending prose and survive r
   const restored=setup([...s.storage.values()][0]);
   assert.equal(restored.ui.message('B-000001'),draft);
   await restored.click('post');assert.equal(restored.group.messages[0].text,draft.trim());
+});
+
+test('unrelated group and question drafts do not block this group or get submitted', async () => {
+  const s=setup(JSON.stringify({active:'B-000001',local:{'B-000002':{message:'Other group opinion'}}}));
+  s.unsavedQuestions.push({id:'F-000099'});
+  s.ui.updateControls();
+  assert.ok(s.approveButtons.every(b=>b.disabled===false));
+  await s.click('approve');
+  assert.equal(s.calls.length,1);
+  assert.equal(s.calls[0].body.operation,'approve');
+  assert.equal(s.calls[0].body.value,'read-token');
+  assert.equal(s.ui.message('B-000002'),'Other group opinion');
+  assert.equal(s.unsavedQuestions.length,1);
+});
+
+test('batch confirmation has a visible scoped reason and reenables after save or revert', async () => {
+  const s=setup();
+  s.unsavedQuestions.push({id:'F-000001'}); s.ui.updateControls();
+  assert.ok(s.approveButtons.every(b=>b.disabled===true));
+  assert.ok(s.confirmHints.every(h=>h.textContent.includes('F-000001')));
+  await s.click('approve'); assert.equal(s.calls.length,0);
+  s.unsavedQuestions.length=0; s.type('Own unsaved discussion');
+  assert.ok(s.approveButtons.every(b=>b.disabled===true));
+  assert.ok(s.confirmHints.every(h=>h.textContent.includes('本组讨论')));
+  s.type(''); assert.ok(s.approveButtons.every(b=>b.disabled===false));
+  s.state.busy=true; s.ui.updateControls(); assert.ok(s.approveButtons.every(b=>b.disabled===true));
+  s.state.busy=false; s.ui.updateControls(); assert.ok(s.approveButtons.every(b=>b.disabled===false));
+});
+
+test('each candidate offers its own confirmation while optional batch supports internal dependencies', async () => {
+  const s=setup();
+  s.group.member_ids.push('F-000002','F-000003');
+  for (const id of s.group.member_ids.slice(1)) s.state.snapshot.questions.push({id,title:id,definition:{draft:{text:'Complete candidate'},versions:[]},readiness:{status:'waiting',dependencies:[{question_id:'F-000001',status:'waiting',title:'One',reason:'Same formal definition'}]}});
+  const panel={dataset:{},querySelector(){return null;}}; s.ui.renderDetail(panel);
+  assert.equal((panel.innerHTML.match(/data-action="dg-approve"/g)||[]).length,1);
+  assert.equal((panel.innerHTML.match(/data-action="dg-approve-member"/g)||[]).length,3);
+  for(const id of s.group.member_ids) assert.ok(panel.innerHTML.includes('aria-describedby="dg-confirm-'+id+'"'));
+  assert.match(panel.innerHTML,/确认本组 3 条口径/);
+  assert.ok(s.approveButtons.every(b=>b.disabled===false));
+  s.holdResponse(); const saving=s.click('approve');
+  await s.click('approve'); assert.equal(s.calls.length,1);
+  s.releaseResponse(); await saving;
+  assert.ok(s.approveButtons.every(b=>b.disabled===false));
+});
+
+test('an empty revision cannot use the old effective wording to pass joint preparation', async () => {
+  const s=setup(), q=s.state.snapshot.questions[0];
+  q.definition={draft:{text:'  '},current_version:1,versions:[{number:1,text:'Old effective rule'}]};
+  s.ui.updateControls();
+  assert.ok(s.approveButtons.every(b=>b.disabled===true));
+  assert.ok(s.confirmHints.every(h=>h.textContent.includes('F-000001')));
+  await s.click('approve'); assert.equal(s.calls.length,0);
+});
+
+test('member confirmation posts only its question despite sibling and shared discussion drafts',async()=>{
+  const s=setup();s.unsavedQuestions.push({id:'F-000002'});s.group.member_ids.push('F-000002');
+  s.state.snapshot.questions.push({id:'F-000002',title:'Other member',definition:{draft:null,versions:[]}});
+  s.type('Unsent shared discussion');s.ui.updateControls();
+  assert.equal(s.memberButtons[0].disabled,false);
+  assert.ok(s.approveButtons.every(b=>b.disabled===true));
+  await s.click('approve-member',{question:'F-000001'});
+  assert.equal(s.calls.length,1);
+  assert.equal(s.calls[0].url,'/api/questions/F-000001/change');
+  assert.equal(s.calls[0].body.operation,'definition_approve');
+  assert.equal(s.calls[0].body.value,'member-token');
+  assert.equal(s.calls[0].body.expected_revision,1);
+  assert.equal(s.ui.message('B-000001'),'Unsent shared discussion');
+  assert.equal(s.state.snapshot.questions[1].definition.draft,null);
+  assert.match(s.notices.at(-1)[0],/F-000001 已冻结；其他口径保持原状态/);
+});
+
+test('member confirmation blocks only its own pending edit or real prerequisite',async()=>{
+  const s=setup(),q=s.state.snapshot.questions[0];
+  s.unsavedQuestions.push({id:q.id});s.ui.updateControls();
+  assert.equal(s.memberButtons[0].disabled,true);
+  assert.match(s.memberHints[0].textContent,/本条候选或留言/);
+  await s.click('approve-member',{question:q.id});assert.equal(s.calls.length,0);
+  s.unsavedQuestions.length=0;
+  q.readiness={status:'waiting',dependencies:[{question_id:'F-000002',status:'waiting'}]};s.ui.updateControls();
+  assert.equal(s.memberButtons[0].disabled,true);
+  assert.match(s.memberHints[0].textContent,/前序口径：F-000002/);
+  await s.click('approve-member',{question:q.id});assert.equal(s.calls.length,0);
+  q.readiness={status:'ready',dependencies:[]};s.ui.updateControls();
+  assert.equal(s.memberButtons[0].disabled,false);
 });

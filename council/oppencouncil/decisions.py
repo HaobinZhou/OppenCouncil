@@ -152,6 +152,21 @@ def requirements(q, draft=True):
     return (record or {}).get("dependencies", [])
 
 
+def candidate_for_approval(qid, questions):
+    """Resolve initially unbound prerequisites in the reviewed candidate, without writes.
+
+    The approval token covers these exact bindings. Existing version bindings are
+    never advanced implicitly, and a concurrent upstream change invalidates review.
+    """
+    candidate = copy.deepcopy(state(questions[qid])["draft"])
+    if candidate:
+        for dep in candidate.get("dependencies", []):
+            live = current(questions[dep["question_id"]])
+            if blocking(dep) and dep["version"] is None and dep["text_sha256"] is None and live:
+                dep.update(version=live["number"], text_sha256=live["text_sha256"])
+    return candidate
+
+
 def dependency_status(qid, questions, trail=(), use_draft=True):
     q = questions[qid]
     if qid in trail:
@@ -159,7 +174,9 @@ def dependency_status(qid, questions, trail=(), use_draft=True):
     result = []
     reviews = q.get("dependency_reviews", [])
     owner = current(q)
-    for dep in requirements(q, draft=use_draft):
+    candidate = candidate_for_approval(qid, questions) if use_draft else None
+    deps = candidate.get("dependencies", []) if candidate else requirements(q, draft=False)
+    for dep in deps:
         upstream = questions.get(dep["question_id"])
         live = current(upstream) if upstream else None
         status = "reference" if not blocking(dep) else "ready"

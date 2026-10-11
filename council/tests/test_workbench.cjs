@@ -699,3 +699,30 @@ test('expired authentication keeps drafts and exposes new-tab login; logout wait
   app.input('sw2-message','');await app.click('logout');
   assert.equal(app.reloads(),1);assert.deepEqual(app.writes,[{logout:true}]);
 });
+
+test('individual confirmation shows the reason for an unsaved candidate or message and ignores other questions', async () => {
+  const other={id:'F-000008',title:'Other',group:'goal',round:1,status:'open',messages:[],definition:candidate('Other candidate')};
+  const app=await workbench({definition:candidate('Exact candidate'),additionalQuestions:[other],draftMessages:{'F-000008':'Other draft'}});
+  assert.match(app.html('#sw2-detail'),/确认并冻结本条口径/);
+  assert.equal(app.disabled('[data-action="approve-definition"]'),false);
+  app.input('sw2-answer','Edited');
+  assert.equal(app.disabled('[data-action="approve-definition"]'),true);
+  assert.match(app.text('#sw2-confirm-hint'),/候选口径有未保存修改/);
+  app.input('sw2-answer','Exact candidate');
+  app.input('sw2-message','Own draft');
+  assert.match(app.text('#sw2-confirm-hint'),/本题有未保存留言/);
+  await app.click('approve-definition'); assert.equal(app.writes.length,0);
+  app.input('sw2-message','');
+  assert.equal(app.disabled('[data-action="approve-definition"]'),false);
+  await app.click('approve-definition');
+  assert.equal(app.writes.at(-1).operation,'definition_approve');
+  assert.equal(app.drafts().messages['F-000008'],'Other draft');
+});
+
+test('individual member view confirms only itself even when it belongs to a group', async () => {
+  const app=await workbench({definition:candidate('Member candidate'),decisionGroups:[{id:'B-000001',title:'Joint topic',member_ids:[questionId,'F-000008'],messages:[]}]});
+  assert.match(app.html('#sw2-detail'),/data-action="approve-definition">确认并冻结本条口径/);
+  await app.click("approve-definition");
+  assert.equal(app.writes.length,1);
+  assert.equal(app.writes[0].operation,"definition_approve");
+});

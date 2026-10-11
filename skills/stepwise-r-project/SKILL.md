@@ -1,7 +1,7 @@
 ---
 name: stepwise-r-project
 metadata:
-  version: "4.2.11"
+  version: "4.2.12"
 description: Maintain strict, human-readable scientific R analysis projects with canonical ownership, Results, Audit, pending decisions and Decision Memory. Use for scientific freeze rounds, opening OppenCouncil discussions and recovering existing decisions and discussions, or when initializing, migrating, modifying, indexing, validating or reviewing an R analysis workspace.
 ---
 
@@ -51,7 +51,7 @@ For a Council round, read [freeze-workbench.md](references/freeze-workbench.md),
 - **Complete the web handoff.** On first creation of Council records, register the project in the intended Council site and verify its directory entry and review content before returning the project link. Creating `Freeze/` files alone is not a completed web handoff. Follow the site-registration steps in [freeze-operations.md](references/freeze-operations.md); MCP authorization remains separate.
 - **Prepare an informed choice.** Write reviewer-facing Markdown with actual actions, consequences, trade-offs and a justified recommendation. Organize long discussion, comparisons and wording with Markdown heading levels (## / ###), then short paragraphs or lists; bold alone is not a section hierarchy. Use complete question IDs such as F-000013 in prose for links. Keep machine checks and hashes in `review_note` or Audit.
 - **Decompose the comparison.** Explain shared rules together. Use `{{choice:stable_id;label;value1;value2}}` for independent subchoices and local values; reserve separate columns for approaches whose linked consequences need whole-route comparison. Do not expand every combination or copy full candidates into every cell. The workflow reference defines compatibility and read-back checks.
-- **Decide coupled rules together.** AI organizes groups around a complete decision, including the unresolved prerequisites needed to understand it. Prepare independently decidable upstream topics first. Preserve real dependencies and each member's separate ID, wording and history. Group management belongs to AI; people review, discuss and confirm.
+- **Review coupled rules together.** AI organizes groups around a complete decision, including the unresolved prerequisites needed to understand it. Prepare independently decidable upstream topics first. Preserve real dependencies and each member's separate ID, wording and history. Group management belongs to AI; people review and discuss together, but may confirm each member separately. Grouping alone never requires batch freezing; only real prerequisites can block an individual confirmation.
 - **Prepare complete candidates.** Verify available evidence, write concrete rules and relevant boundary/missing/conflict handling, and read back every in-scope candidate and group member before declaring the round ready. A genuinely blocked item is explicitly unprepared. Discussion, preference, software tests and confirmation alone do not establish semantic completeness.
 
 For Council-managed definitions, `Freeze/questions/F-NNNNNN.json` → `definition.current_version` selects the sole effective wording. Human confirmation makes the exact candidate effective immediately; later revisions are human-opened and preserve the current version until replacement. AI edits candidates and discussion, never confirms or overwrites effective text. Canonical registers this same JSON scope; other documents reference it or render read-only views. Confirmation does not itself authorize implementation or execution.

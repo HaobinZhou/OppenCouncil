@@ -85,7 +85,7 @@ def test_joint_cycle_confirmation_reads_same_versions_and_replays(store):
     setup_group(store)
     draft(store, "F-000001", [dep("F-000002")])
     draft(store, "F-000002", [dep("F-000001")])
-    with pytest.raises(FreezeError, match="共同决策组"):
+    with pytest.raises(FreezeError, match="等待前序"):
         approve(store, "F-000001")
     g = store.snapshot()["decision_groups"][0]
     args = dict(expected_revision=g["revision"], request_id="approve", actor="user")
@@ -380,3 +380,84 @@ def test_presentation_context_is_atomic_and_preserves_formal_and_user_history(st
     # Existing clients may omit these fields; later simple edits preserve them.
     simple = change(store, q["id"], "presentation", {"text": "Another proposal", "suggestions": []})
     assert simple["why"] == after["why"] and simple["source_summary"] == after["source_summary"]
+
+
+def test_group_member_can_freeze_independently_with_unprepared_sibling(store):
+    setup_group(store)
+    draft(store, "F-000001")
+    sibling = (store.root / "questions/F-000002.json").read_bytes()
+    groups = (store.root / "decision-groups.json").read_bytes()
+    q = store.read_question("F-000001")
+    args = dict(expected_revision=q["revision"], request_id="member-confirm", actor="user")
+    token = q["definition"]["draft"]["approval_token"]
+    saved = store.change(q["id"], "definition_approve", token, **args)
+    assert saved["definition"]["current_version"] == 1
+    assert store.change(q["id"], "definition_approve", token, **args)["replayed"]
+    assert (store.root / "questions/F-000002.json").read_bytes() == sibling
+    assert (store.root / "decision-groups.json").read_bytes() == groups
+
+
+def test_sequential_member_confirmation_resolves_initial_upstream_binding_on_review(store):
+    setup_group(store)
+    draft(store, "F-000001")
+    draft(store, "F-000002", [dep("F-000001")])
+    waiting = store.read_question("F-000002")
+    with pytest.raises(FreezeError, match="等待前序"):
+        approve(store, "F-000002")
+    raw_before = (store.root / "questions/F-000002.json").read_bytes()
+    approve(store, "F-000001")
+    reviewed = store.read_question("F-000002")
+    assert reviewed["readiness"]["status"] == "ready"
+    assert reviewed["definition"]["draft"]["dependencies"][0]["version"] == 1
+    assert (store.root / "questions/F-000002.json").read_bytes() == raw_before
+    with pytest.raises(FreezeError, match="changed since read"):
+        change(
+            store, "F-000002", "definition_approve",
+            waiting["definition"]["draft"]["approval_token"], "user",
+        )
+    approve(store, "F-000002")
+    final = read_definition(store, "F-000002")
+    assert final["text"] == reviewed["definition"]["draft"]["text"]
+    assert final["dependencies"][0]["version"] == 1
+    assert final["readiness"]["status"] == "effective"
+    assert not store.snapshot()["decision_groups"][0]["confirmations"]
+
+
+def test_initial_binding_rejects_upstream_change_after_individual_review(store):
+    setup_group(store)
+    draft(store, "F-000001")
+    draft(store, "F-000002", [dep("F-000001")])
+    approve(store, "F-000001")
+    token = store.read_question("F-000002")["definition"]["draft"]["approval_token"]
+    change(store, "F-000001", "definition_begin", actor="user")
+    draft(store, "F-000001", text="Updated upstream rule")
+    approve(store, "F-000001")
+    with pytest.raises(FreezeError, match="changed since read"):
+        change(store, "F-000002", "definition_approve", token, "user")
+    assert store.read_question("F-000002")["definition"]["current_version"] is None
+
+
+def test_existing_member_dependency_binding_is_not_silently_advanced(store):
+    setup_group(store)
+    draft(store, "F-000001")
+    approve(store, "F-000001")
+    draft(store, "F-000002", [dep("F-000001")])
+    change(store, "F-000001", "definition_begin", actor="user")
+    draft(store, "F-000001", text="Updated upstream rule")
+    approve(store, "F-000001")
+    q = store.read_question("F-000002")
+    assert q["definition"]["draft"]["dependencies"][0]["version"] == 1
+    assert q["readiness"]["status"] == "needs_review"
+    with pytest.raises(FreezeError, match="前序口径已变化"):
+        approve(store, "F-000002")
+
+
+def test_optional_batch_after_individual_confirmation_keeps_existing_version(store):
+    setup_group(store)
+    draft(store, "F-000001")
+    draft(store, "F-000002")
+    approve(store, "F-000001")
+    before = (store.root / "questions/F-000001.json").read_bytes()
+    confirm(store)
+    assert (store.root / "questions/F-000001.json").read_bytes() == before
+    assert read_definition(store, "F-000002")["number"] == 1

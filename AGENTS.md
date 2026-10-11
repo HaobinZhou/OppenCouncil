@@ -7,3 +7,4 @@ Use `skills/oppen-project-steward/SKILL.md` to govern this product repository. K
 - Preserve the existing Decision Memory semantics and records. Do not migrate research projects as part of installing or updating product software.
 - Use `scripts/install.py --with-mcp --no-skills --dev` and `scripts/verify.py` for product acceptance. Component tests can be selected for bounded changes.
 - Installation, software verification, GitHub publication and live service deployment are separate observable states. Update the relevant contract and verification when changing a cross-component boundary.
+- Keep component and skill versions unchanged during local implementation and testing. Bump each affected version once per authorized GitHub submission batch; fixes and retries within that batch do not trigger another bump. This rule governs software release versions, not project definition revisions.
