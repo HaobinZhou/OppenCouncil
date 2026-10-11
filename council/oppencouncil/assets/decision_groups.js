@@ -3,9 +3,10 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
   let active = null, restored = false, local = {}, failedStorage = false, busy = false;
   const views = {}, composing = {};
   let comparisons = {};
-  const renderMarkdown = (text, choices = false) => window.CouncilMarkdown ? window.CouncilMarkdown.render(text, {questionIds: state.snapshot.questions.map(q => q.id), ...(choices ? choiceContext(active) : {})}) : esc(text);
+  const renderMarkdown = (text, choices = false) => window.CouncilMarkdown ? window.CouncilMarkdown.render(text, {questionIds: state.snapshot.questions.map(q => q.id), ...(choices ? choiceContext(discussionGroup()?.id) : {})}) : esc(text);
   const groups = () => state.snapshot.decision_groups || [];
   const find = id => groups().find(g => g.id === id);
+  const discussionGroup = () => find(active) || groups().find(g => g.member_ids.includes(state.selected));
   const question = id => state.snapshot.questions.find(q => q.id === id);
   const key = () => 'council-groups:drafts:' + state.snapshot.project;
   const uuid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random();
@@ -100,7 +101,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
   }
   function updateControls() {
     const postButton = root.querySelector('[data-action="dg-post"]');
-    if (postButton) postButton.disabled = state.busy || !local[active]?.message?.trim();
+    if (postButton) postButton.disabled = state.busy || !local[discussionGroup()?.id]?.message?.trim();
     for (const b of root.querySelectorAll?.('[data-action="dg-save-candidate"]') || []) {
       b.disabled = state.busy || getDraft(b.dataset.question).trim() === question(b.dataset.question)?.definition?.draft?.text;
     }
@@ -150,6 +151,10 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     const picker = g.options.length > 2 ? `<details class="dg-comparison-picker" data-record="compare-options"><summary>选择比较方案 <span>展示 ${indices.length} / ${g.options.length}</span></summary><div class="dg-picker-body"><p>最多同时比较 2 个方案。先取消一项，即可选入其他方案；这里仅调整展示。</p><div class="dg-picker-options" role="group" aria-label="选择比较方案">${g.options.map((o,i) => button('compare',`<span class="dg-picker-check" aria-hidden="true">${indices.includes(i) ? '✓' : '+'}</span><span><b>${String.fromCharCode(65+i)} · ${esc(o.label)}</b>${g.selected_option === i ? '<small>此前记录的偏好</small>' : ''}</span>`,`data-option="${i}" role="checkbox" aria-checked="${indices.includes(i)}"${(!indices.includes(i) && indices.length >= 2) || (indices.includes(i) && indices.length === 1) ? ' disabled' : ''}`)).join('')}</div></div></details>` : '';
     return picker + `<div class="dg-options"><div class="dg-matrix" style="--option-count:${indices.length};--matrix-min:${130+indices.length*167}px">${heads}${rows}${feet}</div></div>`;
   }
+  function discussionEditor(id) {
+    const draft = local[id] || {};
+    return `<div class="dg-discussion">${button('compose','＋ 写讨论留言','hidden')}<div class="dg-message-editor"><div class="sw2-compose-head"><label for="dg-message">讨论留言 · Markdown</label>${button('close-compose','收起')}</div><textarea id="dg-message" aria-label="讨论意见" placeholder="写下你的意见，或指出哪条口径需要修改…">${esc(draft.message || '')}</textarea><details class="sw2-discussion-preview" data-record="discussion-preview"><summary>预览讨论（未保存）</summary><div id="dg-message-preview">${renderMarkdown(draft.message || '', true)}</div></details><div class="dg-actions"><span id="dg-message-state">${draft.message?.trim() ? '留言未保存' : ''}</span><small class="sw2-shortcut">${discussionShortcut} 保存</small>${button('post','保存讨论',`aria-keyshortcuts="${discussionShortcutAttribute}"`)}</div></div></div>`;
+  }
   function renderDetail(panel) {
     if (!active) { panel.dataset.view = 'question'; return false; }
     const g = find(active);
@@ -159,14 +164,14 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     const expanded = same ? Array.from(panel.querySelectorAll?.('details[data-record][open]') || []).map(e => e.dataset.record) : [];
     panel.dataset.view = 'group'; panel.dataset.group = active; panel.dataset.question = '';
     if (!same) panel.scrollTop = 0;
-    const qs = g.member_ids.map(question), draft = local[g.id] || {};
+    const qs = g.member_ids.map(question);
     const hasDraft = qs.some(q => q.definition?.draft), missing = missingWording(g);
     panel.dataset.wording = qs.some(q => q.definition?.draft || q.definition?.current_version) ? 'present' : 'empty';
     const allConfirmed = qs.every(q => q.definition?.current_version);
     const options = g.options.length ? `<section class="dg-options-section" aria-label="方案比较"><div class="dg-column-head"><h3>方案比较</h3><span>表达偏好后，仍需确认完整口径</span></div><div class="dg-comparison">${comparisonHTML(g,qs)}</div></section>` : '';
     const wording = `<section class="dg-wording-column" aria-label="本组口径"><div class="dg-column-head"><h3>${hasDraft ? '候选口径' : allConfirmed ? '正式口径' : '候选尚未备齐'}</h3>${hasDraft ? button('discard',allConfirmed ? '取消修订' : '撤回候选') : allConfirmed ? button('begin','修订口径') : ''}</div><div class="dg-members">${missing.length ? `<div class="dg-preparation"><strong>待 AI 补齐 ${missing.length} 条候选口径</strong><p>${missing.map(q => esc(q.id+' · '+q.title)).join('<br>')}</p><p>本组尚未准备好交付确认。完整候选需要写好并核对后，再请你审阅。</p></div>` : ''}${qs.map(memberHTML).join('')}</div><div class="dg-confirm" data-effective="${allConfirmed && !hasDraft}">${hasDraft && !missing.length ? approvalHTML(g, 'group') : '<span>'+ (allConfirmed ? '本组口径已确认' : '完整候选准备好后可确认')+'</span>'}</div></section>`;
     const messages = g.messages.map(m => `<article class="sw2-bubble sw2-bubble-${['user','chatgpt'].includes(m.actor) ? m.actor : 'ai'}"><div class="sw2-bubble-head"><strong>${actor(m.actor)}</strong><span>${esc(when(m.at))}${m.question_id ? ' · '+esc(question(m.question_id)?.title || m.question_id) : ''}</span></div><div class="sw2-bubble-body" data-quote-source="${esc(g.id+' · '+actor(m.actor)+' · '+when(m.at))}">${renderMarkdown(m.text, true)}</div></article>`).join('') || '<div class="sw2-empty"><strong>开始共同讨论</strong>比较方案后，在这里留下你的意见。</div>';
-    panel.innerHTML = `<div class="sw2-work"><div class="sw2-work-in"><header class="dg-header"><div class="sw2-detail-top"><span>${esc(g.id)} · ${qs.length} 条关联口径</span><span>第 ${state.snapshot.round || 1} 轮</span></div><h2>${esc(g.title)}</h2><p>${esc(g.purpose)}</p>${workflowHTML(qs)}</header><div class="dg-layout${g.options.length ? ' dg-with-options' : ''}">${options}${wording}</div></div></div><aside class="sw2-discussion-column dg-conversation" aria-label="共同讨论">${discussionResizerHTML}<div class="sw2-talk-header"><div class="sw2-section-title">共同讨论<small>${g.messages.length} 条记录</small></div><p>建议与交流 · 保存后手动通知 AI 继续</p></div><div class="dg-thread" tabindex="0" aria-label="共同讨论记录">${messages}</div><div class="dg-discussion">${button('compose','＋ 写讨论留言','hidden')}<div class="dg-message-editor"><div class="sw2-compose-head"><label for="dg-message">讨论留言 · Markdown</label>${button('close-compose','收起')}</div><textarea id="dg-message" aria-label="讨论意见" placeholder="写下你的意见，或指出哪条口径需要修改…">${esc(draft.message || '')}</textarea><details class="sw2-discussion-preview" data-record="discussion-preview"><summary>预览讨论（未保存）</summary><div id="dg-message-preview">${renderMarkdown(draft.message || '', true)}</div></details><div class="dg-actions"><span id="dg-message-state">${draft.message?.trim() ? '留言未保存' : ''}</span><small class="sw2-shortcut">${discussionShortcut} 保存</small>${button('post','保存讨论',`aria-keyshortcuts="${discussionShortcutAttribute}"`)}</div></div></div></aside>`;
+    panel.innerHTML = `<div class="sw2-work"><div class="sw2-work-in"><header class="dg-header"><div class="sw2-detail-top"><span>${esc(g.id)} · ${qs.length} 条关联口径</span><span>第 ${state.snapshot.round || 1} 轮</span></div><h2>${esc(g.title)}</h2><p>${esc(g.purpose)}</p>${workflowHTML(qs)}</header><div class="dg-layout${g.options.length ? ' dg-with-options' : ''}">${options}${wording}</div></div></div><aside class="sw2-discussion-column dg-conversation" aria-label="共同讨论">${discussionResizerHTML}<div class="sw2-talk-header"><div class="sw2-section-title">共同讨论<small>${g.messages.length} 条记录</small></div><p>建议与交流 · 保存后手动通知 AI 继续</p></div><div class="dg-thread" tabindex="0" aria-label="共同讨论记录">${messages}</div>${discussionEditor(g.id)}</aside>`;
     for (const el of panel.querySelectorAll?.('details[data-record]') || []) el.open = expanded.includes(el.dataset.record);
     for (const [selector, top] of scrollPositions) { const el = panel.querySelector(selector); if (el) el.scrollTop = top; }
     updateControls();
@@ -176,7 +181,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     const g = find(id);
     const payload = { operation, value, expected_revision: g.revision, request_id: request || uuid() };
     const data = await api('/api/groups/' + id + '/change', payload);
-    state.snapshot = data.snapshot; active = data.group.id;
+    state.snapshot = data.snapshot;
     return data.group;
   }
   async function post(id) {
@@ -191,11 +196,12 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     for (const [id,d] of Object.entries(local)) if (d.message?.trim()) await post(id);
   }
   function appendDiscussion(text, quoteSource) {
-    if (!find(active)) return;
-    local[active] ||= {};
-    local[active].message = quoteSource ? window.CouncilMarkdown.appendQuote(local[active].message, quoteSource, text) : window.CouncilMarkdown.appendPreference(local[active].message, text);
-    local[active].request_id = uuid(); saveLocal(); composing[active] = true;
-    const area = root.querySelector('#dg-message'); area.value = local[active].message;
+    const id = discussionGroup()?.id;
+    if (!id) return;
+    local[id] ||= {};
+    local[id].message = quoteSource ? window.CouncilMarkdown.appendQuote(local[id].message, quoteSource, text) : window.CouncilMarkdown.appendPreference(local[id].message, text);
+    local[id].request_id = uuid(); saveLocal(); composing[id] = true;
+    const area = root.querySelector('#dg-message'); area.value = local[id].message;
     root.querySelector('#dg-message-preview').innerHTML = renderMarkdown(area.value, true);
     root.querySelector('.dg-message-editor').hidden = false;
     root.querySelector('[data-action="dg-compose"]').hidden = true;
@@ -205,10 +211,11 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
   root.addEventListener('input', event => {
     const el = event.target;
     if (el.classList.contains('dg-definition')) { root.querySelector('[data-preview="'+el.dataset.question+'"]').innerHTML = renderMarkdown(el.value); setDraft(el.dataset.question, el.value); return; }
-    if (el.id !== 'dg-message' || !active) return;
-    local[active] ||= {}; local[active].message = el.value;
+    const id = discussionGroup()?.id;
+    if (el.id !== 'dg-message' || !id) return;
+    local[id] ||= {}; local[id].message = el.value;
     root.querySelector('#dg-message-preview').innerHTML = renderMarkdown(el.value, true);
-    local[active].request_id = uuid(); saveLocal();
+    local[id].request_id = uuid(); saveLocal();
     root.querySelector('#dg-message-state').textContent = el.value.trim() ? '留言未保存' : '';
     updateControls();
   });
@@ -235,7 +242,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
       return;
     }
     if (action === 'dg-view') { views[active] = b.dataset.mode; render(); const scroll = root.querySelector(views[active] === 'options' ? '.dg-options' : '.dg-thread'); if (scroll) scroll.scrollTop = 0; return; }
-    if (action === 'dg-compose' || action === 'dg-close-compose') { composing[active] = action === 'dg-compose'; root.querySelector('.dg-message-editor').hidden = !composing[active]; root.querySelector('[data-action="dg-compose"]').hidden = composing[active]; if (composing[active]) root.querySelector('#dg-message').focus(); return; }
+    if (action === 'dg-compose' || action === 'dg-close-compose') { const id = discussionGroup()?.id; if (!id) return; composing[id] = action === 'dg-compose'; root.querySelector('.dg-message-editor').hidden = !composing[id]; root.querySelector('[data-action="dg-compose"]').hidden = composing[id]; if (composing[id]) root.querySelector('#dg-message').focus({preventScroll:true}); return; }
     if (action === 'dg-choose') {
       const g = find(active), index = Number(b.dataset.option), option = g.options[index];
       if (!option) return;
@@ -254,7 +261,8 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
       notice('偏好已填入讨论框，可修改后点击保存讨论。', 'info'); return;
     }
     if (!['dg-post','dg-save-candidate','dg-begin','dg-discard','dg-approve','dg-approve-member'].includes(action)) return;
-    const g = find(active);
+    const g = action === 'dg-post' ? discussionGroup() : find(active);
+    if (!g) return;
     busy = true; state.busy = true; b.disabled = true;
     const label = b.textContent;
     if (action === 'dg-discard') b.textContent = '取消中…';
@@ -267,7 +275,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
         const editor = root.querySelector('[data-record="'+b.dataset.question+'-editor"]');
         if (editor) editor.open = false;
       }
-      if (action === 'dg-post') { await post(active); composing[active] = false; views[active] = 'discussion'; }
+      if (action === 'dg-post') { await post(g.id); composing[g.id] = false; }
       if (action === 'dg-begin') await mutate(active, 'begin', null);
       if (action === 'dg-discard') await mutate(active, 'discard', { token: g.approval_token, edits: discardEdits(g.member_ids) });
       if (action === 'dg-approve-member') {
@@ -286,13 +294,13 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     finally {
       b.textContent = label; busy = false; state.busy = false; render();
       if (action === 'dg-post') {
-        const scroll = root.querySelector('.dg-thread');
+        const scroll = root.querySelector('.dg-thread') || root.querySelector('.sw2-thread');
         if (scroll) scroll.scrollTop = scroll.scrollHeight;
         if (action === 'dg-post') root.querySelector('#dg-message')?.focus?.({ preventScroll: true });
       }
     }
   });
-  return { listHTML, renderDetail, dependencies, dependencyReview, pending, saveAll, reconcile, updateControls, appendDiscussion,
+  return { listHTML, renderDetail, dependencies, dependencyReview, pending, saveAll, reconcile, updateControls, appendDiscussion, discussionEditor,
     message: id => local[id]?.message || '',
     openDiscussion: id => { active = id; views[id] = 'discussion'; composing[id] = true; saveLocal(); render(); onOpen(); root.querySelector('#dg-message')?.focus(); },
     select: id => { active = find(id) ? id : null; saveLocal(); },

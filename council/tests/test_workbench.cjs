@@ -11,7 +11,7 @@ const questionId = "F-000007";
 const storageKey = "stepwise-freeze:drafts:v1:/synthetic/project";
 const settle = async () => { await new Promise(setImmediate); await new Promise(setImmediate); };
 
-async function workbench({ authRequired = false, platform = 'Win32', layoutPreferences = new Map(), initialUrl = "http://localhost/projects/synthetic/freeze", additionalQuestions = [], drawer = false, reducedMotion = false, decisionGroups = [], reviewNotes = [], display = {}, messages = [], answers = {}, draftMessages = {}, requests = {}, answer = null, definition = { draft: null, versions: [], current_version: null }, definitions = {}, definitionBases = {}, opinion = "" } = {}) {
+async function workbench({ withGroupUI = false, authRequired = false, platform = 'Win32', layoutPreferences = new Map(), initialUrl = "http://localhost/projects/synthetic/freeze", additionalQuestions = [], drawer = false, reducedMotion = false, decisionGroups = [], reviewNotes = [], display = {}, messages = [], answers = {}, draftMessages = {}, requests = {}, answer = null, definition = { draft: null, versions: [], current_version: null }, definitions = {}, definitionBases = {}, opinion = "" } = {}) {
   let selection = null, focused = null, expired = false, reloads = 0;
   const documentListeners = {};
   const elements = new Map(), listeners = {}, storage = new Map(), windowListeners = {}, historyWrites = [], choiceControls = [];
@@ -38,7 +38,15 @@ async function workbench({ authRequired = false, platform = 'Win32', layoutPrefe
     dataset: { projectId: "synthetic" }, setAttribute() {}, contains: () => true, setPointerCapture() {},
     querySelector: element,
     querySelectorAll: selector => selector === "[data-action=select]" ? [questionButton] : selector === "[data-choice-control]" ? choiceControls : [],
-    addEventListener: (name, callback) => { listeners[name] = callback; },
+    addEventListener: (name, callback) => {
+      if (!withGroupUI) { listeners[name] = callback; return; }
+      const previous = listeners[name];
+      listeners[name] = async event => {
+        event.stopImmediatePropagation ||= () => {event.stopped = true;};
+        if (previous) await previous(event);
+        if (!event.stopped) return callback(event);
+      };
+    },
   };
   element("#sw2-overlay").hidden = true;
   let question = {
@@ -50,7 +58,7 @@ async function workbench({ authRequired = false, platform = 'Win32', layoutPrefe
   let failAfterCommit = false;
   const writes = [];
   storage.set(storageKey, JSON.stringify({ answers, definitions, definitionBases, messages: draftMessages, requests, selected: questionId }));
-  vm.runInNewContext(source, {
+  const context = {
     document: { getElementById: () => root, addEventListener(name, callback) { documentListeners[name] = callback; }, hidden: false },
     URL, location:pageLocation, navigator: {platform},
     window: { getSelection:()=>selection, innerWidth:1600, innerHeight:1000, location:pageLocation,history:pageHistory,CouncilMarkdown: markdown, matchMedia: query => ({ matches: query.includes('min-width: 1024') || (drawer && query.includes("1279")) || (reducedMotion && query.includes("reduced-motion")), addEventListener() {} }), addEventListener(name,callback) { windowListeners[name]=callback; } },
@@ -65,6 +73,13 @@ async function workbench({ authRequired = false, platform = 'Win32', layoutPrefe
       if (options.method === "POST") {
         const body = JSON.parse(options.body);
         writes.push(body);
+        const groupId = _url.match(/\/groups\/(B-\d+)\/change$/)?.[1];
+        if (groupId) {
+          const group = decisionGroups.find(g => g.id === groupId);
+          if (body.operation === 'comment') group.messages.push({id:body.request_id,actor:'user',text:body.value.text});
+          group.revision++;
+          return {ok:true,json:async()=>({group, snapshot:{project:'/synthetic/project',round:1,questions:[structuredClone(question),...structuredClone(additionalQuestions)],decision_groups:decisionGroups}})};
+        }
         if (body.operation === "comment") {
           question.messages.push({ id: body.request_id, actor: "user", text: body.value, round: 1 });
         } else if (body.operation === "answer") question.user_answer = body.value;
@@ -94,7 +109,9 @@ async function workbench({ authRequired = false, platform = 'Win32', layoutPrefe
         project: "/synthetic/project", round: 1, questions: [structuredClone(question),...structuredClone(additionalQuestions)], decision_groups: decisionGroups,
       } }) };
     },
-  });
+  };
+  if (withGroupUI) vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../oppencouncil/assets/decision_groups.js'), 'utf8'), context);
+  vm.runInNewContext(source, context);
   await settle();
   return {
     text: selector => element(selector).textContent,
@@ -106,6 +123,9 @@ async function workbench({ authRequired = false, platform = 'Win32', layoutPrefe
     pop: url=>{pageLocation.href=url;windowListeners.popstate();},
     layout: () => root.dataset,
     drafts: () => JSON.parse(storage.get(storageKey)),
+    groupDrafts: () => JSON.parse(storage.get('council-groups:drafts:/synthetic/project') || '{}'),
+    scroll: (selector, top) => {element(selector).scrollTop=top;},
+    scrollTop: selector => element(selector).scrollTop,
     writes,expire:()=>{expired=true;},reauthenticate:()=>{expired=false;},reloads:()=>reloads,
     discussionWidth: () => element('.sw2-discussion-column').getBoundingClientRect().width,
     resizeEvent: (name, values={}) => listeners[name]({button:0,pointerId:1,clientX:1000,preventDefault(){},target:{closest:()=>element('.sw2-discussion-resizer')},...values}),
@@ -131,7 +151,7 @@ async function workbench({ authRequired = false, platform = 'Win32', layoutPrefe
     clearQuote:()=>documentListeners.scroll(),
     remoteDefinition: value => { question.definition = structuredClone(value); question.revision++; },
     failNextResponse: () => { failAfterCommit = true; },
-    input: (id, value) => { element("#" + id).value = value; listeners.input({ target: { id, value } }); },
+    input: (id, value) => { element("#" + id).value = value; listeners.input({ target: { id, value, classList:{contains:()=>false} } }); },
     disclosure: details => listeners.click({ preventDefault(){}, target:{ closest: selector => selector === "summary" ? {parentElement:details} : null } }),
     key: async (id, key, modifiers={}) => {
       let prevented = false;
@@ -341,7 +361,7 @@ test("member review includes saved shared discussion and identifies its origin",
   const html = app.html("#sw2-detail");
   assert.match(html, /这两条必须一起考虑/);
   assert.match(html, /共同讨论 · /);
-  assert.match(html, /data-mode="discussion">参与共同讨论/);
+  assert.match(html, /data-mode="discussion">查看整个主题/);
   assert.doesNotMatch(html, /开始这题的讨论/);
   assert.equal(app.text("#sw2-answered"), 0);
   assert.deepEqual(app.writes, []);
@@ -725,4 +745,67 @@ test('individual member view confirms only itself even when it belongs to a grou
   await app.click("approve-definition");
   assert.equal(app.writes.length,1);
   assert.equal(app.writes[0].operation,"definition_approve");
+});
+
+
+function quoteNavigationFixture() {
+  return {
+    withGroupUI:true,
+    additionalQuestions:[{id:'F-000008',title:'Second member',group:'goal',messages:[],definition:{versions:[],draft:null}}],
+    decisionGroups:[
+      {id:'B-000001',title:'First group',purpose:'First',revision:1,member_ids:[questionId],messages:[],options:[]},
+      {id:'B-000002',title:'Second group',purpose:'Second',revision:1,member_ids:['F-000008'],messages:[],options:[]},
+    ],
+  };
+}
+
+test('member quote and save use the shared composer without leaving its URL or reading position',async()=>{
+  const fixture=quoteNavigationFixture(), initialUrl='http://localhost/projects/synthetic/freeze?question=F-000008';
+  const app=await workbench({...fixture,initialUrl}), history=app.historyWrites.length;
+  assert.match(app.html('#sw2-detail'),/id="dg-message"/);
+  app.scroll('.sw2-review-body',420);
+  app.input('dg-message','已有讨论。'); await settle();
+  app.selectQuote('本条候选原文','F-000008 · 候选口径 v1');
+  await app.click('quote-selection');
+  assert.equal(app.url(),initialUrl);assert.equal(app.historyWrites.length,history);
+  assert.equal(app.groupDrafts().active,null);
+  const message=app.groupDrafts().local['B-000002'].message;
+  assert.ok(message.includes('已有讨论。'));assert.ok(message.includes('本条候选原文'));
+  assert.equal(app.scrollTop('.sw2-review-body'),420);assert.equal(app.writes.length,0);
+  await app.click('dg-post');
+  assert.equal(fixture.decisionGroups[1].messages[0].text,message.trim());
+  assert.equal(fixture.decisionGroups[0].messages.length,0);
+  assert.equal(app.url(),initialUrl);assert.equal(app.historyWrites.length,history);
+  assert.equal(app.scrollTop('.sw2-review-body'),420);
+});
+
+test('group quote and Save All preserve the current second group even with another group draft',async()=>{
+  const app=await workbench({...quoteNavigationFixture(),initialUrl:'http://localhost/projects/synthetic/freeze?group=B-000001'});
+  app.input('dg-message','先前主题的草稿');await settle();
+  await app.click('dg-open',{id:'B-000002'});
+  const url=app.url(), history=app.historyWrites.length;
+  app.scroll('.dg-wording-column',360);
+  app.selectQuote('当前主题原文','B-000002 · 方案 A');await app.click('quote-selection');
+  assert.equal(app.url(),url);assert.equal(app.historyWrites.length,history);
+  assert.equal(app.scrollTop('.dg-wording-column'),360);
+  await app.click('save-all');
+  assert.equal(app.url(),url);assert.equal(app.historyWrites.length,history);
+  assert.equal(app.groupDrafts().active,'B-000002');
+  assert.equal(app.scrollTop('.dg-wording-column'),360);
+  assert.equal(app.writes.length,2);
+});
+
+
+test('clearing an older individual draft keeps the rendered composer and quote on that member', async()=>{
+  const app=await workbench({...quoteNavigationFixture(),initialUrl:'http://localhost/projects/synthetic/freeze?question='+questionId,draftMessages:{[questionId]:'旧的单条草稿'}});
+  const url=app.url(),history=app.historyWrites.length;
+  assert.match(app.html('#sw2-detail'),/id="sw2-message"/);
+  app.input('sw2-message','');await settle();
+  app.selectQuote('重新引用本条');await app.click('quote-selection');
+  assert.ok(app.drafts().messages[questionId].includes('重新引用本条'));
+  assert.equal(app.groupDrafts().local?.['B-000001']?.message,undefined);
+  assert.equal(app.url(),url);assert.equal(app.historyWrites.length,history);
+  await app.click('post');
+  assert.equal(app.writes.length,1);assert.equal(app.writes[0].operation,'comment');
+  assert.equal(app.url(),url);assert.equal(app.historyWrites.length,history);
 });

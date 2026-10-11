@@ -34,7 +34,7 @@ wheels = [
 
 [[package]]
 name = "oppencouncil"
-version = "4.3.0"
+version = "4.3.1"
 source = { editable = "." }
 
 [package.dev-dependencies]

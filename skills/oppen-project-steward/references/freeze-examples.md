@@ -1,6 +1,27 @@
-# Content quality examples
+# Comparison syntax and content examples
 
-Read only when an example is needed to calibrate the content gate. All invented values are teaching fixtures, never defaults for a real project.
+Read the syntax when writing inline choices; use the examples only to calibrate a difficult case. Invented values are teaching fixtures, never defaults or claims about a real project's data.
+
+## Inline choices
+
+Place `{{choice:stable_id;label;value1;value2}}` in discussion or comparison fields, outside code formatting. Use 2–12 distinct nonempty values, explicit units where relevant, and a stable ASCII ID starting with a letter. No field may contain braces, a newline or a semicolon. IDs are unique within each question/group; reuse an ID only for the same parameter and identical label/values. Semicolons allow use inside Markdown tables.
+
+```text
+## 重试策略
+
+### 等待时长
+{{choice:retry_seconds;重试等待;5秒;10秒;30秒}}
+
+### 次数上限
+{{choice:retry_limit;最多重试;1次;2次;3次}}
+```
+
+Explain each value's meaningful effect beside it and recommend in prose; the first value is not an accepted default. The widget does not recompute text or enforce dependencies. Offer independently compatible choices; represent coupled settings as one explained choice/route. Selection is browser-local. “添加到讨论” prepares an editable message; the human explicitly saves it. On continuation, read saved preferences, check their combined effects and revise affected candidates with concrete values and complete dependent rules.
+
+## Necessity and scope examples
+
+- An already-verified field mapping with zero missing/invalid values does not justify a new hypothetical missing-data policy. Recheck if the snapshot or intended scope changes. An actual gap affecting inclusion/calculation can warrant a focused decision after investigation.
+- If retention duration and access permissions can be approved independently, give each necessary choice its own F and use a shared topic when useful. Keep the inseparable conditions of each rule together; do not create a question for every clause.
 
 ## Engineering example: a slogan versus a save contract
 

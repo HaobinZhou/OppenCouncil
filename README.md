@@ -50,7 +50,7 @@ cd OppenCouncil
 uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents/skills"
 ```
 
-也可以从 [Releases](https://github.com/HaobinZhou/OppenCouncil/releases/latest) 下载 `OppenCouncil-4.3.0.zip`，解压到固定目录后进入该目录，运行上面的 `uv run ... scripts/install.py` 安装命令。完整包包含两个 skill、工作台和可选 MCP。
+也可以从 [Releases](https://github.com/HaobinZhou/OppenCouncil/releases/latest) 下载 `OppenCouncil-4.3.1.zip`，解压到固定目录后进入该目录，运行上面的 `uv run ... scripts/install.py` 安装命令。完整包包含两个 skill、工作台和可选 MCP。
 
 `uv` 会按需准备 Python 3.12。安装器创建 Council 的本地运行环境，并把两个 skill **以软链接方式**接入用户级全局目录：
 

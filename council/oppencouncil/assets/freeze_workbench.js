@@ -247,12 +247,11 @@
   window.addEventListener('resize', () => closeSelect());
   window.visualViewport?.addEventListener('resize', () => closeSelect());
   function appendToDiscussion(text, quoteSource) {
-    const group = groupUI?.selected() || state.snapshot.decision_groups?.find(g => g.member_ids.includes(state.selected));
+    const group = groupUI?.selected() || (groupUI && root.querySelector('#sw2-detail').dataset.discussion === 'group' ? state.snapshot.decision_groups?.find(g => g.member_ids.includes(state.selected)) : null);
     const existing = group ? groupUI.message(group.id) : messageDrafts[state.selected];
     const value = quoteSource ? window.CouncilMarkdown.appendQuote(existing, quoteSource, text) : window.CouncilMarkdown.appendPreference(existing, text);
     if (value.trim().length > 20000) { showNotice('讨论内容过长，请缩短选文或先保存当前留言。', 'info'); return false; }
     if (group) {
-      if (!groupUI.selected()) groupUI.openDiscussion(group.id);
       groupUI.appendDiscussion(text, quoteSource);
     } else {
       composing[state.selected] = true;
@@ -730,6 +729,8 @@
     const jointGroup = state.snapshot.decision_groups?.find(g => g.member_ids.includes(q.id));
     const editingNow = Boolean(editing[q.id] || Object.hasOwn(drafts, q.id));
     panel.dataset.wording = (draft || def.versions.length || editingNow || q.recovered_records?.length) ? "present" : "empty";
+    const sharedDiscussion = jointGroup && groupUI && !messageDrafts[q.id]?.trim();
+    panel.dataset.discussion = sharedDiscussion ? "group" : "question";
     const composingNow = !jointGroup || Boolean(messageDrafts[q.id]?.trim());
     const conflictHTML = conflict(q) ? '<section class="sw2-conflict"><strong>候选口径或当前版本已更新，请比较后再保存</strong><p>' + escape(candidateText(q) || "原候选已生效或移除") + '</p><div class="sw2-action-pair"><button class="sw2-button sw2-button-outline" data-action="use-project">使用项目文本</button><button class="sw2-button sw2-button-outline" data-action="keep-draft">保留我的修改</button></div></section>' : "";
     const recordHeading = (number, pending = false) => '<div class="sw2-record-caption"><h3 class="sw2-record-heading">' + escape(q.title) + '</h3><span class="sw2-version-stack">' + (pending ? '<span class="sw2-draft-state">待确认</span>' : '') + '<span class="sw2-version-mark" aria-label="版本 v' + number + '">V' + number + '</span></span></div>';
@@ -758,11 +759,14 @@
       conflictHTML,
       '</div><div class="sw2-composer sw2-answer-composer"' + (editingNow ? '' : ' hidden') + '><label class="sw2-section-title" for="sw2-answer">编辑完整候选口径<small>支持 Markdown · 保存后需确认</small></label><textarea id="sw2-answer" class="sw2-answer sw2-definition-editor" placeholder="写入可直接进入正式文档的完整规则、范围、条件和例外…">' + escape(drafts[q.id] ?? (editingNow ? candidateText(q) : "")) + '</textarea><details class="sw2-markdown-preview" data-record="local-preview"><summary>预览排版（未保存）</summary><div class="sw2-record-body" id="sw2-answer-preview">' + renderMarkdown(drafts[q.id] ?? (editingNow ? candidateText(q) : "")) + '</div></details><div class="sw2-answer-actions"><span id="sw2-answer-hint"></span><div class="sw2-action-pair"><button class="sw2-button sw2-button-outline" data-action="close-editor">收起编辑</button><button class="sw2-button sw2-button-primary" data-action="save-answer">保存候选</button></div></div></div><div id="sw2-answer-status" class="sw2-action-status" role="status" aria-live="polite" hidden></div>',
       '</section></div>' + provenanceHTML(q) + '</div></div><aside class="sw2-discussion-column" aria-label="逐项讨论">' + discussionResizerHTML + '<div class="sw2-talk-header"><div class="sw2-section-title">讨论<small>' + thread.length + ' 条记录</small></div><p>建议与交流 · 保存后手动通知 AI 继续</p></div><div class="sw2-thread" tabindex="0" aria-label="' + escape(q.title) + '的讨论记录">',
-      jointGroup ? '<div class="sw2-shared-context">共同讨论：' + escape(jointGroup.title) + '<button class="sw2-button sw2-button-outline" data-action="dg-open" data-id="' + jointGroup.id + '" data-mode="discussion">参与共同讨论</button></div>' : '',
+      jointGroup ? '<div class="sw2-shared-context">共同讨论：' + escape(jointGroup.title) + '<button class="sw2-button sw2-button-outline" data-action="dg-open" data-id="' + jointGroup.id + '" data-mode="discussion">查看整个主题</button></div>' : '',
       thread.length ? thread.map(message => (q.superseded_presentations?.includes(message.id) ? '<details class="sw2-previous-proposal"><summary>早期方案建议 · 查看完整历史</summary>' : '') + '<div class="sw2-bubble sw2-bubble-' + actorKind(message.actor) + '"><div class="sw2-bubble-head">' + (message.recovered ? historicalBadge(message.actor) : actorBadge(message.actor)) + "<span>" + (message.shared ? "共同讨论 · " + escape(shortTime(message.at)) : message.kind === "legacy_answer" ? "历史答复 · 非正式口径" : message.kind === "proposal" ? "方案建议" : message.recovered ? "历史 · " + escape(shortTime(message.at)) : escape(shortTime(message.at))) + '</span></div><div class="sw2-bubble-body" data-quote-source="' + escape((message.shared ? jointGroup.id : q.id) + ' · ' + actorLabel(message.actor) + ' · ' + (message.at ? shortTime(message.at) : '方案建议')) + '">' + renderMarkdown(message.shared ? message.text : (q.discussion_display?.[message.id] ?? message.text), discussionScope()) + "</div>" + (message.recovered ? '<details class="sw2-message-source"><summary>查看原文来源</summary>' + escape(sourceName(message.source)) + ' · 由 ' + escape(actorLabel(message.recovered_by)) + ' 回填</details>' : "") + "</div>" + (q.superseded_presentations?.includes(message.id) ? "</details>" : "")).join("") : '<div class="sw2-empty"><strong>开始这题的讨论</strong>建议、选项与实际影响都保留在这里。</div>',
       '</div><div class="sw2-composer sw2-discussion-composer">' + ((q.suggestions || []).length ? '<details class="sw2-choices"><summary>选择讨论方向 · ' + q.suggestions.length + ' 个选项</summary><div class="sw2-suggestions">' + q.suggestions.map(value => '<button class="sw2-suggestion" type="button" data-action="suggest" data-value="' + escape(value) + '">' + escape(value) + '</button>').join('') + '</div></details>' : ''),
+      sharedDiscussion ? groupUI.discussionEditor(jointGroup.id) : [
       '<button class="sw2-button sw2-button-outline sw2-write-discussion" data-action="compose"' + (composingNow ? ' hidden' : '') + '>' + (jointGroup ? '＋ 写共同讨论留言' : '＋ 写讨论留言') + '</button><div class="sw2-message-editor"' + (composingNow ? '' : ' hidden') + '><div class="sw2-compose-head"><label class="sw2-section-title" for="sw2-message">讨论留言 · Markdown</label><button class="sw2-clear-filter" data-action="close-compose">收起</button></div><textarea id="sw2-message" class="sw2-message-input" placeholder="回复建议、提出问题，或请 AI 整理完整候选口径…">' + escape(messageDrafts[q.id] || '') + '</textarea>',
-      '<details class="sw2-discussion-preview" data-record="discussion-preview"><summary>预览讨论（未保存）</summary><div id="sw2-message-preview">' + renderMarkdown(messageDrafts[q.id] || '', discussionScope()) + '</div></details><div class="sw2-message-actions"><span id="sw2-message-hint"></span><small class="sw2-shortcut">' + discussionShortcut + ' 保存</small><button type="button" aria-keyshortcuts="' + discussionShortcutAttribute + '" class="sw2-button sw2-button-primary" data-action="post">保存讨论留言</button></div></div><div id="sw2-message-status" class="sw2-action-status" role="status" aria-live="polite" hidden></div></div></aside>',
+      '<details class="sw2-discussion-preview" data-record="discussion-preview"><summary>预览讨论（未保存）</summary><div id="sw2-message-preview">' + renderMarkdown(messageDrafts[q.id] || '', discussionScope()) + '</div></details><div class="sw2-message-actions"><span id="sw2-message-hint"></span><small class="sw2-shortcut">' + discussionShortcut + ' 保存</small><button type="button" aria-keyshortcuts="' + discussionShortcutAttribute + '" class="sw2-button sw2-button-primary" data-action="post">保存讨论留言</button></div></div><div id="sw2-message-status" class="sw2-action-status" role="status" aria-live="polite" hidden></div>',
+      ].join(''),
+      '</div></aside>',
     ].join("");
     for (const el of panel.querySelectorAll?.('details[data-record]') || []) el.open = expanded.includes(el.dataset.record);
     for (const [selector, top] of scrollPositions) { const el = panel.querySelector(selector); if (el) el.scrollTop = top; }
@@ -973,8 +977,6 @@
     }
     if (action === "dismiss-notice") { clearTimeout(noticeTimer); root.querySelector("#sw2-notice").hidden = true; return; }
     if (action === "compose" || action === "close-compose") {
-      const joint = state.snapshot.decision_groups?.find(g => g.member_ids.includes(state.selected));
-      if (action === "compose" && joint && !messageDrafts[state.selected]?.trim()) { groupUI?.openDiscussion(joint.id); return; }
       composing[state.selected] = action === "compose";
       const editor = root.querySelector(".sw2-message-editor");
       editor.hidden = !composing[state.selected];
@@ -1006,10 +1008,8 @@
     }
     if (action === "mobile-back") { showMobileView("list"); return; }
     if (action === "suggest") {
-      composing[state.selected] = true; root.querySelector(".sw2-message-editor").hidden = false;
-      root.querySelector('[data-action="compose"]').hidden = true;
-      const area = root.querySelector("#sw2-message"); area.value = [messageDrafts[state.selected], button.dataset.value].filter(Boolean).join("\n");
-      messageDraft(state.selected, area.value); area.focus(); showNotice("选择已填入讨论，尚未保存。", "info", "message"); return;
+      if (appendToDiscussion(button.dataset.value)) showNotice("选择已填入讨论，尚未保存。", "info", "message");
+      return;
     }
     if (action === "edit-definition") {
       const q = selected(); editing[q.id] = true; root.querySelector("#sw2-detail").dataset.reading = "wording"; renderDetail(); updateDraftUI();

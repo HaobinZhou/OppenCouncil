@@ -446,9 +446,14 @@ class Stage4RuntimeHardeningTestCase(unittest.TestCase):
         )
         self.assertIn("concurrency, reliability, performance policy", text)
         self.assertIn("An incident alone is Audit, logs, or Git", text)
-        self.assertIn("Noteworthy does not mean Attention", text)
-        self.assertIn("Known pending work is not Attention", text)
-        self.assertIn("Attention is not a TODO system", text)
+        # Attention operations are loaded through the entrypoint's task router.
+        # Keep their policy checks without requiring all instructions in SKILL.md.
+        reference = "references/workflow-operations.md"
+        self.assertIn(f"]({reference})", text)
+        operations = (SKILL_PATH.parent / reference).read_text(encoding="utf-8")
+        self.assertIn("Noteworthy does not mean Attention", operations)
+        self.assertIn("Known pending work is not Attention", operations)
+        self.assertIn("Attention is not a TODO system", operations)
 
     def test_active_project_end_to_end_recovery_and_dirty_work(self) -> None:
         self.copy_fixture("active-ai-service")

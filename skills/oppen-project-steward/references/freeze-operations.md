@@ -1,6 +1,31 @@
 # OppenCouncil setup and payload details
 
-Read for first-time website registration, service discovery/configuration, forwarding, MCP access troubleshooting or a full import example. The ordinary round workflow is [freeze-workbench.md](freeze-workbench.md).
+Read the relevant section for question-write payloads, Canonical registration, first-time website setup or MCP access troubleshooting. The ordinary round workflow is [freeze-workbench.md](freeze-workbench.md).
+
+## Question writes
+
+Use an import only for genuinely new questions; it advances the round. Revise existing IDs through `ai-change`. Updates carry `question_id`, `operation`, `value`, the latest `expected_revision` and a stable `request_id`.
+
+| Operation | Value and effect |
+| --- | --- |
+| `comment` | Markdown discussion text |
+| `presentation` | `{text, suggestions}` updates the full explanation and matching option labels atomically, retaining earlier discussion |
+| `review_note` | Objective verification text, kept off the review page |
+| `definition_draft` | Complete text or `{text, dependencies}`; allowed for first proposals and revisions after freezing without a human opening step |
+| `dependency_review` | Exact checked bindings and compatibility reason; see [freeze-groups.md](freeze-groups.md) |
+| `reopen` | Reopens discussion while preserving earlier replies and the effective definition |
+
+Omitting draft dependencies preserves the candidate's/current version's existing bindings; an explicit list replaces them. Legacy `ai_position` does not update suggestion buttons. Group matrices/discussion use `group-change` or `freeze_change_group`, not question `presentation`. On a revision conflict, reread and reconcile human changes; use the same request ID/content only for the same uncertain attempt.
+
+## Register or adopt formal authority
+
+Read `oppencouncil definition TARGET --question F-000001` (add `--version-number N` for history); record ID/version/hash when implementing that rule. Register the same JSON scope through the original governor:
+
+```text
+python ABSOLUTE_SKILL/scripts/HELPER.py canonical TARGET --topic TOPIC --path Freeze/questions/F-000001.json --section definition --verification TEST_PATH
+```
+
+Use the actual helper and relevant executable check. Registration maps ownership and is not a second synchronization/approval gate. For a former Markdown owner, read the full rule and confirmation evidence; use `canonical --replace` for the explicit ownership move when the human confirms the candidate. Remove competing current wording, retaining Git history. Never promote a summary or legacy reply automatically.
 
 ## First-time website registration
 
@@ -57,7 +82,6 @@ An import batch uses a stable request ID for retries:
 }
 ```
 
-`ai-change` takes `question_id`, `operation`, `value`, latest `expected_revision` and a stable `request_id`. Use the question operations described in [freeze-workbench.md](freeze-workbench.md); current operations include `comment`, `presentation`, `review_note`, `definition_draft`, `dependency_review` and `reopen`. Legacy `ai_position` does not update suggestion buttons. Group operations have their own payload and command in [freeze-groups.md](freeze-groups.md). Reopening discussion preserves earlier replies and does not open a formal revision.
 
 
 ## Saved records, drafts and MCP
@@ -74,7 +98,7 @@ UTF-8 JSON is the source for AI/MCP reading. The manifest identifies current rou
 
 OppenSteward-MCP uses the same OppenCouncil package. A native Steward v3/v4 or Stepwise R v3/v4 project must be explicitly registered in MCP and separately included in `OPPEN_FREEZE_PROJECTS`. `OPPEN_FREEZE_MODE=read` provides `freeze_snapshot` and `freeze_read_question`; `write` also provides `freeze_add_questions`, `freeze_change_question` and `freeze_change_group`, subject to existing OAuth scopes. Website registration grants no MCP access. Keep the current project's authorization; do not change a global allowlist merely to open a webpage.
 
-Local CLI writes record Codex. MCP writers declare `actor: "codex"` for Codex or `"chatgpt"` for ChatGPT. AI may add questions, update discussion/options, manage groups/dependencies and edit candidate wording or reopen discussion. It cannot confirm a candidate, open or withdraw its next revision, publish formal versions, write human answers, resolve disagreements, recover/reconcile history or overwrite effective definition versions. Reading an existing discussion does not authorize an AI reply; use the user's current request to determine whether to contribute. Free-form MCP Discussion and structured Freeze remain distinct. MCP can access project records independently of the web listener.
+Local CLI writes record Codex. MCP writers declare `actor: "codex"` for Codex or `"chatgpt"` for ChatGPT. AI may add questions, update discussion/options, manage groups/dependencies, reopen discussion and submit `definition_draft` before or after freezing without a human opening step. It cannot invoke human-only `definition_begin`, confirm/withdraw candidates, publish or overwrite formal versions, write human answers or resolve disagreements. Historical recovery/reconciliation uses the separately authorized local workflow, not MCP writes. Reading an existing discussion does not authorize an AI reply; use the user's current request to determine whether to contribute. Free-form MCP Discussion and structured Freeze remain distinct. MCP can access project records independently of the web listener.
 
 
 ## Native v3/v4 compatibility and adoption
