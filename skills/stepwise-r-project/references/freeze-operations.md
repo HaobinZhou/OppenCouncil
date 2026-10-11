@@ -1,6 +1,17 @@
 # OppenCouncil setup and payload details
 
-Read only for service discovery/configuration, forwarding, MCP access troubleshooting or a full import example. The ordinary round workflow is [freeze-workbench.md](freeze-workbench.md).
+Read for first-time website registration, service discovery/configuration, forwarding, MCP access troubleshooting or a full import example. The ordinary round workflow is [freeze-workbench.md](freeze-workbench.md).
+
+## First-time website registration
+
+Creating Council records for web review includes registering the project in the intended site. Resolve that site's directory from the existing deployment configuration, service arguments or `OPPEN_COUNCIL_DIRECTORY`; verify it with `oppencouncil --directory SITE status`. Use this same `SITE` for import, registration and opening. The package's default directory may differ from a running deployment; do not silently create a second site or use a default port as proof of the intended one. If the destination is ambiguous, resolve it before registering. When no site exists, select its directory as part of the requested workbench setup and follow the startup instructions below.
+
+- For a new batch, use `oppencouncil --directory SITE import TARGET --input batch.json`; it creates records and registers the project in that site.
+- For existing records, including records created through MCP or the storage API, use `oppencouncil --directory SITE register TARGET`. This registers the project without importing duplicate questions or moving its files.
+- Use `oppencouncil --directory SITE open TARGET` to register and start/reuse the selected site, then `oppencouncil --directory SITE status TARGET` to check the enabled entry and obtain its URLs. Preserve the running site's address and login mode; use the configured public URL when applicable.
+- Verify that the site's project directory includes the project and that its questions and prepared candidates are readable there before handing over the link. A login page alone does not verify the project content. Follow the content and web-handoff checks in [freeze-workbench.md](freeze-workbench.md).
+
+An MCP-only client cannot perform site registration with Freeze tools. If the project is not yet registered and local site commands are unavailable, report the remaining site-registration step; do not claim web delivery is complete. Website registration does not grant MCP access or authorize changing its project allowlist or OAuth scopes.
 
 ## Application discovery and commands
 
@@ -8,23 +19,23 @@ OppenCouncil owns the page, listener and storage. Use an installed `oppencouncil
 
 ```text
 oppencouncil --version
-oppencouncil import TARGET --input batch.json
-oppencouncil open TARGET
-oppencouncil open TARGET --port 5322 --public-origin https://council.example.com
-oppencouncil status TARGET
+oppencouncil --directory SITE import TARGET --input batch.json
+oppencouncil --directory SITE open TARGET
+oppencouncil --directory SITE open TARGET --port 5322 --public-origin https://council.example.com
+oppencouncil --directory SITE status TARGET
 oppencouncil snapshot TARGET
 oppencouncil ai-change TARGET --input update.json
 oppencouncil group-change TARGET --input group.json
 oppencouncil definition TARGET --question F-000001
-oppencouncil recover TARGET --input history.json --check
-oppencouncil recover TARGET --input history.json
-oppencouncil reconcile TARGET --input corrections.json --check
-oppencouncil reconcile TARGET --input corrections.json
-oppencouncil disable TARGET
-oppencouncil stop
+oppencouncil --directory SITE recover TARGET --input history.json --check
+oppencouncil --directory SITE recover TARGET --input history.json
+oppencouncil --directory SITE reconcile TARGET --input corrections.json --check
+oppencouncil --directory SITE reconcile TARGET --input corrections.json
+oppencouncil --directory SITE disable TARGET
+oppencouncil --directory SITE stop
 ```
 
-`import` automatically registers the target. `open` starts or reuses one shared listener; `disable TARGET` disables only that project's site entry, while `stop` stops the entire site. For an explicit site directory, place the global option before the command: `oppencouncil --directory SITE open TARGET`. `OPPEN_COUNCIL_DIRECTORY` also selects the site registry. Neither setting moves project records.
+`import` automatically registers the target in the selected site directory. `register` registers existing records without starting a listener; `open` registers the target and starts or reuses that site's shared listener; `disable TARGET` disables only that project's site entry, while `stop` stops the entire site. For an explicit site directory, place the global option before the command: `oppencouncil --directory SITE open TARGET`. `OPPEN_COUNCIL_DIRECTORY` also selects the site registry. Neither setting moves project records.
 
 The default loopback port is 5322. A reachable forwarding proxy supplies remote access; `--public-origin` alone does not create a tunnel. Default access uses one site password without usernames: the user sets it on first visit, then enters it on later visits. Return the ordinary URL; do not invent a password or append a login key. Passwords persist in the site directory across restarts; browser sessions expire after 12 hours or restart. Use `--no-auth` only for explicitly requested open access on a site without a configured password; a configured site rejects it. Anyone reaching an open site can view enabled projects, discuss, edit candidates and confirm definitions. Reuse the running site's address and login mode. Changing those settings requires a site restart affecting all registered projects. The listener continues after the Codex turn ends, but depends on the host and forwarding connection remaining available.
 

@@ -1,7 +1,7 @@
 ---
 name: oppen-project-steward
 metadata:
-  version: "4.2.10"
+  version: "4.2.11"
 description: Maintain durable, non-scientific AI-assisted projects with canonical ownership, Git-owned history, current Deliverables, recoverable machine Audit evidence, one pending-decision view, consequential Decision Memory, deterministic registries, and path-scoped dirty-work protection. Use when initializing or adopting an existing project, governing, opening OppenCouncil batch decision discussions, recovering Audit staging, indexing, escalating material unresolved concerns, recording non-reconstructable decision context, or validating long-lived software, AI application, quantitative engineering, infrastructure, or mixed code/document projects.
 ---
 
@@ -64,6 +64,7 @@ Never create a standard directory beside an existing path already serving the sa
 
 For a Council round, read [freeze-workbench.md](references/freeze-workbench.md), then the relevant saved records. Reuse IDs, confirmed decisions and existing discussion. Present all currently identifiable choices together; later rounds address new information. Keep the project's original governor. The user saves feedback and manually invokes AI to continue.
 
+- **Complete the web handoff.** On first creation of Council records, register the project in the intended Council site and verify its directory entry and review content before returning the project link. Creating `Freeze/` files alone is not a completed web handoff. Follow the site-registration steps in [freeze-operations.md](references/freeze-operations.md); MCP authorization remains separate.
 - **Prepare an informed choice.** Write reviewer-facing Markdown with actual actions, consequences, trade-offs and a justified recommendation. Organize long discussion, comparisons and wording with Markdown heading levels (## / ###), then short paragraphs or lists; bold alone is not a section hierarchy. Use complete question IDs such as F-000013 in prose for links. Keep machine checks and hashes in `review_note` or Audit.
 - **Decompose the comparison.** Explain shared rules together. Use `{{choice:stable_id;label;value1;value2}}` for independent subchoices and local values; reserve separate columns for approaches whose linked consequences need whole-route comparison. Do not expand every combination or copy full candidates into every cell. The workflow reference defines compatibility and read-back checks.
 - **Decide coupled rules together.** AI organizes groups around a complete decision, including the unresolved prerequisites needed to understand it. Prepare independently decidable upstream topics first. Preserve real dependencies and each member's separate ID, wording and history. Group management belongs to AI; people review, discuss and confirm.

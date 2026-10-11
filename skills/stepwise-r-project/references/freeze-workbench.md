@@ -3,7 +3,7 @@
 Use this document for normal question rounds and candidate drafting. For MCP-only access, read it with `get_skill_guide(skill, resource="references/freeze-workbench.md")`; use the same tool for linked references. If the installed MCP lacks the resource argument, report the missing guide access rather than guessing the workflow. Read extra references only for the active operation:
 
 - Recovering missing historical records or correcting an import: [freeze-recovery.md](freeze-recovery.md).
-- Service setup, forwarding, MCP configuration or full payload examples: [freeze-operations.md](freeze-operations.md).
+- First-time website registration, service setup, forwarding, MCP configuration or full payload examples: [freeze-operations.md](freeze-operations.md).
 - Calibrating content quality with teaching examples: [freeze-examples.md](freeze-examples.md). These examples are not project rules.
 
 ## Prepare and continue a round
@@ -97,12 +97,12 @@ Use the actual helper and relevant executable verification. Registration maps ow
 
 ## Routine commands and writes
 
-Use the installed `oppencouncil` CLI or the product's `council/.venv` Python with `-m oppencouncil`. From the product root, `uv run --project council oppencouncil` is equivalent. Preserve an existing site's directory and permissions. For discovery, forwarding, compatibility wrappers or MCP setup, read [freeze-operations.md](freeze-operations.md).
+Use the installed `oppencouncil` CLI or the product's `council/.venv` Python with `-m oppencouncil`. From the product root, `uv run --project council oppencouncil` is equivalent. Resolve `SITE` to the intended site's actual directory before importing or opening a project; preserve its permissions and reuse that directory for every site operation. For discovery, forwarding, compatibility wrappers or MCP setup, read [freeze-operations.md](freeze-operations.md).
 
 ```text
 oppencouncil snapshot TARGET
-oppencouncil import TARGET --input batch.json
-oppencouncil open TARGET
+oppencouncil --directory SITE import TARGET --input batch.json
+oppencouncil --directory SITE open TARGET
 oppencouncil ai-change TARGET --input update.json
 oppencouncil definition TARGET --question F-000001
 ```
@@ -119,7 +119,7 @@ Local writes record Codex. MCP writes explicitly declare `actor: "codex"` or `"c
 - Audit the entire announced review scope, not only the records just changed. For each pending question verify that a substantive candidate was actually saved, and for each group verify all member candidates. Existing unchanged formal versions and historical recovered records do not need invented revisions. A genuinely missing fact that prevents a responsible proposal must be named with its affected IDs and effects, and the item must be marked unprepared rather than offered as ready for review; complete accessible investigation first. Do not return a bare workbench link claiming the round is ready while candidate documents are empty.
 - Read back every changed question and group. Verify that visible advice matches the option buttons; required dependencies and affected downstream uses are accurately shown. Preserve historical discussion and all formal versions. Confirm complete question coverage, understandable alternatives and the content gate above. Distinguish discussion saved, candidate ready, confirmed wording and implementation verified.
 - Read only manifest-listed question IDs; `Freeze/manifest.json` is the question index. Unsaved browser inputs are not project records. Handoff must save them or explicitly list excluded draft IDs. Never infer a saved decision from a text box or toast.
-- Return the intended `project_url`, `site_url` and port, including when reusing a running service. Verify the returned page when browser access is available; claim remote forwarding only when actually tested. `localhost` is the machine opening the link. Use `刷新项目记录` to reread the project while preserving local drafts after restoring a lost connection.
+- On first creation, complete website registration in the intended site, including when records were created through MCP or the storage API. Verify that the project is enabled in that site directory and that its questions and prepared candidates can be read through the site. Inspect the directory and project page in a browser when available; otherwise use authorized site API reads and state that visual verification is pending. File creation or a successful import into another site is insufficient. If site access or registration cannot be completed, report web handoff as incomplete with the specific blocker. Return the verified `project_url`, `site_url` and port, including when reusing a running service; claim remote forwarding only when actually tested. `localhost` is the machine opening the link. Use `刷新项目记录` to reread the project while preserving local drafts after restoring a lost connection.
 - For a discussion-only round, accept content and persistence; do not run research or rebuild the application just to declare the round done. When implementation is authorized, carry the exact confirmed rules into code and linked verification, then run the governing skill's `index`/`validate`. Material disagreements, missing confirmations and unresolved dependencies remain explicit. Use synthetic projects for application testing.
 
 Application layout/cache specifications are maintained in OppenCouncil’s `council/docs/workbench-ui.md`; ordinary decision rounds do not load them.
