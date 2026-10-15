@@ -140,6 +140,8 @@ class CouncilHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = self.request_path()
+        if path == "/favicon.svg":
+            return self.send_data((ASSETS / "logo.svg").read_bytes(), "image/svg+xml")
         if path == "/api/healthz":
             allowed = self.admin()
             return self.send_json(
