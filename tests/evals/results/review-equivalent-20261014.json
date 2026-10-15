@@ -1,0 +1,424 @@
+{
+  "measurement": "Actual file reads/calls; whitespace words are not model tokens. Mechanical checks alone do not establish semantic success.",
+  "runs": [
+    {
+      "scenario": "equivalent",
+      "directory": "/private/tmp/oppencouncil-review-equivalent-20261014-a/8bd3b3a43b54",
+      "checks": {
+        "actual_entry_unchanged": true,
+        "entry_loaded": true,
+        "no_memory": true,
+        "no_release": true,
+        "no_archived_content_read": true,
+        "archived_content_unchanged": true
+      },
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-review-equivalent-20261014-a/8bd3b3a43b54/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "changed_project_files": [
+        "Audit/check_followup_equivalence.py",
+        "Freeze/evidence/claims/E-000001/r000001.json",
+        "Freeze/evidence/sources/S-000001/r000001.json",
+        "Freeze/evidence/sources/S-000002/r000001.json",
+        "Freeze/evidence/sources/S-000003/r000001.json",
+        "Freeze/manifest.json",
+        "Freeze/questions/F-000001.json"
+      ],
+      "instruction_reads": [
+        {
+          "at": 1791991351.172915,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791991355.89275,
+          "operation": "read",
+          "path": "skill/references/triage.md",
+          "bytes": 874,
+          "whitespace_words": 100,
+          "sha256": "3117a3eb0f86e675111ae83193b7cceee0b9eb5a7d86e4247c8ef7d9c89fc18f"
+        },
+        {
+          "at": 1791991355.8929799,
+          "operation": "read",
+          "path": "skill/references/evidence.md",
+          "bytes": 1838,
+          "whitespace_words": 190,
+          "sha256": "9bf368df5b7e757c3927d31541dac0dd2c6c23ba9f7b7934a8216f1abe7153f3"
+        },
+        {
+          "at": 1791991355.8933508,
+          "operation": "read",
+          "path": "skill/references/review-packet.md",
+          "bytes": 1704,
+          "whitespace_words": 185,
+          "sha256": "22069ea1cc07fb62f1cbdaf0b004cb6a7c541412f5aa10a07ffc3464dc32c8c0"
+        },
+        {
+          "at": 1791991362.790365,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 3666,
+          "whitespace_words": 422,
+          "sha256": "046f29049827530f79ba254f8168ee599028932bec5e04b1f9a24f925a9e931f"
+        },
+        {
+          "at": 1791991362.790566,
+          "operation": "read",
+          "path": "skill/references/groups.md",
+          "bytes": 2360,
+          "whitespace_words": 274,
+          "sha256": "f83a6b77bede7a126655277ebcc326ec2b93d9a606c3bb111c7fefeecc3e0122"
+        }
+      ],
+      "source_reads": [
+        {
+          "at": 1791991351.173185,
+          "operation": "read",
+          "path": "project/README.md",
+          "bytes": 371,
+          "whitespace_words": 50,
+          "sha256": "4bcc982976a323d12db525a8c1953da21abaa1f8d480b62caad34ae40153fb8f"
+        },
+        {
+          "at": 1791991362.790685,
+          "operation": "read",
+          "path": "project/Audit/domain.json",
+          "bytes": 271,
+          "whitespace_words": 30,
+          "sha256": "19c87bb987b694dac530fe0bdd0bdf87211f39f02b6adeae44a529c937fc2f6c"
+        },
+        {
+          "at": 1791991362.790793,
+          "operation": "read",
+          "path": "project/Audit/requirement.txt",
+          "bytes": 445,
+          "whitespace_words": 63,
+          "sha256": "94f3076f51c53778778be334928921aaa696dd7794a0ac86e1771ab1208c1eca"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1741,
+        "adapter_words": 746,
+        "cli_and_script_calls": 7,
+        "nonzero_calls": 0
+      },
+      "nonzero_calls": [],
+      "saved_items": [
+        {
+          "id": "F-000001",
+          "title": "Administrative follow-up end",
+          "why": "Researcher requested the endpoint definition",
+          "legacy_attention": null,
+          "revision": 3,
+          "work": {
+            "affected_refs": [
+              "F-000001"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "由研究者在独立的人类确认动作中确认 F-000001 的完整候选；本任务不执行确认或结果分析。"
+            ],
+            "conclusion_type": "single_recommendation",
+            "phase": "human_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:24:47+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:24:47+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "由研究者在独立的人类确认动作中确认 F-000001 的完整候选；本任务不执行确认或结果分析。"
+                ],
+                "from": "prepare_review",
+                "reason": "所给要求与日期域明确，穷举核验支持两谓词等价，完整推荐候选及证据包已准备，可交付人类确认。",
+                "to": "human_review",
+                "trigger_refs": [
+                  "Audit/requirement.txt",
+                  "Audit/domain.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "Audit/requirement.txt",
+              "Audit/domain.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "行政随访终点为 2026 年 12 月 31 日（含当日），即 2027 年 1 月 1 日之前。对当前有效、不含时分秒的公历日期字段 followup_date，统一以 followup_date < 2027-01-01 表达该行政日期上界；followup_date <= 2026-12-31 是完全等价且可接受的写法。此定义只规定同一行政随访上界，保留已确认的入组人群、time zero、事件归属、estimand 及其他先前确认的定义。",
+            "text_sha256": "a5ca924217d7949643a01fee142e8909f0fbec147faca660fe83ecd22c99b3c5",
+            "base_version": null,
+            "dependencies": [],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json"
+              ],
+              "packet_sha256": "800a786af82bb606eb1e90a9c7f8598351fe58c1f1d0cc0a744d303150a9f2fd",
+              "summary": "依据所给研究者要求与日期域审计，并经全范围日期枚举核验，将两种等价表达归并为一个推荐候选。选择 < 2027-01-01 作为统一书写是表达约定，不主张其有统计或科学优势；<= 2026-12-31 同样满足要求。"
+            },
+            "approval_token": "6280dc88958709378f654224719e30075cc3ec96bb69ac0bec05225df3a7f5f0"
+          },
+          "current": null,
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000001/r000001.json"
+            ],
+            "packet_sha256": "800a786af82bb606eb1e90a9c7f8598351fe58c1f1d0cc0a744d303150a9f2fd",
+            "summary": "依据所给研究者要求与日期域审计，并经全范围日期枚举核验，将两种等价表达归并为一个推荐候选。选择 < 2027-01-01 作为统一书写是表达约定，不主张其有统计或科学优势；<= 2026-12-31 同样满足要求。"
+          },
+          "review_packet": {
+            "applicability": "按有效公历日期值比较，且无时分秒；项目 Audit 声明当前数据满足该域。脚本只检验此域内的数学等价，不重新导入或审计原始记录，不证明未检查的其他实现语言、隐式类型转换或时间戳行为。",
+            "common_practice": "本问题无需以文献惯例决定终点：研究者要求已经明确同一日期边界。依据是项目原始要求、日期域和离散日期比较的等价关系；不声称检索或验证了任何外部文献。",
+            "default": "推荐一个候选：行政随访至 2026-12-31（含），统一表述为 followup_date < 2027-01-01，同时明确 followup_date <= 2026-12-31 等价可接受。请确认完整终点定义，无需在两个等价谓词之间作科学选择。",
+            "departure_check": "候选满足已给出的终点要求；不改变已确认人群、time zero、事件归属、estimand 或早前定义。不存在偏离原要求的候选，也不存在两个不同终点之间的科学权衡。",
+            "objections": [
+              {
+                "disposition": "resolved",
+                "reason": "将两种表达当作竞争方案的疑问已由明确要求、日期域及零差异枚举消除。若以后字段含时分秒或域约束改变，应重新核查，而非直接沿用当前等价结论。"
+              }
+            ],
+            "project_reason": "研究者已指定同一终点；归并等价写法可避免把表达差异误当作研究目标差异。当前没有已确认终点，因此仅提交 F-000001 候选，等待人类确认，不建立正式版本。",
+            "support": "Audit/requirement.txt 明确包含 2026-12-31 且在 2027-01-01 前结束，两个表达意在同一终点。Audit/domain.json 声明有效纯日期且无缺失、无无效值。执行 Audit/check_followup_equivalence.py 枚举 2020-01-01 至 2027-06-30 的 2738 个日期，两个谓词零差异，关键边界均符合要求。"
+          },
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/sources/S-000001/r000001.json",
+            "evidence/sources/S-000002/r000001.json",
+            "evidence/sources/S-000003/r000001.json",
+            "evidence/claims/E-000001/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": "c28c309d28039bd38aebc7ff22adfbdd5ce023210374a0af57b3a3afb51539b2",
+          "read_set": {
+            "F-000001": 3
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": []
+          },
+          "review_category": "quick_confirm",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        }
+      ],
+      "snapshot": {
+        "project": "/private/tmp/oppencouncil-review-equivalent-20261014-a/8bd3b3a43b54/project",
+        "round": 1,
+        "revision": 3,
+        "questions": [
+          {
+            "created_at": "2026-10-14T15:22:12+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:24:47+00:00",
+                    "by": "codex",
+                    "text": "行政随访终点为 2026 年 12 月 31 日（含当日），即 2027 年 1 月 1 日之前。对当前有效、不含时分秒的公历日期字段 followup_date，统一以 followup_date < 2027-01-01 表达该行政日期上界；followup_date <= 2026-12-31 是完全等价且可接受的写法。此定义只规定同一行政随访上界，保留已确认的入组人群、time zero、事件归属、estimand 及其他先前确认的定义。"
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000001/r000001.json"
+                  ],
+                  "packet_sha256": "800a786af82bb606eb1e90a9c7f8598351fe58c1f1d0cc0a744d303150a9f2fd",
+                  "summary": "依据所给研究者要求与日期域审计，并经全范围日期枚举核验，将两种等价表达归并为一个推荐候选。选择 < 2027-01-01 作为统一书写是表达约定，不主张其有统计或科学优势；<= 2026-12-31 同样满足要求。"
+                },
+                "text": "行政随访终点为 2026 年 12 月 31 日（含当日），即 2027 年 1 月 1 日之前。对当前有效、不含时分秒的公历日期字段 followup_date，统一以 followup_date < 2027-01-01 表达该行政日期上界；followup_date <= 2026-12-31 是完全等价且可接受的写法。此定义只规定同一行政随访上界，保留已确认的入组人群、time zero、事件归属、estimand 及其他先前确认的定义。",
+                "text_sha256": "a5ca924217d7949643a01fee142e8909f0fbec147faca660fe83ecd22c99b3c5",
+                "updated_at": "2026-10-14T15:24:47+00:00",
+                "updated_by": "codex",
+                "approval_token": "6280dc88958709378f654224719e30075cc3ec96bb69ac0bec05225df3a7f5f0"
+              },
+              "versions": []
+            },
+            "evidence_refs": [
+              "evidence/sources/S-000001/r000001.json",
+              "evidence/sources/S-000002/r000001.json",
+              "evidence/sources/S-000003/r000001.json",
+              "evidence/claims/E-000001/r000001.json"
+            ],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000001",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:22:12+00:00",
+                "id": "seed-options:F-000001:0",
+                "request_id": "seed-options",
+                "text": "Two proposed expressions: A: followup_date < 2027-01-01; B: followup_date <= 2026-12-31. Their relevance and current date domain need checking."
+              },
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:24:47+00:00",
+                "id": "f000001-equivalent-endpoint-review-20261014-a:F-000001:0",
+                "request_id": "f000001-equivalent-endpoint-review-20261014-a",
+                "text": "完成依据与适用条件核查。两项表达属于同一请求的等价设定，结论为 single_recommendation，不新增 F、不建立比较组、不提供人为取舍，也不请求改变既有科学定义。日期检查计数是合成日历日期数，绝非参与者或结局数。"
+              }
+            ],
+            "pending_items": [],
+            "problem_type": "research_method",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json"
+              ],
+              "packet_sha256": "800a786af82bb606eb1e90a9c7f8598351fe58c1f1d0cc0a744d303150a9f2fd",
+              "summary": "依据所给研究者要求与日期域审计，并经全范围日期枚举核验，将两种等价表达归并为一个推荐候选。选择 < 2027-01-01 作为统一书写是表达约定，不主张其有统计或科学优势；<= 2026-12-31 同样满足要求。"
+            },
+            "review_packet": {
+              "applicability": "按有效公历日期值比较，且无时分秒；项目 Audit 声明当前数据满足该域。脚本只检验此域内的数学等价，不重新导入或审计原始记录，不证明未检查的其他实现语言、隐式类型转换或时间戳行为。",
+              "common_practice": "本问题无需以文献惯例决定终点：研究者要求已经明确同一日期边界。依据是项目原始要求、日期域和离散日期比较的等价关系；不声称检索或验证了任何外部文献。",
+              "default": "推荐一个候选：行政随访至 2026-12-31（含），统一表述为 followup_date < 2027-01-01，同时明确 followup_date <= 2026-12-31 等价可接受。请确认完整终点定义，无需在两个等价谓词之间作科学选择。",
+              "departure_check": "候选满足已给出的终点要求；不改变已确认人群、time zero、事件归属、estimand 或早前定义。不存在偏离原要求的候选，也不存在两个不同终点之间的科学权衡。",
+              "objections": [
+                {
+                  "disposition": "resolved",
+                  "reason": "将两种表达当作竞争方案的疑问已由明确要求、日期域及零差异枚举消除。若以后字段含时分秒或域约束改变，应重新核查，而非直接沿用当前等价结论。"
+                }
+              ],
+              "project_reason": "研究者已指定同一终点；归并等价写法可避免把表达差异误当作研究目标差异。当前没有已确认终点，因此仅提交 F-000001 候选，等待人类确认，不建立正式版本。",
+              "support": "Audit/requirement.txt 明确包含 2026-12-31 且在 2027-01-01 前结束，两个表达意在同一终点。Audit/domain.json 声明有效纯日期且无缺失、无无效值。执行 Audit/check_followup_equivalence.py 枚举 2020-01-01 至 2027-06-30 的 2738 个日期，两个谓词零差异，关键边界均符合要求。"
+            },
+            "review_required": null,
+            "revision": 3,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "Administrative follow-up end",
+            "verification_tests": [],
+            "why": "Researcher requested the endpoint definition",
+            "work": {
+              "affected_refs": [
+                "F-000001"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "由研究者在独立的人类确认动作中确认 F-000001 的完整候选；本任务不执行确认或结果分析。"
+              ],
+              "conclusion_type": "single_recommendation",
+              "phase": "human_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:24:47+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:24:47+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "由研究者在独立的人类确认动作中确认 F-000001 的完整候选；本任务不执行确认或结果分析。"
+                  ],
+                  "from": "prepare_review",
+                  "reason": "所给要求与日期域明确，穷举核验支持两谓词等价，完整推荐候选及证据包已准备，可交付人类确认。",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "Audit/requirement.txt",
+                    "Audit/domain.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "Audit/requirement.txt",
+                "Audit/domain.json"
+              ]
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": null,
+            "review_category": "quick_confirm",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "c28c309d28039bd38aebc7ff22adfbdd5ce023210374a0af57b3a3afb51539b2",
+            "ai_position": ""
+          }
+        ],
+        "decision_groups": [],
+        "governance_version": 5,
+        "pending_submission_paths": [],
+        "investigations": []
+      },
+      "hashes": {
+        "manifest": "f3be13139430b0660b55c2c4fe8c540d5feede51ec690a4d1c23dc82228bcb39",
+        "trace": "e6411bf1c4c30921c56fa4fff78dea3d3c9a8b23c6e24808c3663738351aa129",
+        "outcome": "d8dace1c4c951c20184fbc8f506f752d11c70d7a59e5161347d9ea74cabbf6f8"
+      }
+    }
+  ]
+}

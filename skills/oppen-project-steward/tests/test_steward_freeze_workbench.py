@@ -13,7 +13,7 @@ from oppencouncil.cli import main
 from oppencouncil.registry import Registry
 from oppencouncil.store import FreezeStore
 
-HELPER = Path(__file__).parents[1] / "scripts/oppen_project_steward.py"
+HELPER = Path(__file__).parents[1] / "scripts/legacy_oppen_project_steward.py"
 
 
 def steward(*arguments):

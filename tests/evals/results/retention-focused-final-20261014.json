@@ -1,0 +1,1474 @@
+{
+  "measurement": "Actual file reads/calls; whitespace words are not model tokens. Mechanical checks alone do not establish semantic success.",
+  "runs": [
+    {
+      "scenario": "focused",
+      "directory": "/private/tmp/oppencouncil-retain-focused-final-20261014/c5e6f2f1d824",
+      "checks": {
+        "actual_entry_unchanged": true,
+        "entry_loaded": true,
+        "no_memory": true,
+        "no_release": true,
+        "no_archived_content_read": true,
+        "archived_content_unchanged": true
+      },
+      "validation": {
+        "state": "DAMAGED",
+        "project": "/private/tmp/oppencouncil-retain-focused-final-20261014/c5e6f2f1d824/project",
+        "project_type": "general",
+        "errors": [
+          {
+            "path": "F-000001",
+            "reason": "Confirmed definition requires a registered verification test"
+          }
+        ],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "changed_project_files": [
+        "Audit/save_choices_review.md",
+        "Freeze/decision-groups.json",
+        "Freeze/evidence/claims/E-000001/r000001.json",
+        "Freeze/evidence/sources/S-000001/r000001.json",
+        "Freeze/manifest.json",
+        "Freeze/questions/F-000002.json",
+        "Freeze/questions/F-000003.json",
+        "Freeze/questions/F-000004.json"
+      ],
+      "instruction_reads": [
+        {
+          "at": 1791992204.246363,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791992207.941094,
+          "operation": "read",
+          "path": "skill/references/review-packet.md",
+          "bytes": 3472,
+          "whitespace_words": 425,
+          "sha256": "f6026493b53056c53be38732857cd1e42708736c68c7b7fd9670cf0d2389c2a7"
+        },
+        {
+          "at": 1791992212.371455,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 3666,
+          "whitespace_words": 422,
+          "sha256": "046f29049827530f79ba254f8168ee599028932bec5e04b1f9a24f925a9e931f"
+        },
+        {
+          "at": 1791992212.372003,
+          "operation": "read",
+          "path": "skill/references/groups.md",
+          "bytes": 2360,
+          "whitespace_words": 274,
+          "sha256": "f83a6b77bede7a126655277ebcc326ec2b93d9a606c3bb111c7fefeecc3e0122"
+        },
+        {
+          "at": 1791992212.3723679,
+          "operation": "read",
+          "path": "skill/references/selectors.md",
+          "bytes": 678,
+          "whitespace_words": 88,
+          "sha256": "6cacf027003c7f5524436b6e10e08973ce9166a47dd896fa106acb5ad623f8d9"
+        },
+        {
+          "at": 1791992271.3470159,
+          "operation": "read",
+          "path": "skill/references/evidence.md",
+          "bytes": 1838,
+          "whitespace_words": 190,
+          "sha256": "9bf368df5b7e757c3927d31541dac0dd2c6c23ba9f7b7934a8216f1abe7153f3"
+        }
+      ],
+      "source_reads": [
+        {
+          "at": 1791992204.246785,
+          "operation": "read",
+          "path": "project/README.md",
+          "bytes": 505,
+          "whitespace_words": 69,
+          "sha256": "2ac4dadf3290af10b566f0d1856123cc3c12c5336c60bdc00cf89bcafa3eeece"
+        },
+        {
+          "at": 1791992207.941789,
+          "operation": "read",
+          "path": "project/Audit/options.json",
+          "bytes": 1005,
+          "whitespace_words": 121,
+          "sha256": "bffa85e81c4eef1645c002bd311602e0a7c00b35de3cbe27e4b85227a763e652"
+        },
+        {
+          "at": 1791992489.931978,
+          "operation": "read",
+          "path": "project/Freeze/decision-groups.json",
+          "bytes": 5545,
+          "whitespace_words": 166,
+          "sha256": "ce9f03784ce92766182972b8b0b7309bc305f14437235f9c3ce96a2c226081a4"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1969,
+        "adapter_words": 746,
+        "cli_and_script_calls": 20,
+        "nonzero_calls": 2
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791992400.189794,
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-retain-focused-final-20261014/c5e6f2f1d824/project\",\n  \"project_type\": \"general\",\n  \"errors\": [\n    {\n      \"path\": \"F-000001\",\n      \"reason\": \"Confirmed definition requires a registered verification test\"\n    }\n  ],\n  \"warnings\": [],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        },
+        {
+          "at": 1791992427.532897,
+          "operation": "council",
+          "arguments": [
+            "work-commit",
+            "project",
+            "--input",
+            "group_review_ready.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "OppenCouncil: Human review requires a candidate or effective-version reassessment\n"
+        }
+      ],
+      "saved_items": [
+        {
+          "id": "F-000001",
+          "title": "Durable writes",
+          "why": "Previously confirmed service contract",
+          "legacy_attention": null,
+          "revision": 3,
+          "work": {
+            "affected_refs": [
+              "F-000001"
+            ],
+            "blockers": [],
+            "closed_reason": "confirmed",
+            "completion_conditions": [
+              "confirmed"
+            ],
+            "conclusion_type": "single_recommendation",
+            "phase": "closed",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:33:48+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:33:48+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Confirm"
+                ],
+                "from": "prepare_review",
+                "reason": "Existing explicit contract",
+                "to": "human_review",
+                "trigger_refs": [
+                  "existing-contract"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:33:48+00:00",
+                "by": "user",
+                "completion_conditions": [
+                  "confirmed"
+                ],
+                "from": "human_review",
+                "reason": "confirmed",
+                "to": "closed",
+                "trigger_refs": [
+                  "definition_approve"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "existing-contract"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": null,
+          "current": {
+            "number": 1,
+            "text": "Each logical write has a stable operation ID and payload. Identical replay returns its durable receipt; a changed payload cannot reuse the ID. Retain the local draft until the matching durable receipt is observed.",
+            "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+            "dependencies": [],
+            "review_basis": null
+          },
+          "review_basis": null,
+          "review_packet": null,
+          "external_brief": null,
+          "evidence_refs": [],
+          "review_required": null,
+          "reconfirmation_token": "639616f802fe523a4ba706df93f7dadab3a53c81cc8eae22d4dafecf993324f1",
+          "read_set": {
+            "F-000001": 3
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "effective",
+            "dependencies": []
+          },
+          "review_category": "quick_confirm",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": false,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "F-000002",
+          "title": "保存回执保留多久",
+          "why": "准备保存功能的未定产品口径供人工审阅；已核实可选保留期为7、30、90天，需比较恢复历史与存储占用。",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [
+              "F-000002"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "人工审阅保留期并确认完整候选；如选其他值，先更新候选再确认。"
+            ],
+            "conclusion_type": "tradeoff",
+            "phase": "human_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000002"
+                ],
+                "at": "2026-10-14T15:39:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000002"
+                ],
+                "at": "2026-10-14T15:39:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "人工审阅保留期并确认完整候选；如选其他值，先更新候选再确认。"
+                ],
+                "from": "prepare_review",
+                "reason": "允许值、影响、具体推荐及边界已完整保存，等待人工选择。",
+                "to": "human_review",
+                "trigger_refs": [
+                  "definition_draft",
+                  "evidence/claims/E-000001/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "definition_draft",
+              "evidence/claims/E-000001/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "推荐候选，待人工确认：retention_days=30。保存回执的恢复历史保留30天，自该回执首次持久化生成的时刻起按经过时间计算；相同操作的重放不重置期限。小于30天时保留，达到30天后不再承诺该回执在恢复历史中可查询。此参数只规定恢复历史窗口，不改变F-000001 v1的稳定操作ID、相同载荷重放回执、回执匹配及本地草稿规则；未见匹配持久回执的草稿不因历史窗口到期而丢弃。7或90天均为允许的替代值，需另行选择并更新本候选后确认。",
+            "text_sha256": "f2d7de1f93f87bf6dc905e53b04f6bf4c01464a7d3e3c3d04def4d12f668f929",
+            "base_version": null,
+            "dependencies": [
+              {
+                "active": true,
+                "condition": "",
+                "kind": "required",
+                "question_id": "F-000001",
+                "reason": "回执恢复历史必须保持既有持久化写入和草稿保留契约。",
+                "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                "version": 1
+              }
+            ],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json"
+              ],
+              "packet_sha256": "4d9ec5d468c397fdca66b13f13c2ebe2c4a67dacc117ae9dc50256d1cce40eaf",
+              "summary": "允许值和定性影响来自已读项目材料；推荐30天是在恢复窗口与存储之间取中间值，非人工既定偏好。计时起点及边界是本候选明确提出的产品规则。"
+            },
+            "approval_token": "a8ca5ed215199f001851471c2c346d0e33f1cb829874e1240254d8d15eed44c5"
+          },
+          "current": null,
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000001/r000001.json"
+            ],
+            "packet_sha256": "4d9ec5d468c397fdca66b13f13c2ebe2c4a67dacc117ae9dc50256d1cce40eaf",
+            "summary": "允许值和定性影响来自已读项目材料；推荐30天是在恢复窗口与存储之间取中间值，非人工既定偏好。计时起点及边界是本候选明确提出的产品规则。"
+          },
+          "review_packet": {
+            "default": "30天",
+            "project_reason": "保留比7天更长的恢复历史，同时避免直接选择90天的最大存储占用；其他两档同样可行。",
+            "verification": "已核对允许值7/30/90天及其兼容性。语义走查：29天仍在30天窗口内；达到30天后历史查询不再保证；重放不延长期限；未匹配回执的本地草稿继续按F-000001 v1保留。这是候选规则审查，未执行代码或测量存储。"
+          },
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/sources/S-000001/r000001.json",
+            "evidence/claims/E-000001/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": "cabb56045f5ba4bd602884b7eaf88db617fc08c915fe3a3615c98443480f8099",
+          "read_set": {
+            "F-000002": 2
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": [
+              {
+                "active": true,
+                "condition": "",
+                "kind": "required",
+                "question_id": "F-000001",
+                "reason": "回执恢复历史必须保持既有持久化写入和草稿保留契约。",
+                "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                "version": 1,
+                "title": "Durable writes",
+                "current_version": 1,
+                "status": "ready"
+              }
+            ]
+          },
+          "review_category": "decision",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "F-000003",
+          "title": "保存评论向谁可见",
+          "why": "准备保存功能的未定产品口径供人工审阅；已核实可选范围为仅所有者或当前项目团队，需比较私密性与协作审阅。",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [
+              "F-000003"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "人工审阅评论受众并确认完整候选；如选team，先更新候选再确认。"
+            ],
+            "conclusion_type": "tradeoff",
+            "phase": "human_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000003"
+                ],
+                "at": "2026-10-14T15:39:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000003"
+                ],
+                "at": "2026-10-14T15:39:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "人工审阅评论受众并确认完整候选；如选team，先更新候选再确认。"
+                ],
+                "from": "prepare_review",
+                "reason": "允许值、影响及具体推荐已保存，等待人工权衡受众与协作。",
+                "to": "human_review",
+                "trigger_refs": [
+                  "definition_draft",
+                  "evidence/claims/E-000001/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "definition_draft",
+              "evidence/claims/E-000001/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "推荐候选，待人工确认：comment_visibility=owner_only。保存评论仅对评论所有者可见，当前项目其他成员不能查看该评论。可替代值team表示评论对评论所有者及访问时属于当前项目团队的成员可见，便于共同审阅；离开团队的成员不再因该团队身份获得可见性。本参数规定评论受众，不改变F-000001 v1的持久化写入、回执匹配及本地草稿规则。若选择team，须更新本候选后由人工确认。",
+            "text_sha256": "255ff973fbd8758c2bbf0c342428268550e9db011abaed45c1123b5d1c6e4f3f",
+            "base_version": null,
+            "dependencies": [
+              {
+                "active": true,
+                "condition": "",
+                "kind": "reference",
+                "question_id": "F-000001",
+                "reason": "可见范围是独立的产品参数，保存操作仍遵守既有契约。",
+                "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                "version": 1
+              }
+            ],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json"
+              ],
+              "packet_sha256": "add38363bd31c308a523fc1605a529e9fedd7501c5d9db0adf9ceeffb0180076",
+              "summary": "允许值及团队可见性的收益/代价来自项目材料；当前没有共享偏好，推荐仅所有者。team按当前成员资格解释，已在候选中明示。"
+            },
+            "approval_token": "5254ba3053859eff9b7ae57b1e58e8456d56819b0849b65710eaff203f168491"
+          },
+          "current": null,
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000001/r000001.json"
+            ],
+            "packet_sha256": "add38363bd31c308a523fc1605a529e9fedd7501c5d9db0adf9ceeffb0180076",
+            "summary": "允许值及团队可见性的收益/代价来自项目材料；当前没有共享偏好，推荐仅所有者。team按当前成员资格解释，已在候选中明示。"
+          },
+          "review_packet": {
+            "default": "owner_only（仅所有者）",
+            "project_reason": "在没有明确共享偏好的情况下，先采用较小受众；代价是团队不能共同查看评论。需要协作审阅时，team是同等兼容的可选方向。",
+            "verification": "已核对owner_only/team两个允许值。语义走查：推荐值下所有者可见，另一名当前团队成员不可见；改选team时当前团队成员可见，已退出成员不再因团队资格可见。这是口径审查，未验证真实权限实现。"
+          },
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/sources/S-000001/r000001.json",
+            "evidence/claims/E-000001/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": "617bf9fdf31f4375e8b385b039e404319504375513f436ebfc717e72c2218ad1",
+          "read_set": {
+            "F-000003": 2
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": [
+              {
+                "active": true,
+                "condition": "",
+                "kind": "reference",
+                "question_id": "F-000001",
+                "reason": "可见范围是独立的产品参数，保存操作仍遵守既有契约。",
+                "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                "version": 1,
+                "title": "Durable writes",
+                "current_version": 1,
+                "status": "reference"
+              }
+            ]
+          },
+          "review_category": "decision",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "F-000004",
+          "title": "保存失败后如何自动重试",
+          "why": "准备保存功能的未定产品口径供人工审阅；同一重试方式下的等待秒数与重试次数是两个独立参数，需比较恢复机会、等待时间与请求负载。",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [
+              "F-000004"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "人工独立选择等待秒数与次数上限，审阅并确认完整候选；改选先更新候选。"
+            ],
+            "conclusion_type": "tradeoff",
+            "phase": "human_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000004"
+                ],
+                "at": "2026-10-14T15:39:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000004"
+                ],
+                "at": "2026-10-14T15:39:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "人工独立选择等待秒数与次数上限，审阅并确认完整候选；改选先更新候选。"
+                ],
+                "from": "prepare_review",
+                "reason": "单一重试方式下的两个独立参数、具体推荐及边界已保存，等待人工审阅。",
+                "to": "human_review",
+                "trigger_refs": [
+                  "definition_draft",
+                  "evidence/claims/E-000001/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "definition_draft",
+              "evidence/claims/E-000001/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "推荐候选，待人工确认：retry_delay_seconds=10，retry_attempt_limit=2。采用固定间隔自动重试：一次请求结束并报告失败或超时、且尚未观察到匹配持久回执时，自该次失败/超时结果起等待10秒，再重试；不为尚未结束的请求并发启动重试。次数上限2指首次请求之外最多2次自动重试，即每次逻辑保存最多3次请求；不因重试失败重置计数。每次重试沿用首次请求的同一operation ID和相同payload。观察到匹配持久回执即停止后续自动重试；等待期间收到迟到的匹配回执则取消待发重试。达到重试上限仍无匹配回执时停止自动重试，本地草稿继续保留，不宣告保存成功。回执匹配、重复请求及更改payload不得复用ID均沿用F-000001 v1；本候选不另设请求超时阈值。等待时间可独立改为5或30秒，次数可独立改为1或3次，任意允许配对均有效；改选后须更新完整候选并由人工确认。",
+            "text_sha256": "700c3a359bdb96a2e88deab84f6e24b02a59818aaef46ced201288a8f9d04f99",
+            "base_version": null,
+            "dependencies": [
+              {
+                "active": true,
+                "condition": "",
+                "kind": "required",
+                "question_id": "F-000001",
+                "reason": "自动重试消费已确认的稳定操作ID、相同payload、持久回执匹配及草稿保留契约。",
+                "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                "version": 1
+              }
+            ],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json"
+              ],
+              "packet_sha256": "a843096a9c03e7822b97ae8b679cf42be93b99d723b8c6e2a78f21f356f3dd81",
+              "summary": "允许等待值5/10/30秒与次数1/2/3及其独立性来自项目材料。推荐10秒、2次为负载和恢复机会之间的中间选择；计数含义、触发点及取消规则为完整候选明确提出的语义，不冒充已有实现。"
+            },
+            "approval_token": "548629677b738b484be13c3ff743da50dd22191a359b617ba1635213c70b4ca4"
+          },
+          "current": null,
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000001/r000001.json"
+            ],
+            "packet_sha256": "a843096a9c03e7822b97ae8b679cf42be93b99d723b8c6e2a78f21f356f3dd81",
+            "summary": "允许等待值5/10/30秒与次数1/2/3及其独立性来自项目材料。推荐10秒、2次为负载和恢复机会之间的中间选择；计数含义、触发点及取消规则为完整候选明确提出的语义，不冒充已有实现。"
+          },
+          "review_packet": {
+            "default": "等待10秒；最多自动重试2次（不含首次请求）",
+            "project_reason": "采用各自中间档，提供多于1次的恢复机会，同时限制比3次更高的请求负载。用户可独立选择更短等待或更多次数以增加恢复机会。",
+            "verification": "已核对全部3×3配对均允许，未把它们拆成互斥的总体方案。语义走查：首次即见匹配回执则0次重试；失败后10秒发送第1次重试，再次失败后10秒发送第2次；仍失败则停止且保留草稿；等待时收到匹配回执取消下一次；所有请求保持同一ID/payload。次数上限不包含首次请求。未运行服务、量化成功率或测量负载。"
+          },
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/sources/S-000001/r000001.json",
+            "evidence/claims/E-000001/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": "7e63ef770f72e97e21bb2353702d9c138afe6600b4f5b3dc64500c78e278bfb1",
+          "read_set": {
+            "F-000004": 2
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": [
+              {
+                "active": true,
+                "condition": "",
+                "kind": "required",
+                "question_id": "F-000001",
+                "reason": "自动重试消费已确认的稳定操作ID、相同payload、持久回执匹配及草稿保留契约。",
+                "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                "version": 1,
+                "title": "Durable writes",
+                "current_version": 1,
+                "status": "ready"
+              }
+            ]
+          },
+          "review_category": "decision",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        }
+      ],
+      "snapshot": {
+        "project": "/private/tmp/oppencouncil-retain-focused-final-20261014/c5e6f2f1d824/project",
+        "round": 2,
+        "revision": 7,
+        "questions": [
+          {
+            "canonical_ref": "Freeze/questions/F-000001.json#/definition",
+            "created_at": "2026-10-14T15:33:48+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": 1,
+              "draft": null,
+              "versions": [
+                {
+                  "approval": {
+                    "at": "2026-10-14T15:33:48+00:00",
+                    "by": "user",
+                    "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7"
+                  },
+                  "content_sha256": "d7fa420dd9c3b17f6f3f3e0b74523da77d7a2ad21c42449d6e968692fb8746db",
+                  "dependencies": [],
+                  "edits": [
+                    {
+                      "at": "2026-10-14T15:33:48+00:00",
+                      "by": "codex",
+                      "text": "Each logical write has a stable operation ID and payload. Identical replay returns its durable receipt; a changed payload cannot reuse the ID. Retain the local draft until the matching durable receipt is observed."
+                    }
+                  ],
+                  "number": 1,
+                  "published_at": "2026-10-14T15:33:48+00:00",
+                  "published_by": "user",
+                  "review_basis": null,
+                  "source": "Freeze/questions/F-000001.json#/definition/versions/0",
+                  "supersedes": null,
+                  "text": "Each logical write has a stable operation ID and payload. Identical replay returns its durable receipt; a changed payload cannot reuse the ID. Retain the local draft until the matching durable receipt is observed.",
+                  "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7"
+                }
+              ]
+            },
+            "evidence_refs": [],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000001",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [],
+            "pending_items": [],
+            "problem_type": "project_fact",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": null,
+            "review_required": null,
+            "revision": 3,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "Durable writes",
+            "verification_tests": [],
+            "why": "Previously confirmed service contract",
+            "work": {
+              "affected_refs": [
+                "F-000001"
+              ],
+              "blockers": [],
+              "closed_reason": "confirmed",
+              "completion_conditions": [
+                "confirmed"
+              ],
+              "conclusion_type": "single_recommendation",
+              "phase": "closed",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:33:48+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:33:48+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Confirm"
+                  ],
+                  "from": "prepare_review",
+                  "reason": "Existing explicit contract",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "existing-contract"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:33:48+00:00",
+                  "by": "user",
+                  "completion_conditions": [
+                    "confirmed"
+                  ],
+                  "from": "human_review",
+                  "reason": "confirmed",
+                  "to": "closed",
+                  "trigger_refs": [
+                    "definition_approve"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "existing-contract"
+              ]
+            },
+            "readiness": {
+              "status": "effective",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": null,
+            "review_category": "quick_confirm",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": false,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "639616f802fe523a4ba706df93f7dadab3a53c81cc8eae22d4dafecf993324f1",
+            "ai_position": ""
+          },
+          {
+            "created_at": "2026-10-14T15:37:30+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [
+                  {
+                    "active": true,
+                    "condition": "",
+                    "kind": "required",
+                    "question_id": "F-000001",
+                    "reason": "回执恢复历史必须保持既有持久化写入和草稿保留契约。",
+                    "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                    "version": 1
+                  }
+                ],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:39:25+00:00",
+                    "by": "codex",
+                    "text": "推荐候选，待人工确认：retention_days=30。保存回执的恢复历史保留30天，自该回执首次持久化生成的时刻起按经过时间计算；相同操作的重放不重置期限。小于30天时保留，达到30天后不再承诺该回执在恢复历史中可查询。此参数只规定恢复历史窗口，不改变F-000001 v1的稳定操作ID、相同载荷重放回执、回执匹配及本地草稿规则；未见匹配持久回执的草稿不因历史窗口到期而丢弃。7或90天均为允许的替代值，需另行选择并更新本候选后确认。"
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000001/r000001.json"
+                  ],
+                  "packet_sha256": "4d9ec5d468c397fdca66b13f13c2ebe2c4a67dacc117ae9dc50256d1cce40eaf",
+                  "summary": "允许值和定性影响来自已读项目材料；推荐30天是在恢复窗口与存储之间取中间值，非人工既定偏好。计时起点及边界是本候选明确提出的产品规则。"
+                },
+                "text": "推荐候选，待人工确认：retention_days=30。保存回执的恢复历史保留30天，自该回执首次持久化生成的时刻起按经过时间计算；相同操作的重放不重置期限。小于30天时保留，达到30天后不再承诺该回执在恢复历史中可查询。此参数只规定恢复历史窗口，不改变F-000001 v1的稳定操作ID、相同载荷重放回执、回执匹配及本地草稿规则；未见匹配持久回执的草稿不因历史窗口到期而丢弃。7或90天均为允许的替代值，需另行选择并更新本候选后确认。",
+                "text_sha256": "f2d7de1f93f87bf6dc905e53b04f6bf4c01464a7d3e3c3d04def4d12f668f929",
+                "updated_at": "2026-10-14T15:39:25+00:00",
+                "updated_by": "codex",
+                "approval_token": "a8ca5ed215199f001851471c2c346d0e33f1cb829874e1240254d8d15eed44c5"
+              },
+              "versions": []
+            },
+            "evidence_refs": [
+              "evidence/sources/S-000001/r000001.json",
+              "evidence/claims/E-000001/r000001.json"
+            ],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000002",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [],
+            "pending_items": [],
+            "problem_type": "engineering",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json"
+              ],
+              "packet_sha256": "4d9ec5d468c397fdca66b13f13c2ebe2c4a67dacc117ae9dc50256d1cce40eaf",
+              "summary": "允许值和定性影响来自已读项目材料；推荐30天是在恢复窗口与存储之间取中间值，非人工既定偏好。计时起点及边界是本候选明确提出的产品规则。"
+            },
+            "review_packet": {
+              "default": "30天",
+              "project_reason": "保留比7天更长的恢复历史，同时避免直接选择90天的最大存储占用；其他两档同样可行。",
+              "verification": "已核对允许值7/30/90天及其兼容性。语义走查：29天仍在30天窗口内；达到30天后历史查询不再保证；重放不延长期限；未匹配回执的本地草稿继续按F-000001 v1保留。这是候选规则审查，未执行代码或测量存储。"
+            },
+            "review_required": null,
+            "revision": 2,
+            "round": 2,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "保存回执保留多久",
+            "verification_tests": [],
+            "why": "准备保存功能的未定产品口径供人工审阅；已核实可选保留期为7、30、90天，需比较恢复历史与存储占用。",
+            "work": {
+              "affected_refs": [
+                "F-000002"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "人工审阅保留期并确认完整候选；如选其他值，先更新候选再确认。"
+              ],
+              "conclusion_type": "tradeoff",
+              "phase": "human_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000002"
+                  ],
+                  "at": "2026-10-14T15:39:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000002"
+                  ],
+                  "at": "2026-10-14T15:39:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "人工审阅保留期并确认完整候选；如选其他值，先更新候选再确认。"
+                  ],
+                  "from": "prepare_review",
+                  "reason": "允许值、影响、具体推荐及边界已完整保存，等待人工选择。",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "definition_draft",
+                    "evidence/claims/E-000001/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "definition_draft",
+                "evidence/claims/E-000001/r000001.json"
+              ]
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": [
+                {
+                  "active": true,
+                  "condition": "",
+                  "kind": "required",
+                  "question_id": "F-000001",
+                  "reason": "回执恢复历史必须保持既有持久化写入和草稿保留契约。",
+                  "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                  "version": 1,
+                  "title": "Durable writes",
+                  "current_version": 1,
+                  "status": "ready"
+                }
+              ]
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": "B-000001",
+            "review_category": "decision",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "cabb56045f5ba4bd602884b7eaf88db617fc08c915fe3a3615c98443480f8099",
+            "ai_position": ""
+          },
+          {
+            "created_at": "2026-10-14T15:37:30+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [
+                  {
+                    "active": true,
+                    "condition": "",
+                    "kind": "reference",
+                    "question_id": "F-000001",
+                    "reason": "可见范围是独立的产品参数，保存操作仍遵守既有契约。",
+                    "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                    "version": 1
+                  }
+                ],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:39:25+00:00",
+                    "by": "codex",
+                    "text": "推荐候选，待人工确认：comment_visibility=owner_only。保存评论仅对评论所有者可见，当前项目其他成员不能查看该评论。可替代值team表示评论对评论所有者及访问时属于当前项目团队的成员可见，便于共同审阅；离开团队的成员不再因该团队身份获得可见性。本参数规定评论受众，不改变F-000001 v1的持久化写入、回执匹配及本地草稿规则。若选择team，须更新本候选后由人工确认。"
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000001/r000001.json"
+                  ],
+                  "packet_sha256": "add38363bd31c308a523fc1605a529e9fedd7501c5d9db0adf9ceeffb0180076",
+                  "summary": "允许值及团队可见性的收益/代价来自项目材料；当前没有共享偏好，推荐仅所有者。team按当前成员资格解释，已在候选中明示。"
+                },
+                "text": "推荐候选，待人工确认：comment_visibility=owner_only。保存评论仅对评论所有者可见，当前项目其他成员不能查看该评论。可替代值team表示评论对评论所有者及访问时属于当前项目团队的成员可见，便于共同审阅；离开团队的成员不再因该团队身份获得可见性。本参数规定评论受众，不改变F-000001 v1的持久化写入、回执匹配及本地草稿规则。若选择team，须更新本候选后由人工确认。",
+                "text_sha256": "255ff973fbd8758c2bbf0c342428268550e9db011abaed45c1123b5d1c6e4f3f",
+                "updated_at": "2026-10-14T15:39:25+00:00",
+                "updated_by": "codex",
+                "approval_token": "5254ba3053859eff9b7ae57b1e58e8456d56819b0849b65710eaff203f168491"
+              },
+              "versions": []
+            },
+            "evidence_refs": [
+              "evidence/sources/S-000001/r000001.json",
+              "evidence/claims/E-000001/r000001.json"
+            ],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000003",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [],
+            "pending_items": [],
+            "problem_type": "engineering",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json"
+              ],
+              "packet_sha256": "add38363bd31c308a523fc1605a529e9fedd7501c5d9db0adf9ceeffb0180076",
+              "summary": "允许值及团队可见性的收益/代价来自项目材料；当前没有共享偏好，推荐仅所有者。team按当前成员资格解释，已在候选中明示。"
+            },
+            "review_packet": {
+              "default": "owner_only（仅所有者）",
+              "project_reason": "在没有明确共享偏好的情况下，先采用较小受众；代价是团队不能共同查看评论。需要协作审阅时，team是同等兼容的可选方向。",
+              "verification": "已核对owner_only/team两个允许值。语义走查：推荐值下所有者可见，另一名当前团队成员不可见；改选team时当前团队成员可见，已退出成员不再因团队资格可见。这是口径审查，未验证真实权限实现。"
+            },
+            "review_required": null,
+            "revision": 2,
+            "round": 2,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "保存评论向谁可见",
+            "verification_tests": [],
+            "why": "准备保存功能的未定产品口径供人工审阅；已核实可选范围为仅所有者或当前项目团队，需比较私密性与协作审阅。",
+            "work": {
+              "affected_refs": [
+                "F-000003"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "人工审阅评论受众并确认完整候选；如选team，先更新候选再确认。"
+              ],
+              "conclusion_type": "tradeoff",
+              "phase": "human_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000003"
+                  ],
+                  "at": "2026-10-14T15:39:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000003"
+                  ],
+                  "at": "2026-10-14T15:39:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "人工审阅评论受众并确认完整候选；如选team，先更新候选再确认。"
+                  ],
+                  "from": "prepare_review",
+                  "reason": "允许值、影响及具体推荐已保存，等待人工权衡受众与协作。",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "definition_draft",
+                    "evidence/claims/E-000001/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "definition_draft",
+                "evidence/claims/E-000001/r000001.json"
+              ]
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": [
+                {
+                  "active": true,
+                  "condition": "",
+                  "kind": "reference",
+                  "question_id": "F-000001",
+                  "reason": "可见范围是独立的产品参数，保存操作仍遵守既有契约。",
+                  "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                  "version": 1,
+                  "title": "Durable writes",
+                  "current_version": 1,
+                  "status": "reference"
+                }
+              ]
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": "B-000001",
+            "review_category": "decision",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "617bf9fdf31f4375e8b385b039e404319504375513f436ebfc717e72c2218ad1",
+            "ai_position": ""
+          },
+          {
+            "created_at": "2026-10-14T15:37:30+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [
+                  {
+                    "active": true,
+                    "condition": "",
+                    "kind": "required",
+                    "question_id": "F-000001",
+                    "reason": "自动重试消费已确认的稳定操作ID、相同payload、持久回执匹配及草稿保留契约。",
+                    "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                    "version": 1
+                  }
+                ],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:39:25+00:00",
+                    "by": "codex",
+                    "text": "推荐候选，待人工确认：retry_delay_seconds=10，retry_attempt_limit=2。采用固定间隔自动重试：一次请求结束并报告失败或超时、且尚未观察到匹配持久回执时，自该次失败/超时结果起等待10秒，再重试；不为尚未结束的请求并发启动重试。次数上限2指首次请求之外最多2次自动重试，即每次逻辑保存最多3次请求；不因重试失败重置计数。每次重试沿用首次请求的同一operation ID和相同payload。观察到匹配持久回执即停止后续自动重试；等待期间收到迟到的匹配回执则取消待发重试。达到重试上限仍无匹配回执时停止自动重试，本地草稿继续保留，不宣告保存成功。回执匹配、重复请求及更改payload不得复用ID均沿用F-000001 v1；本候选不另设请求超时阈值。等待时间可独立改为5或30秒，次数可独立改为1或3次，任意允许配对均有效；改选后须更新完整候选并由人工确认。"
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000001/r000001.json"
+                  ],
+                  "packet_sha256": "a843096a9c03e7822b97ae8b679cf42be93b99d723b8c6e2a78f21f356f3dd81",
+                  "summary": "允许等待值5/10/30秒与次数1/2/3及其独立性来自项目材料。推荐10秒、2次为负载和恢复机会之间的中间选择；计数含义、触发点及取消规则为完整候选明确提出的语义，不冒充已有实现。"
+                },
+                "text": "推荐候选，待人工确认：retry_delay_seconds=10，retry_attempt_limit=2。采用固定间隔自动重试：一次请求结束并报告失败或超时、且尚未观察到匹配持久回执时，自该次失败/超时结果起等待10秒，再重试；不为尚未结束的请求并发启动重试。次数上限2指首次请求之外最多2次自动重试，即每次逻辑保存最多3次请求；不因重试失败重置计数。每次重试沿用首次请求的同一operation ID和相同payload。观察到匹配持久回执即停止后续自动重试；等待期间收到迟到的匹配回执则取消待发重试。达到重试上限仍无匹配回执时停止自动重试，本地草稿继续保留，不宣告保存成功。回执匹配、重复请求及更改payload不得复用ID均沿用F-000001 v1；本候选不另设请求超时阈值。等待时间可独立改为5或30秒，次数可独立改为1或3次，任意允许配对均有效；改选后须更新完整候选并由人工确认。",
+                "text_sha256": "700c3a359bdb96a2e88deab84f6e24b02a59818aaef46ced201288a8f9d04f99",
+                "updated_at": "2026-10-14T15:39:25+00:00",
+                "updated_by": "codex",
+                "approval_token": "548629677b738b484be13c3ff743da50dd22191a359b617ba1635213c70b4ca4"
+              },
+              "versions": []
+            },
+            "evidence_refs": [
+              "evidence/sources/S-000001/r000001.json",
+              "evidence/claims/E-000001/r000001.json"
+            ],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000004",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [],
+            "pending_items": [],
+            "problem_type": "engineering",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json"
+              ],
+              "packet_sha256": "a843096a9c03e7822b97ae8b679cf42be93b99d723b8c6e2a78f21f356f3dd81",
+              "summary": "允许等待值5/10/30秒与次数1/2/3及其独立性来自项目材料。推荐10秒、2次为负载和恢复机会之间的中间选择；计数含义、触发点及取消规则为完整候选明确提出的语义，不冒充已有实现。"
+            },
+            "review_packet": {
+              "default": "等待10秒；最多自动重试2次（不含首次请求）",
+              "project_reason": "采用各自中间档，提供多于1次的恢复机会，同时限制比3次更高的请求负载。用户可独立选择更短等待或更多次数以增加恢复机会。",
+              "verification": "已核对全部3×3配对均允许，未把它们拆成互斥的总体方案。语义走查：首次即见匹配回执则0次重试；失败后10秒发送第1次重试，再次失败后10秒发送第2次；仍失败则停止且保留草稿；等待时收到匹配回执取消下一次；所有请求保持同一ID/payload。次数上限不包含首次请求。未运行服务、量化成功率或测量负载。"
+            },
+            "review_required": null,
+            "revision": 2,
+            "round": 2,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "保存失败后如何自动重试",
+            "verification_tests": [],
+            "why": "准备保存功能的未定产品口径供人工审阅；同一重试方式下的等待秒数与重试次数是两个独立参数，需比较恢复机会、等待时间与请求负载。",
+            "work": {
+              "affected_refs": [
+                "F-000004"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "人工独立选择等待秒数与次数上限，审阅并确认完整候选；改选先更新候选。"
+              ],
+              "conclusion_type": "tradeoff",
+              "phase": "human_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000004"
+                  ],
+                  "at": "2026-10-14T15:39:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000004"
+                  ],
+                  "at": "2026-10-14T15:39:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "人工独立选择等待秒数与次数上限，审阅并确认完整候选；改选先更新候选。"
+                  ],
+                  "from": "prepare_review",
+                  "reason": "单一重试方式下的两个独立参数、具体推荐及边界已保存，等待人工审阅。",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "definition_draft",
+                    "evidence/claims/E-000001/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "definition_draft",
+                "evidence/claims/E-000001/r000001.json"
+              ]
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": [
+                {
+                  "active": true,
+                  "condition": "",
+                  "kind": "required",
+                  "question_id": "F-000001",
+                  "reason": "自动重试消费已确认的稳定操作ID、相同payload、持久回执匹配及草稿保留契约。",
+                  "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                  "version": 1,
+                  "title": "Durable writes",
+                  "current_version": 1,
+                  "status": "ready"
+                }
+              ]
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": "B-000001",
+            "review_category": "decision",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "7e63ef770f72e97e21bb2353702d9c138afe6600b4f5b3dc64500c78e278bfb1",
+            "ai_position": ""
+          }
+        ],
+        "decision_groups": [
+          {
+            "confirmations": [],
+            "created_at": "2026-10-14T15:40:00+00:00",
+            "created_by": "codex",
+            "example": null,
+            "feedback_events": [],
+            "history": [],
+            "id": "B-000001",
+            "member_ids": [
+              "F-000002",
+              "F-000003",
+              "F-000004"
+            ],
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:40:50+00:00",
+                "id": "save-product-choices-group-prepared-v1:B-000001:0",
+                "request_id": "save-product-choices-group-prepared-v1",
+                "text": "已保存三个独立候选及其可选值比较：F-000002保留期，F-000003评论受众，F-000004自动重试。推荐30天、仅所有者、10秒、2次。四个选择控件覆盖全部允许值；可逐项选择。选择仅是讨论偏好，不自动改写或确认候选。三个成员均处于human_review，等待人工审阅。"
+              }
+            ],
+            "options": [
+              {
+                "consequences": "推荐组合为30天、owner_only、10秒、2次；可逐项替换，无需选择捆绑套餐。三项决策彼此独立；重试的等待秒数和次数上限在同一方式内也独立。已有持久化写入契约F-000001 v1保持有效。",
+                "label": "同一保存方式内独立选择参数",
+                "rules": {
+                  "F-000002": "回执恢复历史保留期：{{choice:receipt_retention_days;回执保留天数;7天;30天;90天}}。推荐30天。7天：恢复窗口最短、存储占用较少；30天：中等窗口与占用；90天：恢复窗口最长、存储占用较多。此虚构服务没有法律最低保留期。候选从首次持久回执生成时起计时，重放不重置期限；完整边界见F-000002。",
+                  "F-000003": "评论可见范围：{{choice:save_comment_visibility;评论可见范围;仅所有者（owner_only）;当前项目团队（team）}}。推荐仅所有者。仅所有者：受众较小，团队不能共同查看评论；当前项目团队：便于共同审阅，评论也会向当前团队成员可见。可见性不决定回执保留天数或自动重试参数。",
+                  "F-000004": "固定间隔自动重试，两个参数独立选择。等待时间：{{choice:save_retry_delay_seconds;自动重试等待时间;5秒;10秒;30秒}}，推荐10秒。5秒：更快获得恢复机会、短期请求负载较高；10秒：等待与负载取中间档；30秒：减缓请求负载、恢复等待更长。次数上限：{{choice:save_retry_attempt_limit;最多自动重试次数（不含首次请求）;1次;2次;3次}}，推荐2次。1次：恢复机会较少，每次保存最多2次请求；2次：中间档，最多3次请求；3次：恢复机会较多、请求总量更高，最多4次请求。5/10/30秒与1/2/3次的每个配对都允许。每次重试使用同一operation ID及payload，匹配回执出现则停止，没有匹配回执则保留草稿。完整触发与取消规则见F-000004。"
+                },
+                "tradeoffs": "较长保留期换取更多恢复历史并增加存储；team换取协作便利并扩大评论受众；更短等待或更多重试增加恢复机会及请求负载。资料只支持方向性比较，未提供存储量、成功率或吞吐量的数字。选择控件只记录浏览器本地偏好；添加到讨论后仍须保存讨论，候选不会自动改写，也不会自动确认。"
+              }
+            ],
+            "pending_items": [],
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "purpose": "把三个相关但可分别决定的问题放在同一主题审阅。全部列明值及组合均兼容既有F-000001 v1。推荐值是待确认的产品建议，没有已知人工偏好。每个F保留自己的完整候选及确认记录。",
+            "revision": 2,
+            "title": "保存功能：回执保留、评论可见性与自动重试",
+            "updated_at": "2026-10-14T15:40:00+00:00",
+            "updated_by": "codex",
+            "work": {
+              "affected_refs": [
+                "F-000002",
+                "F-000003",
+                "F-000004"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "通过三个成员候选完成独立选择及人工确认。"
+              ],
+              "conclusion_type": "tradeoff",
+              "phase": "prepare_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000002",
+                    "F-000003",
+                    "F-000004"
+                  ],
+                  "at": "2026-10-14T15:40:50+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "通过三个成员候选完成独立选择及人工确认。"
+                  ],
+                  "from": "triage",
+                  "reason": "共享主题的比较已准备完成；三个成员的具体候选已分别进入human_review。组本身不持有规范定义。",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "F-000002",
+                    "F-000003",
+                    "F-000004"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "F-000002",
+                "F-000003",
+                "F-000004"
+              ]
+            },
+            "approval_token": "a7914b85c6276619d37325371232ed1f8df1ec12c0f8473be6ff44848585d32c",
+            "readiness": {
+              "F-000002": {
+                "status": "ready",
+                "dependencies": [
+                  {
+                    "active": true,
+                    "condition": "",
+                    "kind": "required",
+                    "question_id": "F-000001",
+                    "reason": "回执恢复历史必须保持既有持久化写入和草稿保留契约。",
+                    "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                    "version": 1,
+                    "title": "Durable writes",
+                    "current_version": 1,
+                    "status": "ready"
+                  }
+                ]
+              },
+              "F-000003": {
+                "status": "ready",
+                "dependencies": [
+                  {
+                    "active": true,
+                    "condition": "",
+                    "kind": "reference",
+                    "question_id": "F-000001",
+                    "reason": "可见范围是独立的产品参数，保存操作仍遵守既有契约。",
+                    "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                    "version": 1,
+                    "title": "Durable writes",
+                    "current_version": 1,
+                    "status": "reference"
+                  }
+                ]
+              },
+              "F-000004": {
+                "status": "ready",
+                "dependencies": [
+                  {
+                    "active": true,
+                    "condition": "",
+                    "kind": "required",
+                    "question_id": "F-000001",
+                    "reason": "自动重试消费已确认的稳定操作ID、相同payload、持久回执匹配及草稿保留契约。",
+                    "text_sha256": "ff1bc5a69892db7b1e8ad6c67717eabe3cb9463bbfeef7adc88f88799de475f7",
+                    "version": 1,
+                    "title": "Durable writes",
+                    "current_version": 1,
+                    "status": "ready"
+                  }
+                ]
+              }
+            },
+            "review_category": "decision",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "historical": false
+          }
+        ],
+        "governance_version": 5,
+        "pending_submission_paths": [],
+        "investigations": []
+      },
+      "hashes": {
+        "manifest": "46d0926b6dde0031e8026ce905906f4a48be0b68b15652f8fb12c3dfc8c441ef",
+        "trace": "6360899ca1cf7c469a15e7f9e6b4236aec09ed45ee59fb3458cdf9c1b2549caf",
+        "outcome": "b67e194483aff7b46a41af75d06c8d82cbb636ef1b794ccd00418e33a5e19e4c"
+      }
+    }
+  ],
+  "semantic_readback": {
+    "method": "Root evaluator read saved candidates, review packets, discussions, outcomes and relevant checks; not a prose-matching test.",
+    "passed": [
+      "Three independent F in one group",
+      "Four independent selectors; no parameter-combination plan explosion",
+      "Concrete proposals and ordinary/boundary cases",
+      "F-000001 bytes unchanged; exact dependencies; no scientific appendix loaded"
+    ],
+    "limitations": [
+      "Seeded F-000001 verification registration absent",
+      "One rejected group-phase write; validation correctly remains DAMAGED"
+    ]
+  }
+}

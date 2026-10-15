@@ -358,3 +358,15 @@ test('updated prerequisites show reviewed old/new wording and explicit enabled c
   assert.equal(s.calls.at(-1).body.operation,'definition_approve');
   assert.equal(s.calls.at(-1).body.value,'member-token');
 });
+
+test('v5 member reconfirmation preserves the current-version operation and preparation gate',async()=>{
+ const s=setup(), q=s.state.snapshot.questions[0];
+ s.state.snapshot.governance_version=5;
+ q.definition={draft:null,current_version:1,versions:[{number:1,text:'Still effective'}]};
+ q.work={phase:'human_review'};q.review_required={reason:'Verified evidence change'};q.reconfirmation_token='reconfirm-token';
+ s.ui.updateControls();assert.equal(s.memberButtons[0].textContent,'重新确认当前版本');
+ await s.click('approve-member',{question:q.id});
+ assert.equal(s.calls[0].body.operation,'definition_reconfirm');assert.equal(s.calls[0].body.value,'reconfirm-token');
+ q.work.phase='evidence';s.ui.updateControls();assert.equal(s.memberButtons[0].disabled,true);
+ await s.click('approve-member',{question:q.id});assert.equal(s.calls.length,1);
+});

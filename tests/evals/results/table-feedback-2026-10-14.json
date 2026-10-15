@@ -1,0 +1,381 @@
+{
+  "scenario": "human_table_edit",
+  "directory": "/private/tmp/oppencouncil-table-feedback-20261014-d/7050ef0f7463",
+  "checks": {
+    "exact_human_table_preserved": true,
+    "formal_version_preserved": true,
+    "formal_results_preserved": true,
+    "original_formal_producer_preserved": false,
+    "old_assets_preserved": true,
+    "fresh_immutable_image": true,
+    "candidate_image_matches_generated_preview": true,
+    "human_review_without_approval": true,
+    "feedback_handled": true,
+    "no_premature_pending_wakeup": true,
+    "no_memory": true,
+    "no_release": true,
+    "generated_preview_read_back": true,
+    "replayed_preview_values_and_order": true,
+    "project_only_replay_succeeded": true,
+    "replayed_formal_v1_identical": true,
+    "replayed_preview_identical": true
+  },
+  "rubric_deviation": "The original formal producer was refactored into a shared CSV writer. The preregistered byte-preservation criterion fails; project-only replay separately checks unchanged formal v1 behavior. No blanket rubric pass is claimed.",
+  "validation": {
+    "state": "MANAGED_READY",
+    "project": "/private/tmp/oppencouncil-table-feedback-20261014-d/7050ef0f7463/project",
+    "project_type": "research",
+    "errors": [],
+    "warnings": [
+      {
+        "path": "Data/derived/table-v1.json",
+        "reason": "Data origin/version requires classification before a release"
+      },
+      {
+        "path": "Explore/table-preview",
+        "reason": "Legacy experiment needs lifecycle registration"
+      }
+    ],
+    "unassigned_files": []
+  },
+  "changed_project_files": [
+    "Audit/checks/table_candidate.py",
+    "Audit/checks/table_saved_candidate.py",
+    "Audit/human-table-edit-original.md",
+    "Explore/table-preview/example.csv",
+    "Explore/table-preview/example.svg",
+    "Explore/table-preview/prepare_review.py",
+    "Explore/table-preview/refine_review_basis.py",
+    "Explore/table-preview/render.py",
+    "Explore/table-preview/table.json",
+    "Freeze/assets/c65f749a2d0c22c1ba514a2ff0948ca72ff2dbbcc862dd78d6363e0e36eb3959.svg",
+    "Freeze/evidence/claims/E-000001/r000001.json",
+    "Freeze/evidence/sources/S-000001/r000001.json",
+    "Freeze/evidence/sources/S-000002/r000001.json",
+    "Freeze/manifest.json",
+    "Freeze/questions/F-000001.json",
+    "Scripts/01_table.py"
+  ],
+  "instruction_reads": [
+    {
+      "at": 1791987425.85401,
+      "operation": "read",
+      "path": "skills/oppencouncil/SKILL.md",
+      "bytes": 4741,
+      "whitespace_words": 570,
+      "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+    },
+    {
+      "at": 1791987430.8767302,
+      "operation": "read",
+      "path": "skills/oppencouncil/references/resume.md",
+      "bytes": 1352,
+      "whitespace_words": 162,
+      "sha256": "545da775e740a2dd8e110def6682e027cfc83bbde14ade9f09b361789358a23e"
+    },
+    {
+      "at": 1791987430.877202,
+      "operation": "read",
+      "path": "skills/oppencouncil/references/review-packet.md",
+      "bytes": 1704,
+      "whitespace_words": 185,
+      "sha256": "22069ea1cc07fb62f1cbdaf0b004cb6a7c541412f5aa10a07ffc3464dc32c8c0"
+    },
+    {
+      "at": 1791987430.877602,
+      "operation": "read",
+      "path": "skills/oppencouncil/references/research-stage-reporting.md",
+      "bytes": 676,
+      "whitespace_words": 83,
+      "sha256": "2408a8ca2f6e708baa1f35c373eee0aee687ba4bfdd559788f8e6e17d99a9cb9"
+    },
+    {
+      "at": 1791987435.642401,
+      "operation": "read",
+      "path": "skills/oppencouncil/references/local-council.md",
+      "bytes": 3666,
+      "whitespace_words": 422,
+      "sha256": "046f29049827530f79ba254f8168ee599028932bec5e04b1f9a24f925a9e931f"
+    },
+    {
+      "at": 1791987435.642868,
+      "operation": "read",
+      "path": "skills/oppencouncil/references/output-specifications.md",
+      "bytes": 2442,
+      "whitespace_words": 304,
+      "sha256": "b8cb0210c05029ed007c33a45fc4229835ab1718ab9acdb67c13fdcbb8d6a807"
+    },
+    {
+      "at": 1791987435.643239,
+      "operation": "read",
+      "path": "skills/oppencouncil/references/project-operations.md",
+      "bytes": 5866,
+      "whitespace_words": 719,
+      "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+    },
+    {
+      "at": 1791987459.438095,
+      "operation": "read",
+      "path": "skills/oppencouncil/references/evidence.md",
+      "bytes": 1486,
+      "whitespace_words": 148,
+      "sha256": "e905def83b78386b5f233bcb98d7d8cbaf5b6e809abaf7bf1fb59e50d917c3d6"
+    }
+  ],
+  "metrics": {
+    "skill_words": 2593,
+    "cli_and_script_calls": 20,
+    "nonzero_calls": 3
+  },
+  "nonzero_calls": [
+    {
+      "at": 1791987612.931117,
+      "operation": "council",
+      "arguments": [
+        "work-commit",
+        "project",
+        "--input",
+        "candidate-review.json"
+      ],
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "OppenCouncil: Research recommendations require original-text verification\n"
+    },
+    {
+      "at": 1791987659.007673,
+      "operation": "council",
+      "arguments": [
+        "work-commit",
+        "project",
+        "--input",
+        "candidate-review-verified.json"
+      ],
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "OppenCouncil: Research recommendations require original-text verification\n"
+    },
+    {
+      "at": 1791987689.484985,
+      "operation": "council",
+      "arguments": [
+        "work-commit",
+        "project",
+        "--input",
+        "candidate-review-final.json"
+      ],
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "OppenCouncil: Decisive objection needs resolution or an explained tradeoff\n"
+    }
+  ],
+  "saved_item": {
+    "id": "F-000001",
+    "title": "Article table",
+    "why": "Existing human layout requirement",
+    "legacy_attention": null,
+    "revision": 7,
+    "work": {
+      "affected_refs": [
+        "F-000001",
+        "Explore/table-preview",
+        "Scripts/01_table.py"
+      ],
+      "blockers": [],
+      "closed_reason": null,
+      "completion_conditions": [
+        "Human reviews and confirms the synchronized candidate via the separate UI action"
+      ],
+      "conclusion_type": "single_recommendation",
+      "phase": "human_review",
+      "revision_id": 2,
+      "transitions": [
+        {
+          "affected_refs": [
+            "F-000001"
+          ],
+          "at": "2026-10-14T14:16:36+00:00",
+          "by": "codex",
+          "completion_conditions": [
+            "Review the saved candidate"
+          ],
+          "from": "triage",
+          "reason": "Candidate wording saved",
+          "to": "prepare_review",
+          "trigger_refs": [
+            "definition_draft"
+          ]
+        },
+        {
+          "affected_refs": [
+            "F-000001"
+          ],
+          "at": "2026-10-14T14:16:36+00:00",
+          "by": "codex",
+          "completion_conditions": [
+            "Human confirmation"
+          ],
+          "from": "prepare_review",
+          "reason": "Human fixture layout",
+          "to": "human_review",
+          "trigger_refs": [
+            "human-layout"
+          ]
+        },
+        {
+          "affected_refs": [
+            "F-000001"
+          ],
+          "at": "2026-10-14T14:16:36+00:00",
+          "by": "user",
+          "completion_conditions": [
+            "confirmed"
+          ],
+          "from": "human_review",
+          "reason": "confirmed",
+          "to": "closed",
+          "trigger_refs": [
+            "definition_approve"
+          ]
+        },
+        {
+          "affected_refs": [
+            "F-000001"
+          ],
+          "at": "2026-10-14T14:16:36+00:00",
+          "by": "user",
+          "completion_conditions": [
+            "Review the saved candidate"
+          ],
+          "from": "closed",
+          "reason": "Candidate wording saved",
+          "to": "prepare_review",
+          "trigger_refs": [
+            "definition_draft"
+          ]
+        },
+        {
+          "affected_refs": [
+            "F-000001",
+            "Explore/table-preview",
+            "Scripts/01_table.py"
+          ],
+          "at": "2026-10-14T14:21:53+00:00",
+          "by": "codex",
+          "completion_conditions": [
+            "Human reviews and confirms the synchronized candidate via the separate UI action"
+          ],
+          "from": "prepare_review",
+          "reason": "Human table edits synchronized and local examples verified; ready for the requested human review.",
+          "to": "human_review",
+          "trigger_refs": [
+            "human-table-edit:edit:F-000001",
+            "evidence/claims/E-000001/r000001.json"
+          ]
+        }
+      ],
+      "trigger_refs": [
+        "human-table-edit:edit:F-000001",
+        "evidence/claims/E-000001/r000001.json"
+      ]
+    },
+    "inputs": [],
+    "messages": [],
+    "pending_items": [
+      {
+        "continue_when": {
+          "kind": "local_assessment",
+          "satisfied": false
+        },
+        "id": "confirm-edited-table",
+        "input_refs": [
+          "human-table-edit:edit:F-000001"
+        ],
+        "question": "After human review, verify that the synchronized candidate c80522d7ff80f8487d2c9cb2efc5eef6701136e4df8194ea00cb3144e16cb9eb has actually been confirmed before updating formal output or registration.",
+        "reason": "The generic definition_confirmed condition reports ready because v1 is already confirmed. That existing approval does not cover the revised candidate; this assessment remains unsatisfied while the candidate awaits human review.",
+        "resolved": false,
+        "updated_at": "2026-10-14T14:22:41+00:00",
+        "updated_in": "table-feedback-wait-for-edited-candidate-20261014"
+      }
+    ],
+    "candidate": {
+      "text": "Article table layout. The numbers below are simulated examples, not study results.\n\n```table\n{\n  \"schema_version\": 1,\n  \"id\": \"baseline\",\n  \"title\": \"Baseline characteristics by treatment\",\n  \"simulated\": true,\n  \"columns\": [\n    {\n      \"id\": \"b\",\n      \"label\": \"Group B\"\n    },\n    {\n      \"id\": \"a\",\n      \"label\": \"Group A\"\n    }\n  ],\n  \"headers\": [\n    {\n      \"id\": \"hb\",\n      \"label\": \"Group B\",\n      \"column_id\": \"b\"\n    },\n    {\n      \"id\": \"ha\",\n      \"label\": \"Group A\",\n      \"column_id\": \"a\"\n    }\n  ],\n  \"rows\": [\n    {\n      \"id\": \"age\",\n      \"label\": \"Age, years\",\n      \"cells\": {\n        \"a\": \"50.0 (14.1)\",\n        \"b\": \"60.0 (14.1)\"\n      }\n    },\n    {\n      \"id\": \"diabetes\",\n      \"label\": \"Diabetes, n (%)\",\n      \"cells\": {\n        \"a\": \"1 (50.0%)\",\n        \"b\": \"2 (100.0%)\"\n      }\n    }\n  ],\n  \"footnotes\": [\n    {\n      \"id\": \"simulation\",\n      \"text\": \"Simulated data for layout review only.\"\n    },\n    {\n      \"id\": \"format\",\n      \"text\": \"Age is mean (SD); diabetes is n (%).\"\n    }\n  ]\n}\n```\n\n![Simulated example](Freeze/assets/c65f749a2d0c22c1ba514a2ff0948ca72ff2dbbcc862dd78d6363e0e36eb3959.svg)",
+      "text_sha256": "c80522d7ff80f8487d2c9cb2efc5eef6701136e4df8194ea00cb3144e16cb9eb",
+      "base_version": 1,
+      "dependencies": [],
+      "review_basis": {
+        "claims": [
+          "evidence/claims/E-000001/r000001.json"
+        ],
+        "packet_sha256": "cc4031f36a6fd56d1cf2da45ed8755546de3e5e0abd8f5253e371e8fdb2a5214",
+        "summary": "The review recommendation follows the complete original human layout requirements in the checked original-text source. Implementation verification is separate local code-check evidence S-000002 and the executed audit check."
+      },
+      "approval_token": "311bce659126a29cad663f2491dcf500b6f208cc810eab52c2a7d95736f4bcba"
+    },
+    "current": {
+      "number": 1,
+      "text": "Article table layout. The numbers below are simulated examples, not study results.\n\n```table\n{\n  \"schema_version\": 1,\n  \"id\": \"baseline\",\n  \"title\": \"Baseline summary\",\n  \"simulated\": true,\n  \"columns\": [\n    {\n      \"id\": \"a\",\n      \"label\": \"Group A\"\n    },\n    {\n      \"id\": \"b\",\n      \"label\": \"Group B\"\n    }\n  ],\n  \"headers\": [\n    {\n      \"id\": \"ha\",\n      \"label\": \"Group A\",\n      \"column_id\": \"a\"\n    },\n    {\n      \"id\": \"hb\",\n      \"label\": \"Group B\",\n      \"column_id\": \"b\"\n    }\n  ],\n  \"rows\": [\n    {\n      \"id\": \"age\",\n      \"label\": \"Age, years\",\n      \"cells\": {\n        \"a\": \"50.0 (14.1)\",\n        \"b\": \"60.0 (14.1)\"\n      }\n    },\n    {\n      \"id\": \"bmi\",\n      \"label\": \"BMI, kg/m²\",\n      \"cells\": {\n        \"a\": \"24.0 (2.0)\",\n        \"b\": \"25.0 (3.0)\"\n      }\n    },\n    {\n      \"id\": \"diabetes\",\n      \"label\": \"Diabetes, n (%)\",\n      \"cells\": {\n        \"a\": \"1 (50.0%)\",\n        \"b\": \"2 (100.0%)\"\n      }\n    }\n  ],\n  \"footnotes\": [\n    {\n      \"id\": \"simulation\",\n      \"text\": \"Simulated data for layout review only.\"\n    }\n  ]\n}\n```\n\n![Simulated example](Freeze/assets/a3cf53986a826375dbf4929231eaa5a76fb9c53cde24b2fe5820a960d6528980.svg)",
+      "text_sha256": "1c16e9f616fbf94870b2a7fd69ee0c4422827ae4b5d18ef27cf0964b8e2b423f",
+      "dependencies": [],
+      "review_basis": null
+    },
+    "review_basis": {
+      "claims": [
+        "evidence/claims/E-000001/r000001.json"
+      ],
+      "packet_sha256": "cc4031f36a6fd56d1cf2da45ed8755546de3e5e0abd8f5253e371e8fdb2a5214",
+      "summary": "The review recommendation follows the complete original human layout requirements in the checked original-text source. Implementation verification is separate local code-check evidence S-000002 and the executed audit check."
+    },
+    "review_packet": {
+      "applicability": "F-000001 baseline table layout and simulated review examples only; all values are fictional. Verification limit: SVG XML text and bounds were checked; browser visual inspection remains part of human review.",
+      "common_practice": "This is a project-specific display revision. Column ordering uses stable IDs, and simulated values remain explicitly labelled; no claim about a universal clinical reporting standard is made.",
+      "default": "Review the synchronized candidate table and immutable SVG example containing the human edits.",
+      "departure_check": "Compared with confirmed v1: changed the title, removed BMI, moved Group B before Group A, and added the format footnote. Group values and the simulation warning are preserved. No study analysis was run.",
+      "project_reason": "The user edited this candidate in the table editor and requested synchronized code and simulated examples for review.",
+      "support": "Human layout requirements are supported by evidence/claims/E-000001/r000001.json and original-text source S-000001/r000001. Separate implementation checks are recorded in source S-000002/r000001 and Audit/checks/table_candidate.py."
+    },
+    "external_brief": null,
+    "evidence_refs": [
+      "evidence/sources/S-000001/r000001.json",
+      "evidence/claims/E-000001/r000001.json",
+      "evidence/sources/S-000002/r000001.json"
+    ],
+    "review_required": null,
+    "reconfirmation_token": "b0fac0cf19364c42b10e6908303cf59e6cebd691a89fb903e5c79566c0203c05",
+    "read_set": {
+      "F-000001": 7
+    },
+    "member_ids": [],
+    "readiness": {
+      "status": "ready",
+      "dependencies": []
+    },
+    "review_category": "quick_confirm",
+    "human_pending": false,
+    "actionable": false,
+    "awaiting_human": true,
+    "ready_pending_ids": [],
+    "bootstrap_required": false,
+    "historical": false
+  },
+  "replay": {
+    "directory": "/private/tmp/oppencouncil-table-feedback-replay-20261014-a",
+    "runs": [
+      {
+        "script": "Scripts/01_table.py",
+        "returncode": 0,
+        "stderr": ""
+      },
+      {
+        "script": "Explore/table-preview/render.py",
+        "returncode": 0,
+        "stderr": ""
+      }
+    ]
+  },
+  "hashes": {
+    "manifest": "c3522dad0252551772651ac73d8c0862fb2407312cbf59f17673973b490d3439",
+    "trace": "cf3ca38e54524f4fc8b946b7e294ba60c96c6d2daa314d4d6007b4fd16429b8d",
+    "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+    "outcome": "c79bbfd22c794f4c054e3cb18e9755767edd09fcb0bdc312132ad9969d9c9eae"
+  }
+}

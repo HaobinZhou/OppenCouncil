@@ -1,4 +1,4 @@
-"""Exercise both bundled updaters against real, isolated Git repositories."""
+"""Exercise the shared and compatibility updaters against real, isolated Git repositories."""
 
 import importlib.util
 import json
@@ -12,7 +12,7 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[2] / "skills"
-SKILLS = ("oppen-project-steward", "stepwise-r-project")
+SKILLS = ("oppencouncil", "oppen-project-steward", "stepwise-r-project")
 
 
 def git(root, *args):
@@ -73,8 +73,7 @@ def publish(source):
 
 
 def test_bundles_stay_self_contained_and_identical():
-    assert (ROOT / SKILLS[0] / "scripts/update_skill.py").read_bytes() == (
-        ROOT / SKILLS[1] / "scripts/update_skill.py").read_bytes()
+    assert len({(ROOT / name / "scripts/update_skill.py").read_bytes() for name in SKILLS}) == 1
 
 
 def test_check_then_apply_and_repeat(setup):

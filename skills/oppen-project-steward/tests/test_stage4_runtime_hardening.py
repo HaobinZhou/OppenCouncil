@@ -11,8 +11,7 @@ from pathlib import Path
 from unittest import mock
 
 
-SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "oppen_project_steward.py"
-SKILL_PATH = Path(__file__).parents[1] / "SKILL.md"
+SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "legacy_oppen_project_steward.py"
 FIXTURES = Path(__file__).parent / "fixtures"
 SPEC = importlib.util.spec_from_file_location(
     "oppen_project_steward_stage4", SCRIPT_PATH
@@ -438,22 +437,6 @@ class Stage4RuntimeHardeningTestCase(unittest.TestCase):
         self.assertEqual((promoted / "replacement.json").read_text(), "{}\n")
         self.assertEqual(baseline.read_bytes(), baseline_before)
         self.assertFalse(staging.exists())
-
-    def test_runtime_instructions_harden_memory_and_attention_boundaries(self) -> None:
-        text = SKILL_PATH.read_text(encoding="utf-8")
-        self.assertIn(
-            "Technical difficulty alone does not justify Decision Memory", text
-        )
-        self.assertIn("concurrency, reliability, performance policy", text)
-        self.assertIn("An incident alone is Audit, logs, or Git", text)
-        # Attention operations are loaded through the entrypoint's task router.
-        # Keep their policy checks without requiring all instructions in SKILL.md.
-        reference = "references/workflow-operations.md"
-        self.assertIn(f"]({reference})", text)
-        operations = (SKILL_PATH.parent / reference).read_text(encoding="utf-8")
-        self.assertIn("Noteworthy does not mean Attention", operations)
-        self.assertIn("Known pending work is not Attention", operations)
-        self.assertIn("Attention is not a TODO system", operations)
 
     def test_active_project_end_to_end_recovery_and_dirty_work(self) -> None:
         self.copy_fixture("active-ai-service")

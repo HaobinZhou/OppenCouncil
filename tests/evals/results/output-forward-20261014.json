@@ -1,0 +1,357 @@
+{
+  "measurement": "Actual wrapper reads and calls; whitespace words are not model tokens. Replay copies are evaluator verification, outside the independent traces.",
+  "runs": [
+    {
+      "arm": "candidate",
+      "scenario": "descriptive",
+      "directory": "/private/tmp/oppencouncil-output-forward-20261014/3e3642854926",
+      "manifest_sha256": "99de885fe2f76d6578aac4709678885879f5982ae9c2b9edac1c3094bc1bf8ef",
+      "trace_sha256": "8d783302b201c19fb7212332b593886e555fad37f902a527fcd28adc2b7eba51",
+      "skill_sha256": "033572c99f723027958e5690c5e270486bacc9fc26c5333df6c5afd3f6c4b466",
+      "outcome_sha256": "ab629c7ff45e1153d0424cb234f29a579e5ddcc72c6a660ca10f8b57defe0828",
+      "output_sha256": "9354c18dcded92c077fa6a9f334c92c7750692f584652cf250ca2e48d98382a7",
+      "producer_sha256": "d68efd791ff3b547ef745d0709a5c3c629b9cc750caebac3a5c1c45c92c5c5cb",
+      "checks": {
+        "exact_article_table": true,
+        "raw_input_preserved": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "no_new_memory": true,
+        "only_requested_result": true,
+        "output_read_back": true,
+        "only_current_stage_loaded": true,
+        "producer_replay_matches": true
+      },
+      "output_registration": [
+        {
+          "id": "baseline",
+          "path": "Results/baseline.csv",
+          "kind": "table",
+          "audience": "publication",
+          "producer": "Scripts/01_descriptive.py",
+          "specification": {
+            "question_id": "F-000001",
+            "text_sha256": "1b8d3e206aa1e5b2716cd99ee8aa5fc7a1cbe7e178dc2dc81f205dce1af2aec2",
+            "version": 1
+          },
+          "registry_block": "results"
+        }
+      ],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-output-forward-20261014/3e3642854926/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [
+          {
+            "path": "Data/raw/baseline.csv",
+            "reason": "Data origin/version requires classification before a release"
+          }
+        ],
+        "unassigned_files": []
+      },
+      "metrics": {
+        "skill_words": 2100,
+        "adapter_words": 705,
+        "instruction_bytes": 23622,
+        "cli_and_script_calls": 13,
+        "nonzero_calls": 2
+      },
+      "instruction_reads": [
+        {
+          "at": 1791983015.1226518,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4469,
+          "whitespace_words": 542,
+          "sha256": "033572c99f723027958e5690c5e270486bacc9fc26c5333df6c5afd3f6c4b466"
+        },
+        {
+          "at": 1791983020.244734,
+          "operation": "read",
+          "path": "skill/references/research-stage-descriptive.md",
+          "bytes": 641,
+          "whitespace_words": 76,
+          "sha256": "f8cf78157a26b54cb5a6b25a7cb5212c8c192f6d748f6184628e431a11045fa8"
+        },
+        {
+          "at": 1791983020.245132,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 7004,
+          "whitespace_words": 777,
+          "sha256": "ad1b902ff3c7de8d9d20b40007d6675b0da4ea3dbf9b8c16785cea4572e9a731"
+        },
+        {
+          "at": 1791983092.986624,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5754,
+          "whitespace_words": 705,
+          "sha256": "bf4974e1c9fef6f3f07f0f1590f8a73662af889a8f1a694ba4e4a78444310358"
+        },
+        {
+          "at": 1791983020.244524,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5754,
+          "whitespace_words": 705,
+          "sha256": "bf4974e1c9fef6f3f07f0f1590f8a73662af889a8f1a694ba4e4a78444310358"
+        }
+      ],
+      "nonzero_calls": [
+        {
+          "operation": "execute",
+          "path": "project/Audit/checks/check_baseline_output.py",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/oppencouncil-output-forward-20261014/3e3642854926/project/Audit/checks/check_baseline_output.py\", line 28, in <module>\n    assert actual == expected, f'Published table differs from confirmed specification: {actual!r}'\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: Published table differs from confirmed specification: [['variable', 'arm0', 'arm1', 'n_missing', 'p_value'], ['age_years', '50.0', '60.0', '0', ''], ['diabetes', '0.5', '1.0', '0', '']]\n"
+        },
+        {
+          "operation": "project",
+          "arguments": [
+            "contract-audit",
+            "project",
+            "--topic",
+            "baseline-output",
+            "--source",
+            "Scripts/01_descriptive.py",
+            "--risk-reason",
+            "A runnable producer and a passing source-population check did not establish that the article table matched its confirmed specification.",
+            "--input",
+            "baseline-audit.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "Complete an audit with --input only; create its source/risk binding first\n"
+        }
+      ],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-output-replay-20261014/3e3642854926",
+        "returncode": 0,
+        "stdout": "",
+        "stderr": "",
+        "output_sha256": "9354c18dcded92c077fa6a9f334c92c7750692f584652cf250ca2e48d98382a7"
+      }
+    },
+    {
+      "arm": "without-stage-rule",
+      "scenario": "descriptive",
+      "directory": "/private/tmp/oppencouncil-output-forward-20261014/84d2027de9b3",
+      "manifest_sha256": "99de885fe2f76d6578aac4709678885879f5982ae9c2b9edac1c3094bc1bf8ef",
+      "trace_sha256": "8755c051a3872bd156eb21905b2bb0c3aaace50370016a2515ee7ccc389e577d",
+      "skill_sha256": "033572c99f723027958e5690c5e270486bacc9fc26c5333df6c5afd3f6c4b466",
+      "outcome_sha256": "509776b1a7fb1668d36a600be7192c01e1e8d01a109a0f847b2e55d373a1ef82",
+      "output_sha256": "9354c18dcded92c077fa6a9f334c92c7750692f584652cf250ca2e48d98382a7",
+      "producer_sha256": "1bc95e53bf682107bd7724742d32f938c93558133cbd73b794eb5d1f923babb7",
+      "checks": {
+        "exact_article_table": true,
+        "raw_input_preserved": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "no_new_memory": true,
+        "only_requested_result": true,
+        "output_read_back": true,
+        "only_current_stage_loaded": true,
+        "producer_replay_matches": true
+      },
+      "output_registration": [
+        {
+          "id": "baseline",
+          "path": "Results/baseline.csv",
+          "kind": "table",
+          "audience": "publication",
+          "producer": "Scripts/01_descriptive.py",
+          "specification": {
+            "question_id": "F-000001",
+            "text_sha256": "1b8d3e206aa1e5b2716cd99ee8aa5fc7a1cbe7e178dc2dc81f205dce1af2aec2",
+            "version": 1
+          },
+          "registry_block": "results"
+        }
+      ],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-output-forward-20261014/84d2027de9b3/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [
+          {
+            "path": "Data/raw/baseline.csv",
+            "reason": "Data origin/version requires classification before a release"
+          }
+        ],
+        "unassigned_files": []
+      },
+      "metrics": {
+        "skill_words": 1282,
+        "adapter_words": 705,
+        "instruction_bytes": 16316,
+        "cli_and_script_calls": 11,
+        "nonzero_calls": 1
+      },
+      "instruction_reads": [
+        {
+          "at": 1791983021.4480839,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4469,
+          "whitespace_words": 542,
+          "sha256": "033572c99f723027958e5690c5e270486bacc9fc26c5333df6c5afd3f6c4b466"
+        },
+        {
+          "at": 1791983025.934133,
+          "operation": "read",
+          "path": "skill/references/research-stage-descriptive.md",
+          "bytes": 339,
+          "whitespace_words": 35,
+          "sha256": "5a50c3fc219c9275e935405ecb6a131d5b98e6d112598cf3db6249b0f14b04a5"
+        },
+        {
+          "at": 1791983037.5656698,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5754,
+          "whitespace_words": 705,
+          "sha256": "bf4974e1c9fef6f3f07f0f1590f8a73662af889a8f1a694ba4e4a78444310358"
+        },
+        {
+          "at": 1791983025.9343202,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5754,
+          "whitespace_words": 705,
+          "sha256": "bf4974e1c9fef6f3f07f0f1590f8a73662af889a8f1a694ba4e4a78444310358"
+        }
+      ],
+      "nonzero_calls": [
+        {
+          "operation": "project",
+          "arguments": [
+            "contract-audit",
+            "project",
+            "--topic",
+            "descriptive-baseline",
+            "--source",
+            "Scripts/01_descriptive.py",
+            "--risk-reason",
+            "Successful script execution and a source-only check did not establish conformity of the article table to F-000001.",
+            "--input",
+            "descriptive-audit.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "Complete an audit with --input only; create its source/risk binding first\n"
+        }
+      ],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-output-replay-20261014/84d2027de9b3",
+        "returncode": 0,
+        "stdout": "",
+        "stderr": "",
+        "output_sha256": "9354c18dcded92c077fa6a9f334c92c7750692f584652cf250ca2e48d98382a7"
+      }
+    },
+    {
+      "arm": "v4.3.1",
+      "scenario": "descriptive",
+      "directory": "/private/tmp/oppencouncil-output-forward-20261014/e172fe346459",
+      "manifest_sha256": "99de885fe2f76d6578aac4709678885879f5982ae9c2b9edac1c3094bc1bf8ef",
+      "trace_sha256": "60b3098633ecbb3eeeb3c77519d2c4cfda9f3e51d9f55254d31d5423bfe3e277",
+      "skill_sha256": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b",
+      "outcome_sha256": "6e63e0c3b5f08ed14380085a547538cf683b791b84c8a3e4dc1c909c3584c9d0",
+      "output_sha256": "9354c18dcded92c077fa6a9f334c92c7750692f584652cf250ca2e48d98382a7",
+      "producer_sha256": "9aade90ed109eb23fbd175cb513d47afa663810e6bcc8d2e3236841bf40f0af3",
+      "checks": {
+        "exact_article_table": true,
+        "raw_input_preserved": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "no_new_memory": true,
+        "only_requested_result": true,
+        "output_read_back": true,
+        "producer_replay_matches": true
+      },
+      "output_registration": [
+        {
+          "id": "baseline",
+          "path": "Results/baseline.csv",
+          "kind": "table",
+          "audience": "publication",
+          "producer": "Scripts/01_descriptive.py",
+          "specification": {
+            "question_id": "F-000001",
+            "text_sha256": "1b8d3e206aa1e5b2716cd99ee8aa5fc7a1cbe7e178dc2dc81f205dce1af2aec2",
+            "version": 1
+          },
+          "registry_block": "results"
+        }
+      ],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-output-forward-20261014/e172fe346459/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [
+          {
+            "path": "Data/raw/baseline.csv",
+            "reason": "Data origin/version requires classification before a release"
+          }
+        ],
+        "unassigned_files": []
+      },
+      "metrics": {
+        "skill_words": 3886,
+        "adapter_words": 705,
+        "instruction_bytes": 35237,
+        "cli_and_script_calls": 16,
+        "nonzero_calls": 0
+      },
+      "instruction_reads": [
+        {
+          "at": 1791983034.199681,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 6666,
+          "whitespace_words": 902,
+          "sha256": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b"
+        },
+        {
+          "at": 1791983038.2161741,
+          "operation": "read",
+          "path": "skill/references/workflow-operations.md",
+          "bytes": 10236,
+          "whitespace_words": 1419,
+          "sha256": "5988e33e91b29f083f1c1ba010d93f468768370cc00657363f2edc2a0c8e9880"
+        },
+        {
+          "at": 1791983108.821829,
+          "operation": "read",
+          "path": "skill/references/freeze-operations.md",
+          "bytes": 12581,
+          "whitespace_words": 1565,
+          "sha256": "8cd1634c766531f5f5ea9f862866fd9e0da6f9fd5415861985acfb4be282e702"
+        },
+        {
+          "at": 1791983038.215853,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5754,
+          "whitespace_words": 705,
+          "sha256": "bf4974e1c9fef6f3f07f0f1590f8a73662af889a8f1a694ba4e4a78444310358"
+        }
+      ],
+      "nonzero_calls": [],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-output-replay-20261014/e172fe346459",
+        "returncode": 0,
+        "stdout": "{\n  \"changed_paths\": [],\n  \"stage\": \"descriptive\"\n}\n{\"status\": \"published\", \"output\": \"Results/baseline.csv\", \"staging_evidence\": \"/private/tmp/oppencouncil-output-replay-20261014/e172fe346459/descriptive-63syttnm/evidence\"}\n",
+        "stderr": "",
+        "output_sha256": "9354c18dcded92c077fa6a9f334c92c7750692f584652cf250ca2e48d98382a7"
+      }
+    }
+  ]
+}

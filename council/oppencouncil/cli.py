@@ -21,8 +21,18 @@ def parser():
     root.add_argument("--version", action="version", version=f"OppenCouncil {__version__}")
     root.add_argument("--directory", type=Path, default=default_directory())
     commands = root.add_subparsers(dest="command", required=True)
-    for name in ("open", "register", "disable", "snapshot", "import", "recover", "reconcile",
-                 "ai-change", "group-change", "definition"):
+    for name in (
+        "open",
+        "register",
+        "disable",
+        "snapshot",
+        "import",
+        "recover",
+        "reconcile",
+        "ai-change",
+        "group-change",
+        "definition",
+    ):
         command = commands.add_parser(name)
         command.add_argument("project", type=Path)
         if name in {"open", "register"}:
@@ -37,6 +47,30 @@ def parser():
             command.add_argument("--format", choices=["json", "markdown"], default="json")
         if name == "open":
             service_options(command)
+    for name in (
+        "work-index",
+        "work-read",
+        "work-commit",
+        "investigation-create",
+        "evidence-index",
+        "evidence-read",
+        "evidence-submit",
+    ):
+        command = commands.add_parser(name)
+        command.add_argument("project", type=Path)
+        if name in {"work-commit", "investigation-create", "evidence-submit"}:
+            command.add_argument("--input", type=Path, required=True)
+        if name in {"work-index", "evidence-index"}:
+            command.add_argument("--offset", type=int, default=0)
+            command.add_argument("--limit", type=int, default=100)
+        if name == "work-index":
+            command.add_argument("--actionable", action="store_true")
+        if name == "work-read":
+            command.add_argument("--id", required=True)
+        if name == "evidence-read":
+            command.add_argument("--path", required=True)
+        if name == "evidence-index":
+            command.add_argument("--source-id")
     service_options(commands.add_parser("start"))
     service_options(commands.add_parser("_serve"))
     commands.add_parser("stop")
@@ -115,13 +149,42 @@ def main(argv: list[str] | None = None) -> int:
                 return 0
         elif args.command == "snapshot":
             result = FreezeStore(args.project).snapshot()
+        elif args.command.startswith(("work-", "evidence-")) or args.command == "investigation-create":
+            from .workstore import WorkStore
+
+            work = WorkStore(FreezeStore(args.project))
+            if args.command == "work-index":
+                result = work.index(actionable=args.actionable, offset=args.offset, limit=args.limit)
+            elif args.command == "work-read":
+                result = work.read(args.id)
+            elif args.command == "evidence-index":
+                result = work.evidence_index(source_id=args.source_id, offset=args.offset, limit=args.limit)
+            elif args.command == "evidence-read":
+                result = work.evidence(args.path)
+            else:
+                payload = json.loads(args.input.read_text(encoding="utf-8"))
+                request_id = payload.pop("request_id", None)
+                if not request_id:
+                    raise FreezeError("A stable request_id is required for retryable work writes")
+                method = {
+                    "work-commit": work.commit_work,
+                    "evidence-submit": work.evidence_submit,
+                    "investigation-create": work.investigation,
+                }[args.command]
+                result = method(payload, request_id=request_id, actor="codex")
         elif args.command in {"import", "recover", "reconcile", "ai-change", "group-change"}:
             payload = json.loads(args.input.read_text(encoding="utf-8"))
             store = FreezeStore(args.project)
             request_id = payload.get("request_id") or secrets.token_urlsafe(18)
             if args.command == "group-change":
-                result = store.change_group(payload.get("group_id"), payload["operation"], payload["value"],
-                    expected_revision=payload["expected_revision"], request_id=request_id, actor="codex")
+                result = store.change_group(
+                    payload.get("group_id"),
+                    payload["operation"],
+                    payload["value"],
+                    expected_revision=payload["expected_revision"],
+                    request_id=request_id,
+                    actor="codex",
+                )
             elif args.command == "import":
                 result = store.add_questions(payload["questions"], request_id=request_id, actor="codex")
                 item = registry.register(args.project)

@@ -1,0 +1,263 @@
+{
+  "measurement": "Actual reads/calls; whitespace words are not model tokens. Project-only replays are separate evaluator checks.",
+  "runs": [
+    {
+      "scenario": "cohort",
+      "arm": "candidate",
+      "directory": "/private/tmp/oppencouncil-stage-cohort-20261014-b/b5a0597d9a45",
+      "checks": {
+        "raw_preserved": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "exact_article_table": true,
+        "only_specified_outputs": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "outputs_read_back": true,
+        "only_current_stage_loaded": true,
+        "project_only_replay_identical": true
+      },
+      "outputs": [
+        "Results/stage.csv"
+      ],
+      "generated_data": [],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-cohort-20261014-b/b5a0597d9a45/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791989091.940277,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791989095.934475,
+          "operation": "read",
+          "path": "skill/references/research-stage-cohort.md",
+          "bytes": 989,
+          "whitespace_words": 125,
+          "sha256": "85d1d86a930ee837b22d6b9b5aa6879dd770136cc1701a30abb99e8a23bcc955"
+        },
+        {
+          "at": 1791989104.574091,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791989095.934043,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1414,
+        "adapter_words": 719,
+        "cli_and_script_calls": 10,
+        "nonzero_calls": 0
+      },
+      "nonzero_calls": [],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-cohort-replay-20261014-a/b5a0597d9a45",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "9f778dcab5d31eac918eaae034862eeded9a145432a66d1c892ffff443bb06f4",
+        "trace": "e99a7d80bd220737c124fb9bdeea630841698eb5466e6a8bfc7012635d84e9e3",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "30115517f4177163008e8261ce64e63e97bf233f77884080e4ab211d73d1f1fa"
+      }
+    },
+    {
+      "scenario": "cohort",
+      "arm": "without-stage-rule",
+      "directory": "/private/tmp/oppencouncil-stage-cohort-20261014-b/cb5eaadbe0cb",
+      "checks": {
+        "raw_preserved": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "exact_article_table": true,
+        "only_specified_outputs": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "outputs_read_back": true,
+        "only_current_stage_loaded": true,
+        "project_only_replay_identical": true
+      },
+      "outputs": [
+        "Results/stage.csv"
+      ],
+      "generated_data": [],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-cohort-20261014-b/cb5eaadbe0cb/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791989100.855485,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791989104.5653021,
+          "operation": "read",
+          "path": "skill/references/research-stage-cohort.md",
+          "bytes": 744,
+          "whitespace_words": 90,
+          "sha256": "053e65033ba99c653e9df63968a4938ba3cf1dac1ac7a41483ac1c6a55099f69"
+        },
+        {
+          "at": 1791989116.221247,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791989104.5647821,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1379,
+        "adapter_words": 719,
+        "cli_and_script_calls": 11,
+        "nonzero_calls": 1
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791989159.5203001,
+          "operation": "execute",
+          "path": "project/Audit/checks/cohort_flow.py",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/oppencouncil-stage-cohort-20261014-b/cb5eaadbe0cb/project/Audit/checks/cohort_flow.py\", line 19, in <module>\n    assert table[0] == ['Cohort step', 'Participants'], 'Output headings differ from F-000001'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Output headings differ from F-000001\n"
+        }
+      ],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-cohort-replay-20261014-a/cb5eaadbe0cb",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "9f778dcab5d31eac918eaae034862eeded9a145432a66d1c892ffff443bb06f4",
+        "trace": "54f4c3861bfdcecb0c109e68e6aa61322539f11d9d8c7df08c9417617dcc8164",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "eb24413eba2dbb1cb6a32debc2dd39fc45c8058fa4b0741d851a10ed6eff7aa8"
+      }
+    },
+    {
+      "scenario": "cohort",
+      "arm": "v4.3.1",
+      "directory": "/private/tmp/oppencouncil-stage-cohort-20261014-b/96d1e02319e7",
+      "checks": {
+        "raw_preserved": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "exact_article_table": true,
+        "only_specified_outputs": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "outputs_read_back": true,
+        "project_only_replay_identical": true
+      },
+      "outputs": [
+        "Results/stage.csv"
+      ],
+      "generated_data": [],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-cohort-20261014-b/96d1e02319e7/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791989107.48634,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 6666,
+          "whitespace_words": 902,
+          "sha256": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b"
+        },
+        {
+          "at": 1791989113.071726,
+          "operation": "read",
+          "path": "skill/references/workflow-operations.md",
+          "bytes": 10236,
+          "whitespace_words": 1419,
+          "sha256": "5988e33e91b29f083f1c1ba010d93f468768370cc00657363f2edc2a0c8e9880"
+        },
+        {
+          "at": 1791989113.071264,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 2321,
+        "adapter_words": 719,
+        "cli_and_script_calls": 14,
+        "nonzero_calls": 1
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791989205.597167,
+          "operation": "execute",
+          "path": "project/Audit/checks/cohort_output.py",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/oppencouncil-stage-cohort-20261014-b/96d1e02319e7/project/Audit/checks/cohort_output.py\", line 20, in <module>\n    assert actual == expected, f'F-000001 output mismatch: {actual!r}'\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: F-000001 output mismatch: [['step', 'n'], ['screened', '120'], ['excluded', '20'], ['included', '100']]\n"
+        }
+      ],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-cohort-replay-20261014-a/96d1e02319e7",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "9f778dcab5d31eac918eaae034862eeded9a145432a66d1c892ffff443bb06f4",
+        "trace": "e5427717db3e8da81eccfab4dbdda9e8819e998955ec620e789d826f896d8b3d",
+        "entry": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b",
+        "outcome": "4ba2d11c3778a4ed4c3c8ac8d9bd26749011dc26e3924f2f8d96a2d20e48fd35"
+      }
+    }
+  ]
+}

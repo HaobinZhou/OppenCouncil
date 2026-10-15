@@ -1,0 +1,11 @@
+# Operating an existing v3/v4 project
+
+The shared helper detects the existing marker before dispatch. A `stepwise-r-project:v3|v4` marker uses the retained Stepwise engine; `oppen-project-steward:v3|v4` uses the retained Steward engine. Calling an old skill name does not choose a different governor or convert the project. Existing directories, IDs, authority, Memory and results remain in their original locations.
+
+Use `python ABSOLUTE_SKILL/scripts/oppencouncil.py COMMAND TARGET --help` for the selected legacy command's options. `index`, `validate`, `canonical`, result/deliverable, review, Memory and audit operations retain the legacy payloads. In particular, legacy Stepwise result registration uses command-line flags and an R producer; the v5 JSON result payload and language-independent Scripts rules require an explicit migration. Legacy Steward adoption and managed-state conflict reporting remain available.
+
+Legacy Memory writes use Stepwise's `scientific_or_technical_rationale` plus `basis`, or Steward's `why` without `basis`. Their old record formats remain unchanged. Detailed legacy schemas are in [Stepwise payloads](legacy-stepwise-payloads.md) or [Steward payloads](legacy-steward-payloads.md), selected by the existing marker. The admission policy is the common [Decision Memory](../SKILL.md#decision-memory) section. V5 payload aliases and relationships are described in [memory.md](memory.md) for explicitly migrated projects.
+
+For Council reads, use `python -m oppencouncil snapshot TARGET` and `definition TARGET --question F-NNNNNN`. Local `ai-change TARGET --input FILE` accepts `question_id`, `operation`, `value`, `expected_revision` and `request_id`; `definition_draft` writes a complete candidate and `comment` appends discussion. Human confirmation remains a webpage operation. V5 work cursors and investigation commands are unavailable before conversion. The common [group interface](groups.md) remains supported for native schema-2 projects.
+
+Legacy v2 needs its original semantic migration before v5; the retained payload references describe that operation. Early Markdown/Freeze history import uses [legacy-recovery.md](legacy-recovery.md). Explicit v3/v4 conversion, capability checks and recovery plans use [migration.md](migration.md); product updates alone do not migrate projects.

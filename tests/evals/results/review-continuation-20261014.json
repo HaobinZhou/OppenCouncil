@@ -1,0 +1,1762 @@
+{
+  "measurement": "Actual file reads/calls; whitespace words are not model tokens. Mechanical checks alone do not establish semantic success.",
+  "runs": [
+    {
+      "scenario": "continuation",
+      "directory": "/private/tmp/oppencouncil-review-continuation-20261014-a/a2406560d43b",
+      "checks": {
+        "actual_entry_unchanged": true,
+        "entry_loaded": true,
+        "no_memory": true,
+        "no_release": true,
+        "no_archived_content_read": true,
+        "archived_content_unchanged": true,
+        "unrelated_f_unchanged": true,
+        "no_analysis_or_data_change": true,
+        "no_new_f": true
+      },
+      "validation": {
+        "state": "DAMAGED",
+        "project": "/private/tmp/oppencouncil-review-continuation-20261014-a/a2406560d43b/project",
+        "project_type": "research",
+        "errors": [
+          {
+            "path": "F-000001",
+            "reason": "Confirmed definition requires a registered verification test"
+          },
+          {
+            "path": "F-000002",
+            "reason": "Confirmed definition requires a registered verification test"
+          },
+          {
+            "path": "F-000003",
+            "reason": "Confirmed definition requires a registered verification test"
+          },
+          {
+            "path": "F-000002",
+            "reason": "Unresolved work blocker: No small-sample assessment or supported alternative is supplied."
+          },
+          {
+            "path": "I-000001",
+            "reason": "Unresolved work blocker: New-batch upstream implementation or verification evidence is not supplied."
+          }
+        ],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "changed_project_files": [
+        "Freeze/evidence/claims/E-000002/r000002.json",
+        "Freeze/evidence/claims/E-000004/r000001.json",
+        "Freeze/evidence/sources/S-000004/r000001.json",
+        "Freeze/evidence/sources/S-000005/r000001.json",
+        "Freeze/investigations/I-000001.json",
+        "Freeze/manifest.json",
+        "Freeze/questions/F-000001.json",
+        "Freeze/questions/F-000002.json"
+      ],
+      "instruction_reads": [
+        {
+          "at": 1791990472.1024299,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791990475.6341171,
+          "operation": "read",
+          "path": "skill/references/resume.md",
+          "bytes": 1823,
+          "whitespace_words": 230,
+          "sha256": "8ec75b388fc632baa44dda1c05daf7070842f048d8f0f56553c3368bb97c3aa6"
+        },
+        {
+          "at": 1791990475.63433,
+          "operation": "read",
+          "path": "skill/references/evidence.md",
+          "bytes": 1838,
+          "whitespace_words": 190,
+          "sha256": "9bf368df5b7e757c3927d31541dac0dd2c6c23ba9f7b7934a8216f1abe7153f3"
+        },
+        {
+          "at": 1791990475.6348171,
+          "operation": "read",
+          "path": "skill/references/council.md",
+          "bytes": 2542,
+          "whitespace_words": 340,
+          "sha256": "b9bcfb6ba4dfc052f10f484578252258ad364d74bc9ef5b74c28d35634a747f8"
+        },
+        {
+          "at": 1791990475.6349819,
+          "operation": "read",
+          "path": "skill/references/review-packet.md",
+          "bytes": 1704,
+          "whitespace_words": 185,
+          "sha256": "22069ea1cc07fb62f1cbdaf0b004cb6a7c541412f5aa10a07ffc3464dc32c8c0"
+        },
+        {
+          "at": 1791990482.954966,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 3666,
+          "whitespace_words": 422,
+          "sha256": "046f29049827530f79ba254f8168ee599028932bec5e04b1f9a24f925a9e931f"
+        },
+        {
+          "at": 1791990482.9553568,
+          "operation": "read",
+          "path": "skill/references/triage.md",
+          "bytes": 874,
+          "whitespace_words": 100,
+          "sha256": "3117a3eb0f86e675111ae83193b7cceee0b9eb5a7d86e4247c8ef7d9c89fc18f"
+        },
+        {
+          "at": 1791990529.367059,
+          "operation": "read",
+          "path": "skill/references/mcp-publication.md",
+          "bytes": 6660,
+          "whitespace_words": 892,
+          "sha256": "10b540a1e46f4ef0e6c3884beb2322fac137ca978463eecc3111456c5693d711"
+        }
+      ],
+      "source_reads": [
+        {
+          "at": 1791990472.102668,
+          "operation": "read",
+          "path": "project/README.md",
+          "bytes": 436,
+          "whitespace_words": 59,
+          "sha256": "88f4e13cf1f88f48431a2d1cd446c6187adf9f0c7e0be0299cef457fe6454c72"
+        },
+        {
+          "at": 1791990482.9557052,
+          "operation": "read",
+          "path": "project/Audit/current-check.json",
+          "bytes": 180,
+          "whitespace_words": 14,
+          "sha256": "1d39d78601b525ba61d87f7d8e92927e4cffda45b6643ef1c420d92e51af26da"
+        },
+        {
+          "at": 1791990495.972646,
+          "operation": "read",
+          "path": "project/Audit/source/original-1.txt",
+          "bytes": 265,
+          "whitespace_words": 37,
+          "sha256": "16d1ed4c67dbee095967920d69e8fad21adf69afe01c34f8d9f3d2e582560add"
+        },
+        {
+          "at": 1791990495.973022,
+          "operation": "read",
+          "path": "project/Audit/source/original-2.txt",
+          "bytes": 183,
+          "whitespace_words": 21,
+          "sha256": "144ca33673acbc8c3bb322c00e8fbae25fd4f8b0a6eda6cf6f369080d3adf601"
+        },
+        {
+          "at": 1791990495.973357,
+          "operation": "read",
+          "path": "project/Audit/source/erratum.txt",
+          "bytes": 373,
+          "whitespace_words": 54,
+          "sha256": "c8f6702aaecf68b4f99f83ecca1b62580affe98a5abfea5c055faf4f77549488"
+        },
+        {
+          "at": 1791990529.366226,
+          "operation": "read",
+          "path": "project/Freeze/questions/F-000002.json",
+          "bytes": 6048,
+          "whitespace_words": 485,
+          "sha256": "545c00054193c85090976984c308df5d1e8976bf19e5c11f71c39b5a95a6a098"
+        },
+        {
+          "at": 1791990529.3666718,
+          "operation": "read",
+          "path": "project/Freeze/investigations/I-000001.json",
+          "bytes": 2020,
+          "whitespace_words": 175,
+          "sha256": "1ab2acc120f7323b1666df5be66925be6fe7c0072792da8a0d01c29af4b16091"
+        }
+      ],
+      "metrics": {
+        "skill_words": 2929,
+        "adapter_words": 719,
+        "cli_and_script_calls": 21,
+        "nonzero_calls": 2
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791990632.26644,
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-review-continuation-20261014-a/a2406560d43b/project\",\n  \"project_type\": \"research\",\n  \"errors\": [\n    {\n      \"path\": \"F-000001\",\n      \"reason\": \"Confirmed definition requires a registered verification test\"\n    },\n    {\n      \"path\": \"F-000002\",\n      \"reason\": \"Confirmed definition requires a registered verification test\"\n    },\n    {\n      \"path\": \"F-000003\",\n      \"reason\": \"Confirmed definition requires a registered verification test\"\n    },\n    {\n      \"path\": \"F-000002\",\n      \"reason\": \"Unresolved work blocker: No small-sample assessment or supported alternative is supplied.\"\n    },\n    {\n      \"path\": \"I-000001\",\n      \"reason\": \"Unresolved work blocker: New-batch upstream implementation or verification evidence is not supplied.\"\n    }\n  ],\n  \"warnings\": [],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        },
+        {
+          "at": 1791990652.0894668,
+          "operation": "council",
+          "arguments": [
+            "work-commit",
+            "project",
+            "--input",
+            "acknowledge-evidence.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "OppenCouncil: Disposition must reference a reply or pending item saved in this transaction\n"
+        }
+      ],
+      "saved_items": [
+        {
+          "id": "F-000001",
+          "title": "Hospitalization event date",
+          "why": "Existing human-confirmed project choice",
+          "legacy_attention": null,
+          "revision": 5,
+          "work": {
+            "affected_refs": [
+              "F-000001"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "Separate human confirmation of the saved discharge-date candidate; until then retain formal version 1."
+            ],
+            "conclusion_type": "single_recommendation",
+            "phase": "human_review",
+            "revision_id": 2,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:07:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:07:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Human confirmation"
+                ],
+                "from": "prepare_review",
+                "reason": "Previously reviewed choice",
+                "to": "human_review",
+                "trigger_refs": [
+                  "Audit/source/original-1.txt"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:07:30+00:00",
+                "by": "user",
+                "completion_conditions": [
+                  "confirmed"
+                ],
+                "from": "human_review",
+                "reason": "confirmed",
+                "to": "closed",
+                "trigger_refs": [
+                  "definition_approve"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:10:27+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "closed",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:10:27+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Separate human confirmation of the saved discharge-date candidate; until then retain formal version 1."
+                ],
+                "from": "prepare_review",
+                "reason": "The user selected the already supported discharge option and explicitly requested an updated candidate for confirmation.",
+                "to": "human_review",
+                "trigger_refs": [
+                  "message:human-F-000001:F-000001:0"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "message:human-F-000001:F-000001:0"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "F-000001: For the hospitalization outcome use discharge date, including day zero. Admission date is an available alternative for the same qualifying hospitalization; both date fields are complete and refer to the same admission. Choosing discharge moves event attribution later without changing which admissions qualify. No other definition changes.",
+            "text_sha256": "f28e4087587b69f39b31cf412a35f42b11f8248eb72208660439d49b40cc2b48",
+            "base_version": 1,
+            "dependencies": [],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json"
+              ],
+              "packet_sha256": "629a5169745c7878beeb25e4bc6b222b6260f710ee508dd11eee1784b6375c2f",
+              "summary": "The supplied project design record allows either complete date field for the same qualifying hospitalization, includes day zero under either option, and states that discharge postpones event attribution. The new human comment selects this existing discharge option and requests a candidate for confirmation."
+            },
+            "approval_token": "c3e496f6068b733f57733f77366208358a7974124bb3d98ae344db870233e186"
+          },
+          "current": {
+            "number": 1,
+            "text": "F-000001: For the hospitalization outcome use admission date, including day zero. Discharge date is an available alternative for the same qualifying hospitalization; both date fields are complete and refer to the same admission. Choosing discharge moves event attribution later without changing which admissions qualify. No other definition changes.",
+            "text_sha256": "bb873509ad433546a11e57cbc588da54cee27bef882940f58e57ef56f56036e1",
+            "dependencies": [],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json"
+              ],
+              "packet_sha256": "50f4258914820c60a8d1162ced87bada1e48106f1d0a69aa13eeff6041caa841",
+              "summary": "Fictional project design record: admission and discharge dates are both complete; the researcher may choose event attribution at either date for the same hospitalization. Admission is current. Discharge postpones attribution. Day zero is included in either option."
+            }
+          },
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000001/r000001.json"
+            ],
+            "packet_sha256": "629a5169745c7878beeb25e4bc6b222b6260f710ee508dd11eee1784b6375c2f",
+            "summary": "The supplied project design record allows either complete date field for the same qualifying hospitalization, includes day zero under either option, and states that discharge postpones event attribution. The new human comment selects this existing discharge option and requests a candidate for confirmation."
+          },
+          "review_packet": {
+            "applicability": "Both fields are complete and refer to the same qualifying admission; the selected change concerns event attribution timing only.",
+            "common_practice": "The supplied project design allows both date options; no universal preference is asserted.",
+            "default": "Use discharge date for the hospitalization outcome, include day zero, and retain all other conditions.",
+            "departure_check": "Discharge date is an existing supported alternative, not a new methodological departure. No eligibility or day-zero change is introduced.",
+            "project_reason": "Implements the user's explicit selection in human-F-000001:F-000001:0 as a candidate for separate confirmation.",
+            "support": "Audit/source/original-1.txt was read in full and supports the same-admission date choice and unchanged day-zero inclusion."
+          },
+          "external_brief": null,
+          "evidence_refs": [],
+          "review_required": null,
+          "reconfirmation_token": "d61a5501869e030241361f2d4e0b7aa293c50a5784701894271e6ff2f935c5f8",
+          "read_set": {
+            "F-000001": 5
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": []
+          },
+          "review_category": "quick_confirm",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "F-000002",
+          "title": "Clustered uncertainty",
+          "why": "Existing human-confirmed project choice",
+          "legacy_attention": null,
+          "revision": 6,
+          "work": {
+            "affected_refs": [
+              "F-000002"
+            ],
+            "blockers": [
+              "No small-sample assessment or supported alternative is supplied."
+            ],
+            "closed_reason": null,
+            "completion_conditions": [
+              "Document a project-applicable small-sample assessment for 32 independent districts.",
+              "Reassess the evidence and prepare any needed recommendation or candidate for separate human review; do not close on the old adequacy claim."
+            ],
+            "conclusion_type": "needs_check",
+            "phase": "evidence",
+            "revision_id": 2,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000002"
+                ],
+                "at": "2026-10-14T15:07:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000002"
+                ],
+                "at": "2026-10-14T15:07:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Human confirmation"
+                ],
+                "from": "prepare_review",
+                "reason": "Previously reviewed choice",
+                "to": "human_review",
+                "trigger_refs": [
+                  "Audit/source/original-2.txt"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000002"
+                ],
+                "at": "2026-10-14T15:07:30+00:00",
+                "by": "user",
+                "completion_conditions": [
+                  "confirmed"
+                ],
+                "from": "human_review",
+                "reason": "confirmed",
+                "to": "closed",
+                "trigger_refs": [
+                  "definition_approve"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000002"
+                ],
+                "at": "2026-10-14T15:10:27+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Full erratum verification corrects the minimum from 40 to 50 independent districts and withdraws adequacy below 50. The supplied current audit has 32 versus prior 60. The former applicability basis is materially weakened and cannot justify current adequacy; a small-sample assessment remains unresolved."
+                ],
+                "from": "closed",
+                "reason": "Full erratum verification corrects the minimum from 40 to 50 independent districts and withdraws adequacy below 50. The supplied current audit has 32 versus prior 60. The former applicability basis is materially weakened and cannot justify current adequacy; a small-sample assessment remains unresolved.",
+                "to": "evidence",
+                "trigger_refs": [
+                  [
+                    "evidence/sources/S-000004/r000001.json",
+                    "evidence/sources/S-000005/r000001.json",
+                    "evidence/claims/E-000002/r000002.json"
+                  ]
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000002"
+                ],
+                "at": "2026-10-14T15:10:27+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Document a project-applicable small-sample assessment for 32 independent districts.",
+                  "Reassess the evidence and prepare any needed recommendation or candidate for separate human review; do not close on the old adequacy claim."
+                ],
+                "from": "evidence",
+                "reason": "Materially changed source and current cluster count reopen uncertainty-method applicability only.",
+                "to": "evidence",
+                "trigger_refs": [
+                  "external-material:F-000002",
+                  "message:external-comment:F-000002:0",
+                  "Audit/source/erratum.txt",
+                  "Audit/current-check.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "external-material:F-000002",
+              "message:external-comment:F-000002:0",
+              "Audit/source/erratum.txt",
+              "Audit/current-check.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [
+            {
+              "actor": "external_ai",
+              "at": "2026-10-14T15:07:30+00:00",
+              "id": "external-comment:F-000002:0",
+              "label": "外部 AI · 未经本地核查",
+              "request_id": "external-comment",
+              "text": "The erratum and new cluster count may affect applicability; please check the supplied originals."
+            }
+          ],
+          "pending_items": [
+            {
+              "continue_when": {
+                "kind": "local_assessment",
+                "satisfied": false
+              },
+              "id": "cluster-small-sample-assessment",
+              "input_refs": [
+                "external-material:F-000002",
+                "message:external-comment:F-000002:0",
+                "evidence/claims/E-000002/r000002.json"
+              ],
+              "question": "What uncertainty method or justified correction is supported for the current 32 independent districts?",
+              "reason": "The checked erratum withdraws the earlier adequacy claim below 50 and provides no valid project-specific alternative; supplied materials do not resolve small-sample adequacy.",
+              "updated_at": "2026-10-14T15:10:27+00:00",
+              "updated_in": "incremental-continuation-20261014-v1"
+            }
+          ],
+          "candidate": null,
+          "current": {
+            "number": 1,
+            "text": "F-000002: Use the district-clustered sandwich uncertainty estimator described by Synthetic Method section 2, conditional on its cluster-count applicability. The old check found 60 independent districts and no other applicability failure.",
+            "text_sha256": "bb2ecbf085a5187c4bdb6f4de3ed9b7cdafea78ab19001de3c9dcd6f2bec568b",
+            "dependencies": [],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000002/r000001.json"
+              ],
+              "packet_sha256": "1a85f56073240fab0c8c09f0d75284626fb433f99d68607632656c21763b1fa1",
+              "summary": "Synthetic Method, original section 2: district-clustered sandwich variance allows within-district correlation; this approximation was described for at least 40 independent districts."
+            }
+          },
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000002/r000002.json"
+            ],
+            "packet_sha256": "2a60e4f9a17983b56c30da3f60b02a9ec87b8ae84bf79492153215aba210739e",
+            "summary": "Locally checked original, full erratum and current audit: corrected threshold 50; current count 32; the earlier 60-district result is historical. Current adequacy is unsupported pending small-sample assessment. No alternative or reconfirmation is established."
+          },
+          "review_packet": {
+            "applicability": "Current 32 is below corrected 50; the earlier adequacy claim is withdrawn for this range. Prior 60 does not establish current adequacy.",
+            "common_practice": "The supplied synthetic method and erratum describe one approximation and its limitations; broader practice is not established.",
+            "default": "Keep the formal wording and history intact while assessing small-sample applicability; do not represent the method as currently revalidated or select an unsupported alternative.",
+            "departure_check": "Continuing to assert adequacy for 32 without additional small-sample evidence would depart from the corrected applicability limit.",
+            "project_reason": "External submission X-14a4a58ecdc60881de90a6445b7a869d and its companion comment prompted bounded local verification; they are neither human confirmation nor independent authority.",
+            "support": "Original section 2 permits within-district correlation but its 40-district threshold is corrected to 50 by the complete erratum. The audit reports 32 current independent districts."
+          },
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/sources/S-000004/r000001.json",
+            "evidence/sources/S-000005/r000001.json",
+            "evidence/claims/E-000002/r000002.json"
+          ],
+          "review_required": {
+            "classification": "weakened",
+            "reason": "Full erratum verification corrects the minimum from 40 to 50 independent districts and withdraws adequacy below 50. The supplied current audit has 32 versus prior 60. The former applicability basis is materially weakened and cannot justify current adequacy; a small-sample assessment remains unresolved.",
+            "refs": [
+              "evidence/sources/S-000004/r000001.json",
+              "evidence/sources/S-000005/r000001.json",
+              "evidence/claims/E-000002/r000002.json"
+            ]
+          },
+          "reconfirmation_token": "e3ac1d33abd93902d7c782cfe483958a875143c2093a7aa287ac3f4531650f22",
+          "read_set": {
+            "F-000002": 6
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "effective",
+            "dependencies": []
+          },
+          "review_category": "checking",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": false,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "F-000003",
+          "title": "Age table precision",
+          "why": "Existing human-confirmed project choice",
+          "legacy_attention": null,
+          "revision": 3,
+          "work": {
+            "affected_refs": [
+              "F-000003"
+            ],
+            "blockers": [],
+            "closed_reason": "confirmed",
+            "completion_conditions": [
+              "confirmed"
+            ],
+            "conclusion_type": "single_recommendation",
+            "phase": "closed",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000003"
+                ],
+                "at": "2026-10-14T15:07:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000003"
+                ],
+                "at": "2026-10-14T15:07:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Human confirmation"
+                ],
+                "from": "prepare_review",
+                "reason": "Previously reviewed choice",
+                "to": "human_review",
+                "trigger_refs": [
+                  "Audit/source/original-3.txt"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000003"
+                ],
+                "at": "2026-10-14T15:07:30+00:00",
+                "by": "user",
+                "completion_conditions": [
+                  "confirmed"
+                ],
+                "from": "human_review",
+                "reason": "confirmed",
+                "to": "closed",
+                "trigger_refs": [
+                  "definition_approve"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "Audit/source/original-3.txt"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": null,
+          "current": {
+            "number": 1,
+            "text": "F-000003: The current article table displays age in years with one decimal place.",
+            "text_sha256": "3281517024787874321109779ebc54d5b387d98a61424eef19845fd9aa243e78",
+            "dependencies": [],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000003/r000001.json"
+              ],
+              "packet_sha256": "d8ef94fca1d01b006b5a7d83b4c84f802f0f921a1dfffb7c4b6f4a98e44731e9",
+              "summary": "Fictional researcher table requirement: show age in years with one decimal place."
+            }
+          },
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000003/r000001.json"
+            ],
+            "packet_sha256": "d8ef94fca1d01b006b5a7d83b4c84f802f0f921a1dfffb7c4b6f4a98e44731e9",
+            "summary": "Fictional researcher table requirement: show age in years with one decimal place."
+          },
+          "review_packet": {
+            "applicability": "Full supplied project facts",
+            "common_practice": "No universal preference asserted beyond the supplied text",
+            "default": "F-000003: The current article table displays age in years with one decimal place.",
+            "departure_check": "No unexplained departure",
+            "project_reason": "Matches the existing stated research objective",
+            "support": "Fictional researcher table requirement: show age in years with one decimal place."
+          },
+          "external_brief": null,
+          "evidence_refs": [],
+          "review_required": null,
+          "reconfirmation_token": "fe7127544f7b92d8663ea3a0c2e662e100c3abf0ebf99f3a5fe050532f559c62",
+          "read_set": {
+            "F-000003": 3
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "effective",
+            "dependencies": []
+          },
+          "review_category": "quick_confirm",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": false,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "I-000001",
+          "title": "Sex missingness",
+          "why": "Check whether missing sex needs a decision",
+          "legacy_attention": null,
+          "revision": 5,
+          "work": {
+            "affected_refs": [
+              "I-000001"
+            ],
+            "blockers": [
+              "New-batch upstream implementation or verification evidence is not supplied."
+            ],
+            "closed_reason": null,
+            "completion_conditions": [
+              "Obtain and inspect new-batch upstream extraction/filtering evidence, reconcile 2 of 80 missing values and establish cohort impact.",
+              "Close only after the new facts are resolved; create a scientific decision item only if a real unresolved handling choice remains."
+            ],
+            "conclusion_type": "needs_check",
+            "phase": "evidence",
+            "revision_id": 2,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "I-000001"
+                ],
+                "at": "2026-10-14T15:07:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Reopen if batch or upstream conditions change"
+                ],
+                "from": "triage",
+                "reason": "No missing sex in checked old batch",
+                "to": "closed",
+                "trigger_refs": [
+                  "old-batch"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "I-000001"
+                ],
+                "at": "2026-10-14T15:10:27+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Obtain and inspect new-batch upstream extraction/filtering evidence, reconcile 2 of 80 missing values and establish cohort impact.",
+                  "Close only after the new facts are resolved; create a scientific decision item only if a real unresolved handling choice remains."
+                ],
+                "from": "closed",
+                "reason": "The user requested reopening for a new batch; the current audit documents 2 missing values and an unchecked upstream filter, invalidating reuse of the old batch's exclusion for this batch.",
+                "to": "evidence",
+                "trigger_refs": [
+                  "message:human-I-000001:I-000001:0",
+                  "Audit/current-check.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "message:human-I-000001:I-000001:0",
+              "Audit/current-check.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [
+            {
+              "actor": "user",
+              "at": "2026-10-14T15:07:30+00:00",
+              "id": "human-I-000001:I-000001:0",
+              "request_id": "human-I-000001",
+              "text": "新批次到了，恢复这项调查，核对新缺失情况和上游处理。"
+            }
+          ],
+          "pending_items": [
+            {
+              "continue_when": {
+                "kind": "local_assessment",
+                "satisfied": false
+              },
+              "id": "new-batch-upstream-check",
+              "input_refs": [
+                "message:human-I-000001:I-000001:0",
+                "Audit/current-check.json",
+                "evidence/claims/E-000004/r000001.json"
+              ],
+              "question": "How does the new-batch extraction, filtering or transformation produce or handle the 2 missing sex records, and do they enter the analysis cohort?",
+              "reason": "Audit/current-check.json explicitly says the upstream new-batch filter is not yet checked. No upstream code, raw rows or reconciled check is supplied, so the observed missingness cannot yet determine a handling policy.",
+              "updated_at": "2026-10-14T15:10:27+00:00",
+              "updated_in": "incremental-continuation-20261014-v1"
+            }
+          ],
+          "candidate": null,
+          "current": null,
+          "review_basis": null,
+          "review_packet": null,
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/sources/S-000005/r000001.json",
+            "evidence/claims/E-000004/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": null,
+          "read_set": {
+            "I-000001": 5
+          },
+          "member_ids": [],
+          "readiness": null,
+          "review_category": "checking",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": false,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        }
+      ],
+      "snapshot": {
+        "project": "/private/tmp/oppencouncil-review-continuation-20261014-a/a2406560d43b/project",
+        "round": 1,
+        "revision": 13,
+        "questions": [
+          {
+            "canonical_ref": "Freeze/questions/F-000001.json#/definition",
+            "created_at": "2026-10-14T15:07:30+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": 1,
+              "draft": {
+                "approval": null,
+                "base_version": 1,
+                "dependencies": [],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:10:27+00:00",
+                    "by": "codex",
+                    "text": "F-000001: For the hospitalization outcome use discharge date, including day zero. Admission date is an available alternative for the same qualifying hospitalization; both date fields are complete and refer to the same admission. Choosing discharge moves event attribution later without changing which admissions qualify. No other definition changes."
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000001/r000001.json"
+                  ],
+                  "packet_sha256": "629a5169745c7878beeb25e4bc6b222b6260f710ee508dd11eee1784b6375c2f",
+                  "summary": "The supplied project design record allows either complete date field for the same qualifying hospitalization, includes day zero under either option, and states that discharge postpones event attribution. The new human comment selects this existing discharge option and requests a candidate for confirmation."
+                },
+                "text": "F-000001: For the hospitalization outcome use discharge date, including day zero. Admission date is an available alternative for the same qualifying hospitalization; both date fields are complete and refer to the same admission. Choosing discharge moves event attribution later without changing which admissions qualify. No other definition changes.",
+                "text_sha256": "f28e4087587b69f39b31cf412a35f42b11f8248eb72208660439d49b40cc2b48",
+                "updated_at": "2026-10-14T15:10:27+00:00",
+                "updated_by": "codex",
+                "approval_token": "c3e496f6068b733f57733f77366208358a7974124bb3d98ae344db870233e186"
+              },
+              "versions": [
+                {
+                  "approval": {
+                    "at": "2026-10-14T15:07:30+00:00",
+                    "by": "user",
+                    "text_sha256": "bb873509ad433546a11e57cbc588da54cee27bef882940f58e57ef56f56036e1"
+                  },
+                  "content_sha256": "14f7b1da42f97dd4902f1d398f7a62b4a551653239ade83278b950880853ab70",
+                  "dependencies": [],
+                  "edits": [
+                    {
+                      "at": "2026-10-14T15:07:30+00:00",
+                      "by": "codex",
+                      "text": "F-000001: For the hospitalization outcome use admission date, including day zero. Discharge date is an available alternative for the same qualifying hospitalization; both date fields are complete and refer to the same admission. Choosing discharge moves event attribution later without changing which admissions qualify. No other definition changes."
+                    }
+                  ],
+                  "number": 1,
+                  "published_at": "2026-10-14T15:07:30+00:00",
+                  "published_by": "user",
+                  "review_basis": {
+                    "claims": [
+                      "evidence/claims/E-000001/r000001.json"
+                    ],
+                    "packet_sha256": "50f4258914820c60a8d1162ced87bada1e48106f1d0a69aa13eeff6041caa841",
+                    "summary": "Fictional project design record: admission and discharge dates are both complete; the researcher may choose event attribution at either date for the same hospitalization. Admission is current. Discharge postpones attribution. Day zero is included in either option."
+                  },
+                  "source": "Freeze/questions/F-000001.json#/definition/versions/0",
+                  "supersedes": null,
+                  "text": "F-000001: For the hospitalization outcome use admission date, including day zero. Discharge date is an available alternative for the same qualifying hospitalization; both date fields are complete and refer to the same admission. Choosing discharge moves event attribution later without changing which admissions qualify. No other definition changes.",
+                  "text_sha256": "bb873509ad433546a11e57cbc588da54cee27bef882940f58e57ef56f56036e1"
+                }
+              ]
+            },
+            "evidence_refs": [],
+            "feedback_events": [
+              {
+                "actor": "user",
+                "at": "2026-10-14T15:07:30+00:00",
+                "id": "message:human-F-000001:F-000001:0",
+                "kind": "comment",
+                "reference": "human-F-000001:F-000001:0",
+                "sequence": 1
+              }
+            ],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000001",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [
+              {
+                "actor": "user",
+                "at": "2026-10-14T15:07:30+00:00",
+                "id": "human-F-000001:F-000001:0",
+                "request_id": "human-F-000001",
+                "text": "我选择已有的出院日选项；其余条件不变，请更新候选供我确认。"
+              },
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:10:27+00:00",
+                "id": "incremental-continuation-20261014-v1:F-000001:0",
+                "request_id": "incremental-continuation-20261014-v1",
+                "text": "已按留言选择已有的出院日选项并保存完整候选：仍包括第零天，符合条件的住院范围及其他条件不变。出院日将事件归属时间后移。已核对原始项目设计全文；正式版本 1 仍保留入院日定义，候选尚待单独确认，本次留言未被代作正式确认。"
+              }
+            ],
+            "pending_items": [],
+            "problem_type": "research_method",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": "message:human-F-000001:F-000001:0",
+              "receipts": [
+                {
+                  "at": "2026-10-14T15:10:27+00:00",
+                  "bootstrap_reason": null,
+                  "dispositions": [
+                    {
+                      "event_id": "message:human-F-000001:F-000001:0",
+                      "reply_id": "incremental-continuation-20261014-v1:F-000001:0"
+                    }
+                  ],
+                  "human_cursor": "message:human-F-000001:F-000001:0",
+                  "request_id": "incremental-continuation-20261014-v1"
+                }
+              ]
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json"
+              ],
+              "packet_sha256": "629a5169745c7878beeb25e4bc6b222b6260f710ee508dd11eee1784b6375c2f",
+              "summary": "The supplied project design record allows either complete date field for the same qualifying hospitalization, includes day zero under either option, and states that discharge postpones event attribution. The new human comment selects this existing discharge option and requests a candidate for confirmation."
+            },
+            "review_packet": {
+              "applicability": "Both fields are complete and refer to the same qualifying admission; the selected change concerns event attribution timing only.",
+              "common_practice": "The supplied project design allows both date options; no universal preference is asserted.",
+              "default": "Use discharge date for the hospitalization outcome, include day zero, and retain all other conditions.",
+              "departure_check": "Discharge date is an existing supported alternative, not a new methodological departure. No eligibility or day-zero change is introduced.",
+              "project_reason": "Implements the user's explicit selection in human-F-000001:F-000001:0 as a candidate for separate confirmation.",
+              "support": "Audit/source/original-1.txt was read in full and supports the same-admission date choice and unchanged day-zero inclusion."
+            },
+            "review_required": null,
+            "revision": 5,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "Hospitalization event date",
+            "verification_tests": [],
+            "why": "Existing human-confirmed project choice",
+            "work": {
+              "affected_refs": [
+                "F-000001"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "Separate human confirmation of the saved discharge-date candidate; until then retain formal version 1."
+              ],
+              "conclusion_type": "single_recommendation",
+              "phase": "human_review",
+              "revision_id": 2,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:07:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:07:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Human confirmation"
+                  ],
+                  "from": "prepare_review",
+                  "reason": "Previously reviewed choice",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "Audit/source/original-1.txt"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:07:30+00:00",
+                  "by": "user",
+                  "completion_conditions": [
+                    "confirmed"
+                  ],
+                  "from": "human_review",
+                  "reason": "confirmed",
+                  "to": "closed",
+                  "trigger_refs": [
+                    "definition_approve"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:10:27+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "closed",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:10:27+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Separate human confirmation of the saved discharge-date candidate; until then retain formal version 1."
+                  ],
+                  "from": "prepare_review",
+                  "reason": "The user selected the already supported discharge option and explicitly requested an updated candidate for confirmation.",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "message:human-F-000001:F-000001:0"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "message:human-F-000001:F-000001:0"
+              ]
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": null,
+            "review_category": "quick_confirm",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "d61a5501869e030241361f2d4e0b7aa293c50a5784701894271e6ff2f935c5f8",
+            "ai_position": ""
+          },
+          {
+            "canonical_ref": "Freeze/questions/F-000002.json#/definition",
+            "created_at": "2026-10-14T15:07:30+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": 1,
+              "draft": null,
+              "versions": [
+                {
+                  "approval": {
+                    "at": "2026-10-14T15:07:30+00:00",
+                    "by": "user",
+                    "text_sha256": "bb2ecbf085a5187c4bdb6f4de3ed9b7cdafea78ab19001de3c9dcd6f2bec568b"
+                  },
+                  "content_sha256": "96ce254f89dc255ec3356884d46ee627533145a72e5f4728b88c5744d3524e0e",
+                  "dependencies": [],
+                  "edits": [
+                    {
+                      "at": "2026-10-14T15:07:30+00:00",
+                      "by": "codex",
+                      "text": "F-000002: Use the district-clustered sandwich uncertainty estimator described by Synthetic Method section 2, conditional on its cluster-count applicability. The old check found 60 independent districts and no other applicability failure."
+                    }
+                  ],
+                  "number": 1,
+                  "published_at": "2026-10-14T15:07:30+00:00",
+                  "published_by": "user",
+                  "review_basis": {
+                    "claims": [
+                      "evidence/claims/E-000002/r000001.json"
+                    ],
+                    "packet_sha256": "1a85f56073240fab0c8c09f0d75284626fb433f99d68607632656c21763b1fa1",
+                    "summary": "Synthetic Method, original section 2: district-clustered sandwich variance allows within-district correlation; this approximation was described for at least 40 independent districts."
+                  },
+                  "source": "Freeze/questions/F-000002.json#/definition/versions/0",
+                  "supersedes": null,
+                  "text": "F-000002: Use the district-clustered sandwich uncertainty estimator described by Synthetic Method section 2, conditional on its cluster-count applicability. The old check found 60 independent districts and no other applicability failure.",
+                  "text_sha256": "bb2ecbf085a5187c4bdb6f4de3ed9b7cdafea78ab19001de3c9dcd6f2bec568b"
+                }
+              ]
+            },
+            "evidence_assessments": [
+              {
+                "at": "2026-10-14T15:10:27+00:00",
+                "by": "codex",
+                "classification": "weakened",
+                "reason": "Full erratum verification corrects the minimum from 40 to 50 independent districts and withdraws adequacy below 50. The supplied current audit has 32 versus prior 60. The former applicability basis is materially weakened and cannot justify current adequacy; a small-sample assessment remains unresolved.",
+                "refs": [
+                  "evidence/sources/S-000004/r000001.json",
+                  "evidence/sources/S-000005/r000001.json",
+                  "evidence/claims/E-000002/r000002.json"
+                ]
+              }
+            ],
+            "evidence_refs": [
+              "evidence/sources/S-000004/r000001.json",
+              "evidence/sources/S-000005/r000001.json",
+              "evidence/claims/E-000002/r000002.json"
+            ],
+            "feedback_events": [
+              {
+                "actor": "external_ai",
+                "at": "2026-10-14T15:07:30+00:00",
+                "id": "external-material:F-000002",
+                "kind": "evidence",
+                "reference": "evidence/submissions/X-14a4a58ecdc60881de90a6445b7a869d.json",
+                "sequence": 1
+              },
+              {
+                "actor": "external_ai",
+                "at": "2026-10-14T15:07:30+00:00",
+                "id": "message:external-comment:F-000002:0",
+                "kind": "comment",
+                "reference": "external-comment:F-000002:0",
+                "sequence": 2
+              }
+            ],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000002",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [
+              {
+                "actor": "external_ai",
+                "at": "2026-10-14T15:07:30+00:00",
+                "id": "external-comment:F-000002:0",
+                "label": "外部 AI · 未经本地核查",
+                "request_id": "external-comment",
+                "text": "The erratum and new cluster count may affect applicability; please check the supplied originals."
+              },
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:10:27+00:00",
+                "id": "incremental-continuation-20261014-v1:F-000002:0",
+                "request_id": "incremental-continuation-20261014-v1",
+                "text": "已本地核对外部提交 X-14a4a58ecdc60881de90a6445b7a869d 所指原文、完整勘误及当前审计事实。勘误将适用门槛从至少 40 个独立地区修正为至少 50 个；当前为 32 个（原检查为 60 个），已低于适用门槛。原充分性依据因此被削弱，已重新进入证据核查并保存新的精确证据版本。勘误没有证明任何替代方法对本项目有效；小样本评估仍待完成。外部作者身份和原始提交保留，未视为人类确认；正式版本 1 的措辞和历史未被替换，未拟合新模型。"
+              }
+            ],
+            "pending_items": [
+              {
+                "continue_when": {
+                  "kind": "local_assessment",
+                  "satisfied": false
+                },
+                "id": "cluster-small-sample-assessment",
+                "input_refs": [
+                  "external-material:F-000002",
+                  "message:external-comment:F-000002:0",
+                  "evidence/claims/E-000002/r000002.json"
+                ],
+                "question": "What uncertainty method or justified correction is supported for the current 32 independent districts?",
+                "reason": "The checked erratum withdraws the earlier adequacy claim below 50 and provides no valid project-specific alternative; supplied materials do not resolve small-sample adequacy.",
+                "updated_at": "2026-10-14T15:10:27+00:00",
+                "updated_in": "incremental-continuation-20261014-v1"
+              }
+            ],
+            "problem_type": "research_method",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [
+                "external-material:F-000002",
+                "message:external-comment:F-000002:0"
+              ],
+              "human_cursor": null,
+              "receipts": [
+                {
+                  "at": "2026-10-14T15:10:27+00:00",
+                  "bootstrap_reason": null,
+                  "dispositions": [
+                    {
+                      "event_id": "external-material:F-000002",
+                      "reply_id": "incremental-continuation-20261014-v1:F-000002:0"
+                    },
+                    {
+                      "event_id": "message:external-comment:F-000002:0",
+                      "pending_id": "cluster-small-sample-assessment"
+                    }
+                  ],
+                  "human_cursor": null,
+                  "request_id": "incremental-continuation-20261014-v1"
+                }
+              ]
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000002/r000002.json"
+              ],
+              "packet_sha256": "2a60e4f9a17983b56c30da3f60b02a9ec87b8ae84bf79492153215aba210739e",
+              "summary": "Locally checked original, full erratum and current audit: corrected threshold 50; current count 32; the earlier 60-district result is historical. Current adequacy is unsupported pending small-sample assessment. No alternative or reconfirmation is established."
+            },
+            "review_packet": {
+              "applicability": "Current 32 is below corrected 50; the earlier adequacy claim is withdrawn for this range. Prior 60 does not establish current adequacy.",
+              "common_practice": "The supplied synthetic method and erratum describe one approximation and its limitations; broader practice is not established.",
+              "default": "Keep the formal wording and history intact while assessing small-sample applicability; do not represent the method as currently revalidated or select an unsupported alternative.",
+              "departure_check": "Continuing to assert adequacy for 32 without additional small-sample evidence would depart from the corrected applicability limit.",
+              "project_reason": "External submission X-14a4a58ecdc60881de90a6445b7a869d and its companion comment prompted bounded local verification; they are neither human confirmation nor independent authority.",
+              "support": "Original section 2 permits within-district correlation but its 40-district threshold is corrected to 50 by the complete erratum. The audit reports 32 current independent districts."
+            },
+            "review_required": {
+              "classification": "weakened",
+              "reason": "Full erratum verification corrects the minimum from 40 to 50 independent districts and withdraws adequacy below 50. The supplied current audit has 32 versus prior 60. The former applicability basis is materially weakened and cannot justify current adequacy; a small-sample assessment remains unresolved.",
+              "refs": [
+                "evidence/sources/S-000004/r000001.json",
+                "evidence/sources/S-000005/r000001.json",
+                "evidence/claims/E-000002/r000002.json"
+              ]
+            },
+            "revision": 6,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "Clustered uncertainty",
+            "verification_tests": [],
+            "why": "Existing human-confirmed project choice",
+            "work": {
+              "affected_refs": [
+                "F-000002"
+              ],
+              "blockers": [
+                "No small-sample assessment or supported alternative is supplied."
+              ],
+              "closed_reason": null,
+              "completion_conditions": [
+                "Document a project-applicable small-sample assessment for 32 independent districts.",
+                "Reassess the evidence and prepare any needed recommendation or candidate for separate human review; do not close on the old adequacy claim."
+              ],
+              "conclusion_type": "needs_check",
+              "phase": "evidence",
+              "revision_id": 2,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000002"
+                  ],
+                  "at": "2026-10-14T15:07:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000002"
+                  ],
+                  "at": "2026-10-14T15:07:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Human confirmation"
+                  ],
+                  "from": "prepare_review",
+                  "reason": "Previously reviewed choice",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "Audit/source/original-2.txt"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000002"
+                  ],
+                  "at": "2026-10-14T15:07:30+00:00",
+                  "by": "user",
+                  "completion_conditions": [
+                    "confirmed"
+                  ],
+                  "from": "human_review",
+                  "reason": "confirmed",
+                  "to": "closed",
+                  "trigger_refs": [
+                    "definition_approve"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000002"
+                  ],
+                  "at": "2026-10-14T15:10:27+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Full erratum verification corrects the minimum from 40 to 50 independent districts and withdraws adequacy below 50. The supplied current audit has 32 versus prior 60. The former applicability basis is materially weakened and cannot justify current adequacy; a small-sample assessment remains unresolved."
+                  ],
+                  "from": "closed",
+                  "reason": "Full erratum verification corrects the minimum from 40 to 50 independent districts and withdraws adequacy below 50. The supplied current audit has 32 versus prior 60. The former applicability basis is materially weakened and cannot justify current adequacy; a small-sample assessment remains unresolved.",
+                  "to": "evidence",
+                  "trigger_refs": [
+                    [
+                      "evidence/sources/S-000004/r000001.json",
+                      "evidence/sources/S-000005/r000001.json",
+                      "evidence/claims/E-000002/r000002.json"
+                    ]
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000002"
+                  ],
+                  "at": "2026-10-14T15:10:27+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Document a project-applicable small-sample assessment for 32 independent districts.",
+                    "Reassess the evidence and prepare any needed recommendation or candidate for separate human review; do not close on the old adequacy claim."
+                  ],
+                  "from": "evidence",
+                  "reason": "Materially changed source and current cluster count reopen uncertainty-method applicability only.",
+                  "to": "evidence",
+                  "trigger_refs": [
+                    "external-material:F-000002",
+                    "message:external-comment:F-000002:0",
+                    "Audit/source/erratum.txt",
+                    "Audit/current-check.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "external-material:F-000002",
+                "message:external-comment:F-000002:0",
+                "Audit/source/erratum.txt",
+                "Audit/current-check.json"
+              ]
+            },
+            "readiness": {
+              "status": "effective",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": null,
+            "review_category": "checking",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": false,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "e3ac1d33abd93902d7c782cfe483958a875143c2093a7aa287ac3f4531650f22",
+            "ai_position": ""
+          },
+          {
+            "canonical_ref": "Freeze/questions/F-000003.json#/definition",
+            "created_at": "2026-10-14T15:07:30+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": 1,
+              "draft": null,
+              "versions": [
+                {
+                  "approval": {
+                    "at": "2026-10-14T15:07:30+00:00",
+                    "by": "user",
+                    "text_sha256": "3281517024787874321109779ebc54d5b387d98a61424eef19845fd9aa243e78"
+                  },
+                  "content_sha256": "19a8100d19d91422a8192da0d6f0e6f59d304b9f36568505be3c3377836a85cc",
+                  "dependencies": [],
+                  "edits": [
+                    {
+                      "at": "2026-10-14T15:07:30+00:00",
+                      "by": "codex",
+                      "text": "F-000003: The current article table displays age in years with one decimal place."
+                    }
+                  ],
+                  "number": 1,
+                  "published_at": "2026-10-14T15:07:30+00:00",
+                  "published_by": "user",
+                  "review_basis": {
+                    "claims": [
+                      "evidence/claims/E-000003/r000001.json"
+                    ],
+                    "packet_sha256": "d8ef94fca1d01b006b5a7d83b4c84f802f0f921a1dfffb7c4b6f4a98e44731e9",
+                    "summary": "Fictional researcher table requirement: show age in years with one decimal place."
+                  },
+                  "source": "Freeze/questions/F-000003.json#/definition/versions/0",
+                  "supersedes": null,
+                  "text": "F-000003: The current article table displays age in years with one decimal place.",
+                  "text_sha256": "3281517024787874321109779ebc54d5b387d98a61424eef19845fd9aa243e78"
+                }
+              ]
+            },
+            "evidence_refs": [],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000003",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [],
+            "pending_items": [],
+            "problem_type": "output_specification",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000003/r000001.json"
+              ],
+              "packet_sha256": "d8ef94fca1d01b006b5a7d83b4c84f802f0f921a1dfffb7c4b6f4a98e44731e9",
+              "summary": "Fictional researcher table requirement: show age in years with one decimal place."
+            },
+            "review_packet": {
+              "applicability": "Full supplied project facts",
+              "common_practice": "No universal preference asserted beyond the supplied text",
+              "default": "F-000003: The current article table displays age in years with one decimal place.",
+              "departure_check": "No unexplained departure",
+              "project_reason": "Matches the existing stated research objective",
+              "support": "Fictional researcher table requirement: show age in years with one decimal place."
+            },
+            "review_required": null,
+            "revision": 3,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "Age table precision",
+            "verification_tests": [],
+            "why": "Existing human-confirmed project choice",
+            "work": {
+              "affected_refs": [
+                "F-000003"
+              ],
+              "blockers": [],
+              "closed_reason": "confirmed",
+              "completion_conditions": [
+                "confirmed"
+              ],
+              "conclusion_type": "single_recommendation",
+              "phase": "closed",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000003"
+                  ],
+                  "at": "2026-10-14T15:07:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000003"
+                  ],
+                  "at": "2026-10-14T15:07:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Human confirmation"
+                  ],
+                  "from": "prepare_review",
+                  "reason": "Previously reviewed choice",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "Audit/source/original-3.txt"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000003"
+                  ],
+                  "at": "2026-10-14T15:07:30+00:00",
+                  "by": "user",
+                  "completion_conditions": [
+                    "confirmed"
+                  ],
+                  "from": "human_review",
+                  "reason": "confirmed",
+                  "to": "closed",
+                  "trigger_refs": [
+                    "definition_approve"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "Audit/source/original-3.txt"
+              ]
+            },
+            "readiness": {
+              "status": "effective",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": null,
+            "review_category": "quick_confirm",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": false,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "fe7127544f7b92d8663ea3a0c2e662e100c3abf0ebf99f3a5fe050532f559c62",
+            "ai_position": ""
+          }
+        ],
+        "decision_groups": [],
+        "governance_version": 5,
+        "pending_submission_paths": [],
+        "investigations": [
+          {
+            "created_at": "2026-10-14T15:07:30+00:00",
+            "created_by": "codex",
+            "dedupe_key": "sex",
+            "evidence_refs": [
+              "evidence/sources/S-000005/r000001.json",
+              "evidence/claims/E-000004/r000001.json"
+            ],
+            "feedback_events": [
+              {
+                "actor": "user",
+                "at": "2026-10-14T15:07:30+00:00",
+                "id": "message:human-I-000001:I-000001:0",
+                "kind": "comment",
+                "reference": "human-I-000001:I-000001:0",
+                "sequence": 1
+              },
+              {
+                "actor": "system",
+                "at": "2026-10-14T15:10:27+00:00",
+                "id": "incremental-continuation-20261014-v1:evidence-change:I-000001",
+                "kind": "evidence_changed",
+                "reference": {
+                  "claims": [
+                    "evidence/claims/E-000004/r000001.json"
+                  ],
+                  "paths": [
+                    "evidence/sources/S-000004/r000001.json",
+                    "evidence/sources/S-000005/r000001.json",
+                    "evidence/claims/E-000002/r000002.json",
+                    "evidence/claims/E-000004/r000001.json"
+                  ]
+                },
+                "sequence": 2
+              }
+            ],
+            "id": "I-000001",
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:07:30+00:00",
+                "id": "seed-close:I-000001:0",
+                "request_id": "seed-close",
+                "text": "The old batch had no missing sex; its upstream extraction was checked."
+              },
+              {
+                "actor": "user",
+                "at": "2026-10-14T15:07:30+00:00",
+                "id": "human-I-000001:I-000001:0",
+                "request_id": "human-I-000001",
+                "text": "新批次到了，恢复这项调查，核对新缺失情况和上游处理。"
+              },
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:10:27+00:00",
+                "id": "incremental-continuation-20261014-v1:I-000001:0",
+                "request_id": "incremental-continuation-20261014-v1",
+                "text": "已恢复同一调查 I-000001。当前审计记录显示新批次 80 条中有 2 条性别缺失（2.5%），因此旧批次无缺失的排除结论不能覆盖新批次。审计同时标明新批次上游过滤尚未检查；案例未提供原始数据、抽取脚本或进一步上游证据，不能宣称已完成上游核对，也不能判断是否已过滤或决定缺失值处理。已保存具体待办及恢复条件，保留原调查关闭原因和历史；未创建重复调查或新科学定义。"
+              },
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:11:05+00:00",
+                "id": "incremental-continuation-20261014-evidence-receipt:I-000001:0",
+                "request_id": "incremental-continuation-20261014-evidence-receipt",
+                "text": "已复核本次提交生成的系统证据变更：与本调查相关的 E-000004/r000001 和 S-000005/r000001 仅记录新批次 2/80 缺失及上游未检查，正是已保存的重开依据；该变更没有补齐上游核查。现有待办 new-batch-upstream-check 继续有效，调查保持 evidence/needs_check。"
+              }
+            ],
+            "pending_items": [
+              {
+                "continue_when": {
+                  "kind": "local_assessment",
+                  "satisfied": false
+                },
+                "id": "new-batch-upstream-check",
+                "input_refs": [
+                  "message:human-I-000001:I-000001:0",
+                  "Audit/current-check.json",
+                  "evidence/claims/E-000004/r000001.json"
+                ],
+                "question": "How does the new-batch extraction, filtering or transformation produce or handle the 2 missing sex records, and do they enter the analysis cohort?",
+                "reason": "Audit/current-check.json explicitly says the upstream new-batch filter is not yet checked. No upstream code, raw rows or reconciled check is supplied, so the observed missingness cannot yet determine a handling policy.",
+                "updated_at": "2026-10-14T15:10:27+00:00",
+                "updated_in": "incremental-continuation-20261014-v1"
+              }
+            ],
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [
+                "incremental-continuation-20261014-v1:evidence-change:I-000001"
+              ],
+              "handled_external": [],
+              "human_cursor": "message:human-I-000001:I-000001:0",
+              "receipts": [
+                {
+                  "at": "2026-10-14T15:10:27+00:00",
+                  "bootstrap_reason": null,
+                  "dispositions": [
+                    {
+                      "event_id": "message:human-I-000001:I-000001:0",
+                      "reply_id": "incremental-continuation-20261014-v1:I-000001:0"
+                    }
+                  ],
+                  "human_cursor": "message:human-I-000001:I-000001:0",
+                  "request_id": "incremental-continuation-20261014-v1"
+                },
+                {
+                  "at": "2026-10-14T15:11:05+00:00",
+                  "bootstrap_reason": null,
+                  "dispositions": [
+                    {
+                      "event_id": "incremental-continuation-20261014-v1:evidence-change:I-000001",
+                      "reply_id": "incremental-continuation-20261014-evidence-receipt:I-000001:0"
+                    }
+                  ],
+                  "human_cursor": "message:human-I-000001:I-000001:0",
+                  "request_id": "incremental-continuation-20261014-evidence-receipt"
+                }
+              ]
+            },
+            "question_ids": [],
+            "revision": 5,
+            "schema_version": 1,
+            "title": "Sex missingness",
+            "why": "Check whether missing sex needs a decision",
+            "work": {
+              "affected_refs": [
+                "I-000001"
+              ],
+              "blockers": [
+                "New-batch upstream implementation or verification evidence is not supplied."
+              ],
+              "closed_reason": null,
+              "completion_conditions": [
+                "Obtain and inspect new-batch upstream extraction/filtering evidence, reconcile 2 of 80 missing values and establish cohort impact.",
+                "Close only after the new facts are resolved; create a scientific decision item only if a real unresolved handling choice remains."
+              ],
+              "conclusion_type": "needs_check",
+              "phase": "evidence",
+              "revision_id": 2,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "I-000001"
+                  ],
+                  "at": "2026-10-14T15:07:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Reopen if batch or upstream conditions change"
+                  ],
+                  "from": "triage",
+                  "reason": "No missing sex in checked old batch",
+                  "to": "closed",
+                  "trigger_refs": [
+                    "old-batch"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "I-000001"
+                  ],
+                  "at": "2026-10-14T15:10:27+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Obtain and inspect new-batch upstream extraction/filtering evidence, reconcile 2 of 80 missing values and establish cohort impact.",
+                    "Close only after the new facts are resolved; create a scientific decision item only if a real unresolved handling choice remains."
+                  ],
+                  "from": "closed",
+                  "reason": "The user requested reopening for a new batch; the current audit documents 2 missing values and an unchecked upstream filter, invalidating reuse of the old batch's exclusion for this batch.",
+                  "to": "evidence",
+                  "trigger_refs": [
+                    "message:human-I-000001:I-000001:0",
+                    "Audit/current-check.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "message:human-I-000001:I-000001:0",
+                "Audit/current-check.json"
+              ]
+            },
+            "review_category": "checking",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": false,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "historical": false
+          }
+        ]
+      },
+      "hashes": {
+        "manifest": "64a0f7c1c265b2be17af9d77021be77754755c734d031b6beea03e38fb8b1cd7",
+        "trace": "c105f40c0e660fa5543550d501ffd346f782c3634b924cca7d5cc174bd45df9d",
+        "outcome": "940b63d3870d6ace58581a95b466838477185bcb399066424460a4808b4d420b"
+      }
+    }
+  ]
+}

@@ -28,17 +28,15 @@ Windows tests need a local filesystem supporting file IDs, hard links and ACLs;
 symlink tests may require Developer Mode or permission to create symlinks.
 Platform-specific tests skip with an explicit reason when unavailable. A skip
 is not evidence of platform verification. The workflow declares
-[CI on all three platforms](https://github.com/HaobinZhou/OppenSteward-MCP/actions/workflows/checks.yml)
+[CI on all three platforms](../.github/workflows/checks.yml)
 with Python 3.12 and 3.13. The OppenCouncil integration has been tested locally
-on macOS; its prepared workflow requires publishing the pinned OppenCouncil
-repository before a coordinated MCP release. Actual ChatGPT HTTP connection and day-to-day use have
+on macOS. Actual ChatGPT HTTP connection and day-to-day use have
 only been verified on macOS; Windows/Linux account connections and a real Secure
 MCP Tunnel connection still need testing.
 
-Freeze adapter tests use the installed `oppencouncil.store` package. Place an
-OppenCouncil checkout beside this repository before running `uv sync`.
-The workflow checks out an exact OppenCouncil commit as a sibling directory,
-matching the local editable dependency in `pyproject.toml`. Missing dependencies
+Freeze adapter tests use the installed `oppencouncil.store` package from the
+adjacent `council/` component in the same product checkout, matching the editable
+dependency in `pyproject.toml`. Missing dependencies
 fail installation rather than silently skipping Freeze integration tests.
 
 ## Optional browser regression
@@ -62,7 +60,8 @@ uv run pytest tests/test_browser.py -q
 
 The browser test starts two temporary loopback servers and runs the registered
 HTTP protocol verifier. It does not contact ChatGPT or use a deployed owner's
-password. The real Secure MCP Tunnel account connection needs an independently
+password. Set `OPPENPROJECT_CHROMIUM` to an existing Chromium executable when
+using a separately installed Playwright runtime. The real Secure MCP Tunnel account connection needs an independently
 authorized workspace and runtime key; local stdio tests cannot verify it.
 
 ## Release review
@@ -70,5 +69,5 @@ authorized workspace and runtime key; local stdio tests cannot verify it.
 Verify the lockfile, README platform status, and ignored local state before
 publishing. Git owns release history; do not copy old
 outputs into dated folders. Keep the existing `v0.1.0` freeze intact. Public
-identity is OppenSteward-MCP; the internal `oppenproject` module and existing
+identity is OppenCouncil MCP; the internal `oppenproject` module and existing
 macOS service label remain stable for compatibility.

@@ -18,7 +18,7 @@ from mcp import ClientSession
 from mcp.client.streamable_http import streamable_http_client
 
 from oppenproject.auth import COOKIE, SCOPE
-from oppenproject.config import Settings
+from oppenproject.config import APP_NAME, Settings
 
 
 async def main(base_url, settings=None):
@@ -31,7 +31,7 @@ async def main(base_url, settings=None):
     access = None
     async with httpx.AsyncClient(base_url=base_url, timeout=30, trust_env=False) as client:
         health = await client.get("/healthz")
-        assert health.json()["service"] == "OppenSteward-MCP"
+        assert health.json()["service"] == APP_NAME
         assert (await client.get("/mcp")).status_code == 401
         resource = (await client.get("/.well-known/oauth-protected-resource/mcp")).json()
         assert resource["resource"] == settings.resource
@@ -115,14 +115,14 @@ async def main(base_url, settings=None):
                         details = overview.structuredContent
                         assert details["mcp_tools"] == [tool.name for tool in tool_list.tools]
                         expected_tools = {"off": 8, "read": 10, "write": 12}[settings.discussion_mode]
-                        expected_tools += {"off": 0, "read": 2, "write": 4}[settings.freeze_mode]
+                        expected_tools += {"off": 0, "read": 6, "write": 8}[settings.freeze_mode]
                         assert len(tool_list.tools) == expected_tools
                         if settings.freeze_mode == "write":
                             by_name = {tool.name: tool for tool in tool_list.tools}
-                            for name in ("freeze_add_questions", "freeze_change_question"):
-                                actor = by_name[name].inputSchema["properties"]["actor"]
-                                assert actor["enum"] == ["chatgpt", "codex"]
-                                assert actor["default"] == "chatgpt"
+                            for name in ("council_submit_evidence", "council_comment"):
+                                assert "actor" not in by_name[name].inputSchema["properties"]
+                            assert not {"freeze_add_questions", "freeze_change_question",
+                                        "freeze_change_group"} & set(by_name)
                         assert details["discussion_access"]["granted_scopes"] == [SCOPE]
                         assert not details["discussion_access"]["can_write"]
                         if settings.discussion_mode != "off":

@@ -165,6 +165,25 @@ class Project:
 
 
 def identify(root: Path) -> Project | None:
+    from oppencouncil.project import MARKER, read_metadata
+
+    anchors = [(p, marker_text(root, p)) for p in ("project.md", ".oppen-project-steward/registry.md")]
+    v5 = [(p, text) for p, text in anchors if MARKER in text.splitlines()]
+    if v5:
+        if len(v5) != 1:
+            return None
+        registry, text = v5[0]
+        markers = {*R_MARKERS, *STEWARD_MARKERS, MARKER}
+        if sum(t.splitlines().count(m) for _, t in anchors for m in markers) != 1:
+            return None
+        try:
+            read_metadata(text)
+            with open_beneath(root, directory=True) as fd:
+                st = os.fstat(fd)
+        except ValueError:
+            return None
+        pid = hashlib.sha256(str(root).encode()).hexdigest()[:20]
+        return Project(pid, root.name, str(root), "oppencouncil", "v5", registry, st.st_dev, st.st_ino)
     registry = ".oppen-project-steward/registry.md"
     text = marker_text(root, registry)
     skill, version = "oppen-project-steward", "v3"
@@ -363,7 +382,7 @@ class Catalog:
                         continue
                     content = os.read(fd, 2 * 1024 * 1024).decode("utf-8")
                 marker = f"<!-- {project.skill}:{system.lower()}-index -->"
-                if project.skill == "stepwise-r-project":
+                if project.skill in {"stepwise-r-project", "oppencouncil"}:
                     # The R helper uses a fixed title/table, without a marker comment.
                     marker = "# Decision Memory" if system == "Memory" else "# Human Attention"
                 if content.splitlines().count(marker) != 1 or "\x00" in content:
@@ -377,7 +396,10 @@ class Catalog:
                 cells = [cell.strip() for cell in line.split("|")[1:-1]]
                 entry_id = cells[0]
                 if re.fullmatch(letter + r"-[0-9]{4,}", entry_id):
-                    if project.skill == "stepwise-r-project" and cells[-1] != "entries/" + entry_id + ".md":
+                    if (
+                        project.skill == "stepwise-r-project"
+                        or (project.skill == "oppencouncil" and len(cells) >= 5)
+                    ) and cells[-1] != "entries/" + entry_id + ".md":
                         continue
                     allowed.add(prefix + system + "/entries/" + entry_id + ".md")
         return allowed

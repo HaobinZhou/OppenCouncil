@@ -1,6 +1,19 @@
 """Filesystem fixtures used by the product acceptance suites."""
 
 import os
+import time
+
+
+def cleanup_temporary_directory(directory):
+    """Wait briefly for pending Windows deletions; persistent cleanup errors fail."""
+    for attempt in range(6):
+        try:
+            directory.cleanup()
+            return
+        except OSError as error:
+            if os.name != "nt" or getattr(error, "winerror", None) not in {32, 145} or attempt == 5:
+                raise
+            time.sleep(0.02 * 2**attempt)
 
 
 def sparse_truncate(handle, size):

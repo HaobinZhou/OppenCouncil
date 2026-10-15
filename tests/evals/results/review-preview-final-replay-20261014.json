@@ -1,0 +1,27 @@
+{
+  "project_only_copy": "/private/tmp/oppencouncil-preview-final-replay-20261014/project",
+  "returncode": 0,
+  "stdout": "{\"status\": \"passed\", \"checks\": [\"simulated metadata\", \"fixed variable order and units\", \"two treatment columns and group N\", \"header/column IDs agree\", \"female percentages use nonmissing denominators\", \"all rows have both group cells\"], \"limits\": [\"No study data accessed or analysed.\", \"Continuous values are invented summaries, not calculated estimates.\", \"Council UI rendering was not opened or visually verified.\"]}\n",
+  "stderr": "",
+  "same_files": {
+    "candidate.md": true,
+    "preview.md": true,
+    "preview.json": true,
+    "preview.csv": true,
+    "verification.json": true
+  },
+  "before": {
+    "candidate.md": "c42c1d29d57350b58b2f6ae4eab44c19cc20c865ce5007114d1740525748c5db",
+    "preview.md": "b42deac7af1e8a482c1af327b2da6aff84a60d4116226ba7b968e8067fae0468",
+    "preview.json": "c7f5837d8f6c70161278d18c147f4bf947cdb986c30f3ac2848fb94790c1c7a6",
+    "preview.csv": "604a32a6f9e4a2b1aaea6852f9000f0f911465cdc4f1cc27e73cd66b4c123360",
+    "verification.json": "0c5d608077a34ead485ec0505cca7a171cd3289754aa8ec99d72fb4e94115173"
+  },
+  "after": {
+    "candidate.md": "c42c1d29d57350b58b2f6ae4eab44c19cc20c865ce5007114d1740525748c5db",
+    "preview.md": "b42deac7af1e8a482c1af327b2da6aff84a60d4116226ba7b968e8067fae0468",
+    "preview.json": "c7f5837d8f6c70161278d18c147f4bf947cdb986c30f3ac2848fb94790c1c7a6",
+    "preview.csv": "604a32a6f9e4a2b1aaea6852f9000f0f911465cdc4f1cc27e73cd66b4c123360",
+    "verification.json": "0c5d608077a34ead485ec0505cca7a171cd3289754aa8ec99d72fb4e94115173"
+  }
+}

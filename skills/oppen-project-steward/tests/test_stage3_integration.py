@@ -12,7 +12,7 @@ from pathlib import Path
 from unittest import mock
 
 
-SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "oppen_project_steward.py"
+SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "legacy_oppen_project_steward.py"
 FIXTURES = Path(__file__).parent / "fixtures"
 SPEC = importlib.util.spec_from_file_location(
     "oppen_project_steward_stage3", SCRIPT_PATH
@@ -287,8 +287,13 @@ class Stage3IntegrationTestCase(unittest.TestCase):
             steward.ProjectError, "cannot contain the target project"
         ):
             steward.promote_audit(self.root, "build", self.temp_root)
-        with self.assertRaisesRegex(steward.ProjectError, "system temporary"):
-            steward.promote_audit(self.root, "build", FIXTURES / "software-ai-product")
+        outside = self.temp_root / "outside-system-temp"
+        outside.mkdir()
+        (outside / "evidence.json").write_text("{}\n", encoding="utf-8")
+        with mock.patch.object(steward, "system_temporary_roots", return_value=(self.root,)):
+            with self.assertRaisesRegex(steward.ProjectError, "system temporary"):
+                steward.promote_audit(self.root, "build", outside)
+        self.assertTrue((outside / "evidence.json").exists())
 
     def test_audit_promotion_rejects_top_level_symlink(self) -> None:
         self.init_empty()

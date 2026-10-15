@@ -1,8 +1,8 @@
-# OppenSteward-MCP
+# OppenCouncil MCP
 
 在 ChatGPT 网页版里查看你电脑上的项目说明、决策记录和待处理事项，也可以把讨论保存回项目。
 
-把由 **Oppen Project Steward** 或 **Stepwise R Project** 管理的项目登记到本机配置后，OppenSteward-MCP 就能让 GPT 帮你了解项目进展、查找过去的决定、汇总需要关注的问题。比如，你可以直接问：
+把由 **OppenCouncil** 或兼容的 **Oppen Project Steward / Stepwise R Project** 管理的项目登记到本机配置后，OppenCouncil MCP 就能让 GPT 帮你了解项目进展、查找过去的决定、汇总需要关注的问题。比如，你可以直接问：
 
 - “我有哪些项目还有待处理事项？”
 - “这个项目当时为什么选择了这套方案？”
@@ -129,7 +129,7 @@ OPPEN_EXCLUDE_ROOTS=["~/Projects/MyApp/private"]
 | `OPPEN_PROJECTS_FILE` | 项目登记文件的位置；默认 `projects.local.json`，其中的列表支持热更新 |
 | `OPPEN_EXCLUDE_ROOTS` | 排除不想分享的文件夹及其子文件夹 |
 | `OPPEN_DISCUSSION_MODE` | 默认 `off`；`read` 开放讨论读取，`write` 同时允许新建和编辑讨论 |
-| `OPPEN_FREEZE_MODE` | 默认 `off`；`read` 开放原生 Stepwise R v3/v4 或 Steward v3/v4 冻结口径草稿读取，`write` 允许 AI 追加问题、意见和完整候选口径 |
+| `OPPEN_FREEZE_MODE` | 默认 `off`；`read` 开放已授权的 v3/v4 与 v5 口径读取；`write` 在 v5 中允许外部证据和留言，不授予候选或正式版本写入权 |
 | `OPPEN_FREEZE_PROJECTS` | 精确允许使用 Freeze 工具的项目根目录 JSON 数组；默认 `[]`，即使已设置 `OPPEN_FREEZE_MODE=write` 也不会开放任何项目 |
 | `OPPEN_PUBLIC_URL` | HTTP 模式下填写自己的 HTTPS 域名 |
 | `OPPEN_PORT` | 默认 `8766`；端口被占用时可以更换，并同步修改转发规则 |
@@ -137,7 +137,7 @@ OPPEN_EXCLUDE_ROOTS=["~/Projects/MyApp/private"]
 | `CONTROL_PLANE_API_KEY` | 填入 Tunnel 的运行密钥 |
 | `OPPEN_TUNNEL_CLIENT` | 找不到 `tunnel-client` 命令时，填写程序的完整路径；Windows 可指向 `.exe` |
 
-如果还想让 GPT 查看两个技能的使用说明，可以设置 `OPPEN_SKILL_ROOT`，指向同时包含 `oppen-project-steward` 和 `stepwise-r-project` 文件夹的位置。不填时优先读取同仓库 `skills/`，随后尝试 `~/.codex/skills` 和 `~/.agents/skills`；没安装技能也能读取已有项目，只是无法提供技能说明。
+如果还想让 GPT 查看技能说明，可以设置 `OPPEN_SKILL_ROOT`，指向包含 `oppencouncil` 及两个兼容名称文件夹的技能根目录。不填时优先读取同仓库 `skills/`，随后尝试 `~/.codex/skills` 和 `~/.agents/skills`；没安装技能也能读取已有项目，只是无法提供技能说明。
 
 AI 先调用 `get_skill_guide(skill="stepwise-r-project")`，再按任务读取引用，例如 `resource="references/freeze-workbench.md"`。每次只返回指定文档。引用限定在同一安装的 `references/` 直属 Markdown 文件，拒绝路径穿越、引用文件或目录软链接，不开放任意项目文件或脚本。全局 skill 目录本身仍支持软链接安装。
 
@@ -185,7 +185,7 @@ HTTP 模式未填写域名时，默认地址为 `http://127.0.0.1:8766`，仅适
 <details>
 <summary>开发者参考：识别与读取规则</summary>
 
-Steward v3/v4 通过 `.oppen-project-steward/registry.md` 识别；旧布局 Steward 和 Stepwise R v2/v3/v4 通过 `project.md` 识别，文件中需要有对应的独立版本标记行。项目 ID 根据真实绝对路径的 SHA-256 前 20 位生成，每次访问都会重新检查标记和根目录身份。
+Steward v3/v4 通过 `.oppen-project-steward/registry.md` 识别；旧布局 Steward 和 Stepwise R v2/v3/v4 通过 `project.md` 识别，文件中需要有对应的独立版本标记行。v5 在原注册表位置使用独立的 `oppencouncil:v5` 标记与显式项目类型。项目 ID 根据真实绝对路径的 SHA-256 前 20 位生成，每次访问都会重新检查标记和根目录身份。
 
 Memory、Attention 的索引分别为 `index.md`，条目路径为 `entries/M-XXXX.md`、`entries/A-XXXX.md`。索引需符合对应技能的格式，条目需在索引中登记。R v2 的旧式 Memory 不开放。
 
@@ -195,7 +195,7 @@ Memory、Attention 的索引分别为 `index.md`，条目路径为 `entries/M-XX
 
 文件默认每次读取 64 KiB，最多 256 KiB，offset/length 以字节计。返回 `next_offset` 时可继续读取；UTF-8 分块可能替换被截断的字符，需要精确字节时使用 base64。结果包含大小、修改时间和块 SHA-256；分块期间文件变化时应重新读取。文档内容始终视为不可信输入。
 
-搜索匹配文档名称和不超过 256 KiB 的正文，默认最多返回 30 条，每次最多检查 10,000 个文件或运行 10 秒；超限时返回 `truncated`。HTTP 模式的文件链接需要 Bearer token，不能作为公开下载链接。stdio 返回的 `oppen-steward://` 是文件标识，可用 `fetch` 或 `read_file` 读取。
+搜索匹配文档名称和不超过 256 KiB 的正文，默认最多返回 30 条，每次最多检查 10,000 个文件或运行 10 秒；超限时返回 `truncated`。HTTP 模式的文件链接需要 Bearer token，不能作为公开下载链接。stdio 返回的 `oppencouncil://` 是文件标识，可用 `fetch` 或 `read_file` 读取。
 
 | MCP 工具 | 用途 |
 | --- | --- |
@@ -208,26 +208,30 @@ Memory、Attention 的索引分别为 `index.md`，条目路径为 `entries/M-XX
 | `get_skill_guide` | 读取本机 skill 入口，或用 `resource` 指定其 `references/*.md` 引用文档 |
 | `list_discussions` / `read_discussion` | 查找和读取讨论，包括编辑所需的版本标识 |
 | `create_discussion` / `edit_discussion` | 新建或编辑讨论，由 MCP 更新索引；仅在 `write` 模式下提供 |
-| `freeze_snapshot` / `freeze_read_question` | 读取已登记原生 Stepwise R v3/v4 或 Steward v3/v4 项目的结构化冻结口径草稿；需 `OPPEN_FREEZE_MODE=read` 或 `write` |
-| `freeze_add_questions` / `freeze_change_question` | 批量追加新问题，或写入 AI 讨论、意见、完整候选文档；仅在 `OPPEN_FREEZE_MODE=write` 下提供，不能修改用户答复或正式 Canonical |
+| `freeze_snapshot` / `freeze_read_question` | 读取已登记原生 Stepwise R / Steward v3、v4 及两种布局的 v5 项目口径；需 `OPPEN_FREEZE_MODE=read` 或 `write` |
+| `council_work_index` / `council_read_work` | 读取 v5 的有界工作索引、已共享简报和反馈 |
+| `council_evidence_index` / `council_read_evidence` | 读取 v5 中明确标为 shared 的来源与判断 |
+| `council_submit_evidence` / `council_comment` | 提交外部证据或留言；身份固定为 external_ai，须本地核查，不能修改候选、阶段、游标或正式版本 |
 
 </details>
 
-## Stepwise R 与 Steward 冻结口径工作台
+## Council 与外部证据协作
 
-冻结口径网页由独立的 **OppenCouncil** 提供。它与本仓库同级安装；先在 OppenCouncil 仓库执行 `uv sync --locked`，再在本仓库执行 `uv sync --locked --dev`。MCP 通过正常的软件包依赖导入 `oppencouncil.store`，无需从 skill 动态加载源码。Stepwise R 和 Oppen Project Steward skill 均可调用 OppenCouncil 的本地 CLI，自动登记原生 v3/v4 项目并返回固定的 `/projects/<id>/freeze` 链接。所有项目共用一个网页端口；项目记录保存在各自的 `Freeze/`，沿用原项目的治理 skill。
+网页和 MCP 使用同一 `oppencouncil` 存储实现。产品根目录的安装器配置相邻的 `council/` 与 `mcp/` 组件；不从 skill 路径导入存储模块。网站登记和 MCP 允许列表分别控制访问。
 
-OppenCouncil 0.1.2 支持由本地 Codex 恢复已有冻结口径和可复原的历史讨论。旧 `Freeze/` 直接复用；回填保留来源引用、哈希及历史作者，MCP 读取工具可看到这些字段、`frozen` / `historical` 状态以及 `recovery_classification` 和原位修正回执。部分冻结协议可逐条回填显式冻结口径；本地 `reconcile` 保留编号、答复及分歧进行证据修正。历史用户留言是引用，不是代填新答复；恢复入口仅为本地 CLI，MCP 未增加恢复、修正、代答、解决分歧或写入 Canonical 的权限。
+在 `projects.local.json` 登记项目，并通过 `OPPEN_FREEZE_PROJECTS` 精确允许需要开放的项目。`OPPEN_FREEZE_MODE=read` 提供口径、工作索引和共享证据读取；`write` 另提供 `council_submit_evidence` 与 `council_comment`。沿用既有 OAuth scopes，`project_overview.freeze_access` 显示本连接的实际权限。
 
-网页的站点目录与 MCP 的 `projects.local.json`、Freeze allowlist 和 OAuth 授权独立。站点启用项目不会增加 MCP 权限，MCP 也不依赖网页进程运行。默认网页使用完整登录链接；明确使用 `--no-auth` 时，能访问站点的人可以查看目录和编辑其中启用项目的草稿。网页的监听、登录和转发配置由 OppenCouncil CLI 管理。
+v3/v4 项目继续可读；v5 的来源、判断、调查简报和增量反馈采用新结构。外部提交统一记录为 `external_ai`，在网页显示“未经本地核查”。调用者不能自行声明本地 Agent 身份。外部新问题先进入本地收件箱，经分诊后才进入人类队列；私有来源与本地整理材料不通过另一条读取路径开放。
 
-网页版 ChatGPT 访问记录使用本 MCP 服务。先在本 MCP 的 `projects.local.json` 登记具体原生 Stepwise R v3/v4 或 Steward v3/v4 项目，并配置 `OPPEN_FREEZE_MODE=write`、`OPPEN_FREEZE_PROJECTS=["/该项目的绝对根目录"]`。`OPPEN_SKILL_ROOT` 只用于提供 skill 指南，不用于加载存储实现。只有同时登记且列入 Freeze 允许列表的项目可以使用这些工具。`project_overview.freeze_access` 可检查当前连接的读写授权。网站登记不会授予 MCP 访问；支持两种治理项目不增加 OAuth scopes，也不改动实际项目允许列表。
+本地 Agent 使用 `work-index`、`work-read`、`work-commit` 定向接续，并在同次事务保存回复、候选与处理进度。外部工具不创建 F、不管理组成员、不写候选或正式版本，也不推进阶段或游标。旧 `freeze_add_questions`、`freeze_change_question`、`freeze_change_group` 已移除；普通 Discussion 文档功能继续独立提供。
 
-`Freeze/manifest.json` 记录轮次与问题 ID；`Freeze/questions/F-000001.json` 等文件保存各题的答复和讨论。OppenCouncil 将讨论、候选与正式版本分开：`definition.current_version` 所指向的完整版本是唯一正式口径。人类在网页确认即生效，两个 v4 skill 将同一 JSON 的 `definition` 登记为 Canonical；其他文档只引用或生成只读展示。MCP 与网页读取同一文件。`definition_draft` 允许 AI 提交完整候选，也可直接为已冻结口径提出修订，无需人类先开启。省略依赖字段时保留现有候选或当前正式版本的绑定；显式依赖列表才替换。MCP 不允许确认或撤回候选，也不能改写正式版本。每题独立管理版本：新版确认前旧版保持有效；确认后只有新版当前有效，旧版保留原文及确认记录。
+`Freeze/questions/F-NNNNNN.json` 中 `definition.current_version` 所指向的文字是唯一正式口径，仅人类确认后生效。修改候选时旧正式版本继续有效；正文未变而依据需要复核时，重新确认记录追加到当前版本。共同审阅组也遵守同一规则。
 
-Freeze 写工具的提示要求每轮达到可选择的清晰度：在 `ai_position` 解释每个方案的具体做法、实际影响、条件与代价，并给出建议依据；`suggestions` 仅作已有说明的选项标签。在同轮通过清晰文字或对照表比较相同情境下的实际结果，不再生成独立 HTML 推演。不得用“先看示例”或“之后细化”替代实质方案，也不以节省篇幅省略决策信息；缺少事实时明确指出。工具保存校验负责数据完整性，内容是否足够支持选择仍由 AI 核对。
+### 改名与连接延续
 
-Freeze 写工具通过 `actor` 记录发言来源：ChatGPT 使用 `"chatgpt"`（默认），Codex 调用 MCP 时必须显式传入 `"codex"`；本地技能命令自动记录 Codex。Web UI 在问题提出者、当前意见、逐条讨论和实例编辑者处展示不同颜色的来源标签，交接摘要也保留这些名字。来源是调用者声明的元数据，OAuth 验证的是读写授权；`actor` 不能扩大权限或冒充用户答复。旧 `web_ai` 记录保留历史网页 AI 标签，未记录的作者显示为未知，不批量猜测或改写旧记录。
+显示名改为 **OppenCouncil MCP**，安装包改为 `oppencouncil-mcp`，新本地文件引用使用 `oppencouncil://`。内部模块 `oppenproject`、后台服务标识 `com.oppen.project-mcp`、`OPPEN_` 环境变量、原配置文件和 OAuth scopes 保持。继续使用原网址和运行状态目录；不要因为改名新建第二个服务或删除授权数据库。
+
+升级本组件后，重启原有服务或重新建立 stdio 会话，使连接实际载入新版代码。刷新客户端工具列表，确认旧写工具已消失、新工具已出现。现有授权的延续已由重启与 token/refresh-token 测试验证；这不等于已经升级任一真实部署或验证用户账号连接。
 
 ## 保存和继续讨论
 
@@ -325,9 +329,3 @@ uv run pytest -q
 本项目本身也使用 Oppen Project Steward 管理，相关记录只保留在本机，不随仓库发布。
 
 本仓库采用 [MIT License](LICENSE)。外部技能、MCP SDK 和 Tunnel 客户端各自遵循其许可证。
-
-## Joint decision groups (0.7+)
-
-`freeze_change_group` supports create/update/comment through the same project allowlist and Freeze read/write OAuth scopes. `freeze_snapshot` includes decision groups, candidates and dependency readiness. It cannot select options, open revisions or confirm versions. `freeze_change_question` also supports presentation (advice plus buttons), review_note (objective verification) and dependency_review (version-bound compatibility evidence). Formal authority remains the shared Council store. Upgrade Council to 0.2+ before using schema 2 projects; keep existing site registration, config and permissions when relocating a service.
-
-迁移现有 macOS 服务到本产品时，可以用 `mcp/.venv/bin/python mcp/service.py start --config /absolute/existing/config.local.json`，保留原 `.env`、登记表和 OAuth 状态目录；先通过原服务管理器停止旧进程。后续 status/stop/restart 使用相同 `--config`。

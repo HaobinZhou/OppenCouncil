@@ -1,0 +1,497 @@
+{
+  "measurement": "Actual reads and calls; whitespace words are not model tokens. Replays are evaluator checks in project-only copies.",
+  "runs": [
+    {
+      "scenario": "general_alias",
+      "directory": "/private/tmp/oppencouncil-final-entry-20261014/cb9733e9dea3",
+      "checks": {
+        "shared_entry_loaded": true,
+        "no_memory": true,
+        "legacy_alias_loaded": true,
+        "no_research_stage_loaded": true,
+        "no_f_created": true,
+        "independent_contract_check": true
+      },
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-final-entry-20261014/cb9733e9dea3/project",
+        "project_type": "general",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "changed_project_files": [
+        ".oppen-project-steward/.managed-state.json",
+        ".oppen-project-steward/Audit/Contracts/v5_export-rows.md",
+        ".oppen-project-steward/registry.md",
+        "Source/__pycache__/report.cpython-312.pyc",
+        "Source/report.py",
+        "Tests/check_export_rows.py"
+      ],
+      "instruction_reads": [
+        {
+          "at": 1791984118.174164,
+          "operation": "read",
+          "path": "skills/oppen-project-steward/SKILL.md",
+          "bytes": 548,
+          "whitespace_words": 67,
+          "sha256": "cb91220c4b04ba793801c2d9fc88dba9f1d7907be48c7e4d9783adac3e2ec3f8"
+        },
+        {
+          "at": 1791984121.052775,
+          "operation": "read",
+          "path": "skills/oppencouncil/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791984124.9453921,
+          "operation": "read",
+          "path": "skills/oppencouncil/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791984136.598272,
+          "operation": "read",
+          "path": "skills/oppencouncil/references/legacy-projects.md",
+          "bytes": 2327,
+          "whitespace_words": 272,
+          "sha256": "85c14147170eac45b5b7ece7367abcefe5fed68bee9d38a7d950dfffe4e85b40"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1628,
+        "cli_and_script_calls": 8,
+        "nonzero_calls": 2
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791984130.368255,
+          "operation": "council",
+          "arguments": [
+            "index",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "usage: __main__.py [-h] [--version] [--directory DIRECTORY]\n                   {open,register,disable,snapshot,import,recover,reconcile,ai-change,group-change,definition,work-index,work-read,work-commit,investigation-create,evidence-index,evidence-read,evidence-submit,start,_serve,stop,status}\n                   ...\n__main__.py: error: argument command: invalid choice: 'index' (choose from open, register, disable, snapshot, import, recover, reconcile, ai-change, group-change, definition, work-index, work-read, work-commit, investigation-create, evidence-index, evidence-read, evidence-submit, start, _serve, stop, status)\n"
+        },
+        {
+          "at": 1791984159.353639,
+          "operation": "execute",
+          "path": "project/Tests/check_export_rows.py",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/oppencouncil-final-entry-20261014/cb9733e9dea3/project/Tests/check_export_rows.py\", line 24, in <module>\n    assert actual == expected, (actual, expected)\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: ([{'id': 'positive', 'amount': 7.5}, {'id': 'negative', 'amount': -2}], [{'id': 'zero-int', 'amount': 0}, {'id': 'positive', 'amount': 7.5}, {'id': 'zero-float', 'amount': 0.0}, {'id': 'negative', 'amount': -2}])\n"
+        }
+      ],
+      "saved_item": null,
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-final-entry-replay-20261014/cb9733e9dea3",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "bb2a39e519b57094bdafada121af22c52b99afa21143afb2a2553e13859c5963",
+        "trace": "b8dcbc929725a81abc373bf8287afe26e4daf59e15634b9eb90ea8b21db905bf",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "3fa6e28cc73b5fdbf172d6a013112cfb5ac6500b6279bd036b08ecc22828bc6d"
+      }
+    },
+    {
+      "scenario": "descriptive",
+      "directory": "/private/tmp/oppencouncil-final-entry-20261014/d10198d4bc2c",
+      "checks": {
+        "shared_entry_loaded": true,
+        "no_memory": true,
+        "formal_version_preserved": true,
+        "no_new_f": true,
+        "no_candidate": true,
+        "exact_article_table": true,
+        "raw_input_preserved": true,
+        "output_read_back": true,
+        "only_current_stage": true,
+        "project_only_replay_matches": true
+      },
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-final-entry-20261014/d10198d4bc2c/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [
+          {
+            "path": "Data/raw/baseline.csv",
+            "reason": "Data origin/version requires classification before a release"
+          }
+        ],
+        "unassigned_files": []
+      },
+      "changed_project_files": [
+        ".oppencouncil-state.json",
+        "Audit/Contracts/v5_baseline-table.md",
+        "Audit/baseline-table-check.json",
+        "Audit/checks/check_baseline.py",
+        "Results/baseline.csv",
+        "Scripts/01_descriptive.py",
+        "project.md"
+      ],
+      "instruction_reads": [
+        {
+          "at": 1791984126.986519,
+          "operation": "read",
+          "path": "skills/oppencouncil/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791984131.218753,
+          "operation": "read",
+          "path": "skills/oppencouncil/references/research-stage-descriptive.md",
+          "bytes": 647,
+          "whitespace_words": 77,
+          "sha256": "716d65ae763d620f7cc611579ec6188e462e2d78671eff959ea3173c0bfd08dc"
+        },
+        {
+          "at": 1791984137.867497,
+          "operation": "read",
+          "path": "skills/oppencouncil/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791984137.867719,
+          "operation": "read",
+          "path": "skills/oppencouncil/references/output-specifications.md",
+          "bytes": 1937,
+          "whitespace_words": 228,
+          "sha256": "c8d96a007cd2eeb80635f5743761fbc844a6e3c37e553ee0eb1ce4e578380f96"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1594,
+        "cli_and_script_calls": 11,
+        "nonzero_calls": 1
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791984184.4156108,
+          "operation": "execute",
+          "path": "project/Audit/checks/check_baseline.py",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/oppencouncil-final-entry-20261014/d10198d4bc2c/project/Audit/checks/check_baseline.py\", line 36, in <module>\n    assert actual == expected, f'F-000001 content mismatch: expected {expected!r}; got {actual!r}'\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: F-000001 content mismatch: expected [['Characteristic', 'Treatment A (n = 2)', 'Treatment B (n = 2)'], ['Age, years, mean (SD)', '50.0 (14.1)', '60.0 (14.1)'], ['Diabetes, n (%)', '1 (50.0%)', '2 (100.0%)']]; got [['variable', 'arm0', 'arm1', 'n_missing', 'p_value'], ['age_years', '50.0', '60.0', '0', ''], ['diabetes', '0.5', '1.0', '0', '']]\n"
+        }
+      ],
+      "saved_item": {
+        "id": "F-000001",
+        "title": "Baseline table",
+        "why": "Article table specification",
+        "legacy_attention": null,
+        "revision": 4,
+        "work": {
+          "affected_refs": [
+            "F-000001"
+          ],
+          "blockers": [],
+          "closed_reason": "confirmed",
+          "completion_conditions": [
+            "confirmed"
+          ],
+          "conclusion_type": "single_recommendation",
+          "phase": "closed",
+          "revision_id": 1,
+          "transitions": [
+            {
+              "affected_refs": [
+                "F-000001"
+              ],
+              "at": "2026-10-14T13:21:21+00:00",
+              "by": "codex",
+              "completion_conditions": [
+                "Review the saved candidate"
+              ],
+              "from": "triage",
+              "reason": "Candidate wording saved",
+              "to": "prepare_review",
+              "trigger_refs": [
+                "definition_draft"
+              ]
+            },
+            {
+              "affected_refs": [
+                "F-000001"
+              ],
+              "at": "2026-10-14T13:21:21+00:00",
+              "by": "codex",
+              "completion_conditions": [
+                "Human confirmation"
+              ],
+              "from": "prepare_review",
+              "reason": "Explicit synthetic project requirement",
+              "to": "human_review",
+              "trigger_refs": [
+                "project-requirement"
+              ]
+            },
+            {
+              "affected_refs": [
+                "F-000001"
+              ],
+              "at": "2026-10-14T13:21:21+00:00",
+              "by": "user",
+              "completion_conditions": [
+                "confirmed"
+              ],
+              "from": "human_review",
+              "reason": "confirmed",
+              "to": "closed",
+              "trigger_refs": [
+                "definition_approve"
+              ]
+            }
+          ],
+          "trigger_refs": [
+            "project-requirement"
+          ]
+        },
+        "inputs": [],
+        "messages": [],
+        "pending_items": [],
+        "candidate": null,
+        "current": {
+          "number": 1,
+          "text": "Baseline characteristics\n\nProduce Results/baseline.csv as the current article table. Exactly these columns:\nCharacteristic, Treatment A (n = 2), Treatment B (n = 2).\n\nExactly these rows, in order:\n- Age, years, mean (SD): arithmetic mean and sample standard deviation, both one decimal place, formatted as mean (SD).\n- Diabetes, n (%): count of diabetes = 1 and percentage of the treatment group, formatted as n (percentage%), with one decimal place.\n\nGroup mapping: trt_code = 0 is Treatment A; trt_code = 1 is Treatment B.\nUse all four records in Data/raw/baseline.csv. No missing observations exist.\nNo other rows or columns form part of this table. This format is confirmed; no new scientific choice is pending.",
+          "text_sha256": "1b8d3e206aa1e5b2716cd99ee8aa5fc7a1cbe7e178dc2dc81f205dce1af2aec2",
+          "dependencies": [],
+          "review_basis": null
+        },
+        "review_basis": null,
+        "review_packet": null,
+        "external_brief": null,
+        "evidence_refs": [],
+        "review_required": null,
+        "reconfirmation_token": "eda95f12be4f8882c1841289411bd3f3cab525a3ed9aacb19afd8d2fcabc9cd5",
+        "read_set": {
+          "F-000001": 4
+        },
+        "member_ids": [],
+        "readiness": {
+          "status": "effective",
+          "dependencies": []
+        },
+        "review_category": "quick_confirm",
+        "human_pending": false,
+        "actionable": false,
+        "awaiting_human": false,
+        "ready_pending_ids": [],
+        "bootstrap_required": false,
+        "historical": false
+      },
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-final-entry-replay-20261014/d10198d4bc2c",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "bb2a39e519b57094bdafada121af22c52b99afa21143afb2a2553e13859c5963",
+        "trace": "8411ba61496dcfe6e2025d53d0f5d94f02ddafde5e2140da63502d11e21dab50",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "433383333bab229bcf887e8361827ec8e18667c0620db96737a4e25f57779a59"
+      }
+    },
+    {
+      "scenario": "resume",
+      "directory": "/private/tmp/oppencouncil-final-entry-20261014/a2e4857ac38b",
+      "checks": {
+        "shared_entry_loaded": true,
+        "no_memory": true,
+        "formal_version_preserved": true,
+        "no_new_f": true,
+        "no_candidate": true,
+        "no_analysis_execution": true,
+        "human_feedback_handled": true,
+        "unrelated_investigation_preserved": true,
+        "analysis_files_preserved": true,
+        "no_research_stage_loaded": true
+      },
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-final-entry-20261014/a2e4857ac38b/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [
+          {
+            "path": "Data/derived/analysis.csv",
+            "reason": "Data origin/version requires classification before a release"
+          },
+          {
+            "path": "Data/raw/records.csv",
+            "reason": "Data origin/version requires classification before a release"
+          }
+        ],
+        "unassigned_files": []
+      },
+      "changed_project_files": [
+        "Freeze/manifest.json",
+        "Freeze/questions/F-000001.json"
+      ],
+      "instruction_reads": [
+        {
+          "at": 1791984132.5221848,
+          "operation": "read",
+          "path": "skills/stepwise-r-project/SKILL.md",
+          "bytes": 528,
+          "whitespace_words": 66,
+          "sha256": "b2fc64353b71565ea8047f49faebf9e39605b31098472b0938b7213f9ddc99cb"
+        },
+        {
+          "at": 1791984137.328625,
+          "operation": "read",
+          "path": "skills/oppencouncil/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791984141.649458,
+          "operation": "read",
+          "path": "skills/oppencouncil/references/resume.md",
+          "bytes": 1352,
+          "whitespace_words": 162,
+          "sha256": "545da775e740a2dd8e110def6682e027cfc83bbde14ade9f09b361789358a23e"
+        },
+        {
+          "at": 1791984152.040566,
+          "operation": "read",
+          "path": "skills/oppencouncil/references/local-council.md",
+          "bytes": 3666,
+          "whitespace_words": 422,
+          "sha256": "046f29049827530f79ba254f8168ee599028932bec5e04b1f9a24f925a9e931f"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1220,
+        "cli_and_script_calls": 5,
+        "nonzero_calls": 0
+      },
+      "nonzero_calls": [],
+      "saved_item": {
+        "id": "F-000001",
+        "title": "Analytical population",
+        "why": "Define the requested population.",
+        "legacy_attention": null,
+        "revision": 7,
+        "work": {
+          "affected_refs": [
+            "F-000001"
+          ],
+          "blockers": [],
+          "closed_reason": "confirmed",
+          "completion_conditions": [
+            "confirmed"
+          ],
+          "conclusion_type": "single_recommendation",
+          "phase": "closed",
+          "revision_id": 1,
+          "transitions": [
+            {
+              "affected_refs": [
+                "F-000001"
+              ],
+              "at": "2026-10-14T13:21:21+00:00",
+              "by": "codex",
+              "completion_conditions": [
+                "Review the saved candidate"
+              ],
+              "from": "triage",
+              "reason": "Candidate wording saved",
+              "to": "prepare_review",
+              "trigger_refs": [
+                "definition_draft"
+              ]
+            },
+            {
+              "affected_refs": [
+                "F-000001"
+              ],
+              "at": "2026-10-14T13:21:21+00:00",
+              "by": "codex",
+              "completion_conditions": [
+                "Human confirms population"
+              ],
+              "from": "prepare_review",
+              "reason": "Explicit synthetic project requirement",
+              "to": "human_review",
+              "trigger_refs": [
+                "project-requirement"
+              ]
+            },
+            {
+              "affected_refs": [
+                "F-000001"
+              ],
+              "at": "2026-10-14T13:21:21+00:00",
+              "by": "user",
+              "completion_conditions": [
+                "confirmed"
+              ],
+              "from": "human_review",
+              "reason": "confirmed",
+              "to": "closed",
+              "trigger_refs": [
+                "definition_approve"
+              ]
+            }
+          ],
+          "trigger_refs": [
+            "project-requirement"
+          ]
+        },
+        "inputs": [],
+        "messages": [],
+        "pending_items": [],
+        "candidate": null,
+        "current": {
+          "number": 1,
+          "text": "Include every record with eligible = 1 in the analysis population.",
+          "text_sha256": "f38edefbe54527379ffa292b973890de45d42e3ecb3cc0c8afccce31050c5eb3",
+          "dependencies": [],
+          "review_basis": null
+        },
+        "review_basis": null,
+        "review_packet": null,
+        "external_brief": null,
+        "evidence_refs": [],
+        "review_required": null,
+        "reconfirmation_token": "8f6636c89f4b2c592aa3f5f43802c9dad630c02b38d0ce0dc03ff300d4d184f1",
+        "read_set": {
+          "F-000001": 7
+        },
+        "member_ids": [],
+        "readiness": {
+          "status": "effective",
+          "dependencies": []
+        },
+        "review_category": "quick_confirm",
+        "human_pending": false,
+        "actionable": false,
+        "awaiting_human": false,
+        "ready_pending_ids": [],
+        "bootstrap_required": false,
+        "historical": false
+      },
+      "replay": null,
+      "hashes": {
+        "manifest": "bb2a39e519b57094bdafada121af22c52b99afa21143afb2a2553e13859c5963",
+        "trace": "0186fbac3957e4595d71bbe520de653c4bc83e8e2e1813b6eb2300970cb285e8",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "73c73dab5dbe2ab30e0ca1af17592633ce986bb3162774fd5e34e373b14b30c2"
+      }
+    }
+  ]
+}

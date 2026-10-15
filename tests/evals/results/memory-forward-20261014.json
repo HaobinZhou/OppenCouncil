@@ -1,0 +1,284 @@
+{
+  "scope": "Nine synthetic Memory forward-tests; not general rule admission or full v5 acceptance.",
+  "review": "Primary evaluator inspected saved entry content, relationships, prior-content preservation and outcomes against withheld rubrics.",
+  "limitations": [
+    "One independent agent run per case. No repeated stochastic sampling.",
+    "Task facts were supplied synthetic handoffs; raw scientific data and external source appraisal were not evaluated.",
+    "Instruction reads are agent-reported; file bytes and whitespace words are measured. Model token counts and complete tool-call traces were not available.",
+    "The two initial positive runs needed an import workaround; the subsequent entrypoint fix passed a standalone subprocess regression and remaining positive agent runs.",
+    "No 4.3.1 comparison or deletion/ablation test was performed in this batch."
+  ],
+  "approved_section_sha256": "a0e027784e6c9188777bf668c903726749fa623b2c1266d62da085428031f274",
+  "cases": [
+    {
+      "case": "memory_real_failure_changes_architecture",
+      "artifact_directory": "/private/tmp/oppencouncil-memory-forward-20261014-r03/ee8d6649da06",
+      "semantic_review": "pass",
+      "structural_checks": {
+        "expected_new_entry_count": true,
+        "managed_baseline": true,
+        "outcome_saved": true
+      },
+      "skill_sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+      "helper_sha256": "82ca270da8f126fd618ffd8627740156235e268a6ce020e80455820a0926132b",
+      "outcome_sha256": "7c12a22dbaabf7134f981d4ac0638bdb860e19c0e04e508bd4f78eabc1e334f2",
+      "instruction_reads_reported_by_agent": [
+        {
+          "path": "skill/SKILL.md",
+          "sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+          "bytes": 2730,
+          "whitespace_words": 363
+        },
+        {
+          "path": "skill/references/memory.md",
+          "sha256": "04ce5032bffa1579538f0d18cdd7f393498b12b88dce2def64f12968f695a72c",
+          "bytes": 3892,
+          "whitespace_words": 564
+        }
+      ],
+      "entry_digests": {
+        "M-0001": "42b59bb9cc37b9d0e23fd9aae0429dd27ce6dc0fabb429f97c269cc48e3af28f"
+      },
+      "entrypoint_observation": "Initial import failed; agent used -P. Fixed entry separately regression-tested."
+    },
+    {
+      "case": "memory_routine_fix_is_explained_by_git",
+      "artifact_directory": "/private/tmp/oppencouncil-memory-forward-20261014-r03/9c4d7c70bfa7",
+      "semantic_review": "pass",
+      "structural_checks": {
+        "expected_new_entry_count": true,
+        "managed_baseline": true,
+        "outcome_saved": true
+      },
+      "skill_sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+      "helper_sha256": "82ca270da8f126fd618ffd8627740156235e268a6ce020e80455820a0926132b",
+      "outcome_sha256": "be81977e04725b34ca1c659495d56259f79be84a845792ce1e9002df1f7cc7f4",
+      "instruction_reads_reported_by_agent": [
+        {
+          "path": "skill/SKILL.md",
+          "sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+          "bytes": 2730,
+          "whitespace_words": 363
+        }
+      ],
+      "entry_digests": {},
+      "entrypoint_observation": "No entrypoint workaround reported."
+    },
+    {
+      "case": "memory_execution_unsafe_at_project_scale",
+      "artifact_directory": "/private/tmp/oppencouncil-memory-forward-20261014-r03/605eb3b03c72",
+      "semantic_review": "pass",
+      "structural_checks": {
+        "expected_new_entry_count": true,
+        "research_basis_present": true,
+        "managed_baseline": true,
+        "outcome_saved": true
+      },
+      "skill_sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+      "helper_sha256": "82ca270da8f126fd618ffd8627740156235e268a6ce020e80455820a0926132b",
+      "outcome_sha256": "821f604b1c54c6f231e1a540893f662236ca0c7a3e0b4423087bce7326d42a53",
+      "instruction_reads_reported_by_agent": [
+        {
+          "path": "skill/SKILL.md",
+          "sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+          "bytes": 2730,
+          "whitespace_words": 363
+        },
+        {
+          "path": "skill/references/memory.md",
+          "sha256": "04ce5032bffa1579538f0d18cdd7f393498b12b88dce2def64f12968f695a72c",
+          "bytes": 3892,
+          "whitespace_words": 564
+        }
+      ],
+      "entry_digests": {
+        "M-0001": "4aa4278827eccf1c06b54579bd17c3d262995456d8dd48d472fb3d35c36f4993"
+      },
+      "entrypoint_observation": "Initial import failed; agent used -P. Fixed entry separately regression-tested."
+    },
+    {
+      "case": "memory_task_completion_never_triggers",
+      "artifact_directory": "/private/tmp/oppencouncil-memory-forward-20261014-r03/0b0f7d5568be",
+      "semantic_review": "pass",
+      "structural_checks": {
+        "expected_new_entry_count": true,
+        "managed_baseline": true,
+        "outcome_saved": true
+      },
+      "skill_sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+      "helper_sha256": "82ca270da8f126fd618ffd8627740156235e268a6ce020e80455820a0926132b",
+      "outcome_sha256": "dc6a2cbdac52b0ee7629f4a6513b63dd9433027cfbe22ddd8fe1a81c7edaef6f",
+      "instruction_reads_reported_by_agent": [
+        {
+          "path": "skill/SKILL.md",
+          "sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+          "bytes": 2730,
+          "whitespace_words": 363
+        }
+      ],
+      "entry_digests": {},
+      "entrypoint_observation": "No entrypoint workaround reported."
+    },
+    {
+      "case": "memory_diagnostics_change_analysis_strategy",
+      "artifact_directory": "/private/tmp/oppencouncil-memory-forward-20261014-r03/a3fe3efdeb20",
+      "semantic_review": "pass",
+      "structural_checks": {
+        "expected_new_entry_count": true,
+        "research_basis_present": true,
+        "managed_baseline": true,
+        "outcome_saved": true
+      },
+      "skill_sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+      "helper_sha256": "881ec4b73ce93e133984fb2a06e117d796ed3f06f16ba368173f39d34e06bf23",
+      "outcome_sha256": "c7f6915ddb6d40af6c102afdd6c15ea384d25eb61aaa1faf927205f2a019ed10",
+      "instruction_reads_reported_by_agent": [
+        {
+          "path": "skill/SKILL.md",
+          "sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+          "bytes": 2730,
+          "whitespace_words": 363
+        },
+        {
+          "path": "skill/references/memory.md",
+          "sha256": "04ce5032bffa1579538f0d18cdd7f393498b12b88dce2def64f12968f695a72c",
+          "bytes": 3892,
+          "whitespace_words": 564
+        }
+      ],
+      "entry_digests": {
+        "M-0001": "3de3273a4dff1a35d3121b8b9e1e8ca19a70d57e95d29e2e578ea3534b9d2352"
+      },
+      "entrypoint_observation": "No entrypoint workaround reported."
+    },
+    {
+      "case": "memory_one_decision_across_multiple_turns",
+      "artifact_directory": "/private/tmp/oppencouncil-memory-forward-20261014-r03/a67fc1a1897c",
+      "semantic_review": "pass",
+      "structural_checks": {
+        "expected_new_entry_count": true,
+        "research_basis_present": true,
+        "managed_baseline": true,
+        "outcome_saved": true
+      },
+      "skill_sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+      "helper_sha256": "881ec4b73ce93e133984fb2a06e117d796ed3f06f16ba368173f39d34e06bf23",
+      "outcome_sha256": "38578af313db9a79e339464dff8c8f1a0d384a980a1d2bc42a562d8a6b8156e4",
+      "instruction_reads_reported_by_agent": [
+        {
+          "path": "skill/SKILL.md",
+          "sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+          "bytes": 2730,
+          "whitespace_words": 363
+        },
+        {
+          "path": "skill/references/memory.md",
+          "sha256": "04ce5032bffa1579538f0d18cdd7f393498b12b88dce2def64f12968f695a72c",
+          "bytes": 3892,
+          "whitespace_words": 564
+        }
+      ],
+      "entry_digests": {
+        "M-0001": "4cd44cddccc013cc6c8b9bbda11a073dcb6feffb921e4ca3f0f2132bb06817e7"
+      },
+      "entrypoint_observation": "No entrypoint workaround reported."
+    },
+    {
+      "case": "memory_false_assumption_uses_invalidates",
+      "artifact_directory": "/private/tmp/oppencouncil-memory-forward-20261014-r03/ef05249c1e6c",
+      "semantic_review": "pass",
+      "structural_checks": {
+        "expected_new_entry_count": true,
+        "research_basis_present": true,
+        "prior_content_preserved": true,
+        "prior_status_and_reverse": true,
+        "new_relationship": true,
+        "disjoint_relationships": true,
+        "managed_baseline": true,
+        "outcome_saved": true
+      },
+      "skill_sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+      "helper_sha256": "881ec4b73ce93e133984fb2a06e117d796ed3f06f16ba368173f39d34e06bf23",
+      "outcome_sha256": "41177d8ed5972e254ba3c78005bbba0c332e03c6a644786a6d5b5cc968b64952",
+      "instruction_reads_reported_by_agent": [
+        {
+          "path": "skill/SKILL.md",
+          "sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+          "bytes": 2730,
+          "whitespace_words": 363
+        },
+        {
+          "path": "skill/references/memory.md",
+          "sha256": "04ce5032bffa1579538f0d18cdd7f393498b12b88dce2def64f12968f695a72c",
+          "bytes": 3892,
+          "whitespace_words": 564
+        }
+      ],
+      "entry_digests": {
+        "M-0001": "4927c22c47c0789163a10d9d27d176437b358d483c10c62dd64bff91eeea2b1d",
+        "M-0002": "0075af83c2c3f429887dd56fb647fbdf3135d2f4857ea9b11c4939a689cf450e"
+      },
+      "entrypoint_observation": "No entrypoint workaround reported."
+    },
+    {
+      "case": "memory_later_direction_uses_supersedes",
+      "artifact_directory": "/private/tmp/oppencouncil-memory-forward-20261014-r03/e6d19cdd6f2f",
+      "semantic_review": "pass",
+      "structural_checks": {
+        "expected_new_entry_count": true,
+        "prior_content_preserved": true,
+        "prior_status_and_reverse": true,
+        "new_relationship": true,
+        "disjoint_relationships": true,
+        "managed_baseline": true,
+        "outcome_saved": true
+      },
+      "skill_sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+      "helper_sha256": "881ec4b73ce93e133984fb2a06e117d796ed3f06f16ba368173f39d34e06bf23",
+      "outcome_sha256": "25ab87cbcb48ebc28501f8fe336b74d85a239b6ee8c9a07a9c4377bd0771e16d",
+      "instruction_reads_reported_by_agent": [
+        {
+          "path": "skill/SKILL.md",
+          "sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+          "bytes": 2730,
+          "whitespace_words": 363
+        },
+        {
+          "path": "skill/references/memory.md",
+          "sha256": "04ce5032bffa1579538f0d18cdd7f393498b12b88dce2def64f12968f695a72c",
+          "bytes": 3892,
+          "whitespace_words": 564
+        }
+      ],
+      "entry_digests": {
+        "M-0001": "32f7f7ddd2b219f45141859a295db05d2b77793e4511774ad8afa698bc0ad78e",
+        "M-0002": "96563fb915beac8528e3749ac544d0961068b8a575df33fab4aecf5db1a20353"
+      },
+      "entrypoint_observation": "No entrypoint workaround reported."
+    },
+    {
+      "case": "memory_council_rationale_is_not_duplicated",
+      "artifact_directory": "/private/tmp/oppencouncil-memory-forward-20261014-r03/44673d671610",
+      "semantic_review": "pass",
+      "structural_checks": {
+        "expected_new_entry_count": true,
+        "council_preserved": true,
+        "managed_baseline": true,
+        "outcome_saved": true
+      },
+      "skill_sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+      "helper_sha256": "881ec4b73ce93e133984fb2a06e117d796ed3f06f16ba368173f39d34e06bf23",
+      "outcome_sha256": "fb174f027783a670708891144f887fddbfc8acf3c78dd36f4d74b5c12510da85",
+      "instruction_reads_reported_by_agent": [
+        {
+          "path": "skill/SKILL.md",
+          "sha256": "9c223bbef7ac77a4e5551d409c9656f05b452d6acff6790b1ffb2bd551307441",
+          "bytes": 2730,
+          "whitespace_words": 363
+        }
+      ],
+      "entry_digests": {},
+      "entrypoint_observation": "No entrypoint workaround reported."
+    }
+  ]
+}

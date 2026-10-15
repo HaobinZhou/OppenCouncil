@@ -1,0 +1,271 @@
+{
+  "measurement": "Actual reads/calls; whitespace words are not model tokens. Project-only replays are separate evaluator checks.",
+  "runs": [
+    {
+      "scenario": "primary",
+      "arm": "candidate",
+      "directory": "/private/tmp/oppencouncil-stage-primary-20261014-a/16cec2a39241",
+      "checks": {
+        "raw_preserved": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "exact_article_table": true,
+        "only_specified_outputs": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "outputs_read_back": true,
+        "only_current_stage_loaded": true,
+        "project_only_replay_identical": true
+      },
+      "outputs": [
+        "Results/stage.csv"
+      ],
+      "generated_data": [],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-primary-20261014-a/16cec2a39241/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791989301.8163562,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791989308.599604,
+          "operation": "read",
+          "path": "skill/references/research-stage-primary.md",
+          "bytes": 1045,
+          "whitespace_words": 132,
+          "sha256": "2261a7fee0da8cb97d60cd56dc970335c3f131fca56e42d5fa649fa1d611c25a"
+        },
+        {
+          "at": 1791989313.971164,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791989308.599045,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1421,
+        "adapter_words": 719,
+        "cli_and_script_calls": 10,
+        "nonzero_calls": 1
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791989353.3302138,
+          "operation": "execute",
+          "path": "project/Audit/checks/primary_output.py",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/oppencouncil-stage-primary-20261014-a/16cec2a39241/project/Audit/checks/primary_output.py\", line 17, in <module>\n    assert actual == expected, f'F-000001 v1 table mismatch: {actual!r}'\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: F-000001 v1 table mismatch: [['analysis', 'rr', 'lo', 'hi'], ['A_vs_B', '0.8', '0.6', '1.1']]\n"
+        }
+      ],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-primary-replay-20261014-a/16cec2a39241",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "ed375689fc71299a239f01b0b8dd60a1cd6326127bd4cca858128a4ad66ddc2f",
+        "trace": "fb95222cf561517165bff3392e657aeb1968a36fb761423e152d8b55fbac7ae2",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "96711d0b293f15fd58c4a3b8100a20c90c1796f6cce0a52b6e553a4458b16c6e"
+      }
+    },
+    {
+      "scenario": "primary",
+      "arm": "without-stage-rule",
+      "directory": "/private/tmp/oppencouncil-stage-primary-20261014-a/e5b5eefafa50",
+      "checks": {
+        "raw_preserved": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "exact_article_table": true,
+        "only_specified_outputs": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "outputs_read_back": true,
+        "only_current_stage_loaded": true,
+        "project_only_replay_identical": true
+      },
+      "outputs": [
+        "Results/stage.csv"
+      ],
+      "generated_data": [],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-primary-20261014-a/e5b5eefafa50/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791989311.0650198,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791989315.570414,
+          "operation": "read",
+          "path": "skill/references/research-stage-primary.md",
+          "bytes": 784,
+          "whitespace_words": 98,
+          "sha256": "1a65ee80093e8251b2bff651fa88e4aee19ece1bd5a3124383a6b0e9b6594404"
+        },
+        {
+          "at": 1791989315.570888,
+          "operation": "read",
+          "path": "skill/references/resume.md",
+          "bytes": 1823,
+          "whitespace_words": 230,
+          "sha256": "8ec75b388fc632baa44dda1c05daf7070842f048d8f0f56553c3368bb97c3aa6"
+        },
+        {
+          "at": 1791989322.485549,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791989315.569674,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1617,
+        "adapter_words": 719,
+        "cli_and_script_calls": 10,
+        "nonzero_calls": 0
+      },
+      "nonzero_calls": [],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-primary-replay-20261014-a/e5b5eefafa50",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "ed375689fc71299a239f01b0b8dd60a1cd6326127bd4cca858128a4ad66ddc2f",
+        "trace": "e4af2a6d6276e6bc4e053b5c3a827f38a8577acccd8e83a978c4641fec8f8877",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "518310f0c9f7c71c3623a9c06c45f2f161814c6a0a2fcce36028fe68dfd9caac"
+      }
+    },
+    {
+      "scenario": "primary",
+      "arm": "v4.3.1",
+      "directory": "/private/tmp/oppencouncil-stage-primary-20261014-a/1c6d21ef17a4",
+      "checks": {
+        "raw_preserved": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "exact_article_table": true,
+        "only_specified_outputs": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "outputs_read_back": true,
+        "project_only_replay_identical": false
+      },
+      "outputs": [
+        "Results/stage.csv"
+      ],
+      "generated_data": [],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-primary-20261014-a/1c6d21ef17a4/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791989359.430968,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 6666,
+          "whitespace_words": 902,
+          "sha256": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b"
+        },
+        {
+          "at": 1791989365.003191,
+          "operation": "read",
+          "path": "skill/references/workflow-operations.md",
+          "bytes": 10236,
+          "whitespace_words": 1419,
+          "sha256": "5988e33e91b29f083f1c1ba010d93f468768370cc00657363f2edc2a0c8e9880"
+        },
+        {
+          "at": 1791989365.0022988,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 2321,
+        "adapter_words": 719,
+        "cli_and_script_calls": 12,
+        "nonzero_calls": 1
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791989476.030655,
+          "operation": "execute",
+          "path": "project/Audit/checks/output.py",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/oppencouncil-stage-primary-20261014-a/1c6d21ef17a4/project/Audit/checks/output.py\", line 34, in <module>\n    print(json.dumps(check_output(ROOT / \"Results/stage.csv\"), ensure_ascii=False))\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/oppencouncil-stage-primary-20261014-a/1c6d21ef17a4/project/Audit/checks/output.py\", line 29, in check_output\n    assert actual == expected, {\"actual\": actual, \"expected\": expected}\n           ^^^^^^^^^^^^^^^^^^\nAssertionError: {'actual': [['analysis', 'rr', 'lo', 'hi'], ['A_vs_B', '0.8', '0.6', '1.1']], 'expected': [['Contrast', 'Risk ratio (95% CI)'], ['Treatment A vs B', '0.80 (0.60–1.10)']]}\n"
+        }
+      ],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-primary-replay-20261014-a/1c6d21ef17a4",
+        "returncode": 1,
+        "stderr": "<development-worktree>/council/.venv/bin/python: can't open file '/private/tmp/oppencouncil-stage-primary-replay-20261014-a/tools.py': [Errno 2] No such file or directory\nTraceback (most recent call last):\n  File \"/private/tmp/oppencouncil-stage-primary-replay-20261014-a/1c6d21ef17a4/Scripts/01_primary.py\", line 31, in <module>\n    subprocess.run(\n  File \"<uv-python>/cpython-3.12.12-macos-aarch64-none/lib/python3.12/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['<development-worktree>/council/.venv/bin/python', '/private/tmp/oppencouncil-stage-primary-replay-20261014-a/tools.py', 'execute', 'project/Audit/checks/source.py']' returned non-zero exit status 2.\n"
+      },
+      "hashes": {
+        "manifest": "ed375689fc71299a239f01b0b8dd60a1cd6326127bd4cca858128a4ad66ddc2f",
+        "trace": "8cbbcdf877636cf5f1f6e06aa66f3e3760788654dbd3fe0a0eedabda5021b4a2",
+        "entry": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b",
+        "outcome": "166ceef6ce297e19b5011276db793bb8d47ef214ed34f3631d00ac0fd5900fc3"
+      }
+    }
+  ]
+}

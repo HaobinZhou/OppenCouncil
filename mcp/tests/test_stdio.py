@@ -61,7 +61,7 @@ async def test_real_stdio_process_governance_boundary_and_no_oauth(tmp_path, dis
             assert overview.structuredContent["mcp_tools"] == [tool.name for tool in listed.tools]
             found = await session.call_tool("search", {"query": "searchable-governance"})
             hit = found.structuredContent["results"][0]
-            assert hit["url"].startswith("oppen-steward://")
+            assert hit["url"].startswith("oppencouncil://")
             fetched = await session.call_tool("fetch", {"id": hit["id"]})
             assert "searchable-governance" in fetched.structuredContent["text"]
             for path in ["Data/raw.csv", "README.md", "Audit/Functions/audit_model.Rmd", "../outside"]:

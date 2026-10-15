@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 
-SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "oppen_project_steward.py"
+SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "legacy_oppen_project_steward.py"
 SPEC = importlib.util.spec_from_file_location(
     "oppen_project_steward_stage2", SCRIPT_PATH
 )

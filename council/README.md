@@ -14,7 +14,7 @@ uv run --project council oppencouncil open /absolute/path/to/project --port 5322
 
 `open` 登记该项目并启动或复用工作台，返回首页及项目访问链接。默认监听 `127.0.0.1:5322`；首次打开网页时设置站点密码，以后输入密码登录，无需用户名。项目目录只列出已登记且启用的项目，网页不能浏览或登记任意本机文件夹。
 
-支持原生 Stepwise R 和 Steward v3/v4 项目。普通文件夹需要先由相应 skill 初始化或接入；已有项目沿用原来的治理方式。双重治理标记和以符号链接作为项目根目录的登记会被拒绝。这里的限制针对项目根目录，不影响全局 skill 采用软链接安装。
+支持原生 Stepwise R 和 Steward v3/v4 项目，以及两种原布局下的统一 v5 项目。普通文件夹需要先由相应 skill 初始化或接入；已有项目沿用原来的治理方式。双重治理标记和以符号链接作为项目根目录的登记会被拒绝。这里的限制针对项目根目录，不影响全局 skill 采用软链接安装。
 
 ```sh
 # 查询服务地址
@@ -133,7 +133,7 @@ uv run --project council oppencouncil --directory /absolute/path/to/council-site
 
 MCP 让获准的 AI 客户端参与同一份项目记录。安装与授权见 [MCP 接入指南](../mcp/README.md)。站点登记、MCP 项目列表和 Freeze 读写授权各自独立；开放网页不等于开放 MCP。MCP 直接使用共享存储包，工作台停止时仍能操作其获准项目。
 
-AI 可通过 `import` 批量追加问题，通过 `ai-change` 更新意见或候选，通过 `group-change` 管理主题和共享讨论；这些命令不能替人确认正式版本。skill 提供所需数据格式和内容准备流程。
+v5 本地 Agent 通过 `work-index` / `work-read` / `work-commit` 读取并原子保存候选、依据、回复与处理进度；`import` 追加 F，`investigation-create` 创建调查，`group-change` 管理主题。原 v3/v4 继续使用对应旧接口。AI 不能替人确认正式版本；外部 MCP 仅提交证据或留言。载荷及操作入口见 [本地 Council 参考](../skills/oppencouncil/references/local-council.md)。
 
 需要读取完整快照或导出一条正式口径时：
 
@@ -179,7 +179,7 @@ oppencouncil definition PROJECT --question F-000001 --version-number 1
 oppencouncil definition PROJECT --question F-000001 --format markdown
 ```
 
-CLI、网页、MCP 与 Python `read_definition` 都读取同一文件。返回的 ID、版本和 SHA-256 可用于记录实现/分析采用的口径。两个 v4 skill 均支持将这个 JSON 以 `--section definition` 登记为 Canonical。其他文档仅引用该记录或生成只读展示，不另写一份需要同步的正式口径。文本确认不等于代码已经实现或分析已经运行。
+CLI、网页、MCP 与 Python `read_definition` 都读取同一文件。返回的 ID、版本和 SHA-256 可用于记录实现/分析采用的口径。两个 v4 helper 支持将这个 JSON 以 `--section definition` 登记为 Canonical；v5 将验证测试绑定到同一个 F。其他文档仅引用该记录或生成只读展示，不另写一份需要同步的正式口径。文本确认不等于代码已经实现或分析已经运行。
 
 原生 v3 项目继续兼容；两个 helper 的 `upgrade-v4 --check/--apply` 只升级治理标记，不自动把历史答复、意见或恢复摘要提升为正式版本。旧 Markdown owner 在逐项完成采用及显式所有权迁移前保持原有权威。迁移时保留完整原文、确认依据和来源，避免把摘要冒充正式口径。
 

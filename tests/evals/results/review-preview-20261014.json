@@ -1,0 +1,534 @@
+{
+  "measurement": "Actual file reads/calls; whitespace words are not model tokens. Mechanical checks alone do not establish semantic success.",
+  "runs": [
+    {
+      "scenario": "preview",
+      "directory": "/private/tmp/oppencouncil-review-preview-20261014-c/db502a227f2d",
+      "checks": {
+        "actual_entry_unchanged": true,
+        "entry_loaded": true,
+        "no_memory": true,
+        "no_release": true,
+        "no_archived_content_read": false,
+        "archived_content_unchanged": true,
+        "no_formal_results": true
+      },
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-review-preview-20261014-c/db502a227f2d/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "changed_project_files": [
+        ".oppencouncil-state.json",
+        "Explore/002-baseline-table-review/candidate.md",
+        "Explore/002-baseline-table-review/experiment.json",
+        "Explore/002-baseline-table-review/prepare_review.py",
+        "Explore/002-baseline-table-review/preview-simulated.csv",
+        "Explore/002-baseline-table-review/preview-table.json",
+        "Explore/002-baseline-table-review/preview.md",
+        "Explore/002-baseline-table-review/preview.py",
+        "Explore/002-baseline-table-review/simulated-input.json",
+        "Explore/002-baseline-table-review/verification.json",
+        "Explore/index.md",
+        "Freeze/.lock",
+        "Freeze/evidence/claims/E-000001/r000001.json",
+        "Freeze/evidence/claims/E-000002/r000001.json",
+        "Freeze/evidence/claims/E-000003/r000001.json",
+        "Freeze/evidence/sources/S-000001/r000001.json",
+        "Freeze/evidence/sources/S-000002/r000001.json",
+        "Freeze/evidence/sources/S-000003/r000001.json",
+        "Freeze/manifest.json",
+        "Freeze/questions/F-000001.json",
+        "project.md"
+      ],
+      "instruction_reads": [
+        {
+          "at": 1791990277.956534,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791990283.9957519,
+          "operation": "read",
+          "path": "skill/references/research-stage-descriptive.md",
+          "bytes": 647,
+          "whitespace_words": 77,
+          "sha256": "716d65ae763d620f7cc611579ec6188e462e2d78671eff959ea3173c0bfd08dc"
+        },
+        {
+          "at": 1791990283.996175,
+          "operation": "read",
+          "path": "skill/references/review-packet.md",
+          "bytes": 1704,
+          "whitespace_words": 185,
+          "sha256": "22069ea1cc07fb62f1cbdaf0b004cb6a7c541412f5aa10a07ffc3464dc32c8c0"
+        },
+        {
+          "at": 1791990283.996514,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791990291.5268202,
+          "operation": "read",
+          "path": "skill/references/output-specifications.md",
+          "bytes": 2442,
+          "whitespace_words": 304,
+          "sha256": "b8cb0210c05029ed007c33a45fc4229835ab1718ab9acdb67c13fdcbb8d6a807"
+        },
+        {
+          "at": 1791990291.5272892,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 3666,
+          "whitespace_words": 422,
+          "sha256": "046f29049827530f79ba254f8168ee599028932bec5e04b1f9a24f925a9e931f"
+        },
+        {
+          "at": 1791990291.527633,
+          "operation": "read",
+          "path": "skill/references/evidence.md",
+          "bytes": 1838,
+          "whitespace_words": 190,
+          "sha256": "9bf368df5b7e757c3927d31541dac0dd2c6c23ba9f7b7934a8216f1abe7153f3"
+        },
+        {
+          "at": 1791990395.670988,
+          "operation": "read",
+          "path": "skill/references/triage.md",
+          "bytes": 874,
+          "whitespace_words": 100,
+          "sha256": "3117a3eb0f86e675111ae83193b7cceee0b9eb5a7d86e4247c8ef7d9c89fc18f"
+        },
+        {
+          "at": 1791990395.671496,
+          "operation": "read",
+          "path": "skill/references/council.md",
+          "bytes": 2542,
+          "whitespace_words": 340,
+          "sha256": "b9bcfb6ba4dfc052f10f484578252258ad364d74bc9ef5b74c28d35634a747f8"
+        }
+      ],
+      "source_reads": [
+        {
+          "at": 1791990277.9569652,
+          "operation": "read",
+          "path": "project/README.md",
+          "bytes": 914,
+          "whitespace_words": 136,
+          "sha256": "ba6b6c3e6af3d98ec31ab26e3bcbc389e6664f6155d7dec07cc7030f43284460"
+        },
+        {
+          "at": 1791990291.527953,
+          "operation": "read",
+          "path": "project/Explore/index.md",
+          "bytes": 212,
+          "whitespace_words": 41,
+          "sha256": "07baa249a7b0ee64f90ff5cbc589d538b599183ac50fd17793f7872c5678b7da"
+        },
+        {
+          "at": 1791990291.528272,
+          "operation": "read",
+          "path": "project/Scripts/functions/table.py",
+          "bytes": 315,
+          "whitespace_words": 26,
+          "sha256": "b7dae7cfbd44eac78c2e91d35966f5b6622ecdf31b0175697d74c5a69720b967"
+        },
+        {
+          "at": 1791990302.7260869,
+          "operation": "read",
+          "path": "project/project.md",
+          "bytes": 1619,
+          "whitespace_words": 188,
+          "sha256": "a873bfbf1d8f7d746ea8dad40e84f340a25df6b8c5ef5b8485f48155797c7faa"
+        },
+        {
+          "at": 1791990302.727017,
+          "operation": "read",
+          "path": "project/Explore/_archive/001-old-layout/notes.md",
+          "bytes": 93,
+          "whitespace_words": 12,
+          "sha256": "8e55b0a855c76a4beb6d4078266ac8e3f323118d266ebfad67c1b1b54c7c9ce7"
+        },
+        {
+          "at": 1791990302.727346,
+          "operation": "read",
+          "path": "project/Explore/_archive/001-old-layout/experiment.json",
+          "bytes": 708,
+          "whitespace_words": 59,
+          "sha256": "c4e5f397c08b35fab79119830e94fdf6b4521d0d75be3d0779f074ff6f06adf1"
+        },
+        {
+          "at": 1791990379.6114612,
+          "operation": "read",
+          "path": "project/Explore/002-baseline-table-review/preview.md",
+          "bytes": 1029,
+          "whitespace_words": 185,
+          "sha256": "8b06d888225fd94044dcd282bd6927eb56984f1cefb34c5bc3d691f9f71bc951"
+        },
+        {
+          "at": 1791990379.611682,
+          "operation": "read",
+          "path": "project/Explore/002-baseline-table-review/preview-table.json",
+          "bytes": 1889,
+          "whitespace_words": 244,
+          "sha256": "63faa8ac6f2152a467502096e48d217af7bcdca0ca80de43acbe532deca3f7f4"
+        },
+        {
+          "at": 1791990379.6118011,
+          "operation": "read",
+          "path": "project/Explore/002-baseline-table-review/verification.json",
+          "bytes": 1000,
+          "whitespace_words": 126,
+          "sha256": "9147e9b26cbedb94d73745683989833ad7731d61b531a87352b25a4a460a4816"
+        },
+        {
+          "at": 1791990564.739541,
+          "operation": "read",
+          "path": "project/Scripts/functions/table.py",
+          "bytes": 315,
+          "whitespace_words": 26,
+          "sha256": "b7dae7cfbd44eac78c2e91d35966f5b6622ecdf31b0175697d74c5a69720b967"
+        },
+        {
+          "at": 1791990564.740041,
+          "operation": "read",
+          "path": "project/Explore/_archive/001-old-layout/notes.md",
+          "bytes": 93,
+          "whitespace_words": 12,
+          "sha256": "8e55b0a855c76a4beb6d4078266ac8e3f323118d266ebfad67c1b1b54c7c9ce7"
+        }
+      ],
+      "metrics": {
+        "skill_words": 2907,
+        "adapter_words": 719,
+        "cli_and_script_calls": 21,
+        "nonzero_calls": 1
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791990502.165036,
+          "operation": "council",
+          "arguments": [
+            "work-commit",
+            "project",
+            "--input",
+            "council-review.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "OppenCouncil: Invalid table block: 'str' object has no attribute 'get'\n"
+        }
+      ],
+      "saved_items": [
+        {
+          "id": "F-000001",
+          "title": "Baseline Table 1: presentation specification and simulated review example",
+          "why": "README specifies Age, Female sex and BMI by Treatment A/B but no formal output specification exists. Prepare a Council candidate and simulated example for human review; actual eligible-adult population is already confirmed.",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [
+              "F-000001"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "Researcher reviews the saved candidate and simulated example in Council; human confirmation remains a separate UI action.",
+              "Before formal production, use the confirmed specification and verified study inputs; no simulated values enter manuscript results."
+            ],
+            "conclusion_type": "single_recommendation",
+            "phase": "human_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:08:54+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:08:54+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Researcher reviews the saved candidate and simulated example in Council; human confirmation remains a separate UI action.",
+                  "Before formal production, use the confirmed specification and verified study inputs; no simulated values enter manuscript results."
+                ],
+                "from": "prepare_review",
+                "reason": "Requested presentation requirements have a complete candidate, checked source versions and a saved simulated example; ready for researcher review in Council.",
+                "to": "human_review",
+                "trigger_refs": [
+                  "evidence/claims/E-000001/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "evidence/claims/E-000001/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "# Table 1 基线表：待审阅规格\n\n适用范围：研究中已确认的全部合格成人；本规格不改变分析人群。正式表题为 Table 1. Baseline characteristics。\n\n首列为 Characteristic；两组列严格按 Treatment A、Treatment B 排列，各列标题写该组全体人数 N。行严格依次为 Age (years)、Female sex、BMI (kg/m²)。年龄和 BMI 显示 mean (SD)，均值与 SD 保留 1 位小数；本候选采用样本标准差。Female sex 显示 n (%)，计数为整数、百分比保留 1 位小数。\n\n每个变量分别排除该变量的缺失值，使用该变量的非缺失人数作为汇总分母；Female sex 的百分比分母为该组性别非缺失人数。标题 N 始终为该组全体人数。脚注按变量和组报告缺失人数，并解释 mean (SD)、n (%)、SD 和 BMI。保持紧凑，不加入显著性检验或 P 值。\n\n下方数值完全模拟，仅用于审阅版式及分母规则，不能用于投稿或作为研究发现。正式表中需以核验后的研究数据替换 N、数值与缺失人数，移除模拟说明；在确认规格、确定实际变量映射并核验数据前，不生成或注册正式 Results。若实际数据出现零个或单个非缺失观测，先核实可计算性并补充呈现约定，不能虚构值。目标期刊尚未提供，投稿格式合规性未核验。\n\n```table\n{\n  \"schema_version\": 1,\n  \"id\": \"baseline-table-simulated\",\n  \"title\": \"Table 1. Baseline characteristics — SIMULATED REVIEW EXAMPLE\",\n  \"simulated\": true,\n  \"columns\": [\n    {\n      \"id\": \"a\",\n      \"label\": \"Treatment A (N = 4)\",\n      \"align\": \"right\"\n    },\n    {\n      \"id\": \"b\",\n      \"label\": \"Treatment B (N = 5)\",\n      \"align\": \"right\"\n    }\n  ],\n  \"headers\": [\n    {\n      \"id\": \"ha\",\n      \"label\": \"Treatment A (N = 4)\",\n      \"column_id\": \"a\"\n    },\n    {\n      \"id\": \"hb\",\n      \"label\": \"Treatment B (N = 5)\",\n      \"column_id\": \"b\"\n    }\n  ],\n  \"rows\": [\n    {\n      \"id\": \"age\",\n      \"label\": \"Age (years)\",\n      \"cells\": {\n        \"a\": \"50.0 (10.0)\",\n        \"b\": \"50.0 (15.8)\"\n      }\n    },\n    {\n      \"id\": \"female\",\n      \"label\": \"Female sex\",\n      \"cells\": {\n        \"a\": \"2 (66.7)\",\n        \"b\": \"2 (50.0)\"\n      }\n    },\n    {\n      \"id\": \"bmi\",\n      \"label\": \"BMI (kg/m²)\",\n      \"cells\": {\n        \"a\": \"24.0 (4.0)\",\n        \"b\": \"25.0 (2.6)\"\n      }\n    }\n  ],\n  \"footnotes\": [\n    {\n      \"id\": \"simulated\",\n      \"text\": \"SIMULATED EXAMPLE ONLY. Invented values for Council presentation review; no study findings or manuscript-ready results.\"\n    },\n    {\n      \"id\": \"format\",\n      \"text\": \"Age and BMI: mean (SD), both to one decimal; Female sex: n (%), percentage to one decimal. SD denotes sample standard deviation; BMI denotes body mass index.\"\n    },\n    {\n      \"id\": \"denominator\",\n      \"text\": \"N in each heading is the full group size. Missing values are excluded separately for each variable's summary and denominator; female percentages use nonmissing sex values. No significance tests.\"\n    },\n    {\n      \"id\": \"missing\",\n      \"text\": \"Missing counts, Treatment A / Treatment B: Age 1 / 0; Female sex 1 / 1; BMI 1 / 1.\"\n    }\n  ]\n}\n```\n\n可复现示例：Explore/002-baseline-table-review/preview.py；人工可读预览：Explore/002-baseline-table-review/preview.md；计算与内容核验：Explore/002-baseline-table-review/verification.json。Council 中保存的是本候选文本内的结构化表，而不是会随 Explore 文件修改而变化的外部链接。",
+            "text_sha256": "9e293556ac8d4d86b9ebac48c3bda8fc0f641f2d5fc1f0a9f3bef08cb192b5a6",
+            "base_version": null,
+            "dependencies": [],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json",
+                "evidence/claims/E-000002/r000001.json",
+                "evidence/claims/E-000003/r000001.json"
+              ],
+              "packet_sha256": "3dcdd56e17ce37df6a23b671877f242c7fb6924e369ba8984cdb56749f23128a",
+              "summary": "Directly checked researcher-specified presentation requirements plus executed simulated arithmetic/content verification; archived alternative is retained only as history. No external methodological or journal-compliance claim is made."
+            },
+            "approval_token": "ae31140eee614c9641495dd14433b3cb5def599f1ace009dc36e1f08829ddfc6"
+          },
+          "current": null,
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000001/r000001.json",
+              "evidence/claims/E-000002/r000001.json",
+              "evidence/claims/E-000003/r000001.json"
+            ],
+            "packet_sha256": "3dcdd56e17ce37df6a23b671877f242c7fb6924e369ba8984cdb56749f23128a",
+            "summary": "Directly checked researcher-specified presentation requirements plus executed simulated arithmetic/content verification; archived alternative is retained only as history. No external methodological or journal-compliance claim is made."
+          },
+          "review_packet": {
+            "applicability": "适用于已确认的全部合格成人基线描述表的呈现审阅。模拟 A/B 分别为 4/5 人，年龄、性别、BMI 的非缺失分母按变量计算；这些人数与数值不代表研究人群。实际数据变量映射、极小非缺失数及期刊要求仍需在正式制作时核验。",
+            "common_practice": "本轮依研究者已给出的表格要求准备呈现规格。未提供或检索报告指南、可比研究或期刊规范，因此不声称这是经文献证实的通行做法；样本 SD 是本候选显式列出的计算约定。",
+            "default": "推荐审阅并采用本候选的行列顺序、精度、变量分别排除缺失与脚注规则。数字示例保持模拟标识；正式结果必须等待规格确认和真实数据核验。",
+            "departure_check": "当前候选遵守全部给定呈现要求。旧试验反转组别顺序且漏报缺失数，已弃用，本次未恢复该方向。无已提供的外部标准可用于判定偏离；不以模拟验证替代正式数据验证。",
+            "project_reason": "研究者需要在 Council 中看到可编辑规格和具体示例，并计划后续投稿；当前没有正式表格规格，也未提供研究数据或目标期刊。保存清晰的待审阅候选即可满足本阶段，不把未来投稿意图当作确认或正式产出授权。",
+            "support": "E-000001 r1 对应已逐项阅读的 README 原文要求；E-000002 r1 对应实际执行的模拟脚本、保存的表格与核验记录；E-000003 r1 对应已阅读的旧试验弃用记录。"
+          },
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/sources/S-000001/r000001.json",
+            "evidence/sources/S-000002/r000001.json",
+            "evidence/sources/S-000003/r000001.json",
+            "evidence/claims/E-000001/r000001.json",
+            "evidence/claims/E-000002/r000001.json",
+            "evidence/claims/E-000003/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": "1f48b4d56708ed90a21677140d94b8a2f59132f5d7bb27a6b593f42f13739d26",
+          "read_set": {
+            "F-000001": 2
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": []
+          },
+          "review_category": "quick_confirm",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        }
+      ],
+      "snapshot": {
+        "project": "/private/tmp/oppencouncil-review-preview-20261014-c/db502a227f2d/project",
+        "round": 1,
+        "revision": 2,
+        "questions": [
+          {
+            "created_at": "2026-10-14T15:05:18+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:08:54+00:00",
+                    "by": "codex",
+                    "text": "# Table 1 基线表：待审阅规格\n\n适用范围：研究中已确认的全部合格成人；本规格不改变分析人群。正式表题为 Table 1. Baseline characteristics。\n\n首列为 Characteristic；两组列严格按 Treatment A、Treatment B 排列，各列标题写该组全体人数 N。行严格依次为 Age (years)、Female sex、BMI (kg/m²)。年龄和 BMI 显示 mean (SD)，均值与 SD 保留 1 位小数；本候选采用样本标准差。Female sex 显示 n (%)，计数为整数、百分比保留 1 位小数。\n\n每个变量分别排除该变量的缺失值，使用该变量的非缺失人数作为汇总分母；Female sex 的百分比分母为该组性别非缺失人数。标题 N 始终为该组全体人数。脚注按变量和组报告缺失人数，并解释 mean (SD)、n (%)、SD 和 BMI。保持紧凑，不加入显著性检验或 P 值。\n\n下方数值完全模拟，仅用于审阅版式及分母规则，不能用于投稿或作为研究发现。正式表中需以核验后的研究数据替换 N、数值与缺失人数，移除模拟说明；在确认规格、确定实际变量映射并核验数据前，不生成或注册正式 Results。若实际数据出现零个或单个非缺失观测，先核实可计算性并补充呈现约定，不能虚构值。目标期刊尚未提供，投稿格式合规性未核验。\n\n```table\n{\n  \"schema_version\": 1,\n  \"id\": \"baseline-table-simulated\",\n  \"title\": \"Table 1. Baseline characteristics — SIMULATED REVIEW EXAMPLE\",\n  \"simulated\": true,\n  \"columns\": [\n    {\n      \"id\": \"a\",\n      \"label\": \"Treatment A (N = 4)\",\n      \"align\": \"right\"\n    },\n    {\n      \"id\": \"b\",\n      \"label\": \"Treatment B (N = 5)\",\n      \"align\": \"right\"\n    }\n  ],\n  \"headers\": [\n    {\n      \"id\": \"ha\",\n      \"label\": \"Treatment A (N = 4)\",\n      \"column_id\": \"a\"\n    },\n    {\n      \"id\": \"hb\",\n      \"label\": \"Treatment B (N = 5)\",\n      \"column_id\": \"b\"\n    }\n  ],\n  \"rows\": [\n    {\n      \"id\": \"age\",\n      \"label\": \"Age (years)\",\n      \"cells\": {\n        \"a\": \"50.0 (10.0)\",\n        \"b\": \"50.0 (15.8)\"\n      }\n    },\n    {\n      \"id\": \"female\",\n      \"label\": \"Female sex\",\n      \"cells\": {\n        \"a\": \"2 (66.7)\",\n        \"b\": \"2 (50.0)\"\n      }\n    },\n    {\n      \"id\": \"bmi\",\n      \"label\": \"BMI (kg/m²)\",\n      \"cells\": {\n        \"a\": \"24.0 (4.0)\",\n        \"b\": \"25.0 (2.6)\"\n      }\n    }\n  ],\n  \"footnotes\": [\n    {\n      \"id\": \"simulated\",\n      \"text\": \"SIMULATED EXAMPLE ONLY. Invented values for Council presentation review; no study findings or manuscript-ready results.\"\n    },\n    {\n      \"id\": \"format\",\n      \"text\": \"Age and BMI: mean (SD), both to one decimal; Female sex: n (%), percentage to one decimal. SD denotes sample standard deviation; BMI denotes body mass index.\"\n    },\n    {\n      \"id\": \"denominator\",\n      \"text\": \"N in each heading is the full group size. Missing values are excluded separately for each variable's summary and denominator; female percentages use nonmissing sex values. No significance tests.\"\n    },\n    {\n      \"id\": \"missing\",\n      \"text\": \"Missing counts, Treatment A / Treatment B: Age 1 / 0; Female sex 1 / 1; BMI 1 / 1.\"\n    }\n  ]\n}\n```\n\n可复现示例：Explore/002-baseline-table-review/preview.py；人工可读预览：Explore/002-baseline-table-review/preview.md；计算与内容核验：Explore/002-baseline-table-review/verification.json。Council 中保存的是本候选文本内的结构化表，而不是会随 Explore 文件修改而变化的外部链接。"
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json",
+                    "evidence/claims/E-000003/r000001.json"
+                  ],
+                  "packet_sha256": "3dcdd56e17ce37df6a23b671877f242c7fb6924e369ba8984cdb56749f23128a",
+                  "summary": "Directly checked researcher-specified presentation requirements plus executed simulated arithmetic/content verification; archived alternative is retained only as history. No external methodological or journal-compliance claim is made."
+                },
+                "text": "# Table 1 基线表：待审阅规格\n\n适用范围：研究中已确认的全部合格成人；本规格不改变分析人群。正式表题为 Table 1. Baseline characteristics。\n\n首列为 Characteristic；两组列严格按 Treatment A、Treatment B 排列，各列标题写该组全体人数 N。行严格依次为 Age (years)、Female sex、BMI (kg/m²)。年龄和 BMI 显示 mean (SD)，均值与 SD 保留 1 位小数；本候选采用样本标准差。Female sex 显示 n (%)，计数为整数、百分比保留 1 位小数。\n\n每个变量分别排除该变量的缺失值，使用该变量的非缺失人数作为汇总分母；Female sex 的百分比分母为该组性别非缺失人数。标题 N 始终为该组全体人数。脚注按变量和组报告缺失人数，并解释 mean (SD)、n (%)、SD 和 BMI。保持紧凑，不加入显著性检验或 P 值。\n\n下方数值完全模拟，仅用于审阅版式及分母规则，不能用于投稿或作为研究发现。正式表中需以核验后的研究数据替换 N、数值与缺失人数，移除模拟说明；在确认规格、确定实际变量映射并核验数据前，不生成或注册正式 Results。若实际数据出现零个或单个非缺失观测，先核实可计算性并补充呈现约定，不能虚构值。目标期刊尚未提供，投稿格式合规性未核验。\n\n```table\n{\n  \"schema_version\": 1,\n  \"id\": \"baseline-table-simulated\",\n  \"title\": \"Table 1. Baseline characteristics — SIMULATED REVIEW EXAMPLE\",\n  \"simulated\": true,\n  \"columns\": [\n    {\n      \"id\": \"a\",\n      \"label\": \"Treatment A (N = 4)\",\n      \"align\": \"right\"\n    },\n    {\n      \"id\": \"b\",\n      \"label\": \"Treatment B (N = 5)\",\n      \"align\": \"right\"\n    }\n  ],\n  \"headers\": [\n    {\n      \"id\": \"ha\",\n      \"label\": \"Treatment A (N = 4)\",\n      \"column_id\": \"a\"\n    },\n    {\n      \"id\": \"hb\",\n      \"label\": \"Treatment B (N = 5)\",\n      \"column_id\": \"b\"\n    }\n  ],\n  \"rows\": [\n    {\n      \"id\": \"age\",\n      \"label\": \"Age (years)\",\n      \"cells\": {\n        \"a\": \"50.0 (10.0)\",\n        \"b\": \"50.0 (15.8)\"\n      }\n    },\n    {\n      \"id\": \"female\",\n      \"label\": \"Female sex\",\n      \"cells\": {\n        \"a\": \"2 (66.7)\",\n        \"b\": \"2 (50.0)\"\n      }\n    },\n    {\n      \"id\": \"bmi\",\n      \"label\": \"BMI (kg/m²)\",\n      \"cells\": {\n        \"a\": \"24.0 (4.0)\",\n        \"b\": \"25.0 (2.6)\"\n      }\n    }\n  ],\n  \"footnotes\": [\n    {\n      \"id\": \"simulated\",\n      \"text\": \"SIMULATED EXAMPLE ONLY. Invented values for Council presentation review; no study findings or manuscript-ready results.\"\n    },\n    {\n      \"id\": \"format\",\n      \"text\": \"Age and BMI: mean (SD), both to one decimal; Female sex: n (%), percentage to one decimal. SD denotes sample standard deviation; BMI denotes body mass index.\"\n    },\n    {\n      \"id\": \"denominator\",\n      \"text\": \"N in each heading is the full group size. Missing values are excluded separately for each variable's summary and denominator; female percentages use nonmissing sex values. No significance tests.\"\n    },\n    {\n      \"id\": \"missing\",\n      \"text\": \"Missing counts, Treatment A / Treatment B: Age 1 / 0; Female sex 1 / 1; BMI 1 / 1.\"\n    }\n  ]\n}\n```\n\n可复现示例：Explore/002-baseline-table-review/preview.py；人工可读预览：Explore/002-baseline-table-review/preview.md；计算与内容核验：Explore/002-baseline-table-review/verification.json。Council 中保存的是本候选文本内的结构化表，而不是会随 Explore 文件修改而变化的外部链接。",
+                "text_sha256": "9e293556ac8d4d86b9ebac48c3bda8fc0f641f2d5fc1f0a9f3bef08cb192b5a6",
+                "updated_at": "2026-10-14T15:08:54+00:00",
+                "updated_by": "codex",
+                "approval_token": "ae31140eee614c9641495dd14433b3cb5def599f1ace009dc36e1f08829ddfc6"
+              },
+              "versions": []
+            },
+            "evidence_refs": [
+              "evidence/sources/S-000001/r000001.json",
+              "evidence/sources/S-000002/r000001.json",
+              "evidence/sources/S-000003/r000001.json",
+              "evidence/claims/E-000001/r000001.json",
+              "evidence/claims/E-000002/r000001.json",
+              "evidence/claims/E-000003/r000001.json"
+            ],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000001",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:08:54+00:00",
+                "id": "baseline-table-candidate-review-20261014-compatible:F-000001:0",
+                "request_id": "baseline-table-candidate-review-20261014-compatible",
+                "text": "Prepared new retained EXP-000002 and executed its simulation. Shared Scripts/functions/table.py was reused unchanged; EXP-000001 stays archived. Candidate's table block contains the complete example. No formal version, result/data registration, analysis-population change or Decision Memory entry was created."
+              }
+            ],
+            "pending_items": [],
+            "problem_type": "output_specification",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json",
+                "evidence/claims/E-000002/r000001.json",
+                "evidence/claims/E-000003/r000001.json"
+              ],
+              "packet_sha256": "3dcdd56e17ce37df6a23b671877f242c7fb6924e369ba8984cdb56749f23128a",
+              "summary": "Directly checked researcher-specified presentation requirements plus executed simulated arithmetic/content verification; archived alternative is retained only as history. No external methodological or journal-compliance claim is made."
+            },
+            "review_packet": {
+              "applicability": "适用于已确认的全部合格成人基线描述表的呈现审阅。模拟 A/B 分别为 4/5 人，年龄、性别、BMI 的非缺失分母按变量计算；这些人数与数值不代表研究人群。实际数据变量映射、极小非缺失数及期刊要求仍需在正式制作时核验。",
+              "common_practice": "本轮依研究者已给出的表格要求准备呈现规格。未提供或检索报告指南、可比研究或期刊规范，因此不声称这是经文献证实的通行做法；样本 SD 是本候选显式列出的计算约定。",
+              "default": "推荐审阅并采用本候选的行列顺序、精度、变量分别排除缺失与脚注规则。数字示例保持模拟标识；正式结果必须等待规格确认和真实数据核验。",
+              "departure_check": "当前候选遵守全部给定呈现要求。旧试验反转组别顺序且漏报缺失数，已弃用，本次未恢复该方向。无已提供的外部标准可用于判定偏离；不以模拟验证替代正式数据验证。",
+              "project_reason": "研究者需要在 Council 中看到可编辑规格和具体示例，并计划后续投稿；当前没有正式表格规格，也未提供研究数据或目标期刊。保存清晰的待审阅候选即可满足本阶段，不把未来投稿意图当作确认或正式产出授权。",
+              "support": "E-000001 r1 对应已逐项阅读的 README 原文要求；E-000002 r1 对应实际执行的模拟脚本、保存的表格与核验记录；E-000003 r1 对应已阅读的旧试验弃用记录。"
+            },
+            "review_required": null,
+            "revision": 2,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "Baseline Table 1: presentation specification and simulated review example",
+            "verification_tests": [],
+            "why": "README specifies Age, Female sex and BMI by Treatment A/B but no formal output specification exists. Prepare a Council candidate and simulated example for human review; actual eligible-adult population is already confirmed.",
+            "work": {
+              "affected_refs": [
+                "F-000001"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "Researcher reviews the saved candidate and simulated example in Council; human confirmation remains a separate UI action.",
+                "Before formal production, use the confirmed specification and verified study inputs; no simulated values enter manuscript results."
+              ],
+              "conclusion_type": "single_recommendation",
+              "phase": "human_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:08:54+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:08:54+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Researcher reviews the saved candidate and simulated example in Council; human confirmation remains a separate UI action.",
+                    "Before formal production, use the confirmed specification and verified study inputs; no simulated values enter manuscript results."
+                  ],
+                  "from": "prepare_review",
+                  "reason": "Requested presentation requirements have a complete candidate, checked source versions and a saved simulated example; ready for researcher review in Council.",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "evidence/claims/E-000001/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "evidence/claims/E-000001/r000001.json"
+              ]
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": null,
+            "review_category": "quick_confirm",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "1f48b4d56708ed90a21677140d94b8a2f59132f5d7bb27a6b593f42f13739d26",
+            "ai_position": ""
+          }
+        ],
+        "decision_groups": [],
+        "governance_version": 5,
+        "pending_submission_paths": [],
+        "investigations": []
+      },
+      "hashes": {
+        "manifest": "2cc8f20f69df5c2ed07bd0bc1b791039f104dd35128e5f59547dc7307fa1d3c5",
+        "trace": "333a2ce92d25e16e6b757a810a9a5a9b3a9c025e971ec7e499cb98b2f9628ccc",
+        "outcome": "0fab2d53bf9e43fef69b3c77fa026c55972243052b44570bd4bcb91a6f674491"
+      }
+    }
+  ]
+}

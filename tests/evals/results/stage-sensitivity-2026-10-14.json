@@ -1,0 +1,262 @@
+{
+  "measurement": "Actual reads/calls; whitespace words are not model tokens. Project-only replays are separate evaluator checks.",
+  "selection": "Initial arm with disclosed bootstrap inspection deviation is retained separately and replaced by a fresh run under the same task and Skill. Selection was made for protocol compliance before replacement outcomes.",
+  "excluded_trials": "stage-sensitivity-initial-2026-10-14.json",
+  "runs": [
+    {
+      "scenario": "sensitivity",
+      "arm": "candidate",
+      "directory": "/private/tmp/oppencouncil-stage-sensitivity-20261014-a/051bee3b293d",
+      "checks": {
+        "raw_preserved": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "exact_article_table": true,
+        "only_specified_outputs": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "outputs_read_back": true,
+        "only_current_stage_loaded": true,
+        "project_only_replay_identical": true
+      },
+      "outputs": [
+        "Results/stage.csv"
+      ],
+      "generated_data": [],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-sensitivity-20261014-a/051bee3b293d/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791989467.931083,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791989473.360657,
+          "operation": "read",
+          "path": "skill/references/research-stage-sensitivity.md",
+          "bytes": 1028,
+          "whitespace_words": 129,
+          "sha256": "4e7da5bae7274ec49a94dcec0b49519e578f9f9c7e7f621022e7e9c943908199"
+        },
+        {
+          "at": 1791989473.361112,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791989467.93186,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1418,
+        "adapter_words": 719,
+        "cli_and_script_calls": 10,
+        "nonzero_calls": 0
+      },
+      "nonzero_calls": [],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-a/051bee3b293d",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "d23c3872080c6a2fac8961d6ec01e944404f44d716bd6346b106e3505250f9be",
+        "trace": "c525e39f4abe52b156f7b0b406707a2df4375f382aade03f0a9dc2e5547c4248",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "f0e0abf8fa9a9a6faa0581702235ff61998db2a1f8e84af63143aaa8349584a7"
+      },
+      "protocol_compliant": true
+    },
+    {
+      "scenario": "sensitivity",
+      "arm": "without-stage-rule",
+      "directory": "/private/tmp/oppencouncil-stage-sensitivity-20261014-a/c54b1f3f291e",
+      "checks": {
+        "raw_preserved": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "exact_article_table": true,
+        "only_specified_outputs": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "outputs_read_back": true,
+        "only_current_stage_loaded": true,
+        "project_only_replay_identical": true
+      },
+      "outputs": [
+        "Results/stage.csv"
+      ],
+      "generated_data": [],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-sensitivity-20261014-a/c54b1f3f291e/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791989473.36666,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791989479.265364,
+          "operation": "read",
+          "path": "skill/references/research-stage-sensitivity.md",
+          "bytes": 726,
+          "whitespace_words": 89,
+          "sha256": "5b320538b8bbed8aa222e7f2542325b0ac5588b396c2d9dbd591ba5c1d649d05"
+        },
+        {
+          "at": 1791989488.116004,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791989473.3677409,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1378,
+        "adapter_words": 719,
+        "cli_and_script_calls": 12,
+        "nonzero_calls": 0
+      },
+      "nonzero_calls": [],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-a/c54b1f3f291e",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "d23c3872080c6a2fac8961d6ec01e944404f44d716bd6346b106e3505250f9be",
+        "trace": "60fcf62013adc7c89fcdfffe6e2c4d7517aff612ceca6954a88f416f31743ce0",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "301764867af0d76ca26f83fa49e2ed9048cdbee2a03595213071e262ee71b1b9"
+      },
+      "protocol_compliant": true
+    },
+    {
+      "scenario": "sensitivity",
+      "arm": "v4.3.1",
+      "directory": "/private/tmp/oppencouncil-stage-sensitivity-20261014-b/90a1f846ce85",
+      "checks": {
+        "raw_preserved": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "exact_article_table": true,
+        "only_specified_outputs": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "outputs_read_back": true,
+        "project_only_replay_identical": false
+      },
+      "outputs": [
+        "Results/stage.csv"
+      ],
+      "generated_data": [],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-sensitivity-20261014-b/90a1f846ce85/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791990082.6302888,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 6666,
+          "whitespace_words": 902,
+          "sha256": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b"
+        },
+        {
+          "at": 1791990086.925163,
+          "operation": "read",
+          "path": "skill/references/workflow-operations.md",
+          "bytes": 10236,
+          "whitespace_words": 1419,
+          "sha256": "5988e33e91b29f083f1c1ba010d93f468768370cc00657363f2edc2a0c8e9880"
+        },
+        {
+          "at": 1791990086.9247518,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 2321,
+        "adapter_words": 719,
+        "cli_and_script_calls": 18,
+        "nonzero_calls": 1
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791990227.9214962,
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-stage-sensitivity-20261014-b/90a1f846ce85/project\",\n  \"project_type\": \"research\",\n  \"errors\": [\n    {\n      \"path\": \"Scripts/__pycache__/01_sensitivity.cpython-312.pyc\",\n      \"reason\": \"Duplicate execution number with Scripts/01_sensitivity.py\"\n    }\n  ],\n  \"warnings\": [],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        }
+      ],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-b/90a1f846ce85",
+        "returncode": 1,
+        "stderr": "<development-worktree>/council/.venv/bin/python: can't open file '/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-b/tools.py': [Errno 2] No such file or directory\nTraceback (most recent call last):\n  File \"/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-b/90a1f846ce85/Scripts/01_sensitivity.py\", line 95, in <module>\n    main()\n  File \"/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-b/90a1f846ce85/Scripts/01_sensitivity.py\", line 84, in main\n    subprocess.run(\n  File \"<uv-python>/cpython-3.12.12-macos-aarch64-none/lib/python3.12/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['<development-worktree>/council/.venv/bin/python', 'tools.py', 'project', 'audit', 'promote', 'project', '--stage', 'sensitivity', '--input', '/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-b/sensitivity-stage-9m08qsl0/evidence']' returned non-zero exit status 2.\n"
+      },
+      "hashes": {
+        "manifest": "822f3e9dbda04631464a0f0cce1c85ba803ba8a573d82d288386183c7e8c1fcf",
+        "trace": "96a5d55202c7a5889d230ca73e9d3de12354df2742d261fadb0120491ca7fd72",
+        "entry": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b",
+        "outcome": "596acb3f3e55646f993d221a500ed27586c66a501cc42e9bcf0129a40c5a7536"
+      },
+      "protocol_compliant": true
+    }
+  ]
+}

@@ -1,0 +1,492 @@
+{
+  "measurement": "Actual file reads/calls; whitespace words are not model tokens. Mechanical checks alone do not establish semantic success.",
+  "runs": [
+    {
+      "scenario": "preview",
+      "directory": "/private/tmp/oppencouncil-review-preview-20261014-d/b055bfd18042",
+      "checks": {
+        "actual_entry_unchanged": true,
+        "entry_loaded": true,
+        "no_memory": true,
+        "no_release": true,
+        "no_archived_content_read": true,
+        "archived_content_unchanged": true,
+        "no_formal_results": true
+      },
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-review-preview-20261014-d/b055bfd18042/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "changed_project_files": [
+        ".oppencouncil-state.json",
+        "Explore/002-baseline-review-preview/01_preview.py",
+        "Explore/002-baseline-review-preview/baseline-simulated.csv",
+        "Explore/002-baseline-review-preview/baseline-simulated.table.json",
+        "Explore/002-baseline-review-preview/candidate.md",
+        "Explore/002-baseline-review-preview/experiment.json",
+        "Explore/002-baseline-review-preview/verification.json",
+        "Explore/index.md",
+        "Freeze/.lock",
+        "Freeze/evidence/claims/E-000001/r000001.json",
+        "Freeze/evidence/claims/E-000002/r000001.json",
+        "Freeze/evidence/sources/S-000001/r000001.json",
+        "Freeze/evidence/sources/S-000002/r000001.json",
+        "Freeze/manifest.json",
+        "Freeze/questions/F-000001.json",
+        "project.md"
+      ],
+      "instruction_reads": [
+        {
+          "at": 1791990796.570805,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791990799.988236,
+          "operation": "read",
+          "path": "skill/references/research-stage-descriptive.md",
+          "bytes": 647,
+          "whitespace_words": 77,
+          "sha256": "716d65ae763d620f7cc611579ec6188e462e2d78671eff959ea3173c0bfd08dc"
+        },
+        {
+          "at": 1791990805.8839018,
+          "operation": "read",
+          "path": "skill/references/output-specifications.md",
+          "bytes": 2608,
+          "whitespace_words": 325,
+          "sha256": "bca82fd45d2ec6e79c47913c43c1a6d035b7b416539aba6fb028eff6d0fe6c1e"
+        },
+        {
+          "at": 1791990805.884151,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 6149,
+          "whitespace_words": 759,
+          "sha256": "8f1648e89b4737e3aaf0f8bbd6dcb1c0b425cd50f368af13a6ede16e0a55ca72"
+        },
+        {
+          "at": 1791990805.8845801,
+          "operation": "read",
+          "path": "skill/references/review-packet.md",
+          "bytes": 1704,
+          "whitespace_words": 185,
+          "sha256": "22069ea1cc07fb62f1cbdaf0b004cb6a7c541412f5aa10a07ffc3464dc32c8c0"
+        },
+        {
+          "at": 1791990809.423009,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 3666,
+          "whitespace_words": 422,
+          "sha256": "046f29049827530f79ba254f8168ee599028932bec5e04b1f9a24f925a9e931f"
+        },
+        {
+          "at": 1791990809.4232168,
+          "operation": "read",
+          "path": "skill/references/evidence.md",
+          "bytes": 1838,
+          "whitespace_words": 190,
+          "sha256": "9bf368df5b7e757c3927d31541dac0dd2c6c23ba9f7b7934a8216f1abe7153f3"
+        },
+        {
+          "at": 1791990809.4235861,
+          "operation": "read",
+          "path": "skill/references/triage.md",
+          "bytes": 874,
+          "whitespace_words": 100,
+          "sha256": "3117a3eb0f86e675111ae83193b7cceee0b9eb5a7d86e4247c8ef7d9c89fc18f"
+        }
+      ],
+      "source_reads": [
+        {
+          "at": 1791990796.571316,
+          "operation": "read",
+          "path": "project/README.md",
+          "bytes": 914,
+          "whitespace_words": 136,
+          "sha256": "ba6b6c3e6af3d98ec31ab26e3bcbc389e6664f6155d7dec07cc7030f43284460"
+        },
+        {
+          "at": 1791990809.423703,
+          "operation": "read",
+          "path": "project/Scripts/functions/table.py",
+          "bytes": 315,
+          "whitespace_words": 26,
+          "sha256": "b7dae7cfbd44eac78c2e91d35966f5b6622ecdf31b0175697d74c5a69720b967"
+        },
+        {
+          "at": 1791990809.423809,
+          "operation": "read",
+          "path": "project/Explore/index.md",
+          "bytes": 212,
+          "whitespace_words": 41,
+          "sha256": "07baa249a7b0ee64f90ff5cbc589d538b599183ac50fd17793f7872c5678b7da"
+        },
+        {
+          "at": 1791990809.423917,
+          "operation": "read",
+          "path": "project/project.md",
+          "bytes": 1619,
+          "whitespace_words": 188,
+          "sha256": "bae1b86567ec315f2febe563e976221e6180406b6f8dc4ac104681d29ff3aace"
+        },
+        {
+          "at": 1791990923.868057,
+          "operation": "read",
+          "path": "project/Explore/002-baseline-review-preview/candidate.md",
+          "bytes": 3375,
+          "whitespace_words": 473,
+          "sha256": "fef90a5b2b663ff5e662d5c0d9c1fda4219c2640e04909d33c81972f2dda6d2a"
+        },
+        {
+          "at": 1791990923.8683321,
+          "operation": "read",
+          "path": "project/Explore/002-baseline-review-preview/baseline-simulated.csv",
+          "bytes": 157,
+          "whitespace_words": 17,
+          "sha256": "84faa0f364d3153e9dfd751b1de44f094f96594a3d410e0da99d9310c5d009ab"
+        },
+        {
+          "at": 1791990923.868798,
+          "operation": "read",
+          "path": "project/Explore/002-baseline-review-preview/verification.json",
+          "bytes": 312,
+          "whitespace_words": 37,
+          "sha256": "a73e616efe9620fc755afa2301d77b1f900f15f4271be4b1b96ba02ed453f36d"
+        }
+      ],
+      "metrics": {
+        "skill_words": 2628,
+        "adapter_words": 719,
+        "cli_and_script_calls": 17,
+        "nonzero_calls": 1
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791990974.2258098,
+          "operation": "council",
+          "arguments": [
+            "work-commit",
+            "project",
+            "--input",
+            "review-payload.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "OppenCouncil: Decisive objection needs resolution or an explained tradeoff\n"
+        }
+      ],
+      "saved_items": [
+        {
+          "id": "F-000001",
+          "title": "Baseline table: population, summaries and compact presentation",
+          "why": "The researcher requests a Council-reviewable baseline specification and simulated example before planned submission. README fixes the eligible-adult population and presentation requirements; no formal table specification or data are registered.",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [
+              "F-000001",
+              "Explore/002-baseline-review-preview/candidate.md"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "Human reviews and confirms or revises the proposed presentation specification, including sample SD convention.",
+              "Actual-data field mappings and real results require a separate subsequent implementation step after confirmation."
+            ],
+            "conclusion_type": "single_recommendation",
+            "phase": "human_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:16:39+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000001",
+                  "Explore/002-baseline-review-preview/candidate.md"
+                ],
+                "at": "2026-10-14T15:16:39+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Human reviews and confirms or revises the proposed presentation specification, including sample SD convention.",
+                  "Actual-data field mappings and real results require a separate subsequent implementation step after confirmation."
+                ],
+                "from": "prepare_review",
+                "reason": "A complete presentation candidate and reproducible, clearly simulated example are ready for human review; no formal output specification has been confirmed.",
+                "to": "human_review",
+                "trigger_refs": [
+                  "README.md"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "README.md"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "# Baseline table specification — candidate for human review\n\nStatus: proposed output specification; no confirmed formal version. This retains the already confirmed analysis population of all eligible adults.\n\nThe table has exactly two treatment columns, Treatment A followed by Treatment B. Each heading includes its own total group N. Rows appear in this order: Age (years), Female sex, BMI (kg/m²). Continuous values use mean (SD), each to one decimal place. Female sex uses n (%) with the count as an integer and percentage to one decimal place. Use a compact table without significance tests or p-value columns.\n\nFor each variable, exclude only that variable's missing values from its summary and denominator. The group heading N remains the full group size. Report missing counts separately by variable and treatment group in a table-wide footnote. In the simulated example, Female sex is 3/5=60.0% in A and 2/4=50.0% in B; the heading Ns remain 6 and 5.\n\nRecommended implementation convention for review: calculate sample SD using n−1. This detail is proposed here; it is not a separately confirmed project decision. No real data or variable dictionary were supplied, so source-variable mappings, actual group sizes and actual missingness cannot yet be verified. No empirical values are claimed by this candidate.\n\n## Simulated review example\n\nAll displayed values below are invented for presentation review. Confirming the format does not confirm these numbers as results. The formal table will use observed study values after the specification is confirmed and data mappings are verified.\n\n```table\n{\n  \"schema_version\": 1,\n  \"id\": \"baseline-table-simulated-preview\",\n  \"title\": \"Table 1. Baseline characteristics — SIMULATED EXAMPLE ONLY\",\n  \"simulated\": true,\n  \"columns\": [\n    {\n      \"id\": \"a\",\n      \"label\": \"Treatment A (N=6)\",\n      \"align\": \"right\"\n    },\n    {\n      \"id\": \"b\",\n      \"label\": \"Treatment B (N=5)\",\n      \"align\": \"right\"\n    }\n  ],\n  \"headers\": [\n    {\n      \"id\": \"header-a\",\n      \"label\": \"Treatment A (N=6)\",\n      \"column_id\": \"a\"\n    },\n    {\n      \"id\": \"header-b\",\n      \"label\": \"Treatment B (N=5)\",\n      \"column_id\": \"b\"\n    }\n  ],\n  \"rows\": [\n    {\n      \"id\": \"age\",\n      \"label\": \"Age (years)\",\n      \"cells\": {\n        \"a\": \"60.0 (15.8)\",\n        \"b\": \"60.0 (12.9)\"\n      }\n    },\n    {\n      \"id\": \"female\",\n      \"label\": \"Female sex\",\n      \"cells\": {\n        \"a\": \"3 (60.0%)\",\n        \"b\": \"2 (50.0%)\"\n      }\n    },\n    {\n      \"id\": \"bmi\",\n      \"label\": \"BMI (kg/m²)\",\n      \"cells\": {\n        \"a\": \"24.0 (3.2)\",\n        \"b\": \"25.0 (3.7)\"\n      }\n    }\n  ],\n  \"footnotes\": [\n    {\n      \"id\": \"simulated\",\n      \"text\": \"SIMULATED VALUES: invented solely to review the layout; these are not study results.\"\n    },\n    {\n      \"id\": \"summary\",\n      \"text\": \"Continuous variables: mean (SD), one decimal; Female sex: n (%) with one decimal for percentage. SD in this preview is sample SD (n−1).\"\n    },\n    {\n      \"id\": \"denominator\",\n      \"text\": \"Each heading N is the full number in that treatment group. Missing values are excluded separately for each variable from its summary and denominator; there is no complete-case exclusion across variables.\"\n    },\n    {\n      \"id\": \"missing\",\n      \"text\": \"Missing counts (Treatment A / Treatment B): Age 1 / 1; Female sex 1 / 1; BMI 1 / 1.\"\n    }\n  ]\n}\n```",
+            "text_sha256": "652ecfa2e2451d06eeca4ae4b04ab65685e466f06971854dcacbca32f4eee9c5",
+            "base_version": null,
+            "dependencies": [],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json",
+                "evidence/claims/E-000002/r000001.json"
+              ],
+              "packet_sha256": "e8ba260e1abbab329fc47dc37f2d4e18866a6d2f6192911c129cdda9900ea8ef",
+              "summary": "Checked the full researcher requirements and executable simulated preview. The candidate reflects those project facts; no literature-derived clinical recommendation or empirical result is asserted."
+            },
+            "approval_token": "986660938937859f693fb457248efd95c4713640c6d32e0cc3fdbf3490a3ea75"
+          },
+          "current": null,
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000001/r000001.json",
+              "evidence/claims/E-000002/r000001.json"
+            ],
+            "packet_sha256": "e8ba260e1abbab329fc47dc37f2d4e18866a6d2f6192911c129cdda9900ea8ef",
+            "summary": "Checked the full researcher requirements and executable simulated preview. The candidate reflects those project facts; no literature-derived clinical recommendation or empirical result is asserted."
+          },
+          "review_packet": {
+            "applicability": "Applies to this fictional study's baseline table and the already confirmed all-eligible-adults population. No real study data are supplied; displayed numbers only demonstrate the layout and denominator rules.",
+            "common_practice": "The specified mean (SD), n (%) and compact layout are this researcher's presentation requirements. No reporting guideline or journal-specific practice was supplied or independently verified, so this packet makes no literature-based compliance claim.",
+            "default": "Recommended answer: adopt the candidate specification and structured simulated example for presentation review, including the explicitly proposed sample-SD convention. Human confirmation remains a separate action.",
+            "departure_check": "No departure from the researcher's listed requirements: requested row order, two treatment columns with group-specific N, one-decimal formats, variable-wise missing exclusion, missing counts in footnotes, and no significance tests. Sample SD (n−1) is an additional implementation convention disclosed for review.",
+            "project_reason": "The user requested a Council-reviewable specification and example before planned submission. Saving one complete candidate keeps requirements, simulation provenance and limits together without claiming formal results.",
+            "support": "Exact checked source versions support the requested presentation and verified simulated example. Source S-000001 is the complete supplied README; S-000002 records the executed preview and explicit verification limits."
+          },
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/sources/S-000001/r000001.json",
+            "evidence/sources/S-000002/r000001.json",
+            "evidence/claims/E-000001/r000001.json",
+            "evidence/claims/E-000002/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": "cd412f25fd9c61c94f5dc50d9bbefb77ba2a55ae675b9a430db23eee02d12067",
+          "read_set": {
+            "F-000001": 2
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": []
+          },
+          "review_category": "quick_confirm",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        }
+      ],
+      "snapshot": {
+        "project": "/private/tmp/oppencouncil-review-preview-20261014-d/b055bfd18042/project",
+        "round": 1,
+        "revision": 2,
+        "questions": [
+          {
+            "created_at": "2026-10-14T15:14:09+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:16:39+00:00",
+                    "by": "codex",
+                    "text": "# Baseline table specification — candidate for human review\n\nStatus: proposed output specification; no confirmed formal version. This retains the already confirmed analysis population of all eligible adults.\n\nThe table has exactly two treatment columns, Treatment A followed by Treatment B. Each heading includes its own total group N. Rows appear in this order: Age (years), Female sex, BMI (kg/m²). Continuous values use mean (SD), each to one decimal place. Female sex uses n (%) with the count as an integer and percentage to one decimal place. Use a compact table without significance tests or p-value columns.\n\nFor each variable, exclude only that variable's missing values from its summary and denominator. The group heading N remains the full group size. Report missing counts separately by variable and treatment group in a table-wide footnote. In the simulated example, Female sex is 3/5=60.0% in A and 2/4=50.0% in B; the heading Ns remain 6 and 5.\n\nRecommended implementation convention for review: calculate sample SD using n−1. This detail is proposed here; it is not a separately confirmed project decision. No real data or variable dictionary were supplied, so source-variable mappings, actual group sizes and actual missingness cannot yet be verified. No empirical values are claimed by this candidate.\n\n## Simulated review example\n\nAll displayed values below are invented for presentation review. Confirming the format does not confirm these numbers as results. The formal table will use observed study values after the specification is confirmed and data mappings are verified.\n\n```table\n{\n  \"schema_version\": 1,\n  \"id\": \"baseline-table-simulated-preview\",\n  \"title\": \"Table 1. Baseline characteristics — SIMULATED EXAMPLE ONLY\",\n  \"simulated\": true,\n  \"columns\": [\n    {\n      \"id\": \"a\",\n      \"label\": \"Treatment A (N=6)\",\n      \"align\": \"right\"\n    },\n    {\n      \"id\": \"b\",\n      \"label\": \"Treatment B (N=5)\",\n      \"align\": \"right\"\n    }\n  ],\n  \"headers\": [\n    {\n      \"id\": \"header-a\",\n      \"label\": \"Treatment A (N=6)\",\n      \"column_id\": \"a\"\n    },\n    {\n      \"id\": \"header-b\",\n      \"label\": \"Treatment B (N=5)\",\n      \"column_id\": \"b\"\n    }\n  ],\n  \"rows\": [\n    {\n      \"id\": \"age\",\n      \"label\": \"Age (years)\",\n      \"cells\": {\n        \"a\": \"60.0 (15.8)\",\n        \"b\": \"60.0 (12.9)\"\n      }\n    },\n    {\n      \"id\": \"female\",\n      \"label\": \"Female sex\",\n      \"cells\": {\n        \"a\": \"3 (60.0%)\",\n        \"b\": \"2 (50.0%)\"\n      }\n    },\n    {\n      \"id\": \"bmi\",\n      \"label\": \"BMI (kg/m²)\",\n      \"cells\": {\n        \"a\": \"24.0 (3.2)\",\n        \"b\": \"25.0 (3.7)\"\n      }\n    }\n  ],\n  \"footnotes\": [\n    {\n      \"id\": \"simulated\",\n      \"text\": \"SIMULATED VALUES: invented solely to review the layout; these are not study results.\"\n    },\n    {\n      \"id\": \"summary\",\n      \"text\": \"Continuous variables: mean (SD), one decimal; Female sex: n (%) with one decimal for percentage. SD in this preview is sample SD (n−1).\"\n    },\n    {\n      \"id\": \"denominator\",\n      \"text\": \"Each heading N is the full number in that treatment group. Missing values are excluded separately for each variable from its summary and denominator; there is no complete-case exclusion across variables.\"\n    },\n    {\n      \"id\": \"missing\",\n      \"text\": \"Missing counts (Treatment A / Treatment B): Age 1 / 1; Female sex 1 / 1; BMI 1 / 1.\"\n    }\n  ]\n}\n```"
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json"
+                  ],
+                  "packet_sha256": "e8ba260e1abbab329fc47dc37f2d4e18866a6d2f6192911c129cdda9900ea8ef",
+                  "summary": "Checked the full researcher requirements and executable simulated preview. The candidate reflects those project facts; no literature-derived clinical recommendation or empirical result is asserted."
+                },
+                "text": "# Baseline table specification — candidate for human review\n\nStatus: proposed output specification; no confirmed formal version. This retains the already confirmed analysis population of all eligible adults.\n\nThe table has exactly two treatment columns, Treatment A followed by Treatment B. Each heading includes its own total group N. Rows appear in this order: Age (years), Female sex, BMI (kg/m²). Continuous values use mean (SD), each to one decimal place. Female sex uses n (%) with the count as an integer and percentage to one decimal place. Use a compact table without significance tests or p-value columns.\n\nFor each variable, exclude only that variable's missing values from its summary and denominator. The group heading N remains the full group size. Report missing counts separately by variable and treatment group in a table-wide footnote. In the simulated example, Female sex is 3/5=60.0% in A and 2/4=50.0% in B; the heading Ns remain 6 and 5.\n\nRecommended implementation convention for review: calculate sample SD using n−1. This detail is proposed here; it is not a separately confirmed project decision. No real data or variable dictionary were supplied, so source-variable mappings, actual group sizes and actual missingness cannot yet be verified. No empirical values are claimed by this candidate.\n\n## Simulated review example\n\nAll displayed values below are invented for presentation review. Confirming the format does not confirm these numbers as results. The formal table will use observed study values after the specification is confirmed and data mappings are verified.\n\n```table\n{\n  \"schema_version\": 1,\n  \"id\": \"baseline-table-simulated-preview\",\n  \"title\": \"Table 1. Baseline characteristics — SIMULATED EXAMPLE ONLY\",\n  \"simulated\": true,\n  \"columns\": [\n    {\n      \"id\": \"a\",\n      \"label\": \"Treatment A (N=6)\",\n      \"align\": \"right\"\n    },\n    {\n      \"id\": \"b\",\n      \"label\": \"Treatment B (N=5)\",\n      \"align\": \"right\"\n    }\n  ],\n  \"headers\": [\n    {\n      \"id\": \"header-a\",\n      \"label\": \"Treatment A (N=6)\",\n      \"column_id\": \"a\"\n    },\n    {\n      \"id\": \"header-b\",\n      \"label\": \"Treatment B (N=5)\",\n      \"column_id\": \"b\"\n    }\n  ],\n  \"rows\": [\n    {\n      \"id\": \"age\",\n      \"label\": \"Age (years)\",\n      \"cells\": {\n        \"a\": \"60.0 (15.8)\",\n        \"b\": \"60.0 (12.9)\"\n      }\n    },\n    {\n      \"id\": \"female\",\n      \"label\": \"Female sex\",\n      \"cells\": {\n        \"a\": \"3 (60.0%)\",\n        \"b\": \"2 (50.0%)\"\n      }\n    },\n    {\n      \"id\": \"bmi\",\n      \"label\": \"BMI (kg/m²)\",\n      \"cells\": {\n        \"a\": \"24.0 (3.2)\",\n        \"b\": \"25.0 (3.7)\"\n      }\n    }\n  ],\n  \"footnotes\": [\n    {\n      \"id\": \"simulated\",\n      \"text\": \"SIMULATED VALUES: invented solely to review the layout; these are not study results.\"\n    },\n    {\n      \"id\": \"summary\",\n      \"text\": \"Continuous variables: mean (SD), one decimal; Female sex: n (%) with one decimal for percentage. SD in this preview is sample SD (n−1).\"\n    },\n    {\n      \"id\": \"denominator\",\n      \"text\": \"Each heading N is the full number in that treatment group. Missing values are excluded separately for each variable from its summary and denominator; there is no complete-case exclusion across variables.\"\n    },\n    {\n      \"id\": \"missing\",\n      \"text\": \"Missing counts (Treatment A / Treatment B): Age 1 / 1; Female sex 1 / 1; BMI 1 / 1.\"\n    }\n  ]\n}\n```",
+                "text_sha256": "652ecfa2e2451d06eeca4ae4b04ab65685e466f06971854dcacbca32f4eee9c5",
+                "updated_at": "2026-10-14T15:16:39+00:00",
+                "updated_by": "codex",
+                "approval_token": "986660938937859f693fb457248efd95c4713640c6d32e0cc3fdbf3490a3ea75"
+              },
+              "versions": []
+            },
+            "evidence_refs": [
+              "evidence/sources/S-000001/r000001.json",
+              "evidence/sources/S-000002/r000001.json",
+              "evidence/claims/E-000001/r000001.json",
+              "evidence/claims/E-000002/r000001.json"
+            ],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000001",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:16:39+00:00",
+                "id": "baseline-output-review-20261014-v2:F-000001:0",
+                "request_id": "baseline-output-review-20261014-v2",
+                "text": "Saved a structured table with simulated:true, visible simulation labels, checked arithmetic and variable-wise missing denominators. No formal Results or Data registrations were made. Submission reminder: request a reproducible snapshot before submission if desired; no release package was requested or created. Browser rendering and target-journal compliance remain unverified."
+              },
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:16:39+00:00",
+                "id": "baseline-output-review-20261014-v2:F-000001:1",
+                "request_id": "baseline-output-review-20261014-v2",
+                "text": "Scope clarification after validation: real-data mappings and journal fit are explicit limits of this presentation-only candidate, not resolved empirical checks or a decisive objection to displaying a clearly simulated example. No proposed empirical result is submitted for confirmation."
+              }
+            ],
+            "pending_items": [],
+            "problem_type": "output_specification",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json",
+                "evidence/claims/E-000002/r000001.json"
+              ],
+              "packet_sha256": "e8ba260e1abbab329fc47dc37f2d4e18866a6d2f6192911c129cdda9900ea8ef",
+              "summary": "Checked the full researcher requirements and executable simulated preview. The candidate reflects those project facts; no literature-derived clinical recommendation or empirical result is asserted."
+            },
+            "review_packet": {
+              "applicability": "Applies to this fictional study's baseline table and the already confirmed all-eligible-adults population. No real study data are supplied; displayed numbers only demonstrate the layout and denominator rules.",
+              "common_practice": "The specified mean (SD), n (%) and compact layout are this researcher's presentation requirements. No reporting guideline or journal-specific practice was supplied or independently verified, so this packet makes no literature-based compliance claim.",
+              "default": "Recommended answer: adopt the candidate specification and structured simulated example for presentation review, including the explicitly proposed sample-SD convention. Human confirmation remains a separate action.",
+              "departure_check": "No departure from the researcher's listed requirements: requested row order, two treatment columns with group-specific N, one-decimal formats, variable-wise missing exclusion, missing counts in footnotes, and no significance tests. Sample SD (n−1) is an additional implementation convention disclosed for review.",
+              "project_reason": "The user requested a Council-reviewable specification and example before planned submission. Saving one complete candidate keeps requirements, simulation provenance and limits together without claiming formal results.",
+              "support": "Exact checked source versions support the requested presentation and verified simulated example. Source S-000001 is the complete supplied README; S-000002 records the executed preview and explicit verification limits."
+            },
+            "review_required": null,
+            "revision": 2,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "Baseline table: population, summaries and compact presentation",
+            "verification_tests": [],
+            "why": "The researcher requests a Council-reviewable baseline specification and simulated example before planned submission. README fixes the eligible-adult population and presentation requirements; no formal table specification or data are registered.",
+            "work": {
+              "affected_refs": [
+                "F-000001",
+                "Explore/002-baseline-review-preview/candidate.md"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "Human reviews and confirms or revises the proposed presentation specification, including sample SD convention.",
+                "Actual-data field mappings and real results require a separate subsequent implementation step after confirmation."
+              ],
+              "conclusion_type": "single_recommendation",
+              "phase": "human_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:16:39+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000001",
+                    "Explore/002-baseline-review-preview/candidate.md"
+                  ],
+                  "at": "2026-10-14T15:16:39+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Human reviews and confirms or revises the proposed presentation specification, including sample SD convention.",
+                    "Actual-data field mappings and real results require a separate subsequent implementation step after confirmation."
+                  ],
+                  "from": "prepare_review",
+                  "reason": "A complete presentation candidate and reproducible, clearly simulated example are ready for human review; no formal output specification has been confirmed.",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "README.md"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "README.md"
+              ]
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": null,
+            "review_category": "quick_confirm",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "cd412f25fd9c61c94f5dc50d9bbefb77ba2a55ae675b9a430db23eee02d12067",
+            "ai_position": ""
+          }
+        ],
+        "decision_groups": [],
+        "governance_version": 5,
+        "pending_submission_paths": [],
+        "investigations": []
+      },
+      "hashes": {
+        "manifest": "ef7ffefac155eea2aace0a3ab550e598363a1ac2f5505c63032335ef10a40163",
+        "trace": "72ccc94493d91d12c831cab81c3a8d1ee8f0ef6be50680b14463e1e5937d82a7",
+        "outcome": "3786662f670dd86e9b60f15ff732a58a4abd022588873abab6036b4401d9c2bf"
+      }
+    }
+  ]
+}

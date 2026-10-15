@@ -44,7 +44,7 @@ def test_pkce_flow_and_authenticated_mcp(client, method):
         "initialize",
         {"protocolVersion": "2025-06-18", "capabilities": {}, "clientInfo": {"name": "test", "version": "1"}},
     )
-    assert init["result"]["serverInfo"]["name"] == "OppenSteward-MCP"
+    assert init["result"]["serverInfo"]["name"] == "OppenCouncil MCP"
     tools = rpc(client, access, "tools/list")["result"]["tools"]
     assert {t["name"] for t in tools} == {
         "list_projects",

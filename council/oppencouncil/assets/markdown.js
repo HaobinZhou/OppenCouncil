@@ -1,8 +1,8 @@
 /* Presentation only: the exact Markdown source remains the stored authority. */
 (function (root, factory) {
-  if (typeof module === 'object' && module.exports) module.exports = factory(require('./vendor/markdown-it.min.js'));
-  else root.CouncilMarkdown = factory(root.markdownit);
-})(typeof globalThis !== 'undefined' ? globalThis : this, function (markdownit) {
+  if (typeof module === 'object' && module.exports) module.exports = factory(require('./vendor/markdown-it.min.js'), require('./tables.js'));
+  else root.CouncilMarkdown = factory(root.markdownit, root.CouncilTables);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (markdownit, tables) {
   const md = markdownit({ html: false, breaks: true, linkify: false, typographer: false });
   const choiceKey = (scope, id) => scope + ':' + id;
   const appendPreference = (existing, text) => {
@@ -93,10 +93,22 @@
     return link(tokens, idx, options, env, self);
   };
   // Images remain explicit references, without loading remote content on review.
-  md.renderer.rules.image = (tokens, idx) => {
+  md.renderer.rules.image = (tokens, idx, _options, env) => {
     const token = tokens[idx], escape = md.utils.escapeHtml;
     const title = token.content || '图片';
+    const asset = /^Freeze\/assets\/([0-9a-f]{64}\.(?:png|svg))$/.exec(token.attrGet('src') || '');
+    if (asset && /^\/api\/projects\/[0-9a-f]{20}\/assets\/$/.test(env.assetBase || '')) {
+      return '<figure class="sw2-example-image"><img loading="lazy" src="'+env.assetBase+asset[1]+'" alt="'+escape(title)+'"><figcaption>'+escape(title)+'</figcaption></figure>';
+    }
     return '<a href="'+escape(token.attrGet('src') || '')+'" target="_blank" rel="noopener noreferrer">'+escape(title)+'</a>';
+  };
+  const fence = md.renderer.rules.fence;
+  md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+    if (tokens[idx].info.trim() === 'table' && tables) {
+      try { return tables.render(JSON.parse(tokens[idx].content)); }
+      catch (_) { return '<p class="sw2-table-error" role="alert">表格规格无效，请修正后保存。</p>'+fence(tokens,idx,options,env,self); }
+    }
+    return fence(tokens,idx,options,env,self);
   };
   md.renderer.rules.table_open = () => '<div class="sw2-markdown-table" tabindex="0" role="region" aria-label="内容表格"><table>\n';
   md.renderer.rules.table_close = () => '</table></div>\n';

@@ -21,7 +21,7 @@ let phase = 'launch';
 let cspBlocked = false;
 
 (async () => {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, executablePath: process.env.OPPENPROJECT_CHROMIUM || undefined });
   const context = await browser.newContext();
   const page = await context.newPage();
   page.on('console', message => {

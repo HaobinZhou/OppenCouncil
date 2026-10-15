@@ -106,3 +106,21 @@ Default sites show a custom first-run password form before exposing the project 
 Show a compact Exit control in the directory and workbench for password-protected sites. Workbench Exit asks the reviewer to save pending work before leaving. A 401 shows a new-tab login link, leaves local drafts and the reading context intact, and permits refresh after reauthentication. The backend password/session contract is owned by the Council README's 站点密码 section.
 
 Hide scrollbar chrome on the workbench, project directory and login page, including nested lists, discussion, comparisons, code blocks, dialogs and text areas. Preserve native overflow, wheel, touchpad, touch and keyboard scrolling.
+
+## v5 review and investigations
+
+Keep the existing directory, navigation, individual review, joint review and discussion layout. The v5 snapshot adds investigations to the same list, with separate filters for human review, human input awaiting local processing, quick confirmation, choices, checking/blockers and excluded items. Old open/discussing/answered filters are removed for v5; restoring a saved obsolete filter returns to all items. An investigation displays its reason, most recent transition or closure reason, blockers, pending questions and related definitions. Human comments use the investigation feedback endpoint and do not curate phase or formal text. External AI comments are explicitly marked as unverified and do not count as human feedback.
+
+Show the work phase independently of formal versions. Display the recommendation, evidence packet and explained objections from saved records. Reconfirmation controls require prepared review and send the current-version token. Evidence-only confirmation appends the current version's receipt; it creates no new definition version. Both individual and joint confirmation retain optimistic revisions and dependency checks.
+
+A `table` JSON fence in the definition is the sole table source. Render nested column headers, row groups, cells, footnotes and the simulation marker in individual/group review and history. The candidate editor changes that same block: title, cell/header/row text, row groups, row/column addition/removal and header grouping. Surrounding Markdown and other table blocks are preserved. Group review links its table editor to the individual member. Saving edits uses the existing candidate transaction and human feedback path; the previous formal version remains unchanged until confirmation.
+
+Inline images are limited to authenticated content-addressed `Freeze/assets/<sha256>.png|svg` paths. Caption text comes from the stored Markdown. Other image references remain links and never cause automatic remote/private-file loads. Deleting or regenerating an Explore source does not alter the immutable saved copy.
+
+The v5 handoff includes only actionable F/I/B references, ready pending-item references and a count of external inbox submissions. It does not export every discussion or all history. Pending browser input still uses the existing save-or-exclude dialog and exact request receipt recovery.
+
+### Browser acceptance
+
+The structured-table editor can reorder sibling row groups (carrying descendants) and sibling column headers, add/remove footnotes, and edit column unit, format description and alignment. Moving columns across header groups uses split, move and regroup. Unit and format descriptions render below the leaf header; format descriptions do not transform cell values. Stable row/column IDs keep cells and footnote references attached when order changes. Saving these edits follows the same human candidate and feedback transaction as other table edits.
+
+The isolated `tests/test_browser_v5.py` fixture creates both supported project layouts, authenticates a fresh Chromium profile, and inspects persisted records after table edits, investigation feedback and current-version reconfirmation. It checks 1440, 1920, 2560 and 390 pixel widths and saves screenshots in the test's temporary directory. Enable it with `OPPENCOUNCIL_PLAYWRIGHT=/path/to/node_modules/playwright`; optionally set `OPPENCOUNCIL_CHROMIUM=/path/to/chromium`. It uses temporary loopback ports and synthetic data only. Node component checks remain part of `scripts/verify.py`; passing them alone is not browser acceptance or Agent behavior evaluation.

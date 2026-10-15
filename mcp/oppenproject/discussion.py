@@ -46,9 +46,13 @@ def topic_text(topic):
 
 
 def directory_for(project):
-    if project.version not in {"v3", "v4"}:
+    if project.version not in {"v3", "v4", "v5"}:
         raise AccessDenied("Discussion requires a native v3/v4 layout; legacy projects remain read-only")
-    return ".oppen-project-steward/Discussion" if project.skill == "oppen-project-steward" else "Discussion"
+    return (
+        ".oppen-project-steward/Discussion"
+        if project.registry.startswith(".oppen-project-steward/")
+        else "Discussion"
+    )
 
 
 class Directory:

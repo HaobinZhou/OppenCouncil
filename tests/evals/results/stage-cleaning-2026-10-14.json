@@ -1,0 +1,371 @@
+{
+  "measurement": "Actual reads/calls; whitespace words are not model tokens. Project-only replays are separate evaluator checks.",
+  "runs": [
+    {
+      "scenario": "cleaning",
+      "arm": "candidate",
+      "directory": "/private/tmp/oppencouncil-stage-cleaning-20261014-a/a2ac9c7d7e35",
+      "checks": {
+        "raw_preserved": true,
+        "exact_cleaned_data_in_data": true,
+        "no_article_output_manufactured": true,
+        "no_new_f": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "data_read_back": true,
+        "only_current_stage_loaded": true,
+        "replay_from_raw_reproduces_data": true,
+        "replay_does_not_recreate_results": true
+      },
+      "outputs": [],
+      "generated_data": [
+        "Data/derived/cleaned.csv"
+      ],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-cleaning-20261014-a/a2ac9c7d7e35/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791988703.303113,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791988707.683127,
+          "operation": "read",
+          "path": "skill/references/research-stage-cleaning.md",
+          "bytes": 1050,
+          "whitespace_words": 114,
+          "sha256": "cb2aabff795eae6f56baa05e811cbddd7008071ed88659e437e4cb7043ad248f"
+        },
+        {
+          "at": 1791988713.455589,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791988707.683614,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1403,
+        "adapter_words": 719,
+        "cli_and_script_calls": 11,
+        "nonzero_calls": 3
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791988713.537195,
+          "operation": "council",
+          "arguments": [
+            "index",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "usage: __main__.py [-h] [--version] [--directory DIRECTORY]\n                   {open,register,disable,snapshot,import,recover,reconcile,ai-change,group-change,definition,work-index,work-read,work-commit,investigation-create,evidence-index,evidence-read,evidence-submit,start,_serve,stop,status}\n                   ...\n__main__.py: error: argument command: invalid choice: 'index' (choose from open, register, disable, snapshot, import, recover, reconcile, ai-change, group-change, definition, work-index, work-read, work-commit, investigation-create, evidence-index, evidence-read, evidence-submit, start, _serve, stop, status)\n"
+        },
+        {
+          "at": 1791988744.087073,
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-stage-cleaning-20261014-a/a2ac9c7d7e35/project\",\n  \"project_type\": \"research\",\n  \"errors\": [\n    {\n      \"path\": \"Results/cleaned.csv\",\n      \"reason\": \"Unregistered output\"\n    },\n    {\n      \"path\": \"Results/quality.json\",\n      \"reason\": \"Unregistered output\"\n    }\n  ],\n  \"warnings\": [],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        },
+        {
+          "at": 1791988793.81422,
+          "operation": "project",
+          "arguments": [
+            "data",
+            "project",
+            "register",
+            "--input",
+            "derived-registration.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "usage: oppencouncil.py data [-h] {register} ...\noppencouncil.py data: error: argument operation: invalid choice: 'project' (choose from register)\n"
+        }
+      ],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-cleaning-replay-20261014-a/a2ac9c7d7e35",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "6460a6f5ed5af9bda900bc38d5733244a77adbd1614fea90dd3db5da728df97e",
+        "trace": "c2907106e18ed29acb065b28d5ede01f84f5388e4905ca933ecbc0f774e1f818",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "3bbd2643f173c15515143791c69d2e8263e476a165ab0ab6fdb4f8b2f411d0cc"
+      }
+    },
+    {
+      "scenario": "cleaning",
+      "arm": "without-stage-rule",
+      "directory": "/private/tmp/oppencouncil-stage-cleaning-20261014-a/84925cf80943",
+      "checks": {
+        "raw_preserved": true,
+        "exact_cleaned_data_in_data": true,
+        "no_article_output_manufactured": true,
+        "no_new_f": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "data_read_back": true,
+        "only_current_stage_loaded": true,
+        "replay_from_raw_reproduces_data": true,
+        "replay_does_not_recreate_results": true
+      },
+      "outputs": [],
+      "generated_data": [
+        "Data/derived/cleaned.csv"
+      ],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-cleaning-20261014-a/84925cf80943/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791988707.1062,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791988710.398228,
+          "operation": "read",
+          "path": "skill/references/research-stage-cleaning.md",
+          "bytes": 883,
+          "whitespace_words": 87,
+          "sha256": "32e2510743d54e64724175b624c7351ac9fae046ff8e89dc49046d307a775f77"
+        },
+        {
+          "at": 1791988716.491561,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791988710.397812,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1376,
+        "adapter_words": 719,
+        "cli_and_script_calls": 11,
+        "nonzero_calls": 2
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791988733.117558,
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-stage-cleaning-20261014-a/84925cf80943/project\",\n  \"project_type\": \"research\",\n  \"errors\": [\n    {\n      \"path\": \"Results/cleaned.csv\",\n      \"reason\": \"Unregistered output\"\n    },\n    {\n      \"path\": \"Results/quality.json\",\n      \"reason\": \"Unregistered output\"\n    }\n  ],\n  \"warnings\": [],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        },
+        {
+          "at": 1791988801.411927,
+          "operation": "project",
+          "arguments": [
+            "data",
+            "project",
+            "register",
+            "--input",
+            "derived-registration.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "usage: oppencouncil.py data [-h] {register} ...\noppencouncil.py data: error: argument operation: invalid choice: 'project' (choose from register)\n"
+        }
+      ],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-cleaning-replay-20261014-a/84925cf80943",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "6460a6f5ed5af9bda900bc38d5733244a77adbd1614fea90dd3db5da728df97e",
+        "trace": "edd01ee6fe4500f82197741efd79252a7f658398fe4f6ca6aa122f18e68c422f",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "fe42c603f5a320bc419afb23242fa6790286738f1bce69a2aed9722d2153c031"
+      }
+    },
+    {
+      "scenario": "cleaning",
+      "arm": "v4.3.1",
+      "directory": "/private/tmp/oppencouncil-stage-cleaning-20261014-a/3156d02d9995",
+      "checks": {
+        "raw_preserved": true,
+        "exact_cleaned_data_in_data": true,
+        "no_article_output_manufactured": true,
+        "no_new_f": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "data_read_back": true,
+        "replay_from_raw_reproduces_data": true,
+        "replay_does_not_recreate_results": true
+      },
+      "outputs": [],
+      "generated_data": [
+        "Data/derived/cleaned.csv"
+      ],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-cleaning-20261014-a/3156d02d9995/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791988713.122549,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 6666,
+          "whitespace_words": 902,
+          "sha256": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b"
+        },
+        {
+          "at": 1791988720.463459,
+          "operation": "read",
+          "path": "skill/references/workflow-operations.md",
+          "bytes": 10236,
+          "whitespace_words": 1419,
+          "sha256": "5988e33e91b29f083f1c1ba010d93f468768370cc00657363f2edc2a0c8e9880"
+        },
+        {
+          "at": 1791988744.99334,
+          "operation": "read",
+          "path": "skill/references/maintenance.md",
+          "bytes": 1571,
+          "whitespace_words": 201,
+          "sha256": "80d198b9216266cd790633eb5a3f28d8df15382a7fbf2f95b9890f75062d2e47"
+        },
+        {
+          "at": 1791988720.462333,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 2522,
+        "adapter_words": 719,
+        "cli_and_script_calls": 18,
+        "nonzero_calls": 5
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791988729.3135118,
+          "operation": "council",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "usage: __main__.py [-h] [--version] [--directory DIRECTORY]\n                   {open,register,disable,snapshot,import,recover,reconcile,ai-change,group-change,definition,work-index,work-read,work-commit,investigation-create,evidence-index,evidence-read,evidence-submit,start,_serve,stop,status}\n                   ...\n__main__.py: error: argument command: invalid choice: 'validate' (choose from open, register, disable, snapshot, import, recover, reconcile, ai-change, group-change, definition, work-index, work-read, work-commit, investigation-create, evidence-index, evidence-read, evidence-submit, start, _serve, stop, status)\n"
+        },
+        {
+          "at": 1791988729.313906,
+          "operation": "council",
+          "arguments": [
+            "review",
+            "project",
+            "list"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "usage: __main__.py [-h] [--version] [--directory DIRECTORY]\n                   {open,register,disable,snapshot,import,recover,reconcile,ai-change,group-change,definition,work-index,work-read,work-commit,investigation-create,evidence-index,evidence-read,evidence-submit,start,_serve,stop,status}\n                   ...\n__main__.py: error: argument command: invalid choice: 'review' (choose from open, register, disable, snapshot, import, recover, reconcile, ai-change, group-change, definition, work-index, work-read, work-commit, investigation-create, evidence-index, evidence-read, evidence-submit, start, _serve, stop, status)\n"
+        },
+        {
+          "at": 1791988738.5166788,
+          "operation": "project",
+          "arguments": [
+            "review list",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "usage: oppencouncil.py [-h]\n                       {index,validate,canonical,contract-audit,module-audit,audit,review,attention,init,adopt,result,deliverable,data,scripts,explore,release,memory,project-type,upgrade-v5}\n                       ...\noppencouncil.py: error: argument command: invalid choice: 'review list' (choose from index, validate, canonical, contract-audit, module-audit, audit, review, attention, init, adopt, result, deliverable, data, scripts, explore, release, memory, project-type, upgrade-v5)\n"
+        },
+        {
+          "at": 1791988738.529592,
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-stage-cleaning-20261014-a/3156d02d9995/project\",\n  \"project_type\": \"research\",\n  \"errors\": [\n    {\n      \"path\": \"Results/cleaned.csv\",\n      \"reason\": \"Unregistered output\"\n    },\n    {\n      \"path\": \"Results/quality.json\",\n      \"reason\": \"Unregistered output\"\n    }\n  ],\n  \"warnings\": [],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        },
+        {
+          "at": 1791988745.036289,
+          "operation": "project",
+          "arguments": [
+            "review",
+            "project",
+            "list"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "usage: oppencouncil.py review [-h] {list,raise,resolve} ...\noppencouncil.py review: error: argument operation: invalid choice: 'project' (choose from list, raise, resolve)\n"
+        }
+      ],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-cleaning-replay-20261014-a/3156d02d9995",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "6460a6f5ed5af9bda900bc38d5733244a77adbd1614fea90dd3db5da728df97e",
+        "trace": "87332c6a6a800c32a553fb46baea63b1c5c4c31411bee087d9b533720caa6016",
+        "entry": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b",
+        "outcome": "9e94cdfa969d2b315175997e6e94f4f2a4340dfc372f9b54bd5ff70f556f9759"
+      }
+    }
+  ]
+}

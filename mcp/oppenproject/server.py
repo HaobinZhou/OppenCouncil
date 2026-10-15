@@ -8,7 +8,7 @@ import time
 from collections import defaultdict, deque
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 from urllib.parse import quote, urlsplit
 
 from mcp.server.auth.handlers.authorize import AuthorizationHandler
@@ -42,7 +42,7 @@ from .auth import (
 from .catalog import AccessDenied, Catalog
 from .config import APP_NAME, Settings
 from .discussion import Discussions, directory_for
-from .freeze import Freezes
+from .freeze import GOVERNANCE_VERSIONS, Freezes
 
 http_log = logging.getLogger("oppenproject.http")
 
@@ -125,9 +125,16 @@ class GovernanceMCP(FastMCP):
             return [SCOPE, DISCUSSION_READ, DISCUSSION_WRITE]
         if name in {"list_discussions", "read_discussion"}:
             return [SCOPE, DISCUSSION_READ]
-        if name in {"freeze_add_questions", "freeze_change_question", "freeze_change_group"}:
+        if name in {"council_submit_evidence", "council_comment"}:
             return [SCOPE, FREEZE_READ, FREEZE_WRITE]
-        if name in {"freeze_snapshot", "freeze_read_question"}:
+        if name in {
+            "freeze_snapshot",
+            "freeze_read_question",
+            "council_work_index",
+            "council_read_work",
+            "council_read_evidence",
+            "council_evidence_index",
+        }:
             return [SCOPE, FREEZE_READ]
         return [SCOPE]
 
@@ -284,12 +291,9 @@ def create_mcp(settings: Settings, catalog: Catalog, provider=None):
             "use list_discussions/read_discussion/create_discussion/edit_discussion for MCP-owned Discussion "
             "documents only. No delete, rename, general file writing, shell or automatic execution. "
             "Saving a discussion does not implement it or modify governance records. "
-            "When separately enabled, Freeze tools read Stepwise R and Steward v3/v4 question records and "
-            "let an authorized AI add questions, discussion, options and candidate wording, "
-            "or reopen discussion. "
-            "They cannot edit human answers, open formal revisions or change effective definitions. "
-            "Read the project's governing skill with get_skill_guide, then only its task-relevant "
-            "references using the resource argument. "
+            "Freeze reads preserve legacy access. For v5, external clients may submit evidence and "
+            "append unverified comments, but cannot create F records, edit candidates or confirm. "
+            "Read the shared Council guide with get_skill_guide. "
             "Keep discussion, candidates and confirmed text separate. "
             "discussion_mode is local configuration, not the caller's permission. Check discussion_access "
             "in project_overview. If its mcp_tools lists tools missing from your client, refresh the app's "
@@ -357,7 +361,7 @@ def create_mcp(settings: Settings, catalog: Catalog, provider=None):
         )
         prefix = ".oppen-project-steward/" if project.registry.startswith(".oppen-project-steward/") else ""
         allowed = catalog.governance_paths(project)
-        mode = settings.discussion_mode if project.version in {"v3", "v4"} else "off"
+        mode = settings.discussion_mode if project.version in {"v3", "v4", "v5"} else "off"
         granted = await mcp.granted_scopes()
         required = mcp.tool_scopes("create_discussion" if mode == "write" else "read_discussion")
         missing = [scope for scope in required if scope not in granted] if mode != "off" else []
@@ -383,7 +387,7 @@ def create_mcp(settings: Settings, catalog: Catalog, provider=None):
             "memory_index": prefix + "Memory/index.md" if prefix + "Memory/index.md" in allowed else None,
             "status": "registered",
             "migration_performed": False,
-            "discussion_directory": directory_for(project) if project.version in {"v3", "v4"} else None,
+            "discussion_directory": directory_for(project) if project.version in {"v3", "v4", "v5"} else None,
             "discussion_mode": mode,
             "discussion_access": {
                 "can_read": mode != "off" and set(mcp.tool_scopes("read_discussion")) <= granted,
@@ -395,8 +399,9 @@ def create_mcp(settings: Settings, catalog: Catalog, provider=None):
             "freeze_access": {
                 "available": freeze_enabled,
                 "can_read": freeze_enabled and set(mcp.tool_scopes("freeze_snapshot")) <= granted,
-                "can_write": freeze_enabled and settings.freeze_mode == "write"
-                and set(mcp.tool_scopes("freeze_add_questions")) <= granted,
+                "can_write": freeze_enabled
+                and settings.freeze_mode == "write"
+                and set(mcp.tool_scopes("council_submit_evidence")) <= granted,
             },
             "mcp_tools": [tool.name for tool in await mcp.list_tools()],
         }
@@ -447,12 +452,16 @@ def create_mcp(settings: Settings, catalog: Catalog, provider=None):
         """Read one installed skill guide; start with SKILL.md, then follow relevant references.
 
         resource may be SKILL.md or a direct references/*.md file named by the guide,
-        e.g. references/freeze-workbench.md for a Council round. Load only the active workflow.
+        e.g. references/evidence.md for source and claim formats. Load only the active workflow.
         This exposes installed instruction documents, not arbitrary project files or scripts.
         """
-        path = settings.skill_guide(skill, resource)
-        return {"skill": skill, "resource": resource, "source": str(path),
-                "content": path.read_text(encoding="utf-8")}
+        path, resource = settings.council_guide(skill, resource)
+        return {
+            "skill": "oppencouncil",
+            "resource": resource,
+            "source": str(path),
+            "content": path.read_text(encoding="utf-8"),
+        }
 
     if settings.discussion_mode != "off":
 
@@ -545,108 +554,80 @@ def create_mcp(settings: Settings, catalog: Catalog, provider=None):
             """
             return await run_in_threadpool(freezes.read, project_id, question_id, include_example)
 
+    if settings.freeze_mode != "off":
+
+        @mcp.tool(annotations=readonly)
+        async def council_work_index(project_id: str, offset: int = 0, limit: int = 100) -> dict[str, Any]:
+            """List work stages and shared evidence entry points; read individual items next."""
+            return await run_in_threadpool(freezes.work_index, project_id, offset, limit)
+
+        @mcp.tool(annotations=readonly)
+        async def council_read_work(project_id: str, item_id: str) -> dict[str, Any]:
+            """Read one F/group/investigation's shared brief, bounded feedback and definition context."""
+            return await run_in_threadpool(freezes.read_work, project_id, item_id)
+
+        @mcp.tool(annotations=readonly)
+        async def council_evidence_index(
+            project_id: str, offset: int = 0, limit: int = 100
+        ) -> dict[str, Any]:
+            """List explicitly shared source and claim versions, excluding local-only records."""
+            return await run_in_threadpool(freezes.evidence_index, project_id, offset, limit)
+
+        @mcp.tool(annotations=readonly)
+        async def council_read_evidence(project_id: str, path: str) -> dict[str, Any]:
+            """Read a shared evidence version by its index path; never opens linked project files."""
+            return await run_in_threadpool(freezes.read_evidence, project_id, path)
+
     if settings.freeze_mode == "write":
 
-        @mcp.tool(annotations=ToolAnnotations(
-            readOnlyHint=False, destructiveHint=False, idempotentHint=True, openWorldHint=False
-        ))
-        async def freeze_add_questions(
-            project_id: str, questions: list[dict[str, Any]], request_id: str,
-            actor: Literal["chatgpt", "codex"] = "chatgpt"
+        @mcp.tool(
+            annotations=ToolAnnotations(
+                readOnlyHint=False, destructiveHint=False, idempotentHint=True, openWorldHint=False
+            )
+        )
+        async def council_submit_evidence(
+            project_id: str,
+            text: str,
+            request_id: str,
+            targets: list[str] | None = None,
+            refs: list[str] | None = None,
         ) -> dict[str, Any]:
-            """Add one complete batch of currently identifiable questions as the next round.
+            """Append external evidence or a proposed new issue for local triage. No F/candidate edits.
 
-            Read the snapshot first. Provide a stable request_id for retries. Each question needs
-            group, title, why, source_summary, ai_position and optional suggestions. In ai_position,
-            explain each viable option's concrete actions, practical consequences, assumptions and
-            trade-offs, plus a reasoned recommendation. Suggestions are labels for explained choices.
-            Use Markdown and exact question IDs such as F-000013. Read the governing skill's
-            references/freeze-workbench.md for independent inline choices and candidate readiness.
-            Explain actual consequences with clear prose or comparison tables in the discussion.
-            Do not generate HTML simulations or a separate demonstration workflow.
-            Do not offer "show an example first" or "refine later" instead of substantive choices.
-            Identify genuinely missing facts; do not omit decision detail for brevity. New questions
-            are drafts; this tool cannot freeze Canonical definitions or answer for the human.
-            Set actor to your client: ChatGPT uses chatgpt; Codex must explicitly use codex.
-            This records the author's declared source, not an authenticated client identity.
-            """
-            return await run_in_threadpool(freezes.add, project_id, questions, request_id, actor)
-
-        @mcp.tool(annotations=ToolAnnotations(
-            readOnlyHint=False, destructiveHint=False, idempotentHint=True, openWorldHint=False
-        ))
-        async def freeze_change_question(
-            project_id: str, question_id: str, operation: str, value: Any,
-            expected_revision: int, request_id: str,
-            actor: Literal["chatgpt", "codex"] = "chatgpt"
-        ) -> dict[str, Any]:
-            """Discuss and edit complete candidate wording.
-
-            operation is comment, ai_position, presentation, review_note, dependency_review,
-            definition_draft or reopen. presentation updates discussion text and suggestions.
-            It does not update a group's options; use freeze_change_group for that matrix.
-            Keep hashes and self-check reports in review_note, not reviewer discussion. Read the question
-            and pass its revision. A conflict requires rereading. Human answers and formal freeze state cannot
-            be edited here. Reuse request_id only when retrying identical arguments.
-            Suggestions and detailed recommendations belong in discussion. definition_draft takes
-            a complete document string or {text, dependencies}; dependencies name question_id,
-            kind (required/conditional/reference), reason and optional condition/active/version.
-            Read freeze_snapshot for decision_groups and readiness. AI and humans may edit the candidate.
-            Each question has its own definition versions. definition_draft can directly propose a
-            changed complete candidate after confirmation; no human revision-opening step is needed.
-            Omitted dependencies preserve the candidate's or current version's exact bindings;
-            an explicit dependencies list replaces them. Unchanged effective wording creates no candidate.
-            Only the user confirms wording in the web UI, making that exact text immediately effective
-            in the same JSON.
-            Canonical registers this record; documents reference it or render read-only views. Never
-            maintain another authoritative copy. Drafts are not effective. The previous version stays
-            effective during revision; confirmation appends the sole current version and preserves
-            all prior versions as read-only history. Explain the proposed changes in discussion.
-            Revised and reopened questions must already support an informed choice: explain each
-            option's actions, consequences and trade-offs, with recommendation reasons. Supply any
-            needed prose or table comparison in this round rather than deferring explanation.
-            State genuine missing facts without inventing answers. Keep existing IDs and human input.
-            Set actor to your client: ChatGPT uses chatgpt; Codex must explicitly use codex.
-            This records the author's declared source, not an authenticated client identity.
+            targets contains existing item IDs; omit for a new issue suggestion. refs are citations,
+            not file-read requests. Retry identical content with the same request_id.
             """
             return await run_in_threadpool(
-                freezes.change, project_id, question_id, operation, value,
-                expected_revision, request_id, actor
+                freezes.submit_evidence, project_id, text, targets or [], refs or [], request_id
             )
 
-        @mcp.tool(annotations=ToolAnnotations(
-            readOnlyHint=False, destructiveHint=False, idempotentHint=True, openWorldHint=False
-        ))
-        async def freeze_change_group(
-            project_id: str, group_id: str | None, operation: str, value: Any,
-            expected_revision: int, request_id: str,
-            actor: Literal["chatgpt", "codex"] = "chatgpt"
+        @mcp.tool(
+            annotations=ToolAnnotations(
+                readOnlyHint=False, destructiveHint=False, idempotentHint=True, openWorldHint=False
+            )
+        )
+        async def council_comment(
+            project_id: str,
+            item_id: str,
+            text: str,
+            expected_revision: int,
+            request_id: str,
+            question_id: str | None = None,
         ) -> dict[str, Any]:
-            """Create/update a joint decision group or discuss it.
+            """Append an external, unverified comment to an existing F or group.
 
-            Use create with null group_id and revision 0. create/update value contains title, purpose,
-            member_ids and options [{label, rules: {question_id: explanation}, consequences, tradeoffs}].
-            rules covers every member with concise decision-focused wording. Shared rules belong
-            together in discussion; full normative wording belongs in each member's candidate.
-            Use {{choice:stable_id;label;value1;value2}} for independent subchoices within a route.
-            Do not create another whole plan for each value or all combinations. Separate coupled
-            routes and explain consequences/compatibility. Read references/freeze-workbench.md
-            with get_skill_guide. comment accepts text or {text, question_id}; after updating the
-            matrix, add the matching shared explanation and read back the complete group.
-            AI manages membership and dependencies; the webpage supports discussion and wording review.
-            Read group revision from freeze_snapshot first.
-            Group members retain their individual formal definitions. Preserve human messages and
-            confirmed text. Group discussion is reviewer-facing; do not paste hashes or checklists.
-            AI cannot select a human preference, open formal revisions or confirm any group.
+            Read the item first; question_id may identify a member of that group. On conflict reread.
+            The server assigns external identity. Cannot edit candidates, advance cursors or confirm.
             """
-            return await run_in_threadpool(freezes.change_group, project_id, group_id, operation, value,
-                                          expected_revision, request_id, actor)
+            return await run_in_threadpool(
+                freezes.comment, project_id, item_id, text, expected_revision, request_id, question_id
+            )
 
     return mcp
 
 
 def citation_url(settings, project_id, path):
-    prefix = settings.public_url + "/files/" if settings.transport == "http" else "oppen-steward://"
+    prefix = settings.public_url + "/files/" if settings.transport == "http" else "oppencouncil://"
     return prefix + project_id + "/" + quote(path)
 
 
@@ -742,7 +723,8 @@ def create_app(settings: Settings):
         return JSONResponse({"service": APP_NAME, "mcp": settings.resource, "access": f"OAuth / {SCOPE}"})
 
     async def health(request):
-        return JSONResponse({"status": "ok", "service": APP_NAME})
+        return JSONResponse({"status": "ok", "service": APP_NAME,
+                             "governance_versions": list(GOVERNANCE_VERSIONS)})
 
     async def file_view(request: Request):
         bearer = request.headers.get("authorization", "")

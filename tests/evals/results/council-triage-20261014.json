@@ -1,0 +1,437 @@
+{
+  "measurement": "Actual wrapper reads and calls; whitespace words are not token usage. Structural checks are not semantic grading.",
+  "runs": [
+    {
+      "scenario": "upstream",
+      "arm": "candidate",
+      "directory": "/private/tmp/oppencouncil-triage-forward-20261014/acf297517320",
+      "manifest_sha256": "7c29057dc138bae4d0f4af4f1dd17dc649e56862192184c7d3268783ce41e6f3",
+      "trace_sha256": "c1ef05b3f39d0a895bf5f74bdb892eeeb340c233553858a9370b1d4ef2757190",
+      "outcome_sha256": "c3398343206c083a17922681735cd8ebb9c6ad44fd96f79cb56656c87cd1d281",
+      "checks": {
+        "formal_version_preserved": true,
+        "no_new_candidate": true,
+        "no_new_f": true,
+        "read_code_and_data_preserved": true,
+        "upstream_inputs_and_producer_read": true,
+        "saved_discussion": true,
+        "not_awaiting_human": true,
+        "outcome_saved": true,
+        "triage_state": true
+      },
+      "phase": "evidence",
+      "conclusion": "needs_check",
+      "metrics": {
+        "skill_words": 1182,
+        "adapter_words": 757,
+        "instruction_bytes": 16988,
+        "all_read_words": 2263,
+        "cli_calls": 6,
+        "failed_cli_calls": 0
+      },
+      "instruction_reads": [
+        {
+          "at": 1791981573.701945,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 2931,
+          "whitespace_words": 379,
+          "sha256": "bb9fc2fdc244eaa58d2fb1bc12b063661d12c41d64d88b75605393c4e899fb73"
+        },
+        {
+          "at": 1791981577.2013152,
+          "operation": "read",
+          "path": "skill/references/triage.md",
+          "bytes": 349,
+          "whitespace_words": 46,
+          "sha256": "5b147430c9c7d6a89a6bb3f85a3c865d2835be2d68e34327a4a4806a2f954212"
+        },
+        {
+          "at": 1791981584.723714,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 6854,
+          "whitespace_words": 757,
+          "sha256": "c8a1183f90ae960bacb293e980ea2503d9988788c6a4da971f632b994999c431"
+        },
+        {
+          "at": 1791981577.201544,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 6854,
+          "whitespace_words": 757,
+          "sha256": "c8a1183f90ae960bacb293e980ea2503d9988788c6a4da971f632b994999c431"
+        }
+      ],
+      "failed_cli": [],
+      "read_errors": [],
+      "discussion_sha256": "76232c5d5e3c09149c275e42cb80c8d1392a56098437652386f87c7785cd3538",
+      "pending_ids": [
+        "resolve-unconfirmed-sex-filter"
+      ]
+    },
+    {
+      "scenario": "upstream",
+      "arm": "without-rule",
+      "directory": "/private/tmp/oppencouncil-triage-forward-20261014/5777a378bd7d",
+      "manifest_sha256": "7c29057dc138bae4d0f4af4f1dd17dc649e56862192184c7d3268783ce41e6f3",
+      "trace_sha256": "06edbf2c2d4075bff81db2fefebac5d34c35b00a6d81191796b16323066b1bf4",
+      "outcome_sha256": "2c8a298a29e5cb96600d9cce525b66b587368673ed38374b4277e76a8d2f6aa3",
+      "checks": {
+        "formal_version_preserved": true,
+        "no_new_candidate": true,
+        "no_new_f": true,
+        "read_code_and_data_preserved": true,
+        "upstream_inputs_and_producer_read": true,
+        "saved_discussion": true,
+        "not_awaiting_human": true,
+        "outcome_saved": true,
+        "triage_state": true
+      },
+      "phase": "evidence",
+      "conclusion": "needs_check",
+      "metrics": {
+        "skill_words": 1157,
+        "adapter_words": 757,
+        "instruction_bytes": 16807,
+        "all_read_words": 2098,
+        "cli_calls": 6,
+        "failed_cli_calls": 0
+      },
+      "instruction_reads": [
+        {
+          "at": 1791981575.660308,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 2931,
+          "whitespace_words": 379,
+          "sha256": "bb9fc2fdc244eaa58d2fb1bc12b063661d12c41d64d88b75605393c4e899fb73"
+        },
+        {
+          "at": 1791981580.294215,
+          "operation": "read",
+          "path": "skill/references/triage.md",
+          "bytes": 168,
+          "whitespace_words": 21,
+          "sha256": "6cb8bc3bf68b6556bfb12ab2a7473c36b391db711b1aec99b6162cbbfba1de8d"
+        },
+        {
+          "at": 1791981586.966954,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 6854,
+          "whitespace_words": 757,
+          "sha256": "c8a1183f90ae960bacb293e980ea2503d9988788c6a4da971f632b994999c431"
+        },
+        {
+          "at": 1791981580.294485,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 6854,
+          "whitespace_words": 757,
+          "sha256": "c8a1183f90ae960bacb293e980ea2503d9988788c6a4da971f632b994999c431"
+        }
+      ],
+      "failed_cli": [],
+      "read_errors": [],
+      "discussion_sha256": "cd8875897fab012d6ac6686e27fca278920e49672f75d4644ca8e71009320377",
+      "pending_ids": [
+        "missing-sex-purpose-and-policy"
+      ]
+    },
+    {
+      "scenario": "upstream",
+      "arm": "v4.3.1",
+      "directory": "/private/tmp/oppencouncil-triage-forward-20261014/3aad157dbdf9",
+      "manifest_sha256": "7c29057dc138bae4d0f4af4f1dd17dc649e56862192184c7d3268783ce41e6f3",
+      "trace_sha256": "a05345e8f2d7620bd17886192f789f8facaf9ba4de2c9c6996a7319608f5984e",
+      "outcome_sha256": "f6181e3511e2815e6fc62fd57fec5cc0cc7c04846e6dda95617bef628ab1daa5",
+      "checks": {
+        "formal_version_preserved": true,
+        "no_new_candidate": true,
+        "no_new_f": true,
+        "read_code_and_data_preserved": true,
+        "upstream_inputs_and_producer_read": true,
+        "saved_discussion": true,
+        "not_awaiting_human": true,
+        "outcome_saved": true,
+        "triage_state": true
+      },
+      "phase": "evidence",
+      "conclusion": "needs_check",
+      "metrics": {
+        "skill_words": 2414,
+        "adapter_words": 757,
+        "instruction_bytes": 24939,
+        "all_read_words": 3483,
+        "cli_calls": 14,
+        "failed_cli_calls": 1
+      },
+      "instruction_reads": [
+        {
+          "at": 1791981579.0899599,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 6666,
+          "whitespace_words": 902,
+          "sha256": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b"
+        },
+        {
+          "at": 1791981583.4820669,
+          "operation": "read",
+          "path": "skill/references/freeze-workbench.md",
+          "bytes": 9848,
+          "whitespace_words": 1311,
+          "sha256": "c0c575c9796e7d63721b8c8d619263ee754346310ba815d4c91b8fdd8384a137"
+        },
+        {
+          "at": 1791981619.060655,
+          "operation": "read",
+          "path": "skill/references/maintenance.md",
+          "bytes": 1571,
+          "whitespace_words": 201,
+          "sha256": "80d198b9216266cd790633eb5a3f28d8df15382a7fbf2f95b9890f75062d2e47"
+        },
+        {
+          "at": 1791981583.481739,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 6854,
+          "whitespace_words": 757,
+          "sha256": "c8a1183f90ae960bacb293e980ea2503d9988788c6a4da971f632b994999c431"
+        }
+      ],
+      "failed_cli": [
+        {
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-triage-forward-20261014/3aad157dbdf9/project\",\n  \"project_type\": \"research\",\n  \"errors\": [\n    {\n      \"path\": \"F-000001\",\n      \"reason\": \"Confirmed definition requires a registered verification test\"\n    }\n  ],\n  \"warnings\": [\n    {\n      \"path\": \"Data/derived/analysis.csv\",\n      \"reason\": \"Data origin/version requires classification before a release\"\n    },\n    {\n      \"path\": \"Data/raw/records.csv\",\n      \"reason\": \"Data origin/version requires classification before a release\"\n    }\n  ],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        }
+      ],
+      "read_errors": [],
+      "discussion_sha256": "d96ac994bb43677407350a208dc1ebd76de3e77d6e3834c53ec8fb20c8edf58b",
+      "pending_ids": [
+        "verify-authorized-population-restoration"
+      ]
+    },
+    {
+      "scenario": "absent",
+      "arm": "candidate",
+      "directory": "/private/tmp/oppencouncil-triage-absent-20261014/54fa50cbea3b",
+      "manifest_sha256": "9f4d7195775f42151ff6d55918f671b7027e4c9c1e34aca9cd706cbbc5d3f383",
+      "trace_sha256": "1e4e832f4426c89500d1d290f8dc1a57f1ad091aa4e8aa6d38a82e9a3a87b430",
+      "outcome_sha256": "289d3aac7e545a148a30a46d2e915cd5b7a589ceda4e7a8e342ece10c2316ecf",
+      "checks": {
+        "formal_version_preserved": true,
+        "no_new_candidate": true,
+        "no_new_f": true,
+        "read_code_and_data_preserved": true,
+        "upstream_inputs_and_producer_read": true,
+        "saved_discussion": true,
+        "not_awaiting_human": true,
+        "outcome_saved": true,
+        "triage_state": true
+      },
+      "phase": "closed",
+      "conclusion": "not_applicable",
+      "metrics": {
+        "skill_words": 1182,
+        "adapter_words": 757,
+        "instruction_bytes": 16988,
+        "all_read_words": 2132,
+        "cli_calls": 6,
+        "failed_cli_calls": 0
+      },
+      "instruction_reads": [
+        {
+          "at": 1791981727.216946,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 2931,
+          "whitespace_words": 379,
+          "sha256": "bb9fc2fdc244eaa58d2fb1bc12b063661d12c41d64d88b75605393c4e899fb73"
+        },
+        {
+          "at": 1791981730.599935,
+          "operation": "read",
+          "path": "skill/references/triage.md",
+          "bytes": 349,
+          "whitespace_words": 46,
+          "sha256": "5b147430c9c7d6a89a6bb3f85a3c865d2835be2d68e34327a4a4806a2f954212"
+        },
+        {
+          "at": 1791981741.2217321,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 6854,
+          "whitespace_words": 757,
+          "sha256": "c8a1183f90ae960bacb293e980ea2503d9988788c6a4da971f632b994999c431"
+        },
+        {
+          "at": 1791981730.600151,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 6854,
+          "whitespace_words": 757,
+          "sha256": "c8a1183f90ae960bacb293e980ea2503d9988788c6a4da971f632b994999c431"
+        }
+      ],
+      "failed_cli": [],
+      "read_errors": [],
+      "discussion_sha256": "e252db73fcdbe2309cb7b9c789ad1e856187dfa826dd8932bfbe4b05163b39da",
+      "pending_ids": []
+    },
+    {
+      "scenario": "absent",
+      "arm": "without-rule",
+      "directory": "/private/tmp/oppencouncil-triage-absent-20261014/458826098fd0",
+      "manifest_sha256": "9f4d7195775f42151ff6d55918f671b7027e4c9c1e34aca9cd706cbbc5d3f383",
+      "trace_sha256": "40249dce8eaa46097942bfe26a174bf85553e9f150543c4ea53c5296c1cd9b0c",
+      "outcome_sha256": "eb842e0fbb64954ab71149265b0863b22f7f62091d2e882dac8714713d2d2f63",
+      "checks": {
+        "formal_version_preserved": true,
+        "no_new_candidate": true,
+        "no_new_f": true,
+        "read_code_and_data_preserved": true,
+        "upstream_inputs_and_producer_read": true,
+        "saved_discussion": true,
+        "not_awaiting_human": true,
+        "outcome_saved": true,
+        "triage_state": true
+      },
+      "phase": "closed",
+      "conclusion": "not_applicable",
+      "metrics": {
+        "skill_words": 1157,
+        "adapter_words": 757,
+        "instruction_bytes": 16807,
+        "all_read_words": 2020,
+        "cli_calls": 4,
+        "failed_cli_calls": 0
+      },
+      "instruction_reads": [
+        {
+          "at": 1791981732.298932,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 2931,
+          "whitespace_words": 379,
+          "sha256": "bb9fc2fdc244eaa58d2fb1bc12b063661d12c41d64d88b75605393c4e899fb73"
+        },
+        {
+          "at": 1791981740.2054908,
+          "operation": "read",
+          "path": "skill/references/triage.md",
+          "bytes": 168,
+          "whitespace_words": 21,
+          "sha256": "6cb8bc3bf68b6556bfb12ab2a7473c36b391db711b1aec99b6162cbbfba1de8d"
+        },
+        {
+          "at": 1791981750.108049,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 6854,
+          "whitespace_words": 757,
+          "sha256": "c8a1183f90ae960bacb293e980ea2503d9988788c6a4da971f632b994999c431"
+        },
+        {
+          "at": 1791981732.299602,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 6854,
+          "whitespace_words": 757,
+          "sha256": "c8a1183f90ae960bacb293e980ea2503d9988788c6a4da971f632b994999c431"
+        }
+      ],
+      "failed_cli": [],
+      "read_errors": [],
+      "discussion_sha256": "3d1a2099eb28d0146f329c3efc52e3e6d924954c960005da1a14ba31f5ef879d",
+      "pending_ids": []
+    },
+    {
+      "scenario": "absent",
+      "arm": "v4.3.1",
+      "directory": "/private/tmp/oppencouncil-triage-absent-20261014/04a2c603eff4",
+      "manifest_sha256": "9f4d7195775f42151ff6d55918f671b7027e4c9c1e34aca9cd706cbbc5d3f383",
+      "trace_sha256": "f898f7f6548a5ef4f239931564b3805a6c1191e0f229c3ccc9393ab6b314e34f",
+      "outcome_sha256": "4456d3ef9e83c042df3c022ce33808e4d740276221dae5c7b78f5c6b229d812f",
+      "checks": {
+        "formal_version_preserved": true,
+        "no_new_candidate": true,
+        "no_new_f": true,
+        "read_code_and_data_preserved": true,
+        "upstream_inputs_and_producer_read": true,
+        "saved_discussion": true,
+        "not_awaiting_human": true,
+        "outcome_saved": true,
+        "triage_state": true
+      },
+      "phase": "closed",
+      "conclusion": "not_applicable",
+      "metrics": {
+        "skill_words": 2213,
+        "adapter_words": 757,
+        "instruction_bytes": 23368,
+        "all_read_words": 3205,
+        "cli_calls": 10,
+        "failed_cli_calls": 2
+      },
+      "instruction_reads": [
+        {
+          "at": 1791981775.4160461,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 6666,
+          "whitespace_words": 902,
+          "sha256": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b"
+        },
+        {
+          "at": 1791981779.73792,
+          "operation": "read",
+          "path": "skill/references/freeze-workbench.md",
+          "bytes": 9848,
+          "whitespace_words": 1311,
+          "sha256": "c0c575c9796e7d63721b8c8d619263ee754346310ba815d4c91b8fdd8384a137"
+        },
+        {
+          "at": 1791981779.7376509,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 6854,
+          "whitespace_words": 757,
+          "sha256": "c8a1183f90ae960bacb293e980ea2503d9988788c6a4da971f632b994999c431"
+        }
+      ],
+      "failed_cli": [
+        {
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-triage-absent-20261014/04a2c603eff4/project\",\n  \"project_type\": \"research\",\n  \"errors\": [\n    {\n      \"path\": \"F-000001\",\n      \"reason\": \"Confirmed definition requires a registered verification test\"\n    }\n  ],\n  \"warnings\": [\n    {\n      \"path\": \"Data/derived/analysis.csv\",\n      \"reason\": \"Data origin/version requires classification before a release\"\n    },\n    {\n      \"path\": \"Data/raw/records.csv\",\n      \"reason\": \"Data origin/version requires classification before a release\"\n    }\n  ],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        },
+        {
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-triage-absent-20261014/04a2c603eff4/project\",\n  \"project_type\": \"research\",\n  \"errors\": [\n    {\n      \"path\": \"F-000001\",\n      \"reason\": \"Confirmed definition requires a registered verification test\"\n    }\n  ],\n  \"warnings\": [\n    {\n      \"path\": \"Data/derived/analysis.csv\",\n      \"reason\": \"Data origin/version requires classification before a release\"\n    },\n    {\n      \"path\": \"Data/raw/records.csv\",\n      \"reason\": \"Data origin/version requires classification before a release\"\n    }\n  ],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        }
+      ],
+      "read_errors": [],
+      "discussion_sha256": "5d0c02942e5c7e3e7355f904912f7c3160f5e8542fbf6e617f21193130c12c2c",
+      "pending_ids": []
+    }
+  ]
+}

@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 
 
-SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "oppen_project_steward.py"
+SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "legacy_oppen_project_steward.py"
 SPEC = importlib.util.spec_from_file_location("oppen_project_steward", SCRIPT_PATH)
 assert SPEC and SPEC.loader
 steward = importlib.util.module_from_spec(SPEC)

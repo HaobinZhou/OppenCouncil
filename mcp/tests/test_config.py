@@ -1,5 +1,6 @@
 import json
 from dataclasses import asdict, replace
+from pathlib import Path
 
 import pytest
 
@@ -33,7 +34,7 @@ def test_env_precedence_paths_and_no_shell_interpolation(tmp_path, monkeypatch):
     (tmp_path / ".env").write_text(
         "OPPEN_PORT=8881\nOPPEN_TRANSPORT=stdio\nOPPEN_PROJECTS_FILE=./项目列表.json\n"
         'OPPEN_EXCLUDE_ROOTS=["./项目/private"]\nOPPEN_FREEZE_PROJECTS=["./项目"]\n'
-        'OPPEN_STATE_DIR=state\nOPPEN_SKILL_ROOT=skills\n'
+        "OPPEN_STATE_DIR=state\nOPPEN_SKILL_ROOT=skills\n"
         "CONTROL_PLANE_API_KEY='fixture-${HOME}-$(echo literal)'\n",
         encoding="utf-8",
     )
@@ -111,14 +112,13 @@ def test_service_relocation_keeps_explicit_config_location(tmp_path):
 
     from oppenproject.config import ROOT
 
-    spec = importlib.util.spec_from_file_location('relocated_service', ROOT / 'service.py')
+    spec = importlib.util.spec_from_file_location("relocated_service", ROOT / "service.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    config = tmp_path / 'existing config' / 'config.local.json'
+    config = tmp_path / "existing config" / "config.local.json"
     command = module.service_command(config)
-    assert command == [str(ROOT / '.venv/bin/python'), str(ROOT / 'run.py'),
-                       '--config', str(config), 'serve']
-    assert module.service_command()[-1] == 'serve'
+    assert command == [str(ROOT / ".venv/bin/python"), str(ROOT / "run.py"), "--config", str(config), "serve"]
+    assert module.service_command()[-1] == "serve"
 
 
 def installed_guides(tmp_path):
@@ -141,19 +141,30 @@ def test_skill_references_use_selected_installation_and_support_skill_symlinks(t
         (aliases / skill.name).symlink_to(skill, target_is_directory=True)
     except OSError:
         pytest.skip("Directory symlinks unavailable")
-    assert Settings(skill_root=aliases).skill_guide(
-        skill.name, "references/freeze-workbench.md"
-    ) == expected.resolve()
+    assert (
+        Settings(skill_root=aliases).skill_guide(skill.name, "references/freeze-workbench.md")
+        == expected.resolve()
+    )
     # A missing reference must not come from the same-named skill in another checkout.
     with pytest.raises(ValueError, match="not installed in the selected skill"):
         settings.skill_guide(skill.name, "references/maintenance.md")
 
 
-@pytest.mark.parametrize("resource", [
-    "../SKILL.md", "/etc/passwd", "references/../../.env", "references/../SKILL.md",
-    "references/nested/file.md", "references/file.txt", "scripts/run.py", ".env",
-    "references\\freeze-workbench.md", "references/%2e%2e/private.md",
-])
+@pytest.mark.parametrize(
+    "resource",
+    [
+        "../SKILL.md",
+        "/etc/passwd",
+        "references/../../.env",
+        "references/../SKILL.md",
+        "references/nested/file.md",
+        "references/file.txt",
+        "scripts/run.py",
+        ".env",
+        "references\\freeze-workbench.md",
+        "references/%2e%2e/private.md",
+    ],
+)
 def test_skill_reference_access_excludes_arbitrary_files(tmp_path, resource):
     settings, skill = installed_guides(tmp_path)
     with pytest.raises(ValueError, match="Only SKILL.md"):
@@ -186,13 +197,65 @@ async def test_mcp_skill_guide_follows_a_reference_without_project_file_access(t
     settings, skill = installed_guides(tmp_path)
     settings.transport = "stdio"
     mcp = create_mcp(settings, Catalog(settings))
+    shared = skill.parent / "oppencouncil" / "references"
+    shared.mkdir(parents=True)
+    (shared.parent / "SKILL.md").write_text("Local governance only")
+    (shared / "council.md").write_text("Shared Council operations")
     entry = await mcp.call_tool("get_skill_guide", {"skill": skill.name})
-    reference = await mcp.call_tool("get_skill_guide", {
-        "skill": skill.name, "resource": "references/freeze-workbench.md",
-    })
-    # FastMCP returns content blocks plus structured output for annotated dict tools.
-    assert entry[1]["content"] == (skill / "SKILL.md").read_text()
-    assert reference[1]["resource"] == "references/freeze-workbench.md"
-    assert reference[1]["content"] == (skill / "references/freeze-workbench.md").read_text()
-    with pytest.raises(ToolError):
-        await mcp.call_tool("get_skill_guide", {"skill": skill.name, "resource": "../project.md"})
+    reference = await mcp.call_tool(
+        "get_skill_guide",
+        {
+            "skill": skill.name,
+            "resource": "references/freeze-workbench.md",
+        },
+    )
+    assert entry[1]["content"] == "Shared Council operations"
+    assert reference[1]["skill"] == "oppencouncil"
+    assert reference[1]["resource"] == "references/council.md"
+    assert reference[1]["content"] == entry[1]["content"]
+    for alias in ("oppencouncil", "stepwise-r-project", "oppen-project-steward"):
+        resolved = await mcp.call_tool("get_skill_guide", {"skill": alias})
+        assert resolved[1] == entry[1]
+    for name in (
+        "local-council",
+        "triage",
+        "evidence",
+        "review-packet",
+        "resume",
+        "groups",
+        "selectors",
+        "output-specifications",
+    ):
+        (shared / (name + ".md")).write_text("Shared interface: " + name)
+        result = await mcp.call_tool(
+            "get_skill_guide",
+            {
+                "skill": skill.name,
+                "resource": "references/" + name + ".md",
+            },
+        )
+        assert result[1]["content"] == "Shared interface: " + name
+        assert Path(result[1]["source"]).parent == shared
+    for legacy, current in (
+        ("freeze-groups", "groups"),
+        ("freeze-operations", "local-council"),
+        ("freeze-examples", "selectors"),
+    ):
+        result = await mcp.call_tool(
+            "get_skill_guide",
+            {
+                "skill": "oppen-project-steward",
+                "resource": "references/" + legacy + ".md",
+            },
+        )
+        assert result[1]["resource"] == "references/" + current + ".md"
+        assert result[1]["content"] == "Shared interface: " + current
+    for resource in (
+        "../project.md",
+        "references/memory.md",
+        "references/maintenance.md",
+        "references/project-operations.md",
+        "references/research-stage-descriptive.md",
+    ):
+        with pytest.raises(ToolError):
+            await mcp.call_tool("get_skill_guide", {"skill": skill.name, "resource": resource})

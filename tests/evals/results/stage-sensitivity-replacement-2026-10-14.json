@@ -1,0 +1,91 @@
+{
+  "measurement": "Actual reads/calls; whitespace words are not model tokens. Project-only replays are separate evaluator checks.",
+  "runs": [
+    {
+      "scenario": "sensitivity",
+      "arm": "v4.3.1",
+      "directory": "/private/tmp/oppencouncil-stage-sensitivity-20261014-b/90a1f846ce85",
+      "checks": {
+        "raw_preserved": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "exact_article_table": true,
+        "only_specified_outputs": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "outputs_read_back": true,
+        "project_only_replay_identical": false
+      },
+      "outputs": [
+        "Results/stage.csv"
+      ],
+      "generated_data": [],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-sensitivity-20261014-b/90a1f846ce85/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791990082.6302888,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 6666,
+          "whitespace_words": 902,
+          "sha256": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b"
+        },
+        {
+          "at": 1791990086.925163,
+          "operation": "read",
+          "path": "skill/references/workflow-operations.md",
+          "bytes": 10236,
+          "whitespace_words": 1419,
+          "sha256": "5988e33e91b29f083f1c1ba010d93f468768370cc00657363f2edc2a0c8e9880"
+        },
+        {
+          "at": 1791990086.9247518,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 2321,
+        "adapter_words": 719,
+        "cli_and_script_calls": 18,
+        "nonzero_calls": 1
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791990227.9214962,
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-stage-sensitivity-20261014-b/90a1f846ce85/project\",\n  \"project_type\": \"research\",\n  \"errors\": [\n    {\n      \"path\": \"Scripts/__pycache__/01_sensitivity.cpython-312.pyc\",\n      \"reason\": \"Duplicate execution number with Scripts/01_sensitivity.py\"\n    }\n  ],\n  \"warnings\": [],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        }
+      ],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-b/90a1f846ce85",
+        "returncode": 1,
+        "stderr": "<development-worktree>/council/.venv/bin/python: can't open file '/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-b/tools.py': [Errno 2] No such file or directory\nTraceback (most recent call last):\n  File \"/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-b/90a1f846ce85/Scripts/01_sensitivity.py\", line 95, in <module>\n    main()\n  File \"/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-b/90a1f846ce85/Scripts/01_sensitivity.py\", line 84, in main\n    subprocess.run(\n  File \"<uv-python>/cpython-3.12.12-macos-aarch64-none/lib/python3.12/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['<development-worktree>/council/.venv/bin/python', 'tools.py', 'project', 'audit', 'promote', 'project', '--stage', 'sensitivity', '--input', '/private/tmp/oppencouncil-stage-sensitivity-replay-20261014-b/sensitivity-stage-9m08qsl0/evidence']' returned non-zero exit status 2.\n"
+      },
+      "hashes": {
+        "manifest": "822f3e9dbda04631464a0f0cce1c85ba803ba8a573d82d288386183c7e8c1fcf",
+        "trace": "96a5d55202c7a5889d230ca73e9d3de12354df2742d261fadb0120491ca7fd72",
+        "entry": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b",
+        "outcome": "596acb3f3e55646f993d221a500ed27586c66a501cc42e9bcf0129a40c5a7536"
+      }
+    }
+  ]
+}

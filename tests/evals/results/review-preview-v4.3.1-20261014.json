@@ -1,0 +1,404 @@
+{
+  "measurement": "Actual file reads/calls; whitespace words are not model tokens. Mechanical checks alone do not establish semantic success.",
+  "runs": [
+    {
+      "scenario": "preview",
+      "directory": "/private/tmp/oppencouncil-review-preview-20261014-g/a5a3c0a2360b",
+      "checks": {
+        "actual_entry_unchanged": true,
+        "entry_loaded": true,
+        "no_memory": true,
+        "no_release": true,
+        "no_archived_content_read": false,
+        "archived_content_unchanged": true,
+        "no_formal_results": true
+      },
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-review-preview-20261014-g/a5a3c0a2360b/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "changed_project_files": [
+        ".oppencouncil-state.json",
+        "Explore/002-baseline-table-preview/baseline-preview.csv",
+        "Explore/002-baseline-table-preview/experiment.json",
+        "Explore/002-baseline-table-preview/preview_table.py",
+        "Explore/index.md",
+        "Freeze/.lock",
+        "Freeze/manifest.json",
+        "Freeze/questions/F-000001.json",
+        "project.md"
+      ],
+      "instruction_reads": [
+        {
+          "at": 1791991086.1073651,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 6666,
+          "whitespace_words": 902,
+          "sha256": "86b69ab86491964adc6768a0b9b865b5cef534ae8bfbe5c6d1fcf71f972c947b"
+        },
+        {
+          "at": 1791991091.535102,
+          "operation": "read",
+          "path": "skill/references/freeze-workbench.md",
+          "bytes": 9848,
+          "whitespace_words": 1311,
+          "sha256": "c0c575c9796e7d63721b8c8d619263ee754346310ba815d4c91b8fdd8384a137"
+        },
+        {
+          "at": 1791991100.0059378,
+          "operation": "read",
+          "path": "skill/references/freeze-operations.md",
+          "bytes": 12581,
+          "whitespace_words": 1565,
+          "sha256": "8cd1634c766531f5f5ea9f862866fd9e0da6f9fd5415861985acfb4be282e702"
+        },
+        {
+          "at": 1791991111.119736,
+          "operation": "read",
+          "path": "skill/references/workflow-operations.md",
+          "bytes": 10236,
+          "whitespace_words": 1419,
+          "sha256": "5988e33e91b29f083f1c1ba010d93f468768370cc00657363f2edc2a0c8e9880"
+        },
+        {
+          "at": 1791991351.9800608,
+          "operation": "read",
+          "path": "skill/references/maintenance.md",
+          "bytes": 1571,
+          "whitespace_words": 201,
+          "sha256": "80d198b9216266cd790633eb5a3f28d8df15382a7fbf2f95b9890f75062d2e47"
+        },
+        {
+          "at": 1791991351.9806452,
+          "operation": "read",
+          "path": "skill/references/managed-systems.md",
+          "bytes": 7368,
+          "whitespace_words": 890,
+          "sha256": "c0c5d42e1bd0f2e4bcd400f2681312c5967ec961bbb555eafe6c5670aef51f1b"
+        }
+      ],
+      "source_reads": [
+        {
+          "at": 1791991086.1076999,
+          "operation": "read",
+          "path": "project/README.md",
+          "bytes": 914,
+          "whitespace_words": 136,
+          "sha256": "ba6b6c3e6af3d98ec31ab26e3bcbc389e6664f6155d7dec07cc7030f43284460"
+        },
+        {
+          "at": 1791991091.5354722,
+          "operation": "read",
+          "path": "project/project.md",
+          "bytes": 1619,
+          "whitespace_words": 188,
+          "sha256": "3776e6ac2a2ca733cf3ae44664fd31b04eb2c39fa929aa7cbd596fe77fc7f3e3"
+        },
+        {
+          "at": 1791991100.006371,
+          "operation": "read",
+          "path": "project/Explore/index.md",
+          "bytes": 212,
+          "whitespace_words": 41,
+          "sha256": "07baa249a7b0ee64f90ff5cbc589d538b599183ac50fd17793f7872c5678b7da"
+        },
+        {
+          "at": 1791991100.0066612,
+          "operation": "read",
+          "path": "project/Scripts/functions/table.py",
+          "bytes": 315,
+          "whitespace_words": 26,
+          "sha256": "b7dae7cfbd44eac78c2e91d35966f5b6622ecdf31b0175697d74c5a69720b967"
+        },
+        {
+          "at": 1791991111.120331,
+          "operation": "read",
+          "path": "project/Explore/_archive/001-old-layout/notes.md",
+          "bytes": 93,
+          "whitespace_words": 12,
+          "sha256": "8e55b0a855c76a4beb6d4078266ac8e3f323118d266ebfad67c1b1b54c7c9ce7"
+        },
+        {
+          "at": 1791991111.12072,
+          "operation": "read",
+          "path": "project/Explore/_archive/001-old-layout/experiment.json",
+          "bytes": 708,
+          "whitespace_words": 59,
+          "sha256": "8826e48281c559f9d077e4cb31a7ee9d96c0d1cdb9fff9e039e71432cdeb4322"
+        },
+        {
+          "at": 1791991313.867468,
+          "operation": "read",
+          "path": "project/Explore/002-baseline-table-preview/baseline-preview.csv",
+          "bytes": 535,
+          "whitespace_words": 77,
+          "sha256": "3d6cb48c83fed5731bf6f2e208b90b15b30e4f0afd142ba5a06b8a8297bb8337"
+        },
+        {
+          "at": 1791991313.867724,
+          "operation": "read",
+          "path": "project/Explore/index.md",
+          "bytes": 520,
+          "whitespace_words": 58,
+          "sha256": "d92b402a08f4b36a744c92c43f8bc40a35a336fa3247ba5c3ed961444c1870e3"
+        },
+        {
+          "at": 1791991313.8690932,
+          "operation": "read",
+          "path": "project/Explore/_archive/001-old-layout/notes.md",
+          "bytes": 93,
+          "whitespace_words": 12,
+          "sha256": "8e55b0a855c76a4beb6d4078266ac8e3f323118d266ebfad67c1b1b54c7c9ce7"
+        }
+      ],
+      "metrics": {
+        "skill_words": 6288,
+        "adapter_words": 719,
+        "cli_and_script_calls": 26,
+        "nonzero_calls": 3
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791991111.1741529,
+          "operation": "council",
+          "arguments": [
+            "status",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "OppenCouncil: Project is not enabled in this site\n"
+        },
+        {
+          "at": 1791991313.9293199,
+          "operation": "council",
+          "arguments": [
+            "definition",
+            "project",
+            "--question",
+            "F-000001"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "OppenCouncil: This question has no effective definition\n"
+        },
+        {
+          "at": 1791991344.061675,
+          "operation": "council",
+          "arguments": [
+            "ai-change",
+            "project",
+            "--input",
+            "council-review-note.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "OppenCouncil: Use the v5 work transaction for this operation\n"
+        }
+      ],
+      "saved_items": [
+        {
+          "id": "F-000001",
+          "title": "基线表输出规格（按已给定要求准备的完整候选）",
+          "why": "研究者需要可在 Council 审阅的基线表规格和示例；项目目前没有正式输出规格。此条仅建立该表的输出合同，不重新讨论已经确认的成人分析人群或展示要求。",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "Review the saved candidate"
+            ],
+            "conclusion_type": "needs_check",
+            "phase": "prepare_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:21:42+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              }
+            ],
+            "trigger_refs": []
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "## 基线表输出规格\n\n### 范围与输入\n本规格定义已确认的全体符合条件成人分析人群的基线表展示与汇总规则，不改变研究人群。输入应为该人群每人一条的既定基线记录，包含已核实的 Treatment A / Treatment B 分组、Age（年）、Female sex 指示值及 BMI（kg/m²）。本输出规格不另行定义入组、治疗分配、基线时点、源字段编码或单位换算；真实数据实现前必须将这些输入绑定到经核实的来源定义。当前示例仅使用明确标注的虚构输入。\n\n### 表格结构\n表格三列按以下顺序排列：Characteristic、Treatment A (N=该组人数)、Treatment B (N=该组人数)。各组 N 为该组全部符合条件成人的人数，含本表变量缺失者，不因逐变量缺失而改变。数据行按以下顺序排列：Age (years)、Female sex、BMI (kg/m²)。保持表格紧凑，不添加显著性检验、P 值或检验结果列。\n\n### 汇总算法与显示\nAge 与 BMI 分别在每个治疗组内，使用该变量非缺失值计算算术平均值和样本标准差（SD 的分母为该变量非缺失人数减 1），显示为 mean (SD)。平均值与 SD 均保留一位小数。\n\nFemale sex 每组的 n 为非缺失记录中 Female sex 为真的人数，百分比为 n 除以该组 Female sex 非缺失人数乘 100，显示为 n (百分比%)；n 显示整数，百分比保留一位小数。不得把缺失 sex 当作非女性或计入百分比分母。\n\n计算使用未舍入数值，仅在最终显示时按四舍五入保留一位小数，并保留末尾 0。该变量缺失不使该参与者从其他变量的汇总中被删除，不插补缺失值。若连续变量没有非缺失值则显示 — (—)，只有 1 个非缺失值时显示其均值与 SD 的 —；若 Female sex 没有非缺失值则显示 0 (—)，以避免将不可计算百分比写为 0.0%。\n\n### 脚注\n脚注明确连续变量为 mean (样本 SD)、Female sex 为 n (%)，并说明各变量排除自身缺失值。逐项按 Treatment A / Treatment B 顺序给出 Age、Female sex 和 BMI 的缺失人数，包括为零的缺失数；缺失数等于组 N 减去该组该变量的非缺失人数。若出现不可计算的均值、SD 或百分比，脚注说明 — 表示不可计算。\n\n### 预览与正式使用\n格式示例必须显著标注为虚构数据预览，不可作为本研究发现或投稿数值。正式表格仅在本候选经人工确认、真实输入与来源映射就绪并完成相应实现验证后生成；输出应绑定确认后的本规格版本。",
+            "text_sha256": "7bbd6195329c7b48c787805e260ce8db331ff3695e2b0b00d35affb2e9aee434",
+            "base_version": null,
+            "dependencies": [],
+            "review_basis": null,
+            "approval_token": "6b4571dc24ddc9a8a4f353c433d5d04ed123394732603cc7455eb83ffd100b0b"
+          },
+          "current": null,
+          "review_basis": null,
+          "review_packet": null,
+          "external_brief": null,
+          "evidence_refs": [],
+          "review_required": null,
+          "reconfirmation_token": "37bd94571cb03e1bbe26872a886f12876a29fd8a1a98087ac65a539cd0a59485",
+          "read_set": {
+            "F-000001": 2
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": []
+          },
+          "review_category": "checking",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": false,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        }
+      ],
+      "snapshot": {
+        "project": "/private/tmp/oppencouncil-review-preview-20261014-g/a5a3c0a2360b/project",
+        "round": 1,
+        "revision": 2,
+        "questions": [
+          {
+            "created_at": "2026-10-14T15:20:58+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:21:42+00:00",
+                    "by": "codex",
+                    "text": "## 基线表输出规格\n\n### 范围与输入\n本规格定义已确认的全体符合条件成人分析人群的基线表展示与汇总规则，不改变研究人群。输入应为该人群每人一条的既定基线记录，包含已核实的 Treatment A / Treatment B 分组、Age（年）、Female sex 指示值及 BMI（kg/m²）。本输出规格不另行定义入组、治疗分配、基线时点、源字段编码或单位换算；真实数据实现前必须将这些输入绑定到经核实的来源定义。当前示例仅使用明确标注的虚构输入。\n\n### 表格结构\n表格三列按以下顺序排列：Characteristic、Treatment A (N=该组人数)、Treatment B (N=该组人数)。各组 N 为该组全部符合条件成人的人数，含本表变量缺失者，不因逐变量缺失而改变。数据行按以下顺序排列：Age (years)、Female sex、BMI (kg/m²)。保持表格紧凑，不添加显著性检验、P 值或检验结果列。\n\n### 汇总算法与显示\nAge 与 BMI 分别在每个治疗组内，使用该变量非缺失值计算算术平均值和样本标准差（SD 的分母为该变量非缺失人数减 1），显示为 mean (SD)。平均值与 SD 均保留一位小数。\n\nFemale sex 每组的 n 为非缺失记录中 Female sex 为真的人数，百分比为 n 除以该组 Female sex 非缺失人数乘 100，显示为 n (百分比%)；n 显示整数，百分比保留一位小数。不得把缺失 sex 当作非女性或计入百分比分母。\n\n计算使用未舍入数值，仅在最终显示时按四舍五入保留一位小数，并保留末尾 0。该变量缺失不使该参与者从其他变量的汇总中被删除，不插补缺失值。若连续变量没有非缺失值则显示 — (—)，只有 1 个非缺失值时显示其均值与 SD 的 —；若 Female sex 没有非缺失值则显示 0 (—)，以避免将不可计算百分比写为 0.0%。\n\n### 脚注\n脚注明确连续变量为 mean (样本 SD)、Female sex 为 n (%)，并说明各变量排除自身缺失值。逐项按 Treatment A / Treatment B 顺序给出 Age、Female sex 和 BMI 的缺失人数，包括为零的缺失数；缺失数等于组 N 减去该组该变量的非缺失人数。若出现不可计算的均值、SD 或百分比，脚注说明 — 表示不可计算。\n\n### 预览与正式使用\n格式示例必须显著标注为虚构数据预览，不可作为本研究发现或投稿数值。正式表格仅在本候选经人工确认、真实输入与来源映射就绪并完成相应实现验证后生成；输出应绑定确认后的本规格版本。"
+                  }
+                ],
+                "review_basis": null,
+                "text": "## 基线表输出规格\n\n### 范围与输入\n本规格定义已确认的全体符合条件成人分析人群的基线表展示与汇总规则，不改变研究人群。输入应为该人群每人一条的既定基线记录，包含已核实的 Treatment A / Treatment B 分组、Age（年）、Female sex 指示值及 BMI（kg/m²）。本输出规格不另行定义入组、治疗分配、基线时点、源字段编码或单位换算；真实数据实现前必须将这些输入绑定到经核实的来源定义。当前示例仅使用明确标注的虚构输入。\n\n### 表格结构\n表格三列按以下顺序排列：Characteristic、Treatment A (N=该组人数)、Treatment B (N=该组人数)。各组 N 为该组全部符合条件成人的人数，含本表变量缺失者，不因逐变量缺失而改变。数据行按以下顺序排列：Age (years)、Female sex、BMI (kg/m²)。保持表格紧凑，不添加显著性检验、P 值或检验结果列。\n\n### 汇总算法与显示\nAge 与 BMI 分别在每个治疗组内，使用该变量非缺失值计算算术平均值和样本标准差（SD 的分母为该变量非缺失人数减 1），显示为 mean (SD)。平均值与 SD 均保留一位小数。\n\nFemale sex 每组的 n 为非缺失记录中 Female sex 为真的人数，百分比为 n 除以该组 Female sex 非缺失人数乘 100，显示为 n (百分比%)；n 显示整数，百分比保留一位小数。不得把缺失 sex 当作非女性或计入百分比分母。\n\n计算使用未舍入数值，仅在最终显示时按四舍五入保留一位小数，并保留末尾 0。该变量缺失不使该参与者从其他变量的汇总中被删除，不插补缺失值。若连续变量没有非缺失值则显示 — (—)，只有 1 个非缺失值时显示其均值与 SD 的 —；若 Female sex 没有非缺失值则显示 0 (—)，以避免将不可计算百分比写为 0.0%。\n\n### 脚注\n脚注明确连续变量为 mean (样本 SD)、Female sex 为 n (%)，并说明各变量排除自身缺失值。逐项按 Treatment A / Treatment B 顺序给出 Age、Female sex 和 BMI 的缺失人数，包括为零的缺失数；缺失数等于组 N 减去该组该变量的非缺失人数。若出现不可计算的均值、SD 或百分比，脚注说明 — 表示不可计算。\n\n### 预览与正式使用\n格式示例必须显著标注为虚构数据预览，不可作为本研究发现或投稿数值。正式表格仅在本候选经人工确认、真实输入与来源映射就绪并完成相应实现验证后生成；输出应绑定确认后的本规格版本。",
+                "text_sha256": "7bbd6195329c7b48c787805e260ce8db331ff3695e2b0b00d35affb2e9aee434",
+                "updated_at": "2026-10-14T15:21:42+00:00",
+                "updated_by": "codex",
+                "approval_token": "6b4571dc24ddc9a8a4f353c433d5d04ed123394732603cc7455eb83ffd100b0b"
+              },
+              "versions": []
+            },
+            "evidence_refs": [],
+            "feedback_events": [],
+            "group": "基线表",
+            "historical": false,
+            "id": "F-000001",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:20:58+00:00",
+                "id": "baseline-table-review-20261014:F-000001",
+                "kind": "proposal",
+                "text": "## 当前审阅内容\n推荐答案：采用已保存的完整候选规格。研究者已确定的版式直接保留；补充明确 SD 使用样本标准差、百分比按该变量非缺失人数计算。候选尚未经人工确认，不是正式研究结果。\n\n## 虚构数据示例\n下表仅演示格式和分母，不代表这项研究的观察结果。\n\n| Characteristic | Treatment A (N=4) | Treatment B (N=5) |\n| --- | --- | --- |\n| Age (years) | 50.0 (10.0) | 45.0 (12.9) |\n| Female sex | 2 (66.7%) | 2 (50.0%) |\n| BMI (kg/m²) | 22.0 (2.0) | 27.0 (2.6) |\n\n脚注：连续变量为 mean (样本 SD)，均保留一位小数；Female sex 为 n (%)。逐变量排除缺失；缺失数按 Treatment A / Treatment B 顺序为 Age 1 / 1、Female sex 1 / 1、BMI 1 / 1。不进行显著性检验。\n\n### 示例为何出现不同分母\nA 组共有 4 人，其中 1 人 sex 缺失，2 人为 Female sex，因此为 2/3=66.7%，列标题仍为 N=4。B 组共有 5 人，1 人 sex 缺失，2 人为 Female sex，因此为 2/4=50.0%，列标题为 N=5。连续变量分别使用自身非缺失值。\n\n### 示例输入与复现\n全部数值均为手工构造。A 组 age=[40,50,60,缺失]，female=[是,否,是,缺失]，bmi=[20,22,缺失,24]；B 组 age=[30,40,50,60,缺失]，female=[是,否,否,是,缺失]，bmi=[24,26,28,30,缺失]。预览保留于 EXP-000002；脚本 Explore/002-baseline-table-preview/preview_table.py 调用现有共享表格工具，输出 Explore/002-baseline-table-preview/baseline-preview.csv（含脚注）。\n\n## 本次交付的边界\n人口范围和展示要求来自 README，不是本次统计发现。本轮仅完成候选规格及虚构示例。将来生成真实投稿表格仍需实际数据、经核实的基线变量与治疗组来源映射，以及候选规格的人工确认；不会把虚构预览登记为正式 Results 或发布稿。"
+              }
+            ],
+            "pending_items": [],
+            "problem_type": "unknown",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": null,
+            "review_required": null,
+            "revision": 2,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "README.md 已明确：所有符合条件的成人；Treatment A、Treatment B 两列，各自列出 N；行依次为 Age (years)、Female sex、BMI (kg/m²)；连续变量 mean (SD) 保留一位小数；Female sex 为 n (%)，百分比一位小数；各变量排除自身缺失，脚注报告缺失数；不做显著性检验。未提供真实数据或源字段映射。Explore/index.md 中 EXP-000001 为 abandoned，旧试验反转列序且漏报缺失数，不能沿用为当前预览。",
+            "suggestions": [
+              "采用候选规格",
+              "在候选规格上提出具体修改"
+            ],
+            "title": "基线表输出规格（按已给定要求准备的完整候选）",
+            "verification_tests": [],
+            "why": "研究者需要可在 Council 审阅的基线表规格和示例；项目目前没有正式输出规格。此条仅建立该表的输出合同，不重新讨论已经确认的成人分析人群或展示要求。",
+            "work": {
+              "affected_refs": [],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "Review the saved candidate"
+              ],
+              "conclusion_type": "needs_check",
+              "phase": "prepare_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:21:42+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                }
+              ],
+              "trigger_refs": []
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": null,
+            "review_category": "checking",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": false,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "37bd94571cb03e1bbe26872a886f12876a29fd8a1a98087ac65a539cd0a59485",
+            "ai_position": "## 当前审阅内容\n推荐答案：采用已保存的完整候选规格。研究者已确定的版式直接保留；补充明确 SD 使用样本标准差、百分比按该变量非缺失人数计算。候选尚未经人工确认，不是正式研究结果。\n\n## 虚构数据示例\n下表仅演示格式和分母，不代表这项研究的观察结果。\n\n| Characteristic | Treatment A (N=4) | Treatment B (N=5) |\n| --- | --- | --- |\n| Age (years) | 50.0 (10.0) | 45.0 (12.9) |\n| Female sex | 2 (66.7%) | 2 (50.0%) |\n| BMI (kg/m²) | 22.0 (2.0) | 27.0 (2.6) |\n\n脚注：连续变量为 mean (样本 SD)，均保留一位小数；Female sex 为 n (%)。逐变量排除缺失；缺失数按 Treatment A / Treatment B 顺序为 Age 1 / 1、Female sex 1 / 1、BMI 1 / 1。不进行显著性检验。\n\n### 示例为何出现不同分母\nA 组共有 4 人，其中 1 人 sex 缺失，2 人为 Female sex，因此为 2/3=66.7%，列标题仍为 N=4。B 组共有 5 人，1 人 sex 缺失，2 人为 Female sex，因此为 2/4=50.0%，列标题为 N=5。连续变量分别使用自身非缺失值。\n\n### 示例输入与复现\n全部数值均为手工构造。A 组 age=[40,50,60,缺失]，female=[是,否,是,缺失]，bmi=[20,22,缺失,24]；B 组 age=[30,40,50,60,缺失]，female=[是,否,否,是,缺失]，bmi=[24,26,28,30,缺失]。预览保留于 EXP-000002；脚本 Explore/002-baseline-table-preview/preview_table.py 调用现有共享表格工具，输出 Explore/002-baseline-table-preview/baseline-preview.csv（含脚注）。\n\n## 本次交付的边界\n人口范围和展示要求来自 README，不是本次统计发现。本轮仅完成候选规格及虚构示例。将来生成真实投稿表格仍需实际数据、经核实的基线变量与治疗组来源映射，以及候选规格的人工确认；不会把虚构预览登记为正式 Results 或发布稿。"
+          }
+        ],
+        "decision_groups": [],
+        "governance_version": 5,
+        "pending_submission_paths": [],
+        "investigations": []
+      },
+      "hashes": {
+        "manifest": "ef3e09148fc17d74bea47ebf692bff02627e911383c23b97e8d1ed0d8bf19025",
+        "trace": "44eac9f343acb297be9058ee014fae6150c51eca0080bb50be903c53a9adb197",
+        "outcome": "d93fccf2f12643db0acdd5cee453680db885c7bc3ee1cc26595fc1a3b4559c40"
+      }
+    }
+  ]
+}

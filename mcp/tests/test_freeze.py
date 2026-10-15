@@ -34,147 +34,28 @@ def freeze_project(settings, skill="stepwise-r-project", version=3):
 @pytest.mark.asyncio
 @pytest.mark.parametrize("skill", ["stepwise-r-project", "oppen-project-steward"])
 @pytest.mark.parametrize("version", [3, 4])
-async def test_stdio_freeze_tools_share_project_files_and_preserve_human_answer(settings, skill, version):
+async def test_legacy_projects_remain_readable_but_old_write_tools_are_removed(settings, skill, version):
     catalog, pid = freeze_project(settings, skill, version)
-    anchor = Path(catalog.projects[pid].root) / catalog.projects[pid].registry
-    before = anchor.read_bytes()
     settings.transport = "stdio"
     mcp = create_mcp(settings, catalog)
+    adapter = Freezes(catalog)
+    store = adapter.store(pid)
+    store.add_questions(
+        [{"title": "Existing decision", "why": "Existing context"}], request_id="local-create", actor="codex"
+    )
+    before = store.snapshot()
     tools = {tool.name for tool in await mcp.list_tools()}
-    assert {
-        "freeze_snapshot",
-        "freeze_read_question",
-        "freeze_add_questions",
-        "freeze_change_question",
-    } <= tools
-    items = [
-        {
-            "group": "结局",
-            "title": "死亡如何处理？",
-            "why": "影响风险解释。",
-            "source_summary": "研究方案",
-            "ai_position": "先讨论竞争事件。",
-        }
-    ]
-    await mcp.call_tool(
-        "freeze_add_questions", {"project_id": pid, "questions": items, "request_id": "mcp-freeze-round-1"}
-    )
-    store = Freezes(catalog)
-    q = store.read(pid, "F-000001")
-    assert q["status"] == "open" and q["created_by"] == "chatgpt"
-    assert q["ai_position_by"] == "chatgpt"
-    await mcp.call_tool(
-        "freeze_change_question",
-        {
-            "project_id": pid,
-            "question_id": q["id"],
-            "operation": "comment",
-            "value": "网页 AI 建议核对日期来源。",
-            "expected_revision": q["revision"],
-            "request_id": "mcp-freeze-comment-1",
-        },
-    )
-    assert store.read(pid, q["id"])["messages"][-1]["actor"] == "chatgpt"
-    current = store.read(pid, q["id"])
-    store.store(pid).change(
-        q["id"],
-        "answer",
-        "用户已保存的答复",
-        expected_revision=current["revision"],
-        request_id="human-answer",
-        actor="user",
-    )
-    current = store.read(pid, q["id"])
-    await mcp.call_tool(
-        "freeze_change_question",
-        {
-            "project_id": pid,
-            "question_id": q["id"],
-            "operation": "ai_position",
-            "value": "Codex 已核对日期实现。",
-            "expected_revision": current["revision"],
-            "request_id": "mcp-codex-opinion",
-            "actor": "codex",
-        },
-    )
-    assert store.read(pid, q["id"])["ai_position_by"] == "codex"
-    assert store.read(pid, q["id"])["user_answer"] == "用户已保存的答复"
-    current = store.read(pid, q["id"])
-    await mcp.call_tool(
-        "freeze_change_question",
-        {
-            "project_id": pid,
-            "question_id": q["id"],
-            "operation": "definition_draft",
-            "value": "完整候选规则：保存成功后刷新共享记录；断线时保留本地修改。",
-            "expected_revision": current["revision"],
-            "request_id": "mcp-candidate",
-            "actor": "codex",
-        },
-    )
-    current = store.read(pid, q["id"])
-    assert current["definition"]["draft"]["updated_by"] == "codex"
-    assert current["definition"]["current_version"] is None
-    for operation in ("definition_approve", "definition_begin", "definition_discard", "definition_publish"):
-        with pytest.raises(AccessDenied):
-            store.change(pid, q["id"], operation, None, current["revision"], "denied-" + operation)
-    confirmed = store.store(pid).change(
-        q["id"],
-        "definition_approve",
-        current["definition"]["draft"]["text_sha256"],
-        actor="user",
-        expected_revision=current["revision"],
-        request_id="human-confirm",
-    )
-    assert store.read(pid, q["id"])["definition"] == confirmed["definition"]
-    assert store.snapshot(pid)["questions"][0]["definition"]["current_version"] == 1
-    for number, author in enumerate(("chatgpt", "codex"), 2):
-        previous = store.read(pid, q["id"])
-        text = f"第 {number} 版完整修订：保存后刷新；断线时保留输入并核对保存回执。"
-        await mcp.call_tool("freeze_change_question", {
-            "project_id": pid, "question_id": q["id"], "operation": "definition_draft",
-            "value": text, "expected_revision": previous["revision"],
-            "request_id": f"mcp-revision-{number}", "actor": author,
-        })
-        pending = store.read(pid, q["id"])
-        assert pending["definition"]["draft"]["text"] == text
-        assert pending["definition"]["current_version"] == number - 1
-        assert pending["definition"]["versions"] == previous["definition"]["versions"]
-        with pytest.raises(AccessDenied):
-            store.change(pid, q["id"], "definition_approve", pending["definition"]["draft"]["approval_token"],
-                         pending["revision"], f"ai-cannot-confirm-{number}", actor=author)
-        published = store.store(pid).change(
-            q["id"], "definition_approve", pending["definition"]["draft"]["approval_token"],
-            actor="user", expected_revision=pending["revision"], request_id=f"human-confirm-{number}",
-        )
-        assert published["definition"]["current_version"] == number
-        assert published["definition"]["versions"][:-1] == previous["definition"]["versions"]
-        assert store.snapshot(pid)["questions"][0]["definition"] == published["definition"]
-    await mcp.call_tool(
-        "freeze_add_questions",
-        {"project_id": pid, "questions": items, "request_id": "mcp-codex-round", "actor": "codex"},
-    )
-    assert store.read(pid, "F-000002")["created_by"] == "codex"
-    with pytest.raises(ToolError):
-        await mcp.call_tool(
-            "freeze_change_question",
-            {
-                "project_id": pid,
-                "question_id": q["id"],
-                "operation": "comment",
-                "value": "冒充用户",
-                "expected_revision": 3,
-                "request_id": "mcp-human-actor",
-                "actor": "user",
-            },
-        )
-    with pytest.raises(AccessDenied, match="actor must"):
-        store.add(pid, items, "invalid-actor", actor="user")
-    with pytest.raises(AccessDenied):
-        store.change(pid, q["id"], "answer", "竞争事件", 2, "mcp-answer-forbidden")
-    assert anchor.read_bytes() == before
-    if skill == "oppen-project-steward":
-        assert not (anchor.parent.parent / "project.md").exists()
+    assert {"freeze_snapshot", "freeze_read_question", "council_submit_evidence", "council_comment"} <= tools
+    removed = {"freeze_add_questions", "freeze_change_question", "freeze_change_group"}
+    assert not removed & tools
+    for name in removed:
+        with pytest.raises(ToolError):
+            await mcp.call_tool(name, {"project_id": pid})
+    result = await mcp.call_tool("freeze_read_question", {"project_id": pid, "question_id": "F-000001"})
+    assert result[1]["title"] == "Existing decision"
+    with pytest.raises(AccessDenied, match="upgrade-v5"):
+        adapter.submit_evidence(pid, "A suggestion", [], [], "external-create")
+    assert store.snapshot() == before
 
 
 @pytest.mark.parametrize("skill", ["stepwise-r-project", "oppen-project-steward"])
@@ -188,12 +69,12 @@ def test_oauth_freeze_scopes_are_separate_from_governance(settings, skill):
         listed = rpc(client, access, "tools/list")["result"]["tools"]
         by_name = {tool["name"]: tool for tool in listed}
         assert by_name["freeze_snapshot"]["securitySchemes"][0]["scopes"] == [SCOPE, FREEZE_READ]
-        assert by_name["freeze_change_group"]["securitySchemes"][0]["scopes"] == [
+        assert by_name["council_comment"]["securitySchemes"][0]["scopes"] == [
             SCOPE,
             FREEZE_READ,
             FREEZE_WRITE,
         ]
-        assert by_name["freeze_add_questions"]["securitySchemes"][0]["scopes"] == [
+        assert by_name["council_submit_evidence"]["securitySchemes"][0]["scopes"] == [
             SCOPE,
             FREEZE_READ,
             FREEZE_WRITE,
@@ -319,51 +200,3 @@ def test_mcp_reads_reconciled_partial_item_and_preserves_write_boundary(settings
         with pytest.raises(AccessDenied):
             adapter.change(pid, qid, operation, "不授予新权限", q["revision"], operation)
     assert adapter.read(pid, qid) == q
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize("skill", ["stepwise-r-project", "oppen-project-steward"])
-async def test_mcp_joint_groups_share_storage_without_human_authority(settings, skill):
-    catalog, pid = freeze_project(settings, skill, 4)
-    settings.transport = "stdio"
-    mcp = create_mcp(settings, catalog)
-    adapter = Freezes(catalog)
-    adapter.add(
-        pid,
-        [{"title": "Receipt", "why": "Durable saves"}, {"title": "Recovery", "why": "Retry safely"}],
-        "round",
-    )
-    args = {
-        "project_id": pid,
-        "group_id": None,
-        "operation": "create",
-        "value": {
-            "title": "Persistence",
-            "purpose": "Decide together",
-            "member_ids": ["F-000001", "F-000002"],
-            "options": [],
-        },
-        "expected_revision": 0,
-        "request_id": "new-group",
-        "actor": "chatgpt",
-    }
-    await mcp.call_tool("freeze_change_group", args)
-    g = adapter.snapshot(pid)["decision_groups"][0]
-    assert g["created_by"] == "chatgpt" and g["member_ids"] == args["value"]["member_ids"]
-    for operation in ("approve", "begin", "select_option"):
-        with pytest.raises(ToolError):
-            await mcp.call_tool(
-                "freeze_change_group",
-                dict(
-                    args,
-                    group_id=g["id"],
-                    operation=operation,
-                    expected_revision=g["revision"],
-                    request_id="denied-" + operation,
-                ),
-            )
-    with pytest.raises(ToolError):
-        await mcp.call_tool("freeze_change_group", dict(args, actor="user"))
-    settings.freeze_projects = []
-    with pytest.raises(ToolError):
-        await mcp.call_tool("freeze_change_group", dict(args, request_id="not-authorized"))

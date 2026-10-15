@@ -443,6 +443,8 @@ html,body{height:100%;margin:0}
 #sw-freeze-v2 .sw2-workflow li:nth-child(1){--step-color:#b46714;--step-soft:#fff0d8}
 #sw-freeze-v2 .sw2-workflow li:nth-child(2){--step-color:#5b4bdb;--step-soft:#efedff}
 #sw-freeze-v2 .sw2-workflow li:nth-child(3){--step-color:#198469;--step-soft:#e2f5ec}
+#sw-freeze-v2 .sw2-workflow li:nth-child(4){--step-color:#5b4bdb;--step-soft:#efedff}
+#sw-freeze-v2 .sw2-workflow li:nth-child(5){--step-color:#198469;--step-soft:#e2f5ec}
 #sw-freeze-v2 .sw2-workflow li b{background:var(--step-soft);border-color:transparent;color:var(--step-color)}
 #sw-freeze-v2 .sw2-workflow li[aria-current=step] b{background:var(--step-color);color:#fff}
 #sw-freeze-v2 .dg-column-head h3:before{content:"";display:inline-block;width:5px;height:19px;background:#dc9632;border-radius:4px;margin-right:10px;vertical-align:-2px}
@@ -460,5 +462,25 @@ html,body{height:100%;margin:0}
 /* Keep native scrolling while hiding visual scrollbar chrome on every surface. */
 *{scrollbar-width:none}
 *::-webkit-scrollbar{display:none;width:0;height:0}
+
+#sw-freeze-v2 .sw2-structured-table{margin:16px 0;max-width:100%;min-width:0}
+#sw-freeze-v2 .sw2-structured-table figcaption{font-weight:650;margin-bottom:10px}
+#sw-freeze-v2 .sw2-simulated{display:inline-block;font-size:11px;color:#8b5500;background:#fff1d4;padding:3px 7px;border-radius:5px;font-weight:500}
+#sw-freeze-v2 .sw2-structured-table table{border-collapse:collapse;width:100%}
+#sw-freeze-v2 .sw2-structured-table :is(th,td){padding:8px;border:1px solid var(--line);text-align:left;vertical-align:top}
+#sw-freeze-v2 .sw2-structured-table thead th{background:#f5f5fc;text-align:center}
+#sw-freeze-v2 .sw2-structured-table input{font:inherit;border:1px solid #cbd0e5;border-radius:4px;padding:5px;box-sizing:border-box;width:100%;min-width:90px;background:white;color:inherit}
+#sw-freeze-v2 .sw2-structured-table td input{text-align:inherit}
+#sw-freeze-v2 .sw2-table-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}
+#sw-freeze-v2 .sw2-table-action{border:1px solid var(--line);border-radius:5px;background:white;padding:4px 7px;color:var(--muted);font:inherit;font-size:11px;cursor:pointer}
+#sw-freeze-v2 .sw2-table-row-tools{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+#sw-freeze-v2 .sw2-table-column-tools{display:grid;gap:5px;margin-top:6px;font-size:11px;font-weight:400}
+#sw-freeze-v2 :is(.sw2-table-unit,.sw2-table-format){display:block;font-size:12px;font-weight:400;color:var(--muted)}
+#sw-freeze-v2 .sw2-structured-table select{font:inherit;max-width:140px;font-size:11px;border:1px solid var(--line);border-radius:4px;padding:3px}
+#sw-freeze-v2 .sw2-table-notes{font-size:12px;color:var(--muted);padding-left:22px}
+#sw-freeze-v2 .sw2-table-error{color:#a2243b}
+#sw-freeze-v2 .sw2-example-image{margin:12px 0;max-width:100%}
+#sw-freeze-v2 .sw2-example-image img{display:block;max-width:100%;height:auto}
+#sw-freeze-v2 .sw2-example-image figcaption{font-size:12px;color:var(--muted);margin-top:6px}
 </style>
-<script src="/markdown-it.js" defer></script><script src="/markdown.js" defer></script><script src="/decision-groups.js" defer></script><script src="/workbench.js" defer></script></body></html>
+<script src="/markdown-it.js" defer></script><script src="/tables.js" defer></script><script src="/markdown.js" defer></script><script src="/decision-groups.js" defer></script><script src="/workbench.js" defer></script></body></html>

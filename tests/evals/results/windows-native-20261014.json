@@ -1,0 +1,162 @@
+{
+  "scope": "Incremental native stages; no single uninterrupted final verify claim.",
+  "logs": {
+    "verify-legacy-stage.utf8.log": {
+      "sha256": "b1e4b9279b62a031e716c21c5174794a0691edf579c1cdfd8e219a9adc866088",
+      "size": 18134,
+      "tail": [
+        "Lib\\subprocess.py\", line 571, in run",
+        "    raise CalledProcessError(retcode, process.args,",
+        "subprocess.CalledProcessError: Command '['C:\\\\Users\\\\CUHK\\\\AppData\\\\Local\\\\Temp\\\\oppencouncil-v5-native-20261014-a1\\\\so",
+        "urce\\\\council\\\\.venv\\\\Scripts\\\\python.exe', '-m', 'pytest', '-q', 'skills', 'tests/integration', ",
+        "'--import-mode=importlib']' returned non-zero exit status 1."
+      ]
+    },
+    "skills-cleanup-final.log": {
+      "sha256": "c20e33bc7d93c7754e53d3790e34a8b9b6b7590f4c0ebfad79b2ab020451ba02",
+      "size": 894,
+      "tail": [
+        "............................................................ [ 44%]",
+        "........................................................................ [ 68%]",
+        "........................................................................ [ 93%]",
+        "....................                                                     [100%]",
+        "296 passed, 12 subtests passed in 160.48s (0:02:40)"
+      ]
+    },
+    "remaining-node.log": {
+      "sha256": "0590521dc202de34e0ec3851ad2d9b988974144c9de2e1cefb6d393629890bec",
+      "size": 9069,
+      "tail": [
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ todo 0",
+        "ℹ duration_ms 390.5492"
+      ]
+    },
+    "remaining-mcp.log": {
+      "sha256": "87f5ca779150489a0adea329263a73240da52fae48ce1c0470b1cf04e6550266",
+      "size": 1122,
+      "tail": [
+        "  %TEMP%\\oppencouncil-v5-native-20261014-a1\\source\\mcp\\.venv\\Lib\\site-packages\\starlette\\testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.",
+        "    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]",
+        "",
+        "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+        "151 passed, 9 skipped, 2 warnings in 35.55s"
+      ]
+    },
+    "remaining-migration.log": {
+      "sha256": "89ef838a0783870876d36d62c15d664a1637876c7ef5d7ff403cb0f2a41a332c",
+      "size": 102,
+      "tail": [
+        "............................                                             [100%]",
+        "28 passed in 12.17s"
+      ]
+    },
+    "project-checks-final.log": {
+      "sha256": "712706e7df3f436cb0ed3a6f0da23de3742f33e15516309c4a8dafa844fc4847",
+      "size": 206,
+      "tail": [
+        "...................                                                      [100%]",
+        "19 passed in 11.03s"
+      ]
+    },
+    "workflow-final.log": {
+      "sha256": "53b4c19561388fe2523f3b5e6b0863c0c71dbc8d998be3443ecdf255ac84f596",
+      "size": 368,
+      "tail": [
+        "........................................................................ [ 83%]",
+        "..............                                                           [100%]",
+        "86 passed in 12.05s"
+      ]
+    },
+    "build-workflow-final.log": {
+      "sha256": "7027a0d1b6b281028c83f31e831f836965b205affde56929f3dc791f40d24795",
+      "size": 1084,
+      "tail": [
+        "    + FullyQualifiedErrorId : NativeCommandError",
+        " ",
+        "Building wheel from source distribution...",
+        "Successfully built council\\dist\\oppencouncil-4.3.1.tar.gz",
+        "Successfully built council\\dist\\oppencouncil-4.3.1-py3-none-any.whl"
+      ]
+    },
+    "source-hash-check.json": {
+      "sha256": "ef839e511fcabc07745503d82b85079d542a536310eafde8fcae8fcd31055ede",
+      "size": 50,
+      "tail": [
+        "{",
+        "  \"files_checked\": 214,",
+        "  \"differences\": []",
+        "}"
+      ]
+    },
+    "bootstrap-cleanup.json": {
+      "sha256": "644e2e1f0ace793a9a2f3a67178e9c7d8a0c8e4dbd106059f2f74ff8653b4392",
+      "size": 578,
+      "tail": [
+        "                                                \"C:\\\\Users\\\\CUHK\\\\.local\\\\bin\",",
+        "                                                \"C:\\\\Users\\\\CUHK\\\\.local\"",
+        "                                            ],",
+        "    \"launcher_exists\":  false",
+        "}"
+      ]
+    },
+    "facts-utf8-final.log": {
+      "sha256": "7423c8908b66343fd5f74ba5af403d51344dec6dc56fabbc888545a762374ebc",
+      "size": 532,
+      "tail": [
+        "........................................................................ [ 47%]",
+        "........................................................................ [ 95%]",
+        ".......                                                                  [100%]",
+        "151 passed in 18.59s"
+      ]
+    },
+    "footnote-python.log": {
+      "sha256": "6b39c0b67c3d2520259646ce6a7255de4aa582ea75e004fd0efeabad93384888",
+      "size": 204,
+      "tail": [
+        "........................................                                 [100%]",
+        "40 passed in 0.59s"
+      ]
+    },
+    "footnote-node.log": {
+      "sha256": "3c89df655877cde780d58492f1408806a04dc7923bf568b80923c42fefd0316e",
+      "size": 18104,
+      "tail": [
+        "??pass 93",
+        "??fail 0",
+        "??cancelled 0",
+        "??skipped 0",
+        "??todo 0",
+        "??duration_ms 251.107"
+      ]
+    },
+    "build-footnote-final.log": {
+      "sha256": "5486a8f1dbf2e8fc86ae54858965ab92dac0b055c8661cbcab1ad71f2ed9b897",
+      "size": 1086,
+      "tail": [
+        "    + CategoryInfo          : NotSpecified: (Building source distribution...:String) [], RemoteException",
+        "    + FullyQualifiedErrorId : NativeCommandError",
+        " ",
+        "Building wheel from source distribution...",
+        "Successfully built council\\dist\\oppencouncil-4.3.1.tar.gz",
+        "Successfully built council\\dist\\oppencouncil-4.3.1-py3-none-any.whl"
+      ]
+    },
+    "build-final-docs.log": {
+      "sha256": "466e39c2a0aa644d84e8491c66070e1111d9c7f2e6f7b1c94bf2ae3fdda4c68c",
+      "size": 1086,
+      "tail": [
+        "    + CategoryInfo          : NotSpecified: (Building source distribution...:String) [], RemoteException",
+        "    + FullyQualifiedErrorId : NativeCommandError",
+        " ",
+        "Building wheel from source distribution...",
+        "Successfully built council\\dist\\oppencouncil-4.3.1.tar.gz",
+        "Successfully built council\\dist\\oppencouncil-4.3.1-py3-none-any.whl"
+      ]
+    }
+  },
+  "final_source_hash_manifest_sha256": "0c870561a35cd6d71463042471774e67afd003387a6c0614834382e61636300f",
+  "final_source_scope": "214 product, skill and integration-test files including root README; final Council README included in build-final-docs. Two subsequent API-only Skill clarifications do not change package contents."
+}

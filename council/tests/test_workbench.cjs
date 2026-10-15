@@ -11,7 +11,7 @@ const questionId = "F-000007";
 const storageKey = "stepwise-freeze:drafts:v1:/synthetic/project";
 const settle = async () => { await new Promise(setImmediate); await new Promise(setImmediate); };
 
-async function workbench({ withGroupUI = false, authRequired = false, platform = 'Win32', layoutPreferences = new Map(), initialUrl = "http://localhost/projects/synthetic/freeze", additionalQuestions = [], drawer = false, reducedMotion = false, decisionGroups = [], reviewNotes = [], display = {}, messages = [], answers = {}, draftMessages = {}, requests = {}, answer = null, definition = { draft: null, versions: [], current_version: null }, definitions = {}, definitionBases = {}, opinion = "" } = {}) {
+async function workbench({ governanceVersion = 4, investigations = [], questionWork = {}, withGroupUI = false, authRequired = false, platform = 'Win32', layoutPreferences = new Map(), initialUrl = "http://localhost/projects/synthetic/freeze", additionalQuestions = [], drawer = false, reducedMotion = false, decisionGroups = [], reviewNotes = [], display = {}, messages = [], answers = {}, draftMessages = {}, requests = {}, answer = null, definition = { draft: null, versions: [], current_version: null }, definitions = {}, definitionBases = {}, opinion = "" } = {}) {
   let selection = null, focused = null, expired = false, reloads = 0;
   const documentListeners = {};
   const elements = new Map(), listeners = {}, storage = new Map(), windowListeners = {}, historyWrites = [], choiceControls = [];
@@ -53,7 +53,7 @@ async function workbench({ withGroupUI = false, authRequired = false, platform =
     id: questionId, title: "合成问题", group: "goal", round: 1, revision: 2,
     review_notes: reviewNotes, discussion_display: display,
     status: "discussing", user_answer: answer, messages, created_by: "codex",
-    ai_position: opinion, ai_position_by: "codex", requests: {}, definition: structuredClone(definition),
+    ai_position: opinion, ai_position_by: "codex", requests: {}, definition: structuredClone(definition), ...questionWork,
   };
   let failAfterCommit = false;
   const writes = [];
@@ -61,7 +61,7 @@ async function workbench({ withGroupUI = false, authRequired = false, platform =
   const context = {
     document: { getElementById: () => root, addEventListener(name, callback) { documentListeners[name] = callback; }, hidden: false },
     URL, location:pageLocation, navigator: {platform},
-    window: { getSelection:()=>selection, innerWidth:1600, innerHeight:1000, location:pageLocation,history:pageHistory,CouncilMarkdown: markdown, matchMedia: query => ({ matches: query.includes('min-width: 1024') || (drawer && query.includes("1279")) || (reducedMotion && query.includes("reduced-motion")), addEventListener() {} }), addEventListener(name,callback) { windowListeners[name]=callback; } },
+    window: { CouncilTables:require('../oppencouncil/assets/tables.js'), getSelection:()=>selection, innerWidth:1600, innerHeight:1000, location:pageLocation,history:pageHistory,CouncilMarkdown: markdown, matchMedia: query => ({ matches: query.includes('min-width: 1024') || (drawer && query.includes("1279")) || (reducedMotion && query.includes("reduced-motion")), addEventListener() {} }), addEventListener(name,callback) { windowListeners[name]=callback; } },
     localStorage: { getItem:key=>layoutPreferences.get(key),setItem:(key,value)=>layoutPreferences.set(key,value),removeItem:key=>layoutPreferences.delete(key) },
     sessionStorage: { getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value) },
     getComputedStyle: () => ({paddingTop:"0",paddingBottom:"0",borderTopWidth:"0",borderBottomWidth:"0"}),
@@ -73,12 +73,19 @@ async function workbench({ withGroupUI = false, authRequired = false, platform =
       if (options.method === "POST") {
         const body = JSON.parse(options.body);
         writes.push(body);
+        const investigationId = _url.match(/\/work\/(I-\d+)\/comment$/)?.[1];
+        if (investigationId) {
+          const item = investigations.find(i => i.id === investigationId);
+          item.messages.push({id:body.request_id+':0',request_id:body.request_id,actor:'user',text:body.text});
+          item.revision++; item.human_pending = true; item.actionable = true;
+          return {ok:true,json:async()=>({item,snapshot:{governance_version:governanceVersion,investigations,project:'/synthetic/project',round:1,questions:[structuredClone(question),...structuredClone(additionalQuestions)],decision_groups:decisionGroups}})};
+        }
         const groupId = _url.match(/\/groups\/(B-\d+)\/change$/)?.[1];
         if (groupId) {
           const group = decisionGroups.find(g => g.id === groupId);
           if (body.operation === 'comment') group.messages.push({id:body.request_id,actor:'user',text:body.value.text});
           group.revision++;
-          return {ok:true,json:async()=>({group, snapshot:{project:'/synthetic/project',round:1,questions:[structuredClone(question),...structuredClone(additionalQuestions)],decision_groups:decisionGroups}})};
+          return {ok:true,json:async()=>({group, snapshot:{governance_version:governanceVersion,investigations,project:'/synthetic/project',round:1,questions:[structuredClone(question),...structuredClone(additionalQuestions)],decision_groups:decisionGroups}})};
         }
         if (body.operation === "comment") {
           question.messages.push({ id: body.request_id, actor: "user", text: body.value, round: 1 });
@@ -106,7 +113,7 @@ async function workbench({ withGroupUI = false, authRequired = false, platform =
         return { ok: true, json: async () => ({ question: structuredClone(question) }) };
       }
       return { ok: true, json: async () => ({ csrf: "test", auth_required:authRequired, snapshot: {
-        project: "/synthetic/project", round: 1, questions: [structuredClone(question),...structuredClone(additionalQuestions)], decision_groups: decisionGroups,
+        governance_version:governanceVersion, investigations, project: "/synthetic/project", round: 1, questions: [structuredClone(question),...structuredClone(additionalQuestions)], decision_groups: decisionGroups,
       } }) };
     },
   };
@@ -150,6 +157,8 @@ async function workbench({ withGroupUI = false, authRequired = false, platform =
     },
     clearQuote:()=>documentListeners.scroll(),
     remoteDefinition: value => { question.definition = structuredClone(value); question.revision++; },
+    tableInput: (index, field, value, extra={}) => listeners.input({target:{dataset:{tableIndex:String(index),tableField:field,...extra},value,tagName:'INPUT'}}),
+    remoteWork: value => { Object.assign(question,value); question.revision++; },
     failNextResponse: () => { failAfterCommit = true; },
     input: (id, value) => { element("#" + id).value = value; listeners.input({ target: { id, value, classList:{contains:()=>false} } }); },
     disclosure: details => listeners.click({ preventDefault(){}, target:{ closest: selector => selector === "summary" ? {parentElement:details} : null } }),
@@ -808,4 +817,99 @@ test('clearing an older individual draft keeps the rendered composer and quote o
   await app.click('post');
   assert.equal(app.writes.length,1);assert.equal(app.writes[0].operation,'comment');
   assert.equal(app.url(),url);assert.equal(app.historyWrites.length,history);
+});
+
+const v5Work = (extra={}) => ({work:{phase:'human_review',blockers:[],history:[]},review_category:'quick_confirm',awaiting_human:true,human_pending:false,actionable:false,...extra});
+const investigation = () => ({id:'I-000001',title:'核查上游排除',why:'已观察到差异',revision:1,messages:[],pending:[],related_f_ids:[],...v5Work({work:{phase:'evidence',blockers:[],history:[]},review_category:'checking',awaiting_human:false})});
+
+test('v5 filter counts match visible records without obsolete status fields',async()=>{
+ const checking=investigation();checking.human_pending=true;
+ const excluded={...investigation(),id:'I-000002',title:'无需新增规则',review_category:'excluded',work:{...investigation().work,phase:'closed'}};
+ const historical={...investigation(),id:'I-000003',title:'旧讨论保留',historical:true,work:{...investigation().work,phase:'closed'}};
+ const app=await workbench({governanceVersion:5,investigations:[checking,excluded,historical],questionWork:v5Work({status:undefined,review_required:{reason:'依据变化'}})});
+ assert.doesNotMatch(app.html('#sw2-detail'),/sw2-pill-undefined|>待讨论</);
+ for(const [label,count,ids] of [
+  ['全部状态',4,[questionId,checking.id,excluded.id,historical.id]],
+  ['待人类审阅',1,[questionId]],['快速确认',1,[questionId]],
+  ['待 AI 处理',1,[checking.id]],['补查中／阻塞',1,[checking.id]],
+  ['已排除',1,[excluded.id]],['历史讨论',1,[historical.id]],
+  ['需要复核',1,[questionId]],['需要选择',0,[]]
+ ]) {
+  await app.click('open-status');
+  const option=app.html('#sw2-select-list').match(new RegExp('data-index="(\\d+)"[^>]*><span>'+label+'</span><small>(\\d+)</small>'));
+  assert.ok(option,label);assert.equal(Number(option[2]),count,label);
+  await app.click('select-value',{index:option[1]});
+  const visible=[...app.html('#sw2-question-list').matchAll(/data-action="select" data-id="([FI]-\d+)"/g)].map(m=>m[1]);
+  assert.deepEqual(visible.sort(),ids.sort(),label);
+ }
+});
+
+test('v5 filters keep investigations visible and handoff includes only actionable saved work',async()=>{
+ const pending=investigation();pending.actionable=true;pending.human_pending=true;
+ const app=await workbench({governanceVersion:5,investigations:[pending],questionWork:v5Work()});
+ await app.click('open-status');
+ assert.match(app.html('#sw2-select-list'),/待 AI 处理/);assert.match(app.html('#sw2-select-list'),/已排除/);
+ assert.doesNotMatch(app.html('#sw2-select-list'),/>讨论中</);
+ await app.click('close-select');
+ await app.click('handoff');
+ const text=app.value('#sw2-handoff-text');
+ assert.match(text,/I-000001/);assert.doesNotMatch(text,/F-000007/);assert.doesNotMatch(text,/全部问题、答复/);
+});
+
+test('v5 investigation comments use the human endpoint and enter the pending queue',async()=>{
+ const item=investigation();
+ const app=await workbench({governanceVersion:5,investigations:[item],questionWork:v5Work()});
+ await app.click('select',{id:item.id});
+ assert.match(app.html('#sw2-detail'),/已观察到差异/);
+ assert.doesNotMatch(app.html('#sw2-detail'),/data-action="approve-definition"/);
+ app.input('sw2-message','请核查上游排除规则');await app.click('post');
+ assert.equal(app.writes[0].text,'请核查上游排除规则');
+ assert.equal(app.drafts().messages[item.id],undefined);
+ assert.match(app.text('#sw2-notice-text'),/待 AI 处理/);
+ assert.equal(item.human_pending,true);
+});
+
+test('v5 reconfirmation sends its current-version token and blocks unprepared evidence',async()=>{
+ const def={current_version:1,versions:[{number:1,text:'Current definition'}],draft:null};
+ const app=await workbench({governanceVersion:5,definition:def,questionWork:v5Work({review_required:{reason:'依据变化'},reconfirmation_token:'basis-token'})});
+ assert.equal(app.text('[data-action="approve-definition"]'),'重新确认当前版本');
+ await app.click('approve-definition');
+ assert.equal(app.writes[0].operation,'definition_reconfirm');assert.equal(app.writes[0].value,'basis-token');
+ const unprepared=await workbench({governanceVersion:5,definition:def,questionWork:v5Work({work:{phase:'evidence'},review_required:{reason:'待核查'}})});
+ assert.equal(unprepared.disabled('[data-action="approve-definition"]'),true);
+ await unprepared.click('approve-definition');assert.equal(unprepared.writes.length,0);
+});
+
+test('v5 structured table edits save the full candidate and preserve formal text',async()=>{
+ const t={schema_version:1,id:'table',title:'模拟表',simulated:true,columns:[{id:'a',label:'方案'}],headers:[{id:'ha',label:'方案',column_id:'a'}],footnotes:[],rows:[{id:'r',label:'样本数',cells:{a:'100'}}]};
+ const text='Unchanged introduction\n\n```table\n'+JSON.stringify(t)+'\n```\n\nUnchanged ending';
+ const app=await workbench({governanceVersion:5,questionWork:v5Work(),definition:{current_version:1,versions:[{number:1,text:'Original formal wording'}],draft:{text,text_sha256:'saved',base_version:1}}});
+ await app.click('edit-definition');
+ app.tableInput(0,'title','人类修订表标题');
+ await app.click('table-add-column',{tableIndex:'0'});await app.click('table-add-row',{tableIndex:'0'});
+ assert.equal(app.writes.length,0);
+ const changed=app.drafts().definitions[questionId];
+ assert.ok(changed?.includes('```table'), JSON.stringify({changed,notice:app.text('#sw2-notice-text'),drafts:app.drafts()}));
+ const parsed=require('../oppencouncil/assets/tables.js').blocks(changed)[0].value;
+ assert.equal(parsed.title,'人类修订表标题');assert.equal(parsed.columns.length,2);assert.equal(parsed.rows.length,2);
+ await app.click('save-answer');
+ assert.equal(app.writes[0].operation,'definition_draft');assert.equal(app.writes[0].value,changed);
+ assert.match(app.html('#sw2-detail'),/Original formal wording/);
+});
+
+test('v5 external comments stay outside human pending and processed feedback leaves the queue',async()=>{
+ const app=await workbench({governanceVersion:5,questionWork:v5Work({actionable:true}),messages:[{id:'external:0',actor:'external_ai',text:'外部建议待核查'}]});
+ assert.equal(app.text('#sw2-talk'),0);
+ assert.match(app.html('#sw2-detail'),/外部 AI · 未经本地核查/);
+ app.remoteWork({human_pending:true,actionable:true});await app.click('refresh');assert.equal(app.text('#sw2-talk'),1);
+ app.remoteWork({human_pending:false,actionable:false});await app.click('refresh');assert.equal(app.text('#sw2-talk'),0);
+ await app.click('handoff');assert.doesNotMatch(app.value('#sw2-handoff-text'),/F-000007/);
+});
+
+test('v5 excluded investigations retain the reason and human composer without legacy status pills',async()=>{
+ const item=investigation();item.work={phase:'closed',closed_reason:'已经核实无需新增规则',blockers:[],transitions:[]};item.review_category='excluded';
+ const app=await workbench({governanceVersion:5,investigations:[item],questionWork:v5Work()});
+ await app.click('select',{id:item.id});
+ assert.match(app.html('#sw2-detail'),/已经核实无需新增规则/);assert.match(app.html('#sw2-detail'),/id="sw2-message"/);
+ assert.doesNotMatch(app.html('#sw2-question-list'),/>待讨论</);
 });

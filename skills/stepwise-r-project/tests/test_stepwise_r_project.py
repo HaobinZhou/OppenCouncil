@@ -14,10 +14,10 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from unittest import mock
 
-from scripts.test_filesystem import sparse_truncate
+from scripts.test_filesystem import cleanup_temporary_directory, sparse_truncate
 
 
-SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "stepwise_r_project.py"
+SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "legacy_stepwise_r_project.py"
 SPEC = importlib.util.spec_from_file_location("stepwise_r_project", SCRIPT_PATH)
 assert SPEC and SPEC.loader
 stepwise = importlib.util.module_from_spec(SPEC)
@@ -33,7 +33,7 @@ class StepwiseProjectTestCase(unittest.TestCase):
         stepwise.refresh_index(self.root)
 
     def tearDown(self) -> None:
-        self.temp_dir.cleanup()
+        cleanup_temporary_directory(self.temp_dir)
 
     def write(self, relative: str, content: str) -> Path:
         path = self.root / relative
@@ -1915,24 +1915,6 @@ pass
                 self.assertTrue(stepwise.validate_project(root).ok)
             finally:
                 shutil.rmtree(destination, ignore_errors=True)
-
-    def test_skill_documents_v31_memory_and_attention_boundaries(self) -> None:
-        skill_root = Path(__file__).parents[1]
-        skill_text = (skill_root / "SKILL.md").read_text(encoding="utf-8")
-        reference_text = (skill_root / "references/managed-systems.md").read_text(
-            encoding="utf-8"
-        )
-        combined = skill_text + "\n" + reference_text
-        for expected in (
-            "Noteworthy does not mean Attention",
-            "Known pending work",
-            "input container",
-            "never convert a legacy file wholesale",
-            "technical or execution architecture",
-            "never stash the whole project automatically",
-            "audit-recover TARGET --stage STAGE",
-        ):
-            self.assertIn(expected, combined)
 
     def test_realistic_end_to_end_migration_preserves_scientific_project(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

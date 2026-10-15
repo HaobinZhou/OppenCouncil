@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install both skills and Council, optionally adding the MCP component."""
+"""Install OppenCouncil and its compatibility skill names, with optional MCP."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILLS = ("oppen-project-steward", "stepwise-r-project")
+SKILLS = ("oppencouncil", "oppen-project-steward", "stepwise-r-project")
 IS_WINDOWS = os.name == "nt"
 
 
@@ -24,6 +24,8 @@ def skill_plan(destination: Path, replace_links: bool = False) -> list[dict]:
     result = []
     for name in SKILLS:
         source = ROOT / "skills" / name
+        if not (source / "SKILL.md").is_file():
+            raise ValueError(f"Incomplete skill bundle: {source}")
         target = destination / name
         action = "link"
         if target.is_symlink():
@@ -35,39 +37,69 @@ def skill_plan(destination: Path, replace_links: bool = False) -> list[dict]:
                 raise ValueError(f"Existing link at {target}; review it and use --replace-existing-links")
         elif target.exists():
             raise ValueError(f"Existing files at {target}; preserve and reconcile this installation manually")
-        result.append({"source": str(source), "target": str(target), "action": action})
+        result.append({"source": str(source), "target": str(target), "action": action,
+                       "previous": str(target.readlink()) if target.is_symlink() else None})
     return result
 
 
 def install_links(plan: list[dict]) -> None:
-    """Preserve source directories and roll back failed Windows link replacements."""
-    for entry in plan:
-        if entry["action"] == "unchanged":
-            continue
-        source, target = Path(entry["source"]), Path(entry["target"])
-        target.parent.mkdir(parents=True, exist_ok=True)
-        temporary = target.with_name(target.name + ".install-link")
-        if temporary.exists() or temporary.is_symlink():
-            raise ValueError(f"Unresolved installer link at {temporary}")
-        try:
+    """Prepare every link, then publish the set with rollback on a failed swap."""
+    prepared, moved, published = [], [], []
+
+    def unchanged(entry, target):
+        observed = str(target.readlink()) if target.is_symlink() else None
+        return observed == entry["previous"] and (observed is not None or not target.exists())
+
+    try:
+        for entry in plan:
+            target = Path(entry["target"])
+            if not unchanged(entry, target):
+                raise ValueError(f"Installation target changed since preflight: {target}")
+            if entry["action"] == "unchanged":
+                continue
+            source = Path(entry["source"])
+            target.parent.mkdir(parents=True, exist_ok=True)
+            temporary = target.with_name(target.name + ".install-link")
+            previous = target.with_name(target.name + ".previous-link")
+            if any(p.exists() or p.is_symlink() for p in (temporary, previous)):
+                raise ValueError(f"Unresolved installer link at {target}")
             temporary.symlink_to(source, target_is_directory=True)
-            if IS_WINDOWS and entry["action"] == "replace-link":
-                previous = target.with_name(target.name + ".previous-link")
-                if previous.exists() or previous.is_symlink() or not target.is_symlink():
-                    raise ValueError(f"Unresolved or changed installer link at {target}")
-                # Windows cannot replace an existing directory symlink via os.replace.
+            prepared.append((entry, target, temporary, previous))
+        for entry, target, temporary, previous in prepared:
+            if not unchanged(entry, target):
+                raise ValueError(f"Installation target changed since preflight: {target}")
+            if entry["previous"] is not None:
+                # Also works on Windows, where replacing a directory link fails.
                 target.rename(previous)
-                try:
-                    temporary.rename(target)
-                except OSError:
-                    previous.rename(target)
-                    raise
-                previous.unlink()
+                moved.append((target, previous))
+            # Windows readlink may return a native \\?\ prefix. Keep the actual
+            # link text we published so rollback recognizes our own link.
+            link_text = temporary.readlink()
+            temporary.rename(target)
+            published.append((target, link_text))
+    except (OSError, ValueError) as error:
+        conflicts = []
+        for target, source in reversed(published):
+            if target.is_symlink() and target.readlink() == source:
+                target.unlink()
             else:
-                temporary.replace(target)
-        finally:
+                conflicts.append(str(target))
+        for target, previous in reversed(moved):
+            if not target.exists() and not target.is_symlink():
+                previous.rename(target)
+            else:
+                conflicts.append(str(target))
+        if conflicts:
+            raise ValueError("Installation changed during rollback; preserved recovery links: "
+                             + ", ".join(sorted(set(conflicts)))) from error
+        raise
+    finally:
+        for _, _, temporary, _ in prepared:
             if temporary.is_symlink():
                 temporary.unlink()
+    # A cleanup failure leaves all installed links pointing to the same new bundle.
+    for _, previous in moved:
+        previous.unlink()
 
 
 def main(argv: list[str] | None = None) -> int:

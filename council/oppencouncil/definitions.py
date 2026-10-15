@@ -14,6 +14,9 @@ def digest(text: str) -> str:
 
 
 def approval_token(draft: dict) -> str:
+    if "review_basis" in draft:
+        return digest(json.dumps([draft["text"], draft.get("dependencies", []), draft["review_basis"]],
+                                 ensure_ascii=False, sort_keys=True))
     if not draft.get("dependencies"):
         return draft["text_sha256"]
     return digest(json.dumps([draft["text"], draft["dependencies"]], ensure_ascii=False, sort_keys=True))
@@ -102,6 +105,8 @@ def change_definition(question: dict, operation: str, value: object, actor: str)
             "dependencies": copy.deepcopy(draft.get("dependencies", [])),
             "content_sha256": approval_token(draft),
         }
+        if "review_basis" in draft:
+            version["review_basis"] = copy.deepcopy(draft["review_basis"])
         definition["versions"].append(version)
         definition["current_version"] = number
         definition["draft"] = None

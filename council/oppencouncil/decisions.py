@@ -31,6 +31,11 @@ def catalog(store):
     if raw is None:
         return {"schema_version": 1, "groups": [], "requests": {}, "revision": 0}
     result = json.loads(raw)
+    validate_catalog(result, v5=store.v5)
+    return result
+
+
+def validate_catalog(result, *, v5=False):
     if result.get("schema_version") != 1 or not isinstance(result.get("groups"), list):
         raise FreezeError("Invalid decision groups")
     ids, members = set(), set()
@@ -41,7 +46,55 @@ def catalog(store):
             raise FreezeError("A question can belong to only one decision group")
         ids.add(group["id"])
         members.update(group["member_ids"])
-    return result
+        if v5:
+            from .workflow import validate_record
+
+            validate_record(group)
+
+
+def validate_writes(store, writes):
+    """Validate all destinations and records before the journal becomes committed."""
+    if not isinstance(writes, dict) or not writes:
+        raise FreezeError("Invalid decision transaction writes")
+    for name, value in writes.items():
+        if name == "manifest.json":
+            if not isinstance(value, dict) or value.get("schema_version") not in (
+                {3} if store.v5 else {1, 2}
+            ):
+                raise FreezeError("Invalid transaction manifest")
+            ids = value.get("question_ids")
+            if not isinstance(ids, list) or any(
+                not isinstance(i, str) or not re.fullmatch(r"F-[0-9]{6}", i) for i in ids
+            ):
+                raise FreezeError("Invalid transaction question index")
+            if len(ids) != len(set(ids)):
+                raise FreezeError("Duplicate transaction question index")
+        elif name == "decision-groups.json":
+            validate_catalog(value, v5=store.v5)
+        elif re.fullmatch(r"questions/F-[0-9]{6}\.json", name):
+            if not isinstance(value, dict) or value.get("id") != name.split("/")[-1][:-5]:
+                raise FreezeError("Question identity does not match transaction path")
+            validate_definition(value)
+            if store.v5:
+                from .workflow import validate_record
+
+                validate_record(value)
+        elif store.v5:
+            from .workstore import validate_transaction_record
+
+            validate_transaction_record(name, value)
+        else:
+            raise FreezeError("Unsafe decision transaction path")
+        if len((json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode()) > MAX_JSON:
+            raise FreezeError("Decision record exceeds 1 MiB")
+        parent = store.root
+        for part in name.split("/")[:-1]:
+            parent /= part
+            if not store._directory(parent, False):
+                raise FreezeError("Transaction destination directory is missing")
+        raw = ordinary_file(store.root / name, MAX_JSON)
+        if name.startswith("evidence/") and raw is not None and json.loads(raw) != value:
+            raise FreezeError("Evidence versions are immutable")
 
 
 def recover_transaction(store):
@@ -53,15 +106,8 @@ def recover_transaction(store):
     writes = payload.get("writes")
     if payload.get("schema_version") != 1 or not isinstance(writes, dict):
         raise FreezeError("Invalid decision transaction; recovery required")
-    # Validate the entire journal before touching any destination.
-    for name, value in writes.items():
-        if name not in {"manifest.json", "decision-groups.json"}:
-            if not re.fullmatch(r"questions/F-[0-9]{6}\.json", name):
-                raise FreezeError("Unsafe decision transaction path")
-            validate_definition(value)
-        if len(json.dumps(value, ensure_ascii=False).encode()) > MAX_JSON:
-            raise FreezeError("Decision transaction record exceeds limit")
-        ordinary_file(store.root / name, MAX_JSON)
+    # Re-check parents on recovery: a child directory may have been replaced since commit.
+    validate_writes(store, writes)
     for name, value in writes.items():
         atomic_json(store.root / name, value)
     (store.root / JOURNAL).unlink()
@@ -75,10 +121,7 @@ def recover_transaction(store):
 
 def commit(store, writes):
     # This fsynced journal is the commit point. A crash rolls forward, never publishes half a group.
-    for name, value in writes.items():
-        if len((json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode()) > MAX_JSON:
-            raise FreezeError("Decision record exceeds 1 MiB")
-        ordinary_file(store.root / name, MAX_JSON)
+    validate_writes(store, writes)
     raw = json.dumps({"schema_version": 1, "writes": writes}, ensure_ascii=False).encode()
     if len(raw) > MAX_TRANSACTION:
         raise FreezeError("Decision transaction exceeds 16 MiB")
@@ -172,19 +215,21 @@ def candidate_dependency_updates(qid, questions):
     candidate = candidate_for_approval(qid, questions)
     updates = []
     if candidate:
-        for old, new in zip(
-            original.get("dependencies", []), candidate.get("dependencies", []), strict=True
-        ):
+        for old, new in zip(original.get("dependencies", []), candidate.get("dependencies", []), strict=True):
             if old["version"] == new["version"] and old["text_sha256"] == new["text_sha256"]:
                 continue
             upstream = questions[new["question_id"]]
             prior = next((v for v in state(upstream)["versions"] if v["number"] == old["version"]), None)
-            updates.append({
-                "question_id": new["question_id"], "title": upstream["title"],
-                "from_version": old["version"], "to_version": new["version"],
-                "from_text": prior["text"] if prior else "此前尚未确认前序版本。",
-                "to_text": current(upstream)["text"],
-            })
+            updates.append(
+                {
+                    "question_id": new["question_id"],
+                    "title": upstream["title"],
+                    "from_version": old["version"],
+                    "to_version": new["version"],
+                    "from_text": prior["text"] if prior else "此前尚未确认前序版本。",
+                    "to_text": current(upstream)["text"],
+                }
+            )
     return updates
 
 
@@ -243,6 +288,65 @@ def readiness(qid, questions, use_draft=True):
     return {"status": status, "dependencies": deps}
 
 
+def review_dependencies(question, value, questions, actor, request_id):
+    owner = current(question)
+    if not owner or state(question)["draft"]:
+        raise FreezeError("Review requires an effective definition without an open draft")
+    bindings = {}
+    for dep in requirements(question):
+        if not blocking(dep):
+            continue
+        up = questions[dep["question_id"]]
+        version = current(up)
+        if not version or readiness(up["id"], questions, use_draft=False)["status"] in {
+            "waiting",
+            "needs_review",
+        }:
+            raise FreezeError("Resolve upstream prerequisites before recording compatibility")
+        bindings[up["id"]] = [version["number"], version["text_sha256"]]
+    if not isinstance(value, dict) or value.get("bindings") != bindings:
+        raise FreezeError("Dependency versions changed since read; reload before reviewing")
+    question.setdefault("dependency_reviews", []).append(
+        {
+            "id": request_id,
+            "by": actor,
+            "at": now(),
+            "owner_version": owner["number"],
+            "bindings": bindings,
+            "reason": require_text(value.get("reason"), "compatibility explanation"),
+        }
+    )
+
+
+def notify_dependency_changes(questions, previous_versions, writes, request_id):
+    """Wake actual dependents without changing their working phase or formal version."""
+    from .workflow import event
+
+    changed = {
+        qid for qid, q in questions.items() if state(q)["current_version"] != previous_versions.get(qid)
+    }
+    affected = []
+    for qid, q in questions.items():
+        targets = sorted({d["question_id"] for d in requirements(q) if d["question_id"] in changed})
+        path = f"questions/{qid}.json"
+        if targets and qid not in changed:
+            event(
+                q,
+                request_id + ":dependencies:" + qid,
+                "system",
+                "dependencies_changed",
+                {
+                    up: [current(questions[up])["number"], current(questions[up])["text_sha256"]]
+                    for up in targets
+                },
+            )
+            if path not in writes:
+                q["revision"] += 1
+            writes[path] = q
+            affected.append(qid)
+    return affected
+
+
 def check_approval(qid, questions, prospective=None):
     prospective = prospective or {}
     for dep in requirements(questions[qid]):
@@ -281,6 +385,10 @@ def group_view(group, questions):
         {"group": group, "questions": {qid: questions[qid]["revision"] for qid in sorted(relevant)}},
     )
     result["readiness"] = {qid: readiness(qid, questions) for qid in group["member_ids"]}
+    if "work" in group:
+        from .workflow import projection
+
+        result.update(projection(group, questions))
     return result
 
 
@@ -330,7 +438,16 @@ def clean_group(value, questions):
 
 
 def change_group(store, group_id, operation, value, *, expected_revision, request_id, actor):
-    if actor not in AI_ACTORS | {"user"}:
+    if store.v5:
+        if actor not in {"codex", "user", "external_ai"}:
+            raise FreezeError("Unknown v5 actor")
+        if actor == "external_ai" and operation != "comment":
+            raise FreezeError("External AI may only comment on a decision group")
+        if operation in {"create", "update"} and actor != "codex":
+            raise FreezeError("Only the local agent may organize decision groups")
+        if operation == "example":
+            raise FreezeError("Use immutable images in definition wording instead of HTML examples")
+    elif actor not in AI_ACTORS | {"user"}:
         raise FreezeError("Unknown actor")
     if operation in {"approve", "begin", "discard", "select_option"} and actor != "user":
         raise FreezeError("Only the user may choose, open revisions or confirm a decision group")
@@ -338,6 +455,7 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
     fingerprint = request_fingerprint(operation, [group_id, value])
     with store.locked(create=True):
         data, questions = catalog(store), all_questions(store)
+        previous_versions = {qid: state(q)["current_version"] for qid, q in questions.items()}
         receipt = data["requests"].get(request_id)
         if receipt:
             if receipt["fingerprint"] != fingerprint or receipt["actor"] != actor:
@@ -360,6 +478,11 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
                 "created_at": now(),
                 **clean_group(value, questions),
             }
+            if store.v5:
+                from .workflow import initial_work, initialize_progress
+
+                group["work"] = initial_work()
+                initialize_progress(group, question=False)
             data["groups"].append(group)
         elif not group:
             raise FreezeError("Decision group not found")
@@ -382,6 +505,7 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
                     "at": now(),
                     "question_id": value.get("question_id"),
                     "text": require_text(value.get("text"), "group comment"),
+                    **({"label": "外部 AI · 未经本地核查"} if actor == "external_ai" else {}),
                 }
             )
         elif operation == "select_option":
@@ -410,7 +534,12 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
             for qid in group["member_ids"]:
                 q = questions[qid]
                 if state(q)["draft"] is None:
-                    change_definition(q, "definition_begin", None, actor)
+                    if store.v5:
+                        from .workflow import apply_definition
+
+                        apply_definition(q, "definition_begin", None, actor, questions)
+                    else:
+                        change_definition(q, "definition_begin", None, actor)
                     q["revision"] += 1
                     writes[f"questions/{qid}.json"] = q
         elif operation == "discard":
@@ -427,7 +556,12 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
             for qid in group["member_ids"]:
                 q = questions[qid]
                 if state(q)["draft"] is not None:
-                    change_definition(q, "definition_discard", edits.get(qid), actor)
+                    if store.v5:
+                        from .workflow import apply_definition
+
+                        apply_definition(q, "definition_discard", edits.get(qid), actor, questions)
+                    else:
+                        change_definition(q, "definition_discard", edits.get(qid), actor)
                     q["revision"] += 1
                     writes[f"questions/{qid}.json"] = q
             if not writes:
@@ -437,9 +571,15 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
                 raise FreezeError(
                     "Decision group changed since read; review all wording and dependencies again"
                 )
-            proposed = {}
+            proposed, reconfirmed = {}, []
             for qid in group["member_ids"]:
                 q, d = questions[qid], state(questions[qid])
+                if store.v5 and (d["draft"] or q.get("review_required")):
+                    from .workstore import WorkStore
+
+                    if q["work"]["phase"] != "human_review" or (d["draft"] and q.get("review_required")):
+                        raise FreezeError("Each member requires a prepared evidence and review packet")
+                    WorkStore(store).validate_review(q, writes)
                 if d["draft"]:
                     d["draft"] = candidate_for_approval(qid, questions)
                     if not d["draft"]["text"].strip():
@@ -456,6 +596,8 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
                         }
                 elif not current(q):
                     raise FreezeError("请先补齐组内候选：" + q["title"])
+                elif store.v5 and q.get("review_required"):
+                    reconfirmed.append(qid)
             # An unchanged clause also needs a new version if its bound group prerequisite changes.
             for _ in group["member_ids"]:
                 for qid in group["member_ids"]:
@@ -472,7 +614,7 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
                             "number": len(state(questions[qid])["versions"]) + 1,
                             "text_sha256": draft["text_sha256"],
                         }
-            if not proposed:
+            if not proposed and not reconfirmed:
                 raise FreezeError("本组没有发生变更的候选")
             for qid in group["member_ids"]:
                 if qid not in proposed:
@@ -496,17 +638,36 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
                         )
             for qid in proposed:
                 check_approval(qid, questions, proposed)
+            for qid in reconfirmed:
+                check_approval(qid, questions, proposed)
             from .definitions import approval_token
 
             for qid in proposed:
                 q = questions[qid]
                 change_definition(q, "definition_approve", approval_token(state(q)["draft"]), actor)
+                if store.v5:
+                    q.pop("status", None)
+                    from .workflow import automatic_phase
+
+                    automatic_phase(q, "closed", "group_confirmed", request_id, actor)
                 current(q)["decision_group"] = group["id"]
+                q["revision"] += 1
+                writes[f"questions/{qid}.json"] = q
+            for qid in reconfirmed:
+                from .workflow import reconfirm, review_token
+
+                q = questions[qid]
+                reconfirm(q, review_token(q), actor)
                 q["revision"] += 1
                 writes[f"questions/{qid}.json"] = q
             for qid in group["member_ids"]:
                 if qid not in proposed and state(questions[qid])["draft"] is not None:
                     change_definition(questions[qid], "definition_discard", None, actor)
+                    if store.v5:
+                        questions[qid].pop("status", None)
+                        from .workflow import automatic_phase
+
+                        automatic_phase(questions[qid], "closed", "unchanged", request_id, actor)
                     questions[qid]["revision"] += 1
                     writes[f"questions/{qid}.json"] = questions[qid]
             group["confirmations"].append(
@@ -514,6 +675,7 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
                     "by": actor,
                     "at": now(),
                     "request_id": request_id,
+                    **({"reconfirmed_ids": reconfirmed} if store.v5 else {}),
                     "versions": {
                         qid: [current(questions[qid])["number"], current(questions[qid])["text_sha256"]]
                         for qid in group["member_ids"]
@@ -524,6 +686,25 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
             raise FreezeError("Operation is unavailable to this actor")
         if len(group["messages"]) > 2000:
             raise FreezeError("Group discussion is too large")
+        if store.v5:
+            from .workflow import event, validate_record
+
+            if actor in {"user", "external_ai"} and operation in {
+                "comment",
+                "select_option",
+                "begin",
+                "discard",
+            }:
+                # Group feedback has exactly one owner; do not copy it into every F.
+                reference = (
+                    request_id if operation in {"comment", "select_option"} else {"operation": operation}
+                )
+                event(group, request_id, actor, operation, reference)
+            if operation == "approve":
+                from .workflow import automatic_phase
+
+                automatic_phase(group, "closed", "confirmed", request_id, actor)
+            validate_record(group)
         members = group["member_ids"]
         if any(set(members).intersection(g["member_ids"]) for g in data["groups"] if g is not group):
             raise FreezeError("A question already belongs to another decision group")
@@ -532,7 +713,9 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
         data["revision"] += 1
         data["requests"][request_id] = {"group_id": group["id"], "actor": actor, "fingerprint": fingerprint}
         manifest = store._manifest()
-        manifest.update(schema_version=2, revision=manifest["revision"] + 1)
+        manifest.update(schema_version=3 if store.v5 else 2, revision=manifest["revision"] + 1)
         writes.update({"decision-groups.json": data, "manifest.json": manifest})
+        if store.v5:
+            notify_dependency_changes(questions, previous_versions, writes, request_id)
         commit(store, writes)
         return group_view(group, questions)

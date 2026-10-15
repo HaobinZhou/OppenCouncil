@@ -21,6 +21,7 @@ QUESTION_ID = re.compile(r"F-[0-9]{6}\Z")
 MAX_JSON = 1024 * 1024
 MAX_HTML = 128 * 1024
 STATUSES = {"open", "answered", "discussing", "frozen", "historical"}
+GOVERNANCE_VERSIONS = (3, 4, 5)
 AI_ACTORS = {"codex", "chatgpt", "web_ai"}  # web_ai remains readable for legacy clients.
 
 
@@ -144,20 +145,39 @@ def governance_registry(project: Path) -> tuple[Path, str]:
         raw = ordinary_file(path, MAX_JSON)
         if raw is None:
             continue
-        count = sum(raw.decode("utf-8").splitlines().count(f"<!-- {prefix}:v{v} -->") for v in (3, 4))
+        lines = raw.decode("utf-8").splitlines()
+        v5 = lines.count("<!-- oppencouncil:v5 -->")
+        count = sum(lines.count(f"<!-- {prefix}:v{v} -->") for v in (3, 4)) + v5
         if count > 1:
             raise FreezeError("Ambiguous project governance marker")
         if count == 1:
-            found.append((path, prefix))
+            if v5:
+                from .project import read_metadata
+
+                read_metadata(raw.decode("utf-8"))
+            found.append((path, "oppencouncil" if v5 else prefix))
     if len(found) != 1:
         raise FreezeError("Exactly one native Stepwise R or Steward v3/v4 root is required")
     return found[0]
 
 
 class FreezeStore:
-    def __init__(self, project: str | Path):
+    def __init__(self, project: str | Path, *, recover_project=True):
         self.project = Path(project).expanduser().resolve(strict=True)
-        governance_registry(self.project)
+        self.recover_project = recover_project
+        from . import project_transaction as tx
+
+        if recover_project and (
+            (self.project / tx.STAGING).exists() or (self.project / tx.STAGING).is_symlink()
+        ):
+            tx.recover(self.project)
+        registry, skill = governance_registry(self.project)
+        self.v5 = skill == "oppencouncil"
+        self.project_type = None
+        if self.v5:
+            from .project import read_metadata
+
+            self.project_type = read_metadata(registry.read_text(encoding="utf-8"))["project_type"]
         self.root = self.project / "Freeze"
         self.questions = self.root / "questions"
         self.examples = self.root / "examples"
@@ -167,6 +187,12 @@ class FreezeStore:
         if create:
             try:
                 path.mkdir(mode=0o700)
+                if os.name != "nt":
+                    parent_fd = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY)
+                    try:
+                        os.fsync(parent_fd)
+                    finally:
+                        os.close(parent_fd)
             except FileExistsError:
                 pass
         try:
@@ -179,6 +205,23 @@ class FreezeStore:
 
     @contextmanager
     def locked(self, create: bool = False):
+        from . import project_transaction as tx
+
+        with tx.project_lock(self.project):
+            if self.recover_project:
+                tx.recover_locked(self.project)
+            registry, skill = governance_registry(self.project)
+            if (skill == "oppencouncil") != self.v5:
+                raise FreezeError("Project governance changed; reopen the project before retrying")
+            if self.v5:
+                from .project import read_metadata
+
+                self.project_type = read_metadata(registry.read_text(encoding="utf-8"))["project_type"]
+            with self._freeze_locked(create) as available:
+                yield available
+
+    @contextmanager
+    def _freeze_locked(self, create: bool = False):
         if not self._directory(self.root, create):
             yield False
             return
@@ -199,9 +242,17 @@ class FreezeStore:
     def _manifest(self) -> dict:
         raw = ordinary_file(self.manifest, MAX_JSON)
         if raw is None:
-            return {"schema_version": 1, "round": 0, "question_ids": [], "revision": 0, "requests": {}}
+            return {
+                "schema_version": 3 if self.v5 else 1,
+                "round": 0,
+                "question_ids": [],
+                "revision": 0,
+                "requests": {},
+            }
         value = json.loads(raw)
-        if value.get("schema_version") not in {1, 2} or not isinstance(value.get("question_ids"), list):
+        if value.get("schema_version") not in ({3} if self.v5 else {1, 2}) or not isinstance(
+            value.get("question_ids"), list
+        ):
             raise FreezeError("Unsupported Freeze manifest")
         if len(set(value["question_ids"])) != len(value["question_ids"]) or not all(
             isinstance(item, str) and QUESTION_ID.fullmatch(item) for item in value["question_ids"]
@@ -216,24 +267,46 @@ class FreezeStore:
         if raw is None:
             raise FreezeError("Question not found")
         value = json.loads(raw)
-        if value.get("id") != question_id or value.get("schema_version") != 1:
+        if value.get("id") != question_id or value.get("schema_version") != (2 if self.v5 else 1):
             raise FreezeError("Question file does not match its ID")
         from .definitions import validate_definition
 
         validate_definition(value)
+        if self.v5:
+            from .workflow import validate_record
+
+            validate_record(value)
         return value
 
     def snapshot(self) -> dict:
         with self.locked() as exists:
             manifest = self._manifest()
             questions = [self._question(item) for item in manifest["question_ids"]] if exists else []
-            return {
+            result = {
                 "project": str(self.project),
                 "round": manifest["round"],
                 "revision": manifest["revision"],
                 "questions": [self._view(q, {item["id"]: item for item in questions}) for q in questions],
                 "decision_groups": self._group_views({q["id"]: q for q in questions}) if exists else [],
             }
+            if self.v5:
+                from .workflow import projection
+                from .workstore import WorkStore
+
+                service = WorkStore(self)
+                result["governance_version"] = 5
+                result["pending_submission_paths"] = [
+                    path for path in manifest.get("submission_paths", [])
+                    if path not in manifest.get("submission_reviews", {})
+                    and not service.read_json(path)["targets"]
+                ]
+                result["investigations"] = []
+                for iid in manifest.get("investigation_ids", []):
+                    record = service.read_json(f"investigations/{iid}.json")
+                    result["investigations"].append(
+                        {**record, **projection(record, {q["id"]: q for q in questions})}
+                    )
+            return result
 
     def _group_views(self, questions):
         from .decisions import snapshot_groups
@@ -259,6 +332,14 @@ class FreezeStore:
         if result.get("definition", {}).get("draft"):
             result["definition"]["draft"] = candidate_for_approval(question["id"], questions)
             result["definition"]["draft"]["approval_token"] = approval_token(result["definition"]["draft"])
+        if self.v5:
+            from .workflow import projection, review_token
+
+            result.update(projection(question, questions))
+            result["reconfirmation_token"] = review_token(question)
+            result["ai_position"] = next(
+                (m["text"] for m in reversed(question.get("messages", [])) if m.get("kind") == "proposal"), ""
+            )
         return result
 
     def change_group(self, group_id, operation, value, **kwargs):
@@ -288,6 +369,10 @@ class FreezeStore:
             return self._view(question, all_questions(self))
 
     def add_questions(self, items: list[dict], *, request_id: str, actor: str = "codex") -> dict:
+        if self.v5:
+            from .workstore import WorkStore
+
+            return WorkStore(self).add(items, request_id=request_id, actor=actor)
         if actor not in AI_ACTORS:
             raise FreezeError("Questions require a recognized AI actor")
         require_text(request_id, "request_id", 100)
@@ -386,6 +471,17 @@ class FreezeStore:
         request_id: str,
         actor: str,
     ) -> dict:
+        if self.v5:
+            from .workstore import WorkStore
+
+            return WorkStore(self).change_question(
+                question_id,
+                operation,
+                value,
+                expected_revision=expected_revision,
+                request_id=request_id,
+                actor=actor,
+            )
         if actor not in AI_ACTORS | {"user"}:
             raise FreezeError("Operation is unavailable to this actor")
         require_text(request_id, "request_id", 100)
@@ -446,15 +542,20 @@ class FreezeStore:
                     raise FreezeError("At most eight suggestions")
                 context = {
                     key: require_text(value[key], key, 5000)
-                    for key in ("why", "source_summary") if key in value
+                    for key in ("why", "source_summary")
+                    if key in value
                 }
                 changed = {key: question.get(key, "") for key in context if question.get(key) != context[key]}
                 if changed:
-                    question.setdefault("review_notes", []).append({
-                        "id": request_id + ":context", "actor": actor, "at": now(),
-                        "text": "Presentation context updated; prior values retained for provenance.",
-                        "previous_context": changed,
-                    })
+                    question.setdefault("review_notes", []).append(
+                        {
+                            "id": request_id + ":context",
+                            "actor": actor,
+                            "at": now(),
+                            "text": "Presentation context updated; prior values retained for provenance.",
+                            "previous_context": changed,
+                        }
+                    )
                     question.update(context)
                 previous = question.get("ai_position")
                 earlier = [
@@ -488,36 +589,9 @@ class FreezeStore:
                 note["text"] = require_text(value, "verification note")
                 question.setdefault("review_notes", []).append(note)
             elif operation == "dependency_review" and actor in AI_ACTORS | {"user"}:
-                from .decisions import all_questions, blocking, current, readiness, requirements
+                from .decisions import all_questions, review_dependencies
 
-                questions = all_questions(self)
-                owner = current(question)
-                if not owner or question.get("definition", {}).get("draft"):
-                    raise FreezeError("Review requires an effective definition without an open draft")
-                bindings = {}
-                for dep in requirements(question):
-                    if not blocking(dep):
-                        continue
-                    up = questions[dep["question_id"]]
-                    version = current(up)
-                    if not version or readiness(up["id"], questions, use_draft=False)["status"] in {
-                        "waiting",
-                        "needs_review",
-                    }:
-                        raise FreezeError("Resolve upstream prerequisites before recording compatibility")
-                    bindings[up["id"]] = [version["number"], version["text_sha256"]]
-                if not isinstance(value, dict) or value.get("bindings") != bindings:
-                    raise FreezeError("Dependency versions changed since read; reload before reviewing")
-                question.setdefault("dependency_reviews", []).append(
-                    {
-                        "id": request_id,
-                        "by": actor,
-                        "at": now(),
-                        "owner_version": owner["number"],
-                        "bindings": bindings,
-                        "reason": require_text(value.get("reason"), "compatibility explanation"),
-                    }
-                )
+                review_dependencies(question, value, all_questions(self), actor, request_id)
             elif operation == "answer" and actor == "user":
                 question["user_answer"] = require_text(value, "answer")
                 if question["status"] in {"frozen", "historical"}:

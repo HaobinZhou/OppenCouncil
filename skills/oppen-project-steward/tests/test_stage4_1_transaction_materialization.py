@@ -13,8 +13,7 @@ from unittest import mock
 from scripts.test_filesystem import sparse_truncate
 
 
-SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "oppen_project_steward.py"
-SKILL_PATH = Path(__file__).parents[1] / "SKILL.md"
+SCRIPT_PATH = Path(__file__).parents[1] / "scripts" / "legacy_oppen_project_steward.py"
 SPEC = importlib.util.spec_from_file_location(
     "oppen_project_steward_stage4_1", SCRIPT_PATH
 )
@@ -322,17 +321,6 @@ class Stage41TransactionMaterializationTestCase(unittest.TestCase):
             (current / "summary.json").read_text(encoding="utf-8"),
             '{"ready": true}\n',
         )
-
-    def test_skill_persists_transaction_materialization_boundary(self) -> None:
-        text = SKILL_PATH.read_text(encoding="utf-8") + (SKILL_PATH.parent / "references/maintenance.md").read_text(encoding="utf-8")
-        for phrase in (
-            "declared Managed Operation Write Set",
-            "Never clone, recursively copy, hardlink, reflink",
-            "candidate overlay",
-            "EXDEV",
-        ):
-            self.assertIn(phrase, text)
-
 
 if __name__ == "__main__":
     unittest.main()

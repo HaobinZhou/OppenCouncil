@@ -1,0 +1,1723 @@
+{
+  "measurement": "Actual file reads/calls; whitespace words are not model tokens. Mechanical checks alone do not establish semantic success.",
+  "runs": [
+    {
+      "scenario": "council",
+      "directory": "/private/tmp/oppencouncil-review-council-20261014-a/48988fd0ad66",
+      "checks": {
+        "actual_entry_unchanged": true,
+        "entry_loaded": true,
+        "no_memory": true,
+        "no_release": true,
+        "no_archived_content_read": true,
+        "archived_content_unchanged": true
+      },
+      "validation": {
+        "state": "DAMAGED",
+        "project": "/private/tmp/oppencouncil-review-council-20261014-a/48988fd0ad66/project",
+        "project_type": "research",
+        "errors": [
+          {
+            "path": "I-000004",
+            "reason": "Unresolved work blocker: Source-extraction audit unavailable"
+          },
+          {
+            "path": "I-000004",
+            "reason": "Unresolved work blocker: Explicitly required external review has not returned"
+          }
+        ],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "changed_project_files": [
+        "Freeze/evidence/claims/E-000001/r000001.json",
+        "Freeze/evidence/claims/E-000002/r000001.json",
+        "Freeze/evidence/claims/E-000003/r000001.json",
+        "Freeze/evidence/claims/E-000004/r000001.json",
+        "Freeze/evidence/claims/E-000005/r000001.json",
+        "Freeze/evidence/sources/S-000001/r000001.json",
+        "Freeze/evidence/sources/S-000002/r000001.json",
+        "Freeze/evidence/sources/S-000003/r000001.json",
+        "Freeze/evidence/sources/S-000004/r000001.json",
+        "Freeze/evidence/sources/S-000005/r000001.json",
+        "Freeze/evidence/sources/S-000006/r000001.json",
+        "Freeze/investigations/I-000001.json",
+        "Freeze/investigations/I-000002.json",
+        "Freeze/investigations/I-000003.json",
+        "Freeze/investigations/I-000004.json",
+        "Freeze/manifest.json",
+        "Freeze/questions/F-000001.json",
+        "Freeze/questions/F-000002.json"
+      ],
+      "instruction_reads": [
+        {
+          "at": 1791990282.746326,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791990288.856651,
+          "operation": "read",
+          "path": "skill/references/triage.md",
+          "bytes": 874,
+          "whitespace_words": 100,
+          "sha256": "3117a3eb0f86e675111ae83193b7cceee0b9eb5a7d86e4247c8ef7d9c89fc18f"
+        },
+        {
+          "at": 1791990288.857088,
+          "operation": "read",
+          "path": "skill/references/evidence.md",
+          "bytes": 1838,
+          "whitespace_words": 190,
+          "sha256": "9bf368df5b7e757c3927d31541dac0dd2c6c23ba9f7b7934a8216f1abe7153f3"
+        },
+        {
+          "at": 1791990288.857475,
+          "operation": "read",
+          "path": "skill/references/review-packet.md",
+          "bytes": 1704,
+          "whitespace_words": 185,
+          "sha256": "22069ea1cc07fb62f1cbdaf0b004cb6a7c541412f5aa10a07ffc3464dc32c8c0"
+        },
+        {
+          "at": 1791990288.857684,
+          "operation": "read",
+          "path": "skill/references/resume.md",
+          "bytes": 1823,
+          "whitespace_words": 230,
+          "sha256": "8ec75b388fc632baa44dda1c05daf7070842f048d8f0f56553c3368bb97c3aa6"
+        },
+        {
+          "at": 1791990297.499139,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 3666,
+          "whitespace_words": 422,
+          "sha256": "046f29049827530f79ba254f8168ee599028932bec5e04b1f9a24f925a9e931f"
+        },
+        {
+          "at": 1791990297.499609,
+          "operation": "read",
+          "path": "skill/references/groups.md",
+          "bytes": 2360,
+          "whitespace_words": 274,
+          "sha256": "f83a6b77bede7a126655277ebcc326ec2b93d9a606c3bb111c7fefeecc3e0122"
+        }
+      ],
+      "source_reads": [
+        {
+          "at": 1791990282.746669,
+          "operation": "read",
+          "path": "project/README.md",
+          "bytes": 366,
+          "whitespace_words": 54,
+          "sha256": "70e8302243ad058c50ef731d999786267d99d92e5152a5191d145fef9b3b8363"
+        },
+        {
+          "at": 1791990288.8579462,
+          "operation": "read",
+          "path": "project/Audit/request.md",
+          "bytes": 260,
+          "whitespace_words": 37,
+          "sha256": "9d3f08d0e5ebd355562ea661a8a1c2fc0f182fd8a4be9bf2f45be087db9559d5"
+        },
+        {
+          "at": 1791990288.85823,
+          "operation": "read",
+          "path": "project/Audit/design.json",
+          "bytes": 530,
+          "whitespace_words": 51,
+          "sha256": "68089263339d326be5a751e6e38762f505502110d18a4430aec0daa0cb097cc8"
+        },
+        {
+          "at": 1791990306.875374,
+          "operation": "read",
+          "path": "project/Audit/sources/lag.txt",
+          "bytes": 489,
+          "whitespace_words": 74,
+          "sha256": "ca6612d9c61845ad5828e5efd69e6f61a63a562dc38b1537f6fd295469d33148"
+        },
+        {
+          "at": 1791990306.875901,
+          "operation": "read",
+          "path": "project/Audit/sources/method.txt",
+          "bytes": 545,
+          "whitespace_words": 70,
+          "sha256": "af83bff11fa2943b8cb251ec0a71c6cf244423b42874e5c51745cf77fe47927d"
+        },
+        {
+          "at": 1791990306.876242,
+          "operation": "read",
+          "path": "project/Audit/sources/reporting.txt",
+          "bytes": 313,
+          "whitespace_words": 39,
+          "sha256": "5eaba3eed2659f7b22080f83025d32c77ee0220fdee0ae0bf8f6127ad00cbdbd"
+        },
+        {
+          "at": 1791990306.876498,
+          "operation": "read",
+          "path": "project/Audit/sources/unverified.md",
+          "bytes": 237,
+          "whitespace_words": 38,
+          "sha256": "400f31d8ef494be6d32fd25e8c02c07155a98144946b7172cbcec69df1233379"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1971,
+        "adapter_words": 719,
+        "cli_and_script_calls": 31,
+        "nonzero_calls": 5
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791990525.210609,
+          "operation": "council",
+          "arguments": [
+            "work-commit",
+            "project",
+            "--input",
+            "review-assessment.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "OppenCouncil: Decisive objection needs resolution or an explained tradeoff\n"
+        },
+        {
+          "at": 1791990560.3929431,
+          "operation": "council",
+          "arguments": [
+            "work-commit",
+            "project",
+            "--input",
+            "review-assessment.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "OppenCouncil: Human review requires a candidate or effective-version reassessment\n"
+        },
+        {
+          "at": 1791990578.295656,
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-review-council-20261014-a/48988fd0ad66/project\",\n  \"project_type\": \"research\",\n  \"errors\": [\n    {\n      \"path\": \"I-000004\",\n      \"reason\": \"Unresolved work blocker: Source-extraction audit unavailable\"\n    },\n    {\n      \"path\": \"I-000004\",\n      \"reason\": \"Unresolved work blocker: Explicitly required external review has not returned\"\n    }\n  ],\n  \"warnings\": [],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        },
+        {
+          "at": 1791990628.9773812,
+          "operation": "council",
+          "arguments": [
+            "work-commit",
+            "project",
+            "--input",
+            "continuation.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "OppenCouncil: Unknown or unauthorized work change\n"
+        },
+        {
+          "at": 1791990651.007442,
+          "operation": "project",
+          "arguments": [
+            "validate",
+            "project"
+          ],
+          "returncode": 2,
+          "stdout": "{\n  \"state\": \"DAMAGED\",\n  \"project\": \"/private/tmp/oppencouncil-review-council-20261014-a/48988fd0ad66/project\",\n  \"project_type\": \"research\",\n  \"errors\": [\n    {\n      \"path\": \"I-000004\",\n      \"reason\": \"Unresolved work blocker: Source-extraction audit unavailable\"\n    },\n    {\n      \"path\": \"I-000004\",\n      \"reason\": \"Unresolved work blocker: Explicitly required external review has not returned\"\n    }\n  ],\n  \"warnings\": [],\n  \"unassigned_files\": []\n}\n",
+          "stderr": ""
+        }
+      ],
+      "saved_items": [
+        {
+          "id": "F-000001",
+          "title": "Uncertainty estimator for correlated people within independent districts",
+          "why": "The project declares 60 independent districts with within-district correlation. The supplied methods note supports district-clustered sandwich variance; the reporting example does not prescribe an estimator. Prepare a single recommendation for human review.",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [
+              "F-000001",
+              "I-000001"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "Human reviews and confirms or revises this uncertainty-method candidate; no confirmation is performed by this task."
+            ],
+            "conclusion_type": "single_recommendation",
+            "phase": "human_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:09:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000001",
+                  "I-000001"
+                ],
+                "at": "2026-10-14T15:09:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Human reviews and confirms or revises this uncertainty-method candidate; no confirmation is performed by this task."
+                ],
+                "from": "prepare_review",
+                "reason": "The supplied verified method source and design facts support one applicable recommendation; packet and candidate are complete for human review.",
+                "to": "human_review",
+                "trigger_refs": [
+                  "I-000001",
+                  "evidence/claims/E-000001/r000001.json",
+                  "evidence/claims/E-000002/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "I-000001",
+              "evidence/claims/E-000001/r000001.json",
+              "evidence/claims/E-000002/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "Use district-clustered sandwich variance for uncertainty estimation in the stated design of 60 independent districts with potentially correlated people within each district. Treat districts as the independent units for this uncertainty method. Report the point estimator, clustering unit, number of districts and uncertainty method sufficiently for replication. This recommendation uses the supplied approximation for at least 40 independent districts; an analysis with fewer than 40 independent districts requires separate small-sample assessment before applying this rule. The reporting example of ordinary model-based errors does not prescribe the estimator. This definition selects the uncertainty method only; it does not select the point estimator, lag window or calendar cutoff.",
+            "text_sha256": "8966f034cb77b81949ebdddf7ab873ed927f9bcdb868e19e8186a456cb95f0d4",
+            "base_version": null,
+            "dependencies": [],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json",
+                "evidence/claims/E-000002/r000001.json"
+              ],
+              "packet_sha256": "c39bf7bbba7a8d6cfae8b0164c7ea87252d02e8498b9f05f1045dc10927d75c7",
+              "summary": "One evidence-supported recommendation: district-clustered sandwich variance matches the supplied independent-district design and the methods note's cluster-count condition. The reporting example is descriptive, not a competing mandate."
+            },
+            "approval_token": "ec0f7d563e394bd5e24533b6bcf3188375d19299512b3376ece5ae565864b562"
+          },
+          "current": null,
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000001/r000001.json",
+              "evidence/claims/E-000002/r000001.json"
+            ],
+            "packet_sha256": "c39bf7bbba7a8d6cfae8b0164c7ea87252d02e8498b9f05f1045dc10927d75c7",
+            "summary": "One evidence-supported recommendation: district-clustered sandwich variance matches the supplied independent-district design and the methods note's cluster-count condition. The reporting example is descriptive, not a competing mandate."
+          },
+          "review_packet": {
+            "applicability": "60 declared independent districts exceeds the supplied 40-district minimum; within-district correlation is expressly present. No raw data, fitted model, software-specific implementation or standard-error numerical result has been audited.",
+            "common_practice": "The supplied methods note supports district-clustered sandwich variance for independent districts with arbitrary within-district correlation when there are at least 40 districts. The reporting standard requires sufficient reporting for replication but does not choose an estimator.",
+            "default": "Recommend district-clustered sandwich variance, subject to human confirmation. Do not present ordinary independence-based errors as an equally supported alternative for the declared correlated design.",
+            "departure_check": "No departure from the reporting standard: its ordinary-error example concerns independent people and is not normative estimator guidance. No credible, verified source supports ordinary errors as preferable for this design. Assessed objections and limits: The ordinary-error reporting example assumes independent people; that condition differs from this project and the standard itself does not select an estimator. The alleged Universal Variance 2026 exists only as an unverified model assertion (S-000006/r000001). No author, DOI, abstract or original text is available; it is excluded from recommendation support and does not establish an evidence-backed alternative.",
+            "project_reason": "The unit of independence is district, not individual. Accounting for within-district covariance directly answers the observed design issue without changing the analysis target.",
+            "support": "Original supplied text verified at S-000001/r000001 and S-000002/r000001; checked design record S-000004/r000001. E-000001/r000001 and E-000002/r000001 trace the recommendation. All documents are fictional sources furnished for this case."
+          },
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/claims/E-000001/r000001.json",
+            "evidence/claims/E-000002/r000001.json",
+            "evidence/sources/S-000006/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": "48cebccaee12bbc993ed96701ae7a15432fa5306d67d327a333b2bb12fd8bf55",
+          "read_set": {
+            "F-000001": 2
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": []
+          },
+          "review_category": "quick_confirm",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "F-000002",
+          "title": "Six-month versus twelve-month lag exclusion",
+          "why": "Both lag choices are credible but change analyzed event/time populations and sacrifice different amounts of information. Zero present events in months 6–12 does not establish equivalent rules, especially with future refreshes. Prepare the substantive tradeoff for human review.",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [
+              "F-000002",
+              "I-000003"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "Human explicitly selects the lag priority and confirms or revises the complete candidate before the primary duration becomes formal."
+            ],
+            "conclusion_type": "tradeoff",
+            "phase": "human_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000002"
+                ],
+                "at": "2026-10-14T15:09:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000002",
+                  "I-000003"
+                ],
+                "at": "2026-10-14T15:09:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Human explicitly selects the lag priority and confirms or revises the complete candidate before the primary duration becomes formal."
+                ],
+                "from": "prepare_review",
+                "reason": "Both alternatives are supportable but have different scientific consequences; the review packet makes the preference and uncertainty explicit.",
+                "to": "human_review",
+                "trigger_refs": [
+                  "I-000003",
+                  "evidence/claims/E-000004/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "I-000003",
+              "evidence/claims/E-000004/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "Proposed primary lag rule: exclude the first six months of follow-up from the longer-term event/time analysis. Use this declared six-month rule consistently for the present dataset and later refreshes; do not switch it solely because months 6–12 currently contain zero observed events. A twelve-month exclusion is a credible alternative that removes a longer interval of possible reverse causation but sacrifices additional follow-up information and changes the analyzed event/time population. The human review must choose between these materially different priorities before the primary lag rule is frozen. The proposed six-month choice reflects the stated aim of retaining usable information and is not a claim of universally optimal lag or quantified bias reduction. This candidate concerns lag duration; implementation details such as boundary arithmetic and eligibility handling must be specified in the analysis design before execution.",
+            "text_sha256": "46ecb1ec3f1f099830c5360aa6e7a49a94963f921ccc6609e778749597f2f80c",
+            "base_version": null,
+            "dependencies": [],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000004/r000001.json"
+              ],
+              "packet_sha256": "cdc2f267f7fd05ffd75cd9a72d51b3ea4b5fd9c2aa148bfb1d8c100ff95a35b4",
+              "summary": "A genuine information-retention versus longer early-period-exclusion tradeoff. Both lag rules are credible, but equal present event counts do not make their definitions equivalent. The proposal favors six months in light of the stated retention objective, with twelve months retained as a substantive alternative."
+            },
+            "approval_token": "b2c7bc94c0520f7eb74be09d1f99d4b18ae050cba75a70934499ff66d71f4959"
+          },
+          "current": null,
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000004/r000001.json"
+            ],
+            "packet_sha256": "cdc2f267f7fd05ffd75cd9a72d51b3ea4b5fd9c2aa148bfb1d8c100ff95a35b4",
+            "summary": "A genuine information-retention versus longer early-period-exclusion tradeoff. Both lag rules are credible, but equal present event counts do not make their definitions equivalent. The proposal favors six months in light of the stated retention objective, with twelve months retained as a substantive alternative."
+          },
+          "review_packet": {
+            "applicability": "The stated objective combines longer-term association and retention of usable information. Present months 6–12 have zero events, but follow-up time need not be equal and future refreshes are expected. No data analysis has verified risk sets, person-time, effect estimates or information loss.",
+            "common_practice": "The supplied lag note describes both six- and twelve-month exclusion windows and explicitly states that neither is universally preferred. No external convention is inferred.",
+            "default": "Proposed starting option: six-month exclusion to retain more usable follow-up. This is a project-oriented recommendation for discussion, not an evidence-settled choice. Alternative: twelve-month exclusion when the researcher prioritizes removal of the longer possible reverse-causation interval despite information loss. Human selection is still required.",
+            "departure_check": "Neither option departs from a universal standard in the supplied evidence. Choosing twelve months entails a substantive change from six months; current equal event counts cannot justify treating the rules as interchangeable. Assessed objections and limits: Twelve months is a credible alternative: it excludes a longer interval in which reverse causation may occur, with additional loss of follow-up information. Zero present events in months 6–12 establishes only a reported current count. It does not prove equivalent event/time populations, estimates, information, or behavior after a refresh. No quantitative bias reduction, superiority threshold, or implementation-specific month boundary is supplied. These must not be invented or presented as validated.",
+            "project_reason": "Six months gives greater weight to the explicit information-retention objective. Twelve months gives greater weight to excluding a longer early interval. The supplied evidence cannot quantify the benefit or cost, so the preference remains a human scientific tradeoff.",
+            "support": "Full supplied lag text S-000003/r000001 and checked project record S-000004/r000001 support E-000004/r000001. The source provides qualitative consequences only and no numerical estimate of reverse-causation bias reduction."
+          },
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/claims/E-000004/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": "63bb36877182a31d5e3da452d4a42cf27ea3569fe7164adb3697ccfb77093b83",
+          "read_set": {
+            "F-000002": 2
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": []
+          },
+          "review_category": "decision",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "I-000001",
+          "title": "Uncertainty estimator",
+          "why": "Reporting example uses ordinary errors; project has clustered people.",
+          "legacy_attention": null,
+          "revision": 3,
+          "work": {
+            "affected_refs": [
+              "I-000001",
+              "F-000001"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "Human disposition of F-000001; only then consider investigation closure."
+            ],
+            "conclusion_type": "single_recommendation",
+            "phase": "prepare_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "I-000001",
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:09:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Human disposition of F-000001; only then consider investigation closure."
+                ],
+                "from": "triage",
+                "reason": "Investigation yields a single supported district-clustered uncertainty recommendation; candidate and review basis saved on F-000001. Reporting example is not a conflicting method requirement.",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "evidence/claims/E-000001/r000001.json",
+                  "evidence/claims/E-000002/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "evidence/claims/E-000001/r000001.json",
+              "evidence/claims/E-000002/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [
+            {
+              "continue_when": {
+                "kind": "definition_confirmed",
+                "min_version": 1,
+                "question_id": "F-000001"
+              },
+              "id": "uncertainty-human-disposition",
+              "question": "Has the reviewer confirmed the uncertainty-method candidate or requested revisions?",
+              "reason": "F-000001 is ready for human review and has no current formal version. Confirmation permits reconciliation and subsequent closure of this investigation; new feedback should be assessed when received.",
+              "resolved": false,
+              "updated_at": "2026-10-14T15:10:39+00:00",
+              "updated_in": "review-20261014-save-continuation-v2"
+            }
+          ],
+          "candidate": null,
+          "current": null,
+          "review_basis": null,
+          "review_packet": null,
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/claims/E-000001/r000001.json",
+            "evidence/claims/E-000002/r000001.json",
+            "evidence/sources/S-000006/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": null,
+          "read_set": {
+            "I-000001": 3
+          },
+          "member_ids": [],
+          "readiness": null,
+          "review_category": "quick_confirm",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": false,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "I-000004",
+          "title": "Sex missingness",
+          "why": "Need to determine whether source extraction removed missing records.",
+          "legacy_attention": null,
+          "revision": 3,
+          "work": {
+            "affected_refs": [
+              "I-000004",
+              "Audit/design.json:sex_missing_audit",
+              "Audit/request.md"
+            ],
+            "blockers": [
+              "Source-extraction audit unavailable",
+              "Explicitly required external review has not returned"
+            ],
+            "closed_reason": null,
+            "completion_conditions": [
+              "Obtain source-extraction audit identifying missing-sex handling and any removed records, and assess it against the question.",
+              "Receive and assess the specifically requested external review; address any unresolved objections before closure."
+            ],
+            "conclusion_type": "needs_check",
+            "phase": "evidence",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "I-000004",
+                  "Audit/design.json:sex_missing_audit",
+                  "Audit/request.md"
+                ],
+                "at": "2026-10-14T15:09:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Obtain source-extraction audit identifying missing-sex handling and any removed records, and assess it against the question.",
+                  "Receive and assess the specifically requested external review; address any unresolved objections before closure."
+                ],
+                "from": "triage",
+                "reason": "No source-extraction audit establishes whether missing-sex records were removed. Researcher-required external review is outstanding. Both must be assessed before closure; no missingness-management definition can be inferred from absence of evidence.",
+                "to": "evidence",
+                "trigger_refs": [
+                  "evidence/claims/E-000005/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "evidence/claims/E-000005/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [
+            {
+              "continue_when": {
+                "kind": "local_assessment",
+                "satisfied": false
+              },
+              "id": "sex-source-extraction-audit",
+              "input_refs": [
+                "evidence/claims/E-000005/r000001.json"
+              ],
+              "question": "Did source extraction remove records with missing sex, and what observed extraction evidence establishes this?",
+              "reason": "The supplied design expressly says extraction has not been checked. No supported finding about actual sex missingness or record removal is available.",
+              "resolved": false,
+              "updated_at": "2026-10-14T15:09:30+00:00",
+              "updated_in": "review-20261014-four-investigations-v3"
+            },
+            {
+              "continue_when": {
+                "kind": "local_assessment",
+                "satisfied": false
+              },
+              "id": "sex-required-external-review",
+              "input_refs": [
+                "evidence/sources/S-000005/r000001.json"
+              ],
+              "question": "What does the researcher-requested external review conclude about sex-missingness extraction, and have its objections been resolved?",
+              "reason": "Audit/request.md specifically requires external review before closure and says the reviewer has not responded. No local inference can waive this condition.",
+              "resolved": false,
+              "updated_at": "2026-10-14T15:09:30+00:00",
+              "updated_in": "review-20261014-four-investigations-v3"
+            }
+          ],
+          "candidate": null,
+          "current": null,
+          "review_basis": null,
+          "review_packet": null,
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/claims/E-000005/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": null,
+          "read_set": {
+            "I-000004": 3
+          },
+          "member_ids": [],
+          "readiness": null,
+          "review_category": "checking",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": false,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "I-000003",
+          "title": "Lag window",
+          "why": "Six and twelve month exclusions give the same present event count.",
+          "legacy_attention": null,
+          "revision": 3,
+          "work": {
+            "affected_refs": [
+              "I-000003",
+              "F-000002"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "Human selects and confirms the lag duration after considering both consequences; current zero event count is not a decision rule."
+            ],
+            "conclusion_type": "tradeoff",
+            "phase": "prepare_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "I-000003",
+                  "F-000002"
+                ],
+                "at": "2026-10-14T15:09:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Human selects and confirms the lag duration after considering both consequences; current zero event count is not a decision rule."
+                ],
+                "from": "triage",
+                "reason": "Six versus twelve months changes the analyzed event/time population and trades information retention against excluding a longer possible reverse-causation interval. F-000002 preserves both options and an explicitly provisional preference.",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "evidence/claims/E-000004/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "evidence/claims/E-000004/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [
+            {
+              "continue_when": {
+                "kind": "definition_confirmed",
+                "min_version": 1,
+                "question_id": "F-000002"
+              },
+              "id": "lag-human-disposition",
+              "question": "Which lag priority does the reviewer select, and has the resulting candidate been confirmed?",
+              "reason": "F-000002 contains a genuine tradeoff and has no current formal version. Confirmation permits reconciliation and subsequent closure of this investigation; any revision or objection still requires assessment.",
+              "resolved": false,
+              "updated_at": "2026-10-14T15:10:39+00:00",
+              "updated_in": "review-20261014-save-continuation-v2"
+            }
+          ],
+          "candidate": null,
+          "current": null,
+          "review_basis": null,
+          "review_packet": null,
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/claims/E-000004/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": null,
+          "read_set": {
+            "I-000003": 3
+          },
+          "member_ids": [],
+          "readiness": null,
+          "review_category": "decision",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": false,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "I-000002",
+          "title": "Calendar follow-up end",
+          "why": "Two expressions for the follow-up end have been proposed.",
+          "legacy_attention": null,
+          "revision": 3,
+          "work": {
+            "affected_refs": [
+              "I-000002",
+              "Audit/design.json:recorded_date_type",
+              "Audit/design.json:followup_end_proposals"
+            ],
+            "blockers": [],
+            "closed_reason": "The supplied date-only domain makes the two cutoff predicates logically equivalent for valid dates: both include 2026-12-31 and exclude 2027-01-01. This resolves a fact question and creates no independent scientific choice or F.",
+            "completion_conditions": [
+              "Satisfied: checked the supplied calendar-date type and established equivalence of both proposed upper bounds."
+            ],
+            "conclusion_type": "fact_lookup",
+            "phase": "closed",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "I-000002",
+                  "Audit/design.json:recorded_date_type",
+                  "Audit/design.json:followup_end_proposals"
+                ],
+                "at": "2026-10-14T15:09:30+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Satisfied: checked the supplied calendar-date type and established equivalence of both proposed upper bounds."
+                ],
+                "from": "triage",
+                "reason": "The supplied date-only domain makes the two cutoff predicates logically equivalent for valid dates: both include 2026-12-31 and exclude 2027-01-01. This resolves a fact question and creates no independent scientific choice or F.",
+                "to": "closed",
+                "trigger_refs": [
+                  "evidence/claims/E-000003/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "evidence/claims/E-000003/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": null,
+          "current": null,
+          "review_basis": null,
+          "review_packet": null,
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/claims/E-000003/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": null,
+          "read_set": {
+            "I-000002": 3
+          },
+          "member_ids": [],
+          "readiness": null,
+          "review_category": "decision",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": false,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        }
+      ],
+      "snapshot": {
+        "project": "/private/tmp/oppencouncil-review-council-20261014-a/48988fd0ad66/project",
+        "round": 1,
+        "revision": 7,
+        "questions": [
+          {
+            "created_at": "2026-10-14T15:05:38+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:09:30+00:00",
+                    "by": "codex",
+                    "text": "Use district-clustered sandwich variance for uncertainty estimation in the stated design of 60 independent districts with potentially correlated people within each district. Treat districts as the independent units for this uncertainty method. Report the point estimator, clustering unit, number of districts and uncertainty method sufficiently for replication. This recommendation uses the supplied approximation for at least 40 independent districts; an analysis with fewer than 40 independent districts requires separate small-sample assessment before applying this rule. The reporting example of ordinary model-based errors does not prescribe the estimator. This definition selects the uncertainty method only; it does not select the point estimator, lag window or calendar cutoff."
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json"
+                  ],
+                  "packet_sha256": "c39bf7bbba7a8d6cfae8b0164c7ea87252d02e8498b9f05f1045dc10927d75c7",
+                  "summary": "One evidence-supported recommendation: district-clustered sandwich variance matches the supplied independent-district design and the methods note's cluster-count condition. The reporting example is descriptive, not a competing mandate."
+                },
+                "text": "Use district-clustered sandwich variance for uncertainty estimation in the stated design of 60 independent districts with potentially correlated people within each district. Treat districts as the independent units for this uncertainty method. Report the point estimator, clustering unit, number of districts and uncertainty method sufficiently for replication. This recommendation uses the supplied approximation for at least 40 independent districts; an analysis with fewer than 40 independent districts requires separate small-sample assessment before applying this rule. The reporting example of ordinary model-based errors does not prescribe the estimator. This definition selects the uncertainty method only; it does not select the point estimator, lag window or calendar cutoff.",
+                "text_sha256": "8966f034cb77b81949ebdddf7ab873ed927f9bcdb868e19e8186a456cb95f0d4",
+                "updated_at": "2026-10-14T15:09:30+00:00",
+                "updated_by": "codex",
+                "approval_token": "ec0f7d563e394bd5e24533b6bcf3188375d19299512b3376ece5ae565864b562"
+              },
+              "versions": []
+            },
+            "evidence_refs": [
+              "evidence/claims/E-000001/r000001.json",
+              "evidence/claims/E-000002/r000001.json",
+              "evidence/sources/S-000006/r000001.json"
+            ],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000001",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:09:30+00:00",
+                "id": "review-20261014-four-investigations-v3:F-000001:0",
+                "request_id": "review-20261014-four-investigations-v3",
+                "text": "Prepared for review, not frozen or implemented. The supplied reporting example is not a reason to label this recommendation a departure. Missing-sex extraction review and lag selection are independent questions."
+              }
+            ],
+            "pending_items": [],
+            "problem_type": "research_method",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json",
+                "evidence/claims/E-000002/r000001.json"
+              ],
+              "packet_sha256": "c39bf7bbba7a8d6cfae8b0164c7ea87252d02e8498b9f05f1045dc10927d75c7",
+              "summary": "One evidence-supported recommendation: district-clustered sandwich variance matches the supplied independent-district design and the methods note's cluster-count condition. The reporting example is descriptive, not a competing mandate."
+            },
+            "review_packet": {
+              "applicability": "60 declared independent districts exceeds the supplied 40-district minimum; within-district correlation is expressly present. No raw data, fitted model, software-specific implementation or standard-error numerical result has been audited.",
+              "common_practice": "The supplied methods note supports district-clustered sandwich variance for independent districts with arbitrary within-district correlation when there are at least 40 districts. The reporting standard requires sufficient reporting for replication but does not choose an estimator.",
+              "default": "Recommend district-clustered sandwich variance, subject to human confirmation. Do not present ordinary independence-based errors as an equally supported alternative for the declared correlated design.",
+              "departure_check": "No departure from the reporting standard: its ordinary-error example concerns independent people and is not normative estimator guidance. No credible, verified source supports ordinary errors as preferable for this design. Assessed objections and limits: The ordinary-error reporting example assumes independent people; that condition differs from this project and the standard itself does not select an estimator. The alleged Universal Variance 2026 exists only as an unverified model assertion (S-000006/r000001). No author, DOI, abstract or original text is available; it is excluded from recommendation support and does not establish an evidence-backed alternative.",
+              "project_reason": "The unit of independence is district, not individual. Accounting for within-district covariance directly answers the observed design issue without changing the analysis target.",
+              "support": "Original supplied text verified at S-000001/r000001 and S-000002/r000001; checked design record S-000004/r000001. E-000001/r000001 and E-000002/r000001 trace the recommendation. All documents are fictional sources furnished for this case."
+            },
+            "review_required": null,
+            "revision": 2,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "Uncertainty estimator for correlated people within independent districts",
+            "verification_tests": [],
+            "why": "The project declares 60 independent districts with within-district correlation. The supplied methods note supports district-clustered sandwich variance; the reporting example does not prescribe an estimator. Prepare a single recommendation for human review.",
+            "work": {
+              "affected_refs": [
+                "F-000001",
+                "I-000001"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "Human reviews and confirms or revises this uncertainty-method candidate; no confirmation is performed by this task."
+              ],
+              "conclusion_type": "single_recommendation",
+              "phase": "human_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:09:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000001",
+                    "I-000001"
+                  ],
+                  "at": "2026-10-14T15:09:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Human reviews and confirms or revises this uncertainty-method candidate; no confirmation is performed by this task."
+                  ],
+                  "from": "prepare_review",
+                  "reason": "The supplied verified method source and design facts support one applicable recommendation; packet and candidate are complete for human review.",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "I-000001",
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "I-000001",
+                "evidence/claims/E-000001/r000001.json",
+                "evidence/claims/E-000002/r000001.json"
+              ]
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": null,
+            "review_category": "quick_confirm",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "48cebccaee12bbc993ed96701ae7a15432fa5306d67d327a333b2bb12fd8bf55",
+            "ai_position": ""
+          },
+          {
+            "created_at": "2026-10-14T15:05:38+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:09:30+00:00",
+                    "by": "codex",
+                    "text": "Proposed primary lag rule: exclude the first six months of follow-up from the longer-term event/time analysis. Use this declared six-month rule consistently for the present dataset and later refreshes; do not switch it solely because months 6–12 currently contain zero observed events. A twelve-month exclusion is a credible alternative that removes a longer interval of possible reverse causation but sacrifices additional follow-up information and changes the analyzed event/time population. The human review must choose between these materially different priorities before the primary lag rule is frozen. The proposed six-month choice reflects the stated aim of retaining usable information and is not a claim of universally optimal lag or quantified bias reduction. This candidate concerns lag duration; implementation details such as boundary arithmetic and eligibility handling must be specified in the analysis design before execution."
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000004/r000001.json"
+                  ],
+                  "packet_sha256": "cdc2f267f7fd05ffd75cd9a72d51b3ea4b5fd9c2aa148bfb1d8c100ff95a35b4",
+                  "summary": "A genuine information-retention versus longer early-period-exclusion tradeoff. Both lag rules are credible, but equal present event counts do not make their definitions equivalent. The proposal favors six months in light of the stated retention objective, with twelve months retained as a substantive alternative."
+                },
+                "text": "Proposed primary lag rule: exclude the first six months of follow-up from the longer-term event/time analysis. Use this declared six-month rule consistently for the present dataset and later refreshes; do not switch it solely because months 6–12 currently contain zero observed events. A twelve-month exclusion is a credible alternative that removes a longer interval of possible reverse causation but sacrifices additional follow-up information and changes the analyzed event/time population. The human review must choose between these materially different priorities before the primary lag rule is frozen. The proposed six-month choice reflects the stated aim of retaining usable information and is not a claim of universally optimal lag or quantified bias reduction. This candidate concerns lag duration; implementation details such as boundary arithmetic and eligibility handling must be specified in the analysis design before execution.",
+                "text_sha256": "46ecb1ec3f1f099830c5360aa6e7a49a94963f921ccc6609e778749597f2f80c",
+                "updated_at": "2026-10-14T15:09:30+00:00",
+                "updated_by": "codex",
+                "approval_token": "b2c7bc94c0520f7eb74be09d1f99d4b18ae050cba75a70934499ff66d71f4959"
+              },
+              "versions": []
+            },
+            "evidence_refs": [
+              "evidence/claims/E-000004/r000001.json"
+            ],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000002",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:09:30+00:00",
+                "id": "review-20261014-four-investigations-v3:F-000002:0",
+                "request_id": "review-20261014-four-investigations-v3",
+                "text": "This is a substantive tradeoff, not two equivalent date expressions or a settled single recommendation. No confirmation, analysis execution, or numeric claim of bias reduction occurred. The independent missing-sex investigation is not a prerequisite for reviewing lag duration."
+              }
+            ],
+            "pending_items": [],
+            "problem_type": "research_method",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000004/r000001.json"
+              ],
+              "packet_sha256": "cdc2f267f7fd05ffd75cd9a72d51b3ea4b5fd9c2aa148bfb1d8c100ff95a35b4",
+              "summary": "A genuine information-retention versus longer early-period-exclusion tradeoff. Both lag rules are credible, but equal present event counts do not make their definitions equivalent. The proposal favors six months in light of the stated retention objective, with twelve months retained as a substantive alternative."
+            },
+            "review_packet": {
+              "applicability": "The stated objective combines longer-term association and retention of usable information. Present months 6–12 have zero events, but follow-up time need not be equal and future refreshes are expected. No data analysis has verified risk sets, person-time, effect estimates or information loss.",
+              "common_practice": "The supplied lag note describes both six- and twelve-month exclusion windows and explicitly states that neither is universally preferred. No external convention is inferred.",
+              "default": "Proposed starting option: six-month exclusion to retain more usable follow-up. This is a project-oriented recommendation for discussion, not an evidence-settled choice. Alternative: twelve-month exclusion when the researcher prioritizes removal of the longer possible reverse-causation interval despite information loss. Human selection is still required.",
+              "departure_check": "Neither option departs from a universal standard in the supplied evidence. Choosing twelve months entails a substantive change from six months; current equal event counts cannot justify treating the rules as interchangeable. Assessed objections and limits: Twelve months is a credible alternative: it excludes a longer interval in which reverse causation may occur, with additional loss of follow-up information. Zero present events in months 6–12 establishes only a reported current count. It does not prove equivalent event/time populations, estimates, information, or behavior after a refresh. No quantitative bias reduction, superiority threshold, or implementation-specific month boundary is supplied. These must not be invented or presented as validated.",
+              "project_reason": "Six months gives greater weight to the explicit information-retention objective. Twelve months gives greater weight to excluding a longer early interval. The supplied evidence cannot quantify the benefit or cost, so the preference remains a human scientific tradeoff.",
+              "support": "Full supplied lag text S-000003/r000001 and checked project record S-000004/r000001 support E-000004/r000001. The source provides qualitative consequences only and no numerical estimate of reverse-causation bias reduction."
+            },
+            "review_required": null,
+            "revision": 2,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "Six-month versus twelve-month lag exclusion",
+            "verification_tests": [],
+            "why": "Both lag choices are credible but change analyzed event/time populations and sacrifice different amounts of information. Zero present events in months 6–12 does not establish equivalent rules, especially with future refreshes. Prepare the substantive tradeoff for human review.",
+            "work": {
+              "affected_refs": [
+                "F-000002",
+                "I-000003"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "Human explicitly selects the lag priority and confirms or revises the complete candidate before the primary duration becomes formal."
+              ],
+              "conclusion_type": "tradeoff",
+              "phase": "human_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000002"
+                  ],
+                  "at": "2026-10-14T15:09:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000002",
+                    "I-000003"
+                  ],
+                  "at": "2026-10-14T15:09:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Human explicitly selects the lag priority and confirms or revises the complete candidate before the primary duration becomes formal."
+                  ],
+                  "from": "prepare_review",
+                  "reason": "Both alternatives are supportable but have different scientific consequences; the review packet makes the preference and uncertainty explicit.",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "I-000003",
+                    "evidence/claims/E-000004/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "I-000003",
+                "evidence/claims/E-000004/r000001.json"
+              ]
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": null,
+            "review_category": "decision",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "63bb36877182a31d5e3da452d4a42cf27ea3569fe7164adb3697ccfb77093b83",
+            "ai_position": ""
+          }
+        ],
+        "decision_groups": [],
+        "governance_version": 5,
+        "pending_submission_paths": [],
+        "investigations": [
+          {
+            "created_at": "2026-10-14T15:04:21+00:00",
+            "created_by": "codex",
+            "dedupe_key": "uncertainty-estimator",
+            "evidence_refs": [
+              "evidence/claims/E-000001/r000001.json",
+              "evidence/claims/E-000002/r000001.json",
+              "evidence/sources/S-000006/r000001.json"
+            ],
+            "feedback_events": [
+              {
+                "actor": "system",
+                "at": "2026-10-14T15:09:30+00:00",
+                "id": "review-20261014-four-investigations-v3:evidence-change:I-000001",
+                "kind": "evidence_changed",
+                "reference": {
+                  "claims": [
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json"
+                  ],
+                  "paths": [
+                    "evidence/sources/S-000001/r000001.json",
+                    "evidence/sources/S-000002/r000001.json",
+                    "evidence/sources/S-000003/r000001.json",
+                    "evidence/sources/S-000004/r000001.json",
+                    "evidence/sources/S-000005/r000001.json",
+                    "evidence/sources/S-000006/r000001.json",
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json",
+                    "evidence/claims/E-000003/r000001.json",
+                    "evidence/claims/E-000004/r000001.json",
+                    "evidence/claims/E-000005/r000001.json"
+                  ]
+                },
+                "sequence": 1
+              }
+            ],
+            "id": "I-000001",
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:09:30+00:00",
+                "id": "review-20261014-four-investigations-v3:I-000001:0",
+                "request_id": "review-20261014-four-investigations-v3",
+                "text": "Sixty independent districts with within-district correlation meets the supplied method note's applicability conditions. Universal Variance 2026 is unverified model-only material and has no recommendation weight. F-000001 is ready for review; no frozen version exists."
+              },
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:10:39+00:00",
+                "id": "review-20261014-save-continuation-v2:I-000001:0",
+                "request_id": "review-20261014-save-continuation-v2",
+                "text": "Assessed the evidence-change notification from the same saved assessment. E-000001 and E-000002 already support F-000001's ready human-review packet; the unsupported model claim remains excluded. No additional source or changed conclusion arose. Resume after explicit confirmation of the linked candidate."
+              }
+            ],
+            "pending_items": [
+              {
+                "continue_when": {
+                  "kind": "definition_confirmed",
+                  "min_version": 1,
+                  "question_id": "F-000001"
+                },
+                "id": "uncertainty-human-disposition",
+                "question": "Has the reviewer confirmed the uncertainty-method candidate or requested revisions?",
+                "reason": "F-000001 is ready for human review and has no current formal version. Confirmation permits reconciliation and subsequent closure of this investigation; new feedback should be assessed when received.",
+                "resolved": false,
+                "updated_at": "2026-10-14T15:10:39+00:00",
+                "updated_in": "review-20261014-save-continuation-v2"
+              }
+            ],
+            "problem_type": "research_method",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [
+                "review-20261014-four-investigations-v3:evidence-change:I-000001"
+              ],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": [
+                {
+                  "at": "2026-10-14T15:10:39+00:00",
+                  "bootstrap_reason": null,
+                  "dispositions": [
+                    {
+                      "event_id": "review-20261014-four-investigations-v3:evidence-change:I-000001",
+                      "reply_id": "review-20261014-save-continuation-v2:I-000001:0"
+                    }
+                  ],
+                  "human_cursor": null,
+                  "request_id": "review-20261014-save-continuation-v2"
+                }
+              ]
+            },
+            "question_ids": [
+              "F-000001"
+            ],
+            "revision": 3,
+            "schema_version": 1,
+            "title": "Uncertainty estimator",
+            "why": "Reporting example uses ordinary errors; project has clustered people.",
+            "work": {
+              "affected_refs": [
+                "I-000001",
+                "F-000001"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "Human disposition of F-000001; only then consider investigation closure."
+              ],
+              "conclusion_type": "single_recommendation",
+              "phase": "prepare_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "I-000001",
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:09:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Human disposition of F-000001; only then consider investigation closure."
+                  ],
+                  "from": "triage",
+                  "reason": "Investigation yields a single supported district-clustered uncertainty recommendation; candidate and review basis saved on F-000001. Reporting example is not a conflicting method requirement.",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "evidence/claims/E-000001/r000001.json",
+                "evidence/claims/E-000002/r000001.json"
+              ]
+            },
+            "review_category": "quick_confirm",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": false,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "historical": false
+          },
+          {
+            "created_at": "2026-10-14T15:04:21+00:00",
+            "created_by": "codex",
+            "dedupe_key": "calendar-follow-up-end",
+            "evidence_refs": [
+              "evidence/claims/E-000003/r000001.json"
+            ],
+            "feedback_events": [
+              {
+                "actor": "system",
+                "at": "2026-10-14T15:09:30+00:00",
+                "id": "review-20261014-four-investigations-v3:evidence-change:I-000002",
+                "kind": "evidence_changed",
+                "reference": {
+                  "claims": [
+                    "evidence/claims/E-000003/r000001.json"
+                  ],
+                  "paths": [
+                    "evidence/sources/S-000001/r000001.json",
+                    "evidence/sources/S-000002/r000001.json",
+                    "evidence/sources/S-000003/r000001.json",
+                    "evidence/sources/S-000004/r000001.json",
+                    "evidence/sources/S-000005/r000001.json",
+                    "evidence/sources/S-000006/r000001.json",
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json",
+                    "evidence/claims/E-000003/r000001.json",
+                    "evidence/claims/E-000004/r000001.json",
+                    "evidence/claims/E-000005/r000001.json"
+                  ]
+                },
+                "sequence": 1
+              }
+            ],
+            "id": "I-000002",
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:09:30+00:00",
+                "id": "review-20261014-four-investigations-v3:I-000002:0",
+                "request_id": "review-20261014-four-investigations-v3",
+                "text": "Resolved by calendar-date logic, not by equal observed counts. This does not choose the scientific follow-up horizon beyond the two supplied expressions, validate parsing or missing-date code, or authorize later conversion to timestamp semantics. Reopen if the date domain changes."
+              },
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:10:39+00:00",
+                "id": "review-20261014-save-continuation-v2:I-000002:0",
+                "request_id": "review-20261014-save-continuation-v2",
+                "text": "Assessed the evidence-change notification generated while saving E-000003. The saved date-domain fact and logical equivalence already account for it. The closed fact_lookup conclusion remains appropriate; there is no unread contrary evidence or unresolved check for this bounded date-expression question."
+              }
+            ],
+            "pending_items": [],
+            "problem_type": "project_fact",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [
+                "review-20261014-four-investigations-v3:evidence-change:I-000002"
+              ],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": [
+                {
+                  "at": "2026-10-14T15:10:39+00:00",
+                  "bootstrap_reason": null,
+                  "dispositions": [
+                    {
+                      "event_id": "review-20261014-four-investigations-v3:evidence-change:I-000002",
+                      "reply_id": "review-20261014-save-continuation-v2:I-000002:0"
+                    }
+                  ],
+                  "human_cursor": null,
+                  "request_id": "review-20261014-save-continuation-v2"
+                }
+              ]
+            },
+            "question_ids": [],
+            "revision": 3,
+            "schema_version": 1,
+            "title": "Calendar follow-up end",
+            "why": "Two expressions for the follow-up end have been proposed.",
+            "work": {
+              "affected_refs": [
+                "I-000002",
+                "Audit/design.json:recorded_date_type",
+                "Audit/design.json:followup_end_proposals"
+              ],
+              "blockers": [],
+              "closed_reason": "The supplied date-only domain makes the two cutoff predicates logically equivalent for valid dates: both include 2026-12-31 and exclude 2027-01-01. This resolves a fact question and creates no independent scientific choice or F.",
+              "completion_conditions": [
+                "Satisfied: checked the supplied calendar-date type and established equivalence of both proposed upper bounds."
+              ],
+              "conclusion_type": "fact_lookup",
+              "phase": "closed",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "I-000002",
+                    "Audit/design.json:recorded_date_type",
+                    "Audit/design.json:followup_end_proposals"
+                  ],
+                  "at": "2026-10-14T15:09:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Satisfied: checked the supplied calendar-date type and established equivalence of both proposed upper bounds."
+                  ],
+                  "from": "triage",
+                  "reason": "The supplied date-only domain makes the two cutoff predicates logically equivalent for valid dates: both include 2026-12-31 and exclude 2027-01-01. This resolves a fact question and creates no independent scientific choice or F.",
+                  "to": "closed",
+                  "trigger_refs": [
+                    "evidence/claims/E-000003/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "evidence/claims/E-000003/r000001.json"
+              ]
+            },
+            "review_category": "decision",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": false,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "historical": false
+          },
+          {
+            "created_at": "2026-10-14T15:04:21+00:00",
+            "created_by": "codex",
+            "dedupe_key": "lag-window",
+            "evidence_refs": [
+              "evidence/claims/E-000004/r000001.json"
+            ],
+            "feedback_events": [
+              {
+                "actor": "system",
+                "at": "2026-10-14T15:09:30+00:00",
+                "id": "review-20261014-four-investigations-v3:evidence-change:I-000003",
+                "kind": "evidence_changed",
+                "reference": {
+                  "claims": [
+                    "evidence/claims/E-000004/r000001.json"
+                  ],
+                  "paths": [
+                    "evidence/sources/S-000001/r000001.json",
+                    "evidence/sources/S-000002/r000001.json",
+                    "evidence/sources/S-000003/r000001.json",
+                    "evidence/sources/S-000004/r000001.json",
+                    "evidence/sources/S-000005/r000001.json",
+                    "evidence/sources/S-000006/r000001.json",
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json",
+                    "evidence/claims/E-000003/r000001.json",
+                    "evidence/claims/E-000004/r000001.json",
+                    "evidence/claims/E-000005/r000001.json"
+                  ]
+                },
+                "sequence": 1
+              }
+            ],
+            "id": "I-000003",
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:09:30+00:00",
+                "id": "review-20261014-four-investigations-v3:I-000003:0",
+                "request_id": "review-20261014-four-investigations-v3",
+                "text": "No event-count equivalence is promoted to definition equivalence. Neither option is declared universally optimal. The candidate, both options, and lack of quantitative bias evidence are saved for subsequent human review."
+              },
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:10:39+00:00",
+                "id": "review-20261014-save-continuation-v2:I-000003:0",
+                "request_id": "review-20261014-save-continuation-v2",
+                "text": "Assessed the evidence-change notification from saving E-000004. F-000002 already represents both lag choices and the unresolved scientific preference. Its six-month starting recommendation is provisional; twelve months remains credible. Resume after human choice/confirmation or new feedback."
+              }
+            ],
+            "pending_items": [
+              {
+                "continue_when": {
+                  "kind": "definition_confirmed",
+                  "min_version": 1,
+                  "question_id": "F-000002"
+                },
+                "id": "lag-human-disposition",
+                "question": "Which lag priority does the reviewer select, and has the resulting candidate been confirmed?",
+                "reason": "F-000002 contains a genuine tradeoff and has no current formal version. Confirmation permits reconciliation and subsequent closure of this investigation; any revision or objection still requires assessment.",
+                "resolved": false,
+                "updated_at": "2026-10-14T15:10:39+00:00",
+                "updated_in": "review-20261014-save-continuation-v2"
+              }
+            ],
+            "problem_type": "research_method",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [
+                "review-20261014-four-investigations-v3:evidence-change:I-000003"
+              ],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": [
+                {
+                  "at": "2026-10-14T15:10:39+00:00",
+                  "bootstrap_reason": null,
+                  "dispositions": [
+                    {
+                      "event_id": "review-20261014-four-investigations-v3:evidence-change:I-000003",
+                      "reply_id": "review-20261014-save-continuation-v2:I-000003:0"
+                    }
+                  ],
+                  "human_cursor": null,
+                  "request_id": "review-20261014-save-continuation-v2"
+                }
+              ]
+            },
+            "question_ids": [
+              "F-000002"
+            ],
+            "revision": 3,
+            "schema_version": 1,
+            "title": "Lag window",
+            "why": "Six and twelve month exclusions give the same present event count.",
+            "work": {
+              "affected_refs": [
+                "I-000003",
+                "F-000002"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "Human selects and confirms the lag duration after considering both consequences; current zero event count is not a decision rule."
+              ],
+              "conclusion_type": "tradeoff",
+              "phase": "prepare_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "I-000003",
+                    "F-000002"
+                  ],
+                  "at": "2026-10-14T15:09:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Human selects and confirms the lag duration after considering both consequences; current zero event count is not a decision rule."
+                  ],
+                  "from": "triage",
+                  "reason": "Six versus twelve months changes the analyzed event/time population and trades information retention against excluding a longer possible reverse-causation interval. F-000002 preserves both options and an explicitly provisional preference.",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "evidence/claims/E-000004/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "evidence/claims/E-000004/r000001.json"
+              ]
+            },
+            "review_category": "decision",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": false,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "historical": false
+          },
+          {
+            "created_at": "2026-10-14T15:04:21+00:00",
+            "created_by": "codex",
+            "dedupe_key": "sex-missingness",
+            "evidence_refs": [
+              "evidence/claims/E-000005/r000001.json"
+            ],
+            "feedback_events": [
+              {
+                "actor": "system",
+                "at": "2026-10-14T15:09:30+00:00",
+                "id": "review-20261014-four-investigations-v3:evidence-change:I-000004",
+                "kind": "evidence_changed",
+                "reference": {
+                  "claims": [
+                    "evidence/claims/E-000005/r000001.json"
+                  ],
+                  "paths": [
+                    "evidence/sources/S-000001/r000001.json",
+                    "evidence/sources/S-000002/r000001.json",
+                    "evidence/sources/S-000003/r000001.json",
+                    "evidence/sources/S-000004/r000001.json",
+                    "evidence/sources/S-000005/r000001.json",
+                    "evidence/sources/S-000006/r000001.json",
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json",
+                    "evidence/claims/E-000003/r000001.json",
+                    "evidence/claims/E-000004/r000001.json",
+                    "evidence/claims/E-000005/r000001.json"
+                  ]
+                },
+                "sequence": 1
+              }
+            ],
+            "id": "I-000004",
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:09:30+00:00",
+                "id": "review-20261014-four-investigations-v3:I-000004:0",
+                "request_id": "review-20261014-four-investigations-v3",
+                "text": "Remains open in evidence/needs_check with two unresolved pending items. Do not assert complete sex data, extraction deletion, or a missingness remedy without observed evidence. No external contact was made. This independent blocker does not block F-000001 or F-000002 and does not reopen the resolved calendar-date fact question."
+              },
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:10:39+00:00",
+                "id": "review-20261014-save-continuation-v2:I-000004:0",
+                "request_id": "review-20261014-save-continuation-v2",
+                "text": "Assessed the evidence-change notification generated when saving E-000005. It records existing missing evidence and the explicit external-review requirement; it supplies neither the extraction audit nor the review response. Both pending items remain unresolved and both blockers remain in place. No closure or missingness policy is justified."
+              }
+            ],
+            "pending_items": [
+              {
+                "continue_when": {
+                  "kind": "local_assessment",
+                  "satisfied": false
+                },
+                "id": "sex-source-extraction-audit",
+                "input_refs": [
+                  "evidence/claims/E-000005/r000001.json"
+                ],
+                "question": "Did source extraction remove records with missing sex, and what observed extraction evidence establishes this?",
+                "reason": "The supplied design expressly says extraction has not been checked. No supported finding about actual sex missingness or record removal is available.",
+                "resolved": false,
+                "updated_at": "2026-10-14T15:09:30+00:00",
+                "updated_in": "review-20261014-four-investigations-v3"
+              },
+              {
+                "continue_when": {
+                  "kind": "local_assessment",
+                  "satisfied": false
+                },
+                "id": "sex-required-external-review",
+                "input_refs": [
+                  "evidence/sources/S-000005/r000001.json"
+                ],
+                "question": "What does the researcher-requested external review conclude about sex-missingness extraction, and have its objections been resolved?",
+                "reason": "Audit/request.md specifically requires external review before closure and says the reviewer has not responded. No local inference can waive this condition.",
+                "resolved": false,
+                "updated_at": "2026-10-14T15:09:30+00:00",
+                "updated_in": "review-20261014-four-investigations-v3"
+              }
+            ],
+            "problem_type": "project_fact",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [
+                "review-20261014-four-investigations-v3:evidence-change:I-000004"
+              ],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": [
+                {
+                  "at": "2026-10-14T15:10:39+00:00",
+                  "bootstrap_reason": null,
+                  "dispositions": [
+                    {
+                      "event_id": "review-20261014-four-investigations-v3:evidence-change:I-000004",
+                      "reply_id": "review-20261014-save-continuation-v2:I-000004:0"
+                    }
+                  ],
+                  "human_cursor": null,
+                  "request_id": "review-20261014-save-continuation-v2"
+                }
+              ]
+            },
+            "question_ids": [],
+            "revision": 3,
+            "schema_version": 1,
+            "title": "Sex missingness",
+            "why": "Need to determine whether source extraction removed missing records.",
+            "work": {
+              "affected_refs": [
+                "I-000004",
+                "Audit/design.json:sex_missing_audit",
+                "Audit/request.md"
+              ],
+              "blockers": [
+                "Source-extraction audit unavailable",
+                "Explicitly required external review has not returned"
+              ],
+              "closed_reason": null,
+              "completion_conditions": [
+                "Obtain source-extraction audit identifying missing-sex handling and any removed records, and assess it against the question.",
+                "Receive and assess the specifically requested external review; address any unresolved objections before closure."
+              ],
+              "conclusion_type": "needs_check",
+              "phase": "evidence",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "I-000004",
+                    "Audit/design.json:sex_missing_audit",
+                    "Audit/request.md"
+                  ],
+                  "at": "2026-10-14T15:09:30+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Obtain source-extraction audit identifying missing-sex handling and any removed records, and assess it against the question.",
+                    "Receive and assess the specifically requested external review; address any unresolved objections before closure."
+                  ],
+                  "from": "triage",
+                  "reason": "No source-extraction audit establishes whether missing-sex records were removed. Researcher-required external review is outstanding. Both must be assessed before closure; no missingness-management definition can be inferred from absence of evidence.",
+                  "to": "evidence",
+                  "trigger_refs": [
+                    "evidence/claims/E-000005/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "evidence/claims/E-000005/r000001.json"
+              ]
+            },
+            "review_category": "checking",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": false,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "historical": false
+          }
+        ]
+      },
+      "hashes": {
+        "manifest": "4b08a50a03e6222c549cb9cbfd1dfa08288f0b06217ed5ba95babbfbd26f25ee",
+        "trace": "ef0f128b513efd6a2d3eb5e0963c4f156dcd47aa0e33a3f741f61e2c4a98976f",
+        "outcome": "5f1d286d42621b0ac7d40ae76e6cc1e8a3c4b0cf3629c8f9fbaafca85bf0c65f"
+      }
+    }
+  ]
+}

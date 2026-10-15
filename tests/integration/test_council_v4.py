@@ -15,7 +15,7 @@ BASE = Path(__file__).parents[2] / "skills"
 @pytest.fixture(params=["oppen-project-steward", "stepwise-r-project"])
 def helper(request):
     name = request.param.replace("-", "_")
-    spec = importlib.util.spec_from_file_location(name + "_v4_test", BASE / request.param / "scripts" / f"{name}.py")
+    spec = importlib.util.spec_from_file_location(name + "_v4_test", BASE / request.param / "scripts" / f"legacy_{name}.py")
     module = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)

@@ -1,0 +1,1379 @@
+{
+  "measurement": "Actual file reads/calls; whitespace words are not model tokens. Mechanical checks alone do not establish semantic success.",
+  "runs": [
+    {
+      "scenario": "scientific",
+      "directory": "/private/tmp/oppencouncil-retain-scientific-deleted-20261014/98212dd8bba1",
+      "checks": {
+        "actual_entry_unchanged": true,
+        "entry_loaded": true,
+        "no_memory": true,
+        "no_release": true,
+        "no_archived_content_read": true,
+        "archived_content_unchanged": true
+      },
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-retain-scientific-deleted-20261014/98212dd8bba1/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "changed_project_files": [
+        "Audit/scientific-review.md",
+        "Freeze/decision-groups.json",
+        "Freeze/evidence/claims/E-000001/r000001.json",
+        "Freeze/evidence/claims/E-000002/r000001.json",
+        "Freeze/evidence/claims/E-000003/r000001.json",
+        "Freeze/evidence/claims/E-000004/r000001.json",
+        "Freeze/evidence/sources/S-000001/r000001.json",
+        "Freeze/evidence/sources/S-000002/r000001.json",
+        "Freeze/evidence/sources/S-000003/r000001.json",
+        "Freeze/investigations/I-000001.json",
+        "Freeze/manifest.json",
+        "Freeze/questions/F-000001.json",
+        "Freeze/questions/F-000002.json",
+        "Freeze/questions/F-000003.json"
+      ],
+      "instruction_reads": [
+        {
+          "at": 1791991888.5239449,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791991893.94104,
+          "operation": "read",
+          "path": "skill/references/triage.md",
+          "bytes": 874,
+          "whitespace_words": 100,
+          "sha256": "3117a3eb0f86e675111ae83193b7cceee0b9eb5a7d86e4247c8ef7d9c89fc18f"
+        },
+        {
+          "at": 1791991893.941449,
+          "operation": "read",
+          "path": "skill/references/evidence.md",
+          "bytes": 1838,
+          "whitespace_words": 190,
+          "sha256": "9bf368df5b7e757c3927d31541dac0dd2c6c23ba9f7b7934a8216f1abe7153f3"
+        },
+        {
+          "at": 1791991893.941744,
+          "operation": "read",
+          "path": "skill/references/review-packet.md",
+          "bytes": 1704,
+          "whitespace_words": 185,
+          "sha256": "22069ea1cc07fb62f1cbdaf0b004cb6a7c541412f5aa10a07ffc3464dc32c8c0"
+        },
+        {
+          "at": 1791991902.2708511,
+          "operation": "read",
+          "path": "skill/references/local-council.md",
+          "bytes": 3666,
+          "whitespace_words": 422,
+          "sha256": "046f29049827530f79ba254f8168ee599028932bec5e04b1f9a24f925a9e931f"
+        },
+        {
+          "at": 1791991902.271276,
+          "operation": "read",
+          "path": "skill/references/groups.md",
+          "bytes": 2360,
+          "whitespace_words": 274,
+          "sha256": "f83a6b77bede7a126655277ebcc326ec2b93d9a606c3bb111c7fefeecc3e0122"
+        },
+        {
+          "at": 1791991902.2715678,
+          "operation": "read",
+          "path": "skill/references/research-stage-cohort.md",
+          "bytes": 744,
+          "whitespace_words": 90,
+          "sha256": "053e65033ba99c653e9df63968a4938ba3cf1dac1ac7a41483ac1c6a55099f69"
+        },
+        {
+          "at": 1791991902.271882,
+          "operation": "read",
+          "path": "skill/references/research-stage-primary.md",
+          "bytes": 784,
+          "whitespace_words": 98,
+          "sha256": "1a65ee80093e8251b2bff651fa88e4aee19ece1bd5a3124383a6b0e9b6594404"
+        }
+      ],
+      "source_reads": [
+        {
+          "at": 1791991888.524351,
+          "operation": "read",
+          "path": "project/README.md",
+          "bytes": 515,
+          "whitespace_words": 73,
+          "sha256": "cf977a8ab43031d223d03f6f94bc474595bf2dc1b3eca6ba81713155f4d1919f"
+        },
+        {
+          "at": 1791991893.9420002,
+          "operation": "read",
+          "path": "project/Audit/source-data.json",
+          "bytes": 748,
+          "whitespace_words": 80,
+          "sha256": "6da97fc74d5d3ccbe1f6d9dc53458fd2692baec19684d38503ada45c299ddfba"
+        },
+        {
+          "at": 1791991893.94222,
+          "operation": "read",
+          "path": "project/Audit/proposal.md",
+          "bytes": 374,
+          "whitespace_words": 59,
+          "sha256": "7aff55f63bfcafa7a863c184cf0737b2e147616dea9d8d30e3741cafaa8f21dc"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1929,
+        "adapter_words": 746,
+        "cli_and_script_calls": 16,
+        "nonzero_calls": 1
+      },
+      "nonzero_calls": [
+        {
+          "at": 1791992093.040879,
+          "operation": "council",
+          "arguments": [
+            "work-commit",
+            "project",
+            "--input",
+            "prepare-review.json"
+          ],
+          "returncode": 2,
+          "stdout": "",
+          "stderr": "OppenCouncil: Human review requires a candidate or effective-version reassessment\n"
+        }
+      ],
+      "saved_items": [
+        {
+          "id": "F-000001",
+          "title": "是否接受月度 landmark 替代原启动时点问题",
+          "why": "现有资料没有首次处方日，且明确无法获得日级资料；月后起算改变目标人群、起点和一年窗口，须由研究者确认。",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [
+              "F-000001",
+              "F-000002",
+              "F-000003"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "确认是否接受候选人群、起点和窗口",
+              "确认不会解释为原启动效应"
+            ],
+            "conclusion_type": "tradeoff",
+            "phase": "human_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:36:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000001",
+                  "F-000002",
+                  "F-000003"
+                ],
+                "at": "2026-10-14T15:36:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "确认是否接受候选人群、起点和窗口",
+                  "确认不会解释为原启动效应"
+                ],
+                "from": "prepare_review",
+                "reason": "是否改变研究问题需要研究者选择。",
+                "to": "human_review",
+                "trigger_refs": [
+                  "evidence/claims/E-000001/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "evidence/claims/E-000001/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "待确认候选：若研究者接受改变问题，另立2026年1月启动者的月度landmark研究。人群为既定合格成人、此前12个已观察月份无A/B使用、1月仅启动A或仅启动B、截至1月末未发生首次住院且2月1日存活可观察者；后两项资格须用实际资料核验。时间零点为2026年2月1日月界，观察2026年2月至2027年1月共12个日历月。按1月单独启动类别固定分组，不推断持续单药。比较该landmark条件人群的后续首次住院风险，不是所有新使用者从真实处方日起的一年启动效应。当前资料不足以验证随访、资格或混杂控制，不生成风险估计或因果结论。若不能接受人群和时间窗口改变，保留原问题并明确现有资料不能回答；不得填造日级日期。未确认前不改变正式问题或执行分析。",
+            "text_sha256": "20a04050f13593eda0b9957daa2c22e81acea5b93f3cffa05c39a20a86c05449",
+            "base_version": null,
+            "dependencies": [
+              {
+                "active": true,
+                "condition": "",
+                "kind": "required",
+                "question_id": "F-000002",
+                "reason": "目标人群取决于共同启动处理",
+                "text_sha256": null,
+                "version": null
+              },
+              {
+                "active": true,
+                "condition": "",
+                "kind": "required",
+                "question_id": "F-000003",
+                "reason": "风险集及结局窗口取决于启动月首次住院处理",
+                "text_sha256": null,
+                "version": null
+              }
+            ],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json",
+                "evidence/claims/E-000003/r000001.json",
+                "evidence/claims/E-000004/r000001.json"
+              ],
+              "packet_sha256": "1a48d15eaf6ab153f94dcace27c3ce2a1a3c042410d2f25a24f1032f71ffd244",
+              "summary": "项目事实支持日内顺序不能恢复；候选是透明改题而非原效应修复。"
+            },
+            "approval_token": "d0adb921da8574b3eb2770d57823612d5f71ad82df03ffc5eecb35bb4e318611"
+          },
+          "current": null,
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000001/r000001.json",
+              "evidence/claims/E-000003/r000001.json",
+              "evidence/claims/E-000004/r000001.json"
+            ],
+            "packet_sha256": "1a48d15eaf6ab153f94dcace27c3ce2a1a3c042410d2f25a24f1032f71ffd244",
+            "summary": "项目事实支持日内顺序不能恢复；候选是透明改题而非原效应修复。"
+          },
+          "review_packet": {
+            "applicability": "仅在研究者接受改问启动月之后仍符合资格者的风险，并能核验后续观察时适用。",
+            "common_practice": "未查证外部方法文献，不声称landmark是通行最优方法；只比较本项目可观测定义和逻辑后果。",
+            "default": "不接受原捷径。若必须原启动效应，建议保留问题并承认不可识别；若接受改题，可审阅本月度landmark候选。",
+            "departure_check": "改变起点、12月窗口和人群；排除早期事件及未到达landmark者可能改变组间构成，不能保证偏倚消失。",
+            "project_reason": "月内顺序不可获得，不能把人为日期约定当观测事实。",
+            "support": "完整月度说明、原问题和未批准方案均已阅读；无证据支持精确日期或完整一年观察。"
+          },
+          "external_brief": null,
+          "evidence_refs": [],
+          "review_required": null,
+          "reconfirmation_token": "b57a8e16a297afa0f0ec851b0c3d39ef19d612d081bc890257b4b4c1c6c05da3",
+          "read_set": {
+            "F-000001": 2
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "waiting",
+            "dependencies": [
+              {
+                "active": true,
+                "condition": "",
+                "kind": "required",
+                "question_id": "F-000002",
+                "reason": "目标人群取决于共同启动处理",
+                "text_sha256": null,
+                "version": null,
+                "title": "同月同时启动 A/B 的治疗组归属",
+                "current_version": null,
+                "status": "waiting"
+              },
+              {
+                "active": true,
+                "condition": "",
+                "kind": "required",
+                "question_id": "F-000003",
+                "reason": "风险集及结局窗口取决于启动月首次住院处理",
+                "text_sha256": null,
+                "version": null,
+                "title": "启动月首次住院的归属与早期事件处理",
+                "current_version": null,
+                "status": "waiting"
+              }
+            ]
+          },
+          "review_category": "decision",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "F-000002",
+          "title": "同月同时启动 A/B 的治疗组归属",
+          "why": "p2 同月 A_started=B_started=1；先启动哪种药无法观测，不能按字段顺序或优先级替代真实先后。",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [
+              "F-000002",
+              "F-000001"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "确认排除并单列，或第三类并重写比较",
+              "认可不能宣称按真实首药分组"
+            ],
+            "conclusion_type": "tradeoff",
+            "phase": "human_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000002"
+                ],
+                "at": "2026-10-14T15:36:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000002",
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:36:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "确认排除并单列，或第三类并重写比较",
+                  "认可不能宣称按真实首药分组"
+                ],
+                "from": "prepare_review",
+                "reason": "改变目标人群和暴露定义。",
+                "to": "human_review",
+                "trigger_refs": [
+                  "evidence/claims/E-000002/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "evidence/claims/E-000002/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "待确认候选：月度两组替代问题以启动月标记分组。A_started=1且B_started=0归A单独启动组；A_started=0且B_started=1归B单独启动组；两者均为1（包括p2）标为同月共同启动/先后不明，从该两组对比排除并单列人数；均为0者不属于启动队列。不按字段顺序或默认药物优先级决定首药。分组只描述启动月，不代表持续用药；解释限制在单独启动者。若需覆盖共同启动者，可增加第三类描述或另定多策略问题并重写候选；第三类不识别真实首药。若保留原真实首药问题，则p2归属保持未知，不进行首药效应估计。",
+            "text_sha256": "d5b0044ce267091da7e38f6f18c07894435dc527448a5ebe8a5392da621a2776",
+            "base_version": null,
+            "dependencies": [],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000002/r000001.json"
+              ],
+              "packet_sha256": "cf80773b01cc66f55e702940fb6df6eccfea60709303a008ce2892ebdde49b59",
+              "summary": "p2证明真实先药不可识别；排除或第三类需要科学选择。"
+            },
+            "approval_token": "6495ea253bac2cdb800054b35c64fc995dc1e90ba61149ed1413764f1fe12030"
+          },
+          "current": null,
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000002/r000001.json"
+            ],
+            "packet_sha256": "cf80773b01cc66f55e702940fb6df6eccfea60709303a008ce2892ebdde49b59",
+            "summary": "p2证明真实先药不可识别；排除或第三类需要科学选择。"
+          },
+          "review_packet": {
+            "applicability": "适用于A单独与B单独启动比较，不适用于全体启动者按真实首药比较。",
+            "common_practice": "未用外部文献主张惯例；建议来自可观测的互斥标记。",
+            "default": "月度两组候选建议排除共同启动者并单列；若保留他们则第三类描述为并列选项，不任意优先赋组。",
+            "departure_check": "排除缩小人群并可能改变构成；第三类保留人数但改变比较；未知偏倚方向。",
+            "project_reason": "没有信息支持首药裁定，组别必须符合观测事实。",
+            "support": "p2同月A/B均为1而无月内顺序。"
+          },
+          "external_brief": null,
+          "evidence_refs": [],
+          "review_required": null,
+          "reconfirmation_token": "d2712f631d9d9ee0dae554d520b530199a55d7367dc476183cb93ffad92e09c0",
+          "read_set": {
+            "F-000002": 2
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": []
+          },
+          "review_category": "decision",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "F-000003",
+          "title": "启动月首次住院的归属与早期事件处理",
+          "why": "p1 同月启动 A 且首次住院，无法确定住院是否发生在用药后；排除、计入或延后起算均有不同科学含义。",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [
+              "F-000003",
+              "F-000001"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "确认所选问题的同月事件及人群排除规则",
+              "认可landmark结果不能解释早期风险"
+            ],
+            "conclusion_type": "tradeoff",
+            "phase": "human_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000003"
+                ],
+                "at": "2026-10-14T15:36:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "Review the saved candidate"
+                ],
+                "from": "triage",
+                "reason": "Candidate wording saved",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "definition_draft"
+                ]
+              },
+              {
+                "affected_refs": [
+                  "F-000003",
+                  "F-000001"
+                ],
+                "at": "2026-10-14T15:36:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "确认所选问题的同月事件及人群排除规则",
+                  "认可landmark结果不能解释早期风险"
+                ],
+                "from": "prepare_review",
+                "reason": "早期事件处理决定风险集和解释范围。",
+                "to": "human_review",
+                "trigger_refs": [
+                  "evidence/claims/E-000003/r000001.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "evidence/claims/E-000003/r000001.json"
+            ]
+          },
+          "inputs": [],
+          "messages": [],
+          "pending_items": [],
+          "candidate": {
+            "text": "待确认候选：在次月初landmark方案中，启动月或之前已记录首次住院者不进入landmark首次住院风险集。p1等启动月住院者单列为先后不明早期事件，不标为已证实治疗前或后，不进入landmark后分子；也不能把其事件改成0却保留在无事件分母。landmark后窗口为2026年2月至2027年1月。后续实际输出应按启动类别分别列早期事件和排除人数，本轮不产出正式结果。替代方案是从启动月起的日历月关联描述，保留同月事件并明确可能含启动前住院，窗口为2026年1月至12月；它不能称为启动后一年的因果效应。全计入/全不计入仅是另定情景，不能自动称有效因果界限。若坚持原问题，同月事件顺序保持未知，不报告治疗后归属。",
+            "text_sha256": "02c62d4cdb4434ec20d7560dc5fb2d746f2afbf181e0847e72264a7a9682c9ef",
+            "base_version": null,
+            "dependencies": [],
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000003/r000001.json",
+                "evidence/claims/E-000004/r000001.json"
+              ],
+              "packet_sha256": "5f18525e243522203879aa528b8ff392282d6d64e17243b91eb954b4b01ebb40",
+              "summary": "p1可兼容启动前或后住院，延后起点改变风险集。"
+            },
+            "approval_token": "e705fdb3b1fef19e0da34afc5fe617257692d676d2ec62ec422067a39c7927d0"
+          },
+          "current": null,
+          "review_basis": {
+            "claims": [
+              "evidence/claims/E-000003/r000001.json",
+              "evidence/claims/E-000004/r000001.json"
+            ],
+            "packet_sha256": "5f18525e243522203879aa528b8ff392282d6d64e17243b91eb954b4b01ebb40",
+            "summary": "p1可兼容启动前或后住院，延后起点改变风险集。"
+          },
+          "review_packet": {
+            "applicability": "排除规则仅与landmark条件人群相容，不能表示全体启动者早期风险。",
+            "common_practice": "无外部文献背书；此处只列本资料支持的定义与解释差异。",
+            "default": "采纳landmark时建议排除早期首次住院者并单列；如关心原早期效应则承认不可识别，不能删事件解决。",
+            "departure_check": "排除可能选择人群并丢失早期效应；保留则混入未知启动前事件。留人删首次事件与首次住院风险集不相容。",
+            "project_reason": "首次住院不能再次成为首次事件，起点、资格、归属必须一致。",
+            "support": "p1同月A启动和首次住院，没有日期先后；后续观察亦未提供。"
+          },
+          "external_brief": null,
+          "evidence_refs": [],
+          "review_required": null,
+          "reconfirmation_token": "01348cf8ac0662839c22e1c26a9ff2745fd14afd448e1805366d2e4084b2e667",
+          "read_set": {
+            "F-000003": 2
+          },
+          "member_ids": [],
+          "readiness": {
+            "status": "ready",
+            "dependencies": []
+          },
+          "review_category": "decision",
+          "human_pending": false,
+          "actionable": false,
+          "awaiting_human": true,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        },
+        {
+          "id": "I-000001",
+          "title": "Treatment initiation and follow-up",
+          "why": "Evaluate the collaborator proposal against available data",
+          "legacy_attention": null,
+          "revision": 2,
+          "work": {
+            "affected_refs": [
+              "F-000001",
+              "F-000002",
+              "F-000003"
+            ],
+            "blockers": [],
+            "closed_reason": null,
+            "completion_conditions": [
+              "研究者选择保留原问题但不估计，或接受完整月度替代问题",
+              "确认相容的分组及同月住院规则"
+            ],
+            "conclusion_type": "tradeoff",
+            "phase": "prepare_review",
+            "revision_id": 1,
+            "transitions": [
+              {
+                "affected_refs": [
+                  "F-000001",
+                  "F-000002",
+                  "F-000003"
+                ],
+                "at": "2026-10-14T15:36:25+00:00",
+                "by": "codex",
+                "completion_conditions": [
+                  "研究者选择保留原问题但不估计，或接受完整月度替代问题",
+                  "确认相容的分组及同月住院规则"
+                ],
+                "from": "triage",
+                "reason": "事实核查完成；三个F承载需要人工选择的研究范围、分组、结局口径。",
+                "to": "prepare_review",
+                "trigger_refs": [
+                  "Audit/proposal.md",
+                  "Audit/source-data.json"
+                ]
+              }
+            ],
+            "trigger_refs": [
+              "Audit/proposal.md",
+              "Audit/source-data.json"
+            ]
+          },
+          "inputs": [
+            {
+              "actor": "system",
+              "at": "2026-10-14T15:36:25+00:00",
+              "id": "monthly-initiation-review-20261014-v2:evidence-change:I-000001",
+              "kind": "evidence_changed",
+              "reference": {
+                "claims": [
+                  "evidence/claims/E-000001/r000001.json",
+                  "evidence/claims/E-000002/r000001.json",
+                  "evidence/claims/E-000003/r000001.json",
+                  "evidence/claims/E-000004/r000001.json"
+                ],
+                "paths": [
+                  "evidence/sources/S-000001/r000001.json",
+                  "evidence/sources/S-000002/r000001.json",
+                  "evidence/sources/S-000003/r000001.json",
+                  "evidence/claims/E-000001/r000001.json",
+                  "evidence/claims/E-000002/r000001.json",
+                  "evidence/claims/E-000003/r000001.json",
+                  "evidence/claims/E-000004/r000001.json"
+                ]
+              },
+              "sequence": 1
+            }
+          ],
+          "messages": [],
+          "pending_items": [],
+          "candidate": null,
+          "current": null,
+          "review_basis": null,
+          "review_packet": null,
+          "external_brief": null,
+          "evidence_refs": [
+            "evidence/claims/E-000001/r000001.json",
+            "evidence/claims/E-000002/r000001.json",
+            "evidence/claims/E-000003/r000001.json",
+            "evidence/claims/E-000004/r000001.json"
+          ],
+          "review_required": null,
+          "reconfirmation_token": null,
+          "read_set": {
+            "I-000001": 2
+          },
+          "member_ids": [],
+          "readiness": null,
+          "review_category": "decision",
+          "human_pending": false,
+          "actionable": true,
+          "awaiting_human": false,
+          "ready_pending_ids": [],
+          "bootstrap_required": false,
+          "historical": false
+        }
+      ],
+      "snapshot": {
+        "project": "/private/tmp/oppencouncil-retain-scientific-deleted-20261014/98212dd8bba1/project",
+        "round": 1,
+        "revision": 4,
+        "questions": [
+          {
+            "created_at": "2026-10-14T15:32:36+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [
+                  {
+                    "active": true,
+                    "condition": "",
+                    "kind": "required",
+                    "question_id": "F-000002",
+                    "reason": "目标人群取决于共同启动处理",
+                    "text_sha256": null,
+                    "version": null
+                  },
+                  {
+                    "active": true,
+                    "condition": "",
+                    "kind": "required",
+                    "question_id": "F-000003",
+                    "reason": "风险集及结局窗口取决于启动月首次住院处理",
+                    "text_sha256": null,
+                    "version": null
+                  }
+                ],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:36:25+00:00",
+                    "by": "codex",
+                    "text": "待确认候选：若研究者接受改变问题，另立2026年1月启动者的月度landmark研究。人群为既定合格成人、此前12个已观察月份无A/B使用、1月仅启动A或仅启动B、截至1月末未发生首次住院且2月1日存活可观察者；后两项资格须用实际资料核验。时间零点为2026年2月1日月界，观察2026年2月至2027年1月共12个日历月。按1月单独启动类别固定分组，不推断持续单药。比较该landmark条件人群的后续首次住院风险，不是所有新使用者从真实处方日起的一年启动效应。当前资料不足以验证随访、资格或混杂控制，不生成风险估计或因果结论。若不能接受人群和时间窗口改变，保留原问题并明确现有资料不能回答；不得填造日级日期。未确认前不改变正式问题或执行分析。"
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000003/r000001.json",
+                    "evidence/claims/E-000004/r000001.json"
+                  ],
+                  "packet_sha256": "1a48d15eaf6ab153f94dcace27c3ce2a1a3c042410d2f25a24f1032f71ffd244",
+                  "summary": "项目事实支持日内顺序不能恢复；候选是透明改题而非原效应修复。"
+                },
+                "text": "待确认候选：若研究者接受改变问题，另立2026年1月启动者的月度landmark研究。人群为既定合格成人、此前12个已观察月份无A/B使用、1月仅启动A或仅启动B、截至1月末未发生首次住院且2月1日存活可观察者；后两项资格须用实际资料核验。时间零点为2026年2月1日月界，观察2026年2月至2027年1月共12个日历月。按1月单独启动类别固定分组，不推断持续单药。比较该landmark条件人群的后续首次住院风险，不是所有新使用者从真实处方日起的一年启动效应。当前资料不足以验证随访、资格或混杂控制，不生成风险估计或因果结论。若不能接受人群和时间窗口改变，保留原问题并明确现有资料不能回答；不得填造日级日期。未确认前不改变正式问题或执行分析。",
+                "text_sha256": "20a04050f13593eda0b9957daa2c22e81acea5b93f3cffa05c39a20a86c05449",
+                "updated_at": "2026-10-14T15:36:25+00:00",
+                "updated_by": "codex",
+                "approval_token": "d0adb921da8574b3eb2770d57823612d5f71ad82df03ffc5eecb35bb4e318611"
+              },
+              "versions": []
+            },
+            "evidence_refs": [],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000001",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [],
+            "pending_items": [],
+            "problem_type": "research_method",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000001/r000001.json",
+                "evidence/claims/E-000003/r000001.json",
+                "evidence/claims/E-000004/r000001.json"
+              ],
+              "packet_sha256": "1a48d15eaf6ab153f94dcace27c3ce2a1a3c042410d2f25a24f1032f71ffd244",
+              "summary": "项目事实支持日内顺序不能恢复；候选是透明改题而非原效应修复。"
+            },
+            "review_packet": {
+              "applicability": "仅在研究者接受改问启动月之后仍符合资格者的风险，并能核验后续观察时适用。",
+              "common_practice": "未查证外部方法文献，不声称landmark是通行最优方法；只比较本项目可观测定义和逻辑后果。",
+              "default": "不接受原捷径。若必须原启动效应，建议保留问题并承认不可识别；若接受改题，可审阅本月度landmark候选。",
+              "departure_check": "改变起点、12月窗口和人群；排除早期事件及未到达landmark者可能改变组间构成，不能保证偏倚消失。",
+              "project_reason": "月内顺序不可获得，不能把人为日期约定当观测事实。",
+              "support": "完整月度说明、原问题和未批准方案均已阅读；无证据支持精确日期或完整一年观察。"
+            },
+            "review_required": null,
+            "revision": 2,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "是否接受月度 landmark 替代原启动时点问题",
+            "verification_tests": [],
+            "why": "现有资料没有首次处方日，且明确无法获得日级资料；月后起算改变目标人群、起点和一年窗口，须由研究者确认。",
+            "work": {
+              "affected_refs": [
+                "F-000001",
+                "F-000002",
+                "F-000003"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "确认是否接受候选人群、起点和窗口",
+                "确认不会解释为原启动效应"
+              ],
+              "conclusion_type": "tradeoff",
+              "phase": "human_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:36:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000001",
+                    "F-000002",
+                    "F-000003"
+                  ],
+                  "at": "2026-10-14T15:36:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "确认是否接受候选人群、起点和窗口",
+                    "确认不会解释为原启动效应"
+                  ],
+                  "from": "prepare_review",
+                  "reason": "是否改变研究问题需要研究者选择。",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "evidence/claims/E-000001/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "evidence/claims/E-000001/r000001.json"
+              ]
+            },
+            "readiness": {
+              "status": "waiting",
+              "dependencies": [
+                {
+                  "active": true,
+                  "condition": "",
+                  "kind": "required",
+                  "question_id": "F-000002",
+                  "reason": "目标人群取决于共同启动处理",
+                  "text_sha256": null,
+                  "version": null,
+                  "title": "同月同时启动 A/B 的治疗组归属",
+                  "current_version": null,
+                  "status": "waiting"
+                },
+                {
+                  "active": true,
+                  "condition": "",
+                  "kind": "required",
+                  "question_id": "F-000003",
+                  "reason": "风险集及结局窗口取决于启动月首次住院处理",
+                  "text_sha256": null,
+                  "version": null,
+                  "title": "启动月首次住院的归属与早期事件处理",
+                  "current_version": null,
+                  "status": "waiting"
+                }
+              ]
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": "B-000001",
+            "review_category": "decision",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "b57a8e16a297afa0f0ec851b0c3d39ef19d612d081bc890257b4b4c1c6c05da3",
+            "ai_position": ""
+          },
+          {
+            "created_at": "2026-10-14T15:32:36+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:36:25+00:00",
+                    "by": "codex",
+                    "text": "待确认候选：月度两组替代问题以启动月标记分组。A_started=1且B_started=0归A单独启动组；A_started=0且B_started=1归B单独启动组；两者均为1（包括p2）标为同月共同启动/先后不明，从该两组对比排除并单列人数；均为0者不属于启动队列。不按字段顺序或默认药物优先级决定首药。分组只描述启动月，不代表持续用药；解释限制在单独启动者。若需覆盖共同启动者，可增加第三类描述或另定多策略问题并重写候选；第三类不识别真实首药。若保留原真实首药问题，则p2归属保持未知，不进行首药效应估计。"
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000002/r000001.json"
+                  ],
+                  "packet_sha256": "cf80773b01cc66f55e702940fb6df6eccfea60709303a008ce2892ebdde49b59",
+                  "summary": "p2证明真实先药不可识别；排除或第三类需要科学选择。"
+                },
+                "text": "待确认候选：月度两组替代问题以启动月标记分组。A_started=1且B_started=0归A单独启动组；A_started=0且B_started=1归B单独启动组；两者均为1（包括p2）标为同月共同启动/先后不明，从该两组对比排除并单列人数；均为0者不属于启动队列。不按字段顺序或默认药物优先级决定首药。分组只描述启动月，不代表持续用药；解释限制在单独启动者。若需覆盖共同启动者，可增加第三类描述或另定多策略问题并重写候选；第三类不识别真实首药。若保留原真实首药问题，则p2归属保持未知，不进行首药效应估计。",
+                "text_sha256": "d5b0044ce267091da7e38f6f18c07894435dc527448a5ebe8a5392da621a2776",
+                "updated_at": "2026-10-14T15:36:25+00:00",
+                "updated_by": "codex",
+                "approval_token": "6495ea253bac2cdb800054b35c64fc995dc1e90ba61149ed1413764f1fe12030"
+              },
+              "versions": []
+            },
+            "evidence_refs": [],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000002",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [],
+            "pending_items": [],
+            "problem_type": "research_method",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000002/r000001.json"
+              ],
+              "packet_sha256": "cf80773b01cc66f55e702940fb6df6eccfea60709303a008ce2892ebdde49b59",
+              "summary": "p2证明真实先药不可识别；排除或第三类需要科学选择。"
+            },
+            "review_packet": {
+              "applicability": "适用于A单独与B单独启动比较，不适用于全体启动者按真实首药比较。",
+              "common_practice": "未用外部文献主张惯例；建议来自可观测的互斥标记。",
+              "default": "月度两组候选建议排除共同启动者并单列；若保留他们则第三类描述为并列选项，不任意优先赋组。",
+              "departure_check": "排除缩小人群并可能改变构成；第三类保留人数但改变比较；未知偏倚方向。",
+              "project_reason": "没有信息支持首药裁定，组别必须符合观测事实。",
+              "support": "p2同月A/B均为1而无月内顺序。"
+            },
+            "review_required": null,
+            "revision": 2,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "同月同时启动 A/B 的治疗组归属",
+            "verification_tests": [],
+            "why": "p2 同月 A_started=B_started=1；先启动哪种药无法观测，不能按字段顺序或优先级替代真实先后。",
+            "work": {
+              "affected_refs": [
+                "F-000002",
+                "F-000001"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "确认排除并单列，或第三类并重写比较",
+                "认可不能宣称按真实首药分组"
+              ],
+              "conclusion_type": "tradeoff",
+              "phase": "human_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000002"
+                  ],
+                  "at": "2026-10-14T15:36:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000002",
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:36:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "确认排除并单列，或第三类并重写比较",
+                    "认可不能宣称按真实首药分组"
+                  ],
+                  "from": "prepare_review",
+                  "reason": "改变目标人群和暴露定义。",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "evidence/claims/E-000002/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "evidence/claims/E-000002/r000001.json"
+              ]
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": "B-000001",
+            "review_category": "decision",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "d2712f631d9d9ee0dae554d520b530199a55d7367dc476183cb93ffad92e09c0",
+            "ai_position": ""
+          },
+          {
+            "created_at": "2026-10-14T15:32:36+00:00",
+            "created_by": "codex",
+            "definition": {
+              "current_version": null,
+              "draft": {
+                "approval": null,
+                "base_version": null,
+                "dependencies": [],
+                "edits": [
+                  {
+                    "at": "2026-10-14T15:36:25+00:00",
+                    "by": "codex",
+                    "text": "待确认候选：在次月初landmark方案中，启动月或之前已记录首次住院者不进入landmark首次住院风险集。p1等启动月住院者单列为先后不明早期事件，不标为已证实治疗前或后，不进入landmark后分子；也不能把其事件改成0却保留在无事件分母。landmark后窗口为2026年2月至2027年1月。后续实际输出应按启动类别分别列早期事件和排除人数，本轮不产出正式结果。替代方案是从启动月起的日历月关联描述，保留同月事件并明确可能含启动前住院，窗口为2026年1月至12月；它不能称为启动后一年的因果效应。全计入/全不计入仅是另定情景，不能自动称有效因果界限。若坚持原问题，同月事件顺序保持未知，不报告治疗后归属。"
+                  }
+                ],
+                "review_basis": {
+                  "claims": [
+                    "evidence/claims/E-000003/r000001.json",
+                    "evidence/claims/E-000004/r000001.json"
+                  ],
+                  "packet_sha256": "5f18525e243522203879aa528b8ff392282d6d64e17243b91eb954b4b01ebb40",
+                  "summary": "p1可兼容启动前或后住院，延后起点改变风险集。"
+                },
+                "text": "待确认候选：在次月初landmark方案中，启动月或之前已记录首次住院者不进入landmark首次住院风险集。p1等启动月住院者单列为先后不明早期事件，不标为已证实治疗前或后，不进入landmark后分子；也不能把其事件改成0却保留在无事件分母。landmark后窗口为2026年2月至2027年1月。后续实际输出应按启动类别分别列早期事件和排除人数，本轮不产出正式结果。替代方案是从启动月起的日历月关联描述，保留同月事件并明确可能含启动前住院，窗口为2026年1月至12月；它不能称为启动后一年的因果效应。全计入/全不计入仅是另定情景，不能自动称有效因果界限。若坚持原问题，同月事件顺序保持未知，不报告治疗后归属。",
+                "text_sha256": "02c62d4cdb4434ec20d7560dc5fb2d746f2afbf181e0847e72264a7a9682c9ef",
+                "updated_at": "2026-10-14T15:36:25+00:00",
+                "updated_by": "codex",
+                "approval_token": "e705fdb3b1fef19e0da34afc5fe617257692d676d2ec62ec422067a39c7927d0"
+              },
+              "versions": []
+            },
+            "evidence_refs": [],
+            "feedback_events": [],
+            "group": "其他",
+            "historical": false,
+            "id": "F-000003",
+            "legacy": {
+              "status": "open"
+            },
+            "messages": [],
+            "pending_items": [],
+            "problem_type": "research_method",
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "requests": {},
+            "review_basis": {
+              "claims": [
+                "evidence/claims/E-000003/r000001.json",
+                "evidence/claims/E-000004/r000001.json"
+              ],
+              "packet_sha256": "5f18525e243522203879aa528b8ff392282d6d64e17243b91eb954b4b01ebb40",
+              "summary": "p1可兼容启动前或后住院，延后起点改变风险集。"
+            },
+            "review_packet": {
+              "applicability": "排除规则仅与landmark条件人群相容，不能表示全体启动者早期风险。",
+              "common_practice": "无外部文献背书；此处只列本资料支持的定义与解释差异。",
+              "default": "采纳landmark时建议排除早期首次住院者并单列；如关心原早期效应则承认不可识别，不能删事件解决。",
+              "departure_check": "排除可能选择人群并丢失早期效应；保留则混入未知启动前事件。留人删首次事件与首次住院风险集不相容。",
+              "project_reason": "首次住院不能再次成为首次事件，起点、资格、归属必须一致。",
+              "support": "p1同月A启动和首次住院，没有日期先后；后续观察亦未提供。"
+            },
+            "review_required": null,
+            "revision": 2,
+            "round": 1,
+            "schema_version": 2,
+            "source_summary": "待核查",
+            "suggestions": [],
+            "title": "启动月首次住院的归属与早期事件处理",
+            "verification_tests": [],
+            "why": "p1 同月启动 A 且首次住院，无法确定住院是否发生在用药后；排除、计入或延后起算均有不同科学含义。",
+            "work": {
+              "affected_refs": [
+                "F-000003",
+                "F-000001"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "确认所选问题的同月事件及人群排除规则",
+                "认可landmark结果不能解释早期风险"
+              ],
+              "conclusion_type": "tradeoff",
+              "phase": "human_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000003"
+                  ],
+                  "at": "2026-10-14T15:36:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "Review the saved candidate"
+                  ],
+                  "from": "triage",
+                  "reason": "Candidate wording saved",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "definition_draft"
+                  ]
+                },
+                {
+                  "affected_refs": [
+                    "F-000003",
+                    "F-000001"
+                  ],
+                  "at": "2026-10-14T15:36:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "确认所选问题的同月事件及人群排除规则",
+                    "认可landmark结果不能解释早期风险"
+                  ],
+                  "from": "prepare_review",
+                  "reason": "早期事件处理决定风险集和解释范围。",
+                  "to": "human_review",
+                  "trigger_refs": [
+                    "evidence/claims/E-000003/r000001.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "evidence/claims/E-000003/r000001.json"
+              ]
+            },
+            "readiness": {
+              "status": "ready",
+              "dependencies": []
+            },
+            "candidate_dependency_updates": [],
+            "decision_group_id": "B-000001",
+            "review_category": "decision",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "reconfirmation_token": "01348cf8ac0662839c22e1c26a9ff2745fd14afd448e1805366d2e4084b2e667",
+            "ai_position": ""
+          }
+        ],
+        "decision_groups": [
+          {
+            "confirmations": [],
+            "created_at": "2026-10-14T15:37:02+00:00",
+            "created_by": "codex",
+            "example": null,
+            "feedback_events": [],
+            "history": [],
+            "id": "B-000001",
+            "member_ids": [
+              "F-000001",
+              "F-000002",
+              "F-000003"
+            ],
+            "messages": [],
+            "options": [
+              {
+                "consequences": "保留原问题与全体目标人群的意图，但不能输出本资料支持的启动效应；不会把无数据的问题包装成可执行规则。",
+                "label": "保留原始启动效应问题，当前不估计",
+                "rules": {
+                  "F-000001": "维持真实启动日开始的一年首次住院效应问题；日级顺序无法获得，明确该资料无法回答。",
+                  "F-000002": "共同启动者真实首药保持未知，不按默认药物优先级赋组。",
+                  "F-000003": "同月住院相对治疗的先后保持未知，不生成启动后事件标签。"
+                },
+                "tradeoffs": "不改变科学目标；代价是当前无效应答案。应明确不可识别，不能以等待本项目不会提供的日期作为已解决。"
+              },
+              {
+                "consequences": "更换目标人群、时间零点、结局窗口和效应解释；漏掉早期效应，条件选择可能改变组间构成。p3仅满足示例中的启动及无同月事件条件，仍需核验landmark和随访。",
+                "label": "另立次月初landmark后12个月风险问题",
+                "rules": {
+                  "F-000001": "2026年2月1日设起点，纳入1月单独启动且截至1月末无首次住院、起点存活可观察者，观察2026年2月至2027年1月。",
+                  "F-000002": "A单独与B单独组，p2等共同启动者排除并单列；只描述启动月类型，不宣称持续单药。",
+                  "F-000003": "p1等启动月首次住院者不进风险集，单列先后不明事件；不留人删事件。"
+                },
+                "tradeoffs": "推荐作为愿意改题时可审阅的完整候选；当前尚缺资格、随访与因果识别信息，不能立刻计算一年风险。"
+              },
+              {
+                "consequences": "保留更多启动月信息，但比较变为三类月度关联，含未能定位于治疗前后的事件；窗口含部分启动前时间，实际启动后长度不足或不等于一年。",
+                "label": "另立启动月起的月度关联描述",
+                "rules": {
+                  "F-000001": "研究2026年1月至12月日历窗口内的首次住院标记与启动月类别的关联；不称从真实启动日起的效应。",
+                  "F-000002": "A单独、B单独、同月共同启动三类分别描述；p2归第三类，不能解释为先药。",
+                  "F-000003": "保留p1的1月首次住院并注明可能发生于启动前；不制造治疗后标签。"
+                },
+                "tradeoffs": "不会恢复原因果效应；现有三行仍没有全年观察。若采纳需另行重写完整问题、风险集和输出规格，不能直接确认landmark候选。"
+              }
+            ],
+            "pending_items": [],
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "purpose": "请整组评估：各选项改变哪些研究问题，不能把不同选项的规则拼接后仍称原启动效应。候选文字仅对应landmark路径，其他路径获选后需相应改写；本轮没有人工确认。",
+            "revision": 1,
+            "title": "月度资料下的人群、时间零点和事件归属联动选择",
+            "updated_at": "2026-10-14T15:37:02+00:00",
+            "updated_by": "codex",
+            "work": {
+              "affected_refs": [],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [],
+              "conclusion_type": "needs_check",
+              "phase": "triage",
+              "revision_id": 1,
+              "transitions": [],
+              "trigger_refs": []
+            },
+            "approval_token": "5c4444c2254f487970bbeffa8d5c4b758af63967c0b2a137ed8ac10cd84811f6",
+            "readiness": {
+              "F-000001": {
+                "status": "waiting",
+                "dependencies": [
+                  {
+                    "active": true,
+                    "condition": "",
+                    "kind": "required",
+                    "question_id": "F-000002",
+                    "reason": "目标人群取决于共同启动处理",
+                    "text_sha256": null,
+                    "version": null,
+                    "title": "同月同时启动 A/B 的治疗组归属",
+                    "current_version": null,
+                    "status": "waiting"
+                  },
+                  {
+                    "active": true,
+                    "condition": "",
+                    "kind": "required",
+                    "question_id": "F-000003",
+                    "reason": "风险集及结局窗口取决于启动月首次住院处理",
+                    "text_sha256": null,
+                    "version": null,
+                    "title": "启动月首次住院的归属与早期事件处理",
+                    "current_version": null,
+                    "status": "waiting"
+                  }
+                ]
+              },
+              "F-000002": {
+                "status": "ready",
+                "dependencies": []
+              },
+              "F-000003": {
+                "status": "ready",
+                "dependencies": []
+              }
+            },
+            "review_category": "checking",
+            "human_pending": false,
+            "actionable": false,
+            "awaiting_human": true,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "historical": false
+          }
+        ],
+        "governance_version": 5,
+        "pending_submission_paths": [],
+        "investigations": [
+          {
+            "created_at": "2026-10-14T15:27:02+00:00",
+            "created_by": "codex",
+            "dedupe_key": "initiation",
+            "evidence_refs": [
+              "evidence/claims/E-000001/r000001.json",
+              "evidence/claims/E-000002/r000001.json",
+              "evidence/claims/E-000003/r000001.json",
+              "evidence/claims/E-000004/r000001.json"
+            ],
+            "feedback_events": [
+              {
+                "actor": "system",
+                "at": "2026-10-14T15:36:25+00:00",
+                "id": "monthly-initiation-review-20261014-v2:evidence-change:I-000001",
+                "kind": "evidence_changed",
+                "reference": {
+                  "claims": [
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json",
+                    "evidence/claims/E-000003/r000001.json",
+                    "evidence/claims/E-000004/r000001.json"
+                  ],
+                  "paths": [
+                    "evidence/sources/S-000001/r000001.json",
+                    "evidence/sources/S-000002/r000001.json",
+                    "evidence/sources/S-000003/r000001.json",
+                    "evidence/claims/E-000001/r000001.json",
+                    "evidence/claims/E-000002/r000001.json",
+                    "evidence/claims/E-000003/r000001.json",
+                    "evidence/claims/E-000004/r000001.json"
+                  ]
+                },
+                "sequence": 1
+              }
+            ],
+            "id": "I-000001",
+            "messages": [
+              {
+                "actor": "codex",
+                "at": "2026-10-14T15:36:25+00:00",
+                "id": "monthly-initiation-review-20261014-v2:I-000001:0",
+                "request_id": "monthly-initiation-review-20261014-v2",
+                "text": "合作者三个规则均依赖不可得的月内顺序。建立三个相联科研选择和备选组合供人工审阅；没有把不可观测事实改写为默认值，没有更改正式研究问题。"
+              }
+            ],
+            "pending_items": [],
+            "processing": {
+              "bootstrap": "complete",
+              "handled_changes": [],
+              "handled_external": [],
+              "human_cursor": null,
+              "receipts": []
+            },
+            "question_ids": [
+              "F-000001",
+              "F-000002",
+              "F-000003"
+            ],
+            "revision": 2,
+            "schema_version": 1,
+            "title": "Treatment initiation and follow-up",
+            "why": "Evaluate the collaborator proposal against available data",
+            "work": {
+              "affected_refs": [
+                "F-000001",
+                "F-000002",
+                "F-000003"
+              ],
+              "blockers": [],
+              "closed_reason": null,
+              "completion_conditions": [
+                "研究者选择保留原问题但不估计，或接受完整月度替代问题",
+                "确认相容的分组及同月住院规则"
+              ],
+              "conclusion_type": "tradeoff",
+              "phase": "prepare_review",
+              "revision_id": 1,
+              "transitions": [
+                {
+                  "affected_refs": [
+                    "F-000001",
+                    "F-000002",
+                    "F-000003"
+                  ],
+                  "at": "2026-10-14T15:36:25+00:00",
+                  "by": "codex",
+                  "completion_conditions": [
+                    "研究者选择保留原问题但不估计，或接受完整月度替代问题",
+                    "确认相容的分组及同月住院规则"
+                  ],
+                  "from": "triage",
+                  "reason": "事实核查完成；三个F承载需要人工选择的研究范围、分组、结局口径。",
+                  "to": "prepare_review",
+                  "trigger_refs": [
+                    "Audit/proposal.md",
+                    "Audit/source-data.json"
+                  ]
+                }
+              ],
+              "trigger_refs": [
+                "Audit/proposal.md",
+                "Audit/source-data.json"
+              ]
+            },
+            "review_category": "decision",
+            "human_pending": false,
+            "actionable": true,
+            "awaiting_human": false,
+            "ready_pending_ids": [],
+            "bootstrap_required": false,
+            "historical": false
+          }
+        ]
+      },
+      "hashes": {
+        "manifest": "5ca20e0a688d654ee702c30b2493a69408d980b80d8e11370ed18b0ce5f64377",
+        "trace": "1394cfffa9760fcf9106c9e3288457480fecd6e29a7684dd8c46592c7d98e723",
+        "outcome": "5ac3078f1f5262bb6b83a3adcc837922ff4b902f864dd315cdc919c6b960881e"
+      }
+    }
+  ]
+}

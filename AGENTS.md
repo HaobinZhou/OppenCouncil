@@ -1,6 +1,6 @@
 # Working in OppenCouncil
 
-Use `skills/oppen-project-steward/SKILL.md` to govern this product repository. Keep existing research projects under their original governor. Load only task-relevant references.
+Use `skills/oppencouncil/SKILL.md` to govern this product repository. Keep existing research projects under their original governor. Load only task-relevant references.
 
 - `skills/` owns governance instructions and helpers; `council/` owns the workbench and shared storage; `mcp/` is an optional client of that storage.
 - Maintain one implementation of formal definition storage. Project `Freeze/` records, Memory, credentials and runtime registration are not product source and must not be copied into commits.

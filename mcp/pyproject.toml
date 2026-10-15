@@ -1,11 +1,11 @@
 [project]
-name = "oppen-steward-mcp"
-version = "4.3.1"
+name = "oppencouncil-mcp"
+version = "5.0.0"
 description = "Project governance and writable discussions, with OAuth HTTP and Secure MCP Tunnel"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
-dependencies = ["mcp>=1.28,<2", "python-dotenv>=1,<2", "pywin32>=310; sys_platform == 'win32'", "oppencouncil>=4.3.1,<5"]
+dependencies = ["mcp>=1.28,<2", "python-dotenv>=1,<2", "pywin32>=310; sys_platform == 'win32'", "oppencouncil>=5.0.0,<6"]
 
 [tool.uv.sources]
 oppencouncil = { path = "../council", editable = true }

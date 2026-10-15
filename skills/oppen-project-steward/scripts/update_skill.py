@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check/update a Git-backed OppenCouncil installation using only Git and Python.
 
-Bundled identically in both skills so either skill can be installed on its own.
+Bundled identically in the shared skill and both compatibility names for installation repair.
 The integration tests enforce parity. Project governance helpers are not invoked.
 """
 
@@ -19,7 +19,7 @@ import tempfile
 
 
 SOURCE_URL = "https://github.com/HaobinZhou/OppenCouncil.git"
-SKILLS = ("oppen-project-steward", "stepwise-r-project")
+SKILLS = ("oppencouncil", "oppen-project-steward", "stepwise-r-project")
 
 
 class UpdateError(RuntimeError):
@@ -58,7 +58,7 @@ def installation(skill_dir: Path) -> tuple[Path, Path]:
     """Resolve symlinks and prove that the target belongs to the source checkout."""
     skill_dir = skill_dir.expanduser().resolve(strict=True)
     if skill_dir.name not in SKILLS or not (skill_dir / "SKILL.md").is_file():
-        raise UpdateError("Target must be an installed oppen-project-steward or stepwise-r-project skill")
+        raise UpdateError("Target must be the installed oppencouncil skill or one of its compatibility names")
     try:
         root = Path(git(skill_dir, "rev-parse", "--show-toplevel").strip()).resolve()
     except UpdateError as exc:

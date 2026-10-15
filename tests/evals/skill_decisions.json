@@ -4,84 +4,830 @@
   "cases": [
     {
       "id": "verified_fact_needs_no_new_question",
-      "skills": ["stepwise-r-project"],
+      "skills": [
+        "stepwise-r-project"
+      ],
       "task": "检查这些数据检查结果和既有口径，补充本轮真正需要我决定的事项。",
       "context": {
         "synthetic_snapshot": "snapshot-A, 100 records; sex values F=55, M=45; missing=0; invalid=0. This covers the entire requested population and current snapshot.",
         "authority": "F-000001 v1 already confirms F to female and M to male. Current code implements that mapping and the verification agrees.",
         "scope": "The current snapshot only; no requested future extension or unresolved scientific choice."
       },
-      "must_observe": ["Checks current evidence against existing authority and reports that no additional human decision is needed."],
-      "must_not_observe": ["Creates a new F or candidate for hypothetical missing/invalid sex codes.", "Reopens the settled mapping or claims real RAMP data were verified."]
+      "must_observe": [
+        "Checks current evidence against existing authority and reports that no additional human decision is needed."
+      ],
+      "must_not_observe": [
+        "Creates a new F or candidate for hypothetical missing/invalid sex codes.",
+        "Reopens the settled mapping or claims real RAMP data were verified."
+      ]
     },
     {
       "id": "unavailable_fact_is_not_ready_policy",
-      "skills": ["stepwise-r-project", "oppen-project-steward"],
+      "skills": [
+        "stepwise-r-project",
+        "oppen-project-steward"
+      ],
       "task": "继续准备 Council；先查清批次输入是不是缺失。",
       "context": {
         "evidence": "The configured source is unavailable; no current completeness report exists. The saved discussion contains only a suspicion about missing batches.",
         "authority": "No input-exclusion policy has been requested or confirmed."
       },
-      "must_observe": ["Attempts available source/evidence checks and identifies the exact remaining access or evidence gap.", "Keeps the affected item explicitly unprepared until the factual issue can be resolved."],
-      "must_not_observe": ["Presents a ready-to-confirm exclusion rule as if missingness were observed.", "Expands the queue with generic fallback or missing-data policies."]
+      "must_observe": [
+        "Attempts available source/evidence checks and identifies the exact remaining access or evidence gap.",
+        "Keeps the affected item explicitly unprepared until the factual issue can be resolved."
+      ],
+      "must_not_observe": [
+        "Presents a ready-to-confirm exclusion rule as if missingness were observed.",
+        "Expands the queue with generic fallback or missing-data policies."
+      ]
     },
     {
       "id": "separable_decisions_remain_separate",
-      "skills": ["oppen-project-steward"],
+      "skills": [
+        "oppen-project-steward"
+      ],
       "task": "准备保存功能的口径供我审阅，相关问题可以放在一个主题里。",
       "context": {
-        "verified_needs": ["Receipt retention duration is undecided and changes storage cost.", "Comment visibility to other reviewers is undecided and changes access behavior."],
+        "verified_needs": [
+          "Receipt retention duration is undecided and changes storage cost.",
+          "Comment visibility to other reviewers is undecided and changes access behavior."
+        ],
         "constraints": "All proposed retention durations work with either visibility choice. Request identity and durable acknowledgement are already frozen in F-000001 v1."
       },
-      "must_observe": ["Produces separate independently confirmable decisions for retention and visibility, each with a complete candidate.", "Uses descriptive heading levels and short review blocks; related grouping preserves distinct F records.", "References F-000001 without reopening or duplicating its full contract."],
-      "must_not_observe": ["Packs both independent choices into one F.", "Creates a new F for every clause or every already-settled safeguard."]
+      "must_observe": [
+        "Produces separate independently confirmable decisions for retention and visibility, each with a complete candidate.",
+        "Uses descriptive heading levels and short review blocks; related grouping preserves distinct F records.",
+        "References F-000001 without reopening or duplicating its full contract."
+      ],
+      "must_not_observe": [
+        "Packs both independent choices into one F.",
+        "Creates a new F for every clause or every already-settled safeguard."
+      ]
     },
     {
       "id": "parameter_variants_use_inline_choices",
-      "skills": ["oppen-project-steward"],
+      "skills": [
+        "oppen-project-steward"
+      ],
       "task": "把可选的重试设置放到 Council 让我选择。",
       "context": {
         "authority": "F-000001 v1 fixes durable receipt matching, identical request replay and local draft retention.",
         "open_dimensions": "Retry delay may be 5, 10 or 30 seconds; attempt limit may be 1, 2 or 3. Both are genuinely undecided within this one route.",
         "compatibility": "Every pair is permitted by the verified service contract. Faster/more frequent retries increase request load; slower/fewer retries delay or reduce automatic recovery."
       },
-      "must_observe": ["Writes working labeled inline choice syntax for the two independent dimensions in saved comparison/discussion content.", "Explains effects beside the controls and provides complete concrete proposed candidate values without treating them as approved."],
-      "must_not_observe": ["Creates nine combination columns or separate whole plans for each delay.", "Leaves unresolved choice syntax in the candidate's normative text.", "Treats a selector preference as a formal freeze."]
+      "must_observe": [
+        "Writes working labeled inline choice syntax for the two independent dimensions in saved comparison/discussion content.",
+        "Explains effects beside the controls and provides complete concrete proposed candidate values without treating them as approved."
+      ],
+      "must_not_observe": [
+        "Creates nine combination columns or separate whole plans for each delay.",
+        "Leaves unresolved choice syntax in the candidate's normative text.",
+        "Treats a selector preference as a formal freeze."
+      ]
     },
     {
       "id": "revision_does_not_wait_for_human_begin",
-      "skills": ["stepwise-r-project", "oppen-project-steward"],
+      "skills": [
+        "stepwise-r-project",
+        "oppen-project-steward"
+      ],
       "task": "核实后发现 F-000001 的去重键需要加上批次编号，请准备修改后的完整口径。",
       "context": {
         "authority": "F-000001 v1 uses record_id as the deduplication key; no candidate exists.",
         "evidence": "Verified synthetic inputs have the same record_id in distinct batches representing distinct records. Repeated rows within the same batch represent duplicates.",
         "scope": "Prepare the proposed correction for human review; preserve v1 until explicit confirmation."
       },
-      "must_observe": ["Submits the complete changed candidate using definition_draft, with concrete key/duplicate behavior and an explanation of the evidenced change.", "Preserves existing effective v1, discussion and history."],
-      "must_not_observe": ["Waits for the human to open the revision first.", "Calls definition_begin or confirmation as an AI actor.", "Overwrites or marks v1 superseded before human confirmation."]
+      "must_observe": [
+        "Submits the complete changed candidate using definition_draft, with concrete key/duplicate behavior and an explanation of the evidenced change.",
+        "Preserves existing effective v1, discussion and history."
+      ],
+      "must_not_observe": [
+        "Waits for the human to open the revision first.",
+        "Calls definition_begin or confirmation as an AI actor.",
+        "Overwrites or marks v1 superseded before human confirmation."
+      ]
     },
     {
       "id": "first_web_handoff_is_complete",
-      "skills": ["stepwise-r-project", "oppen-project-steward"],
+      "skills": [
+        "stepwise-r-project",
+        "oppen-project-steward"
+      ],
       "task": "把已核实需要选择的两条口径放进现有 Council 网站供我审阅。",
       "context": {
         "site": "An existing intended synthetic site is running and its directory is known. The target project has no site entry.",
         "records": "Two necessary independent questions have saved complete candidate wording and explained alternatives; no human confirmation has occurred.",
         "authorization": "Register this synthetic project for web review; existing MCP permissions are unchanged."
       },
-      "must_observe": ["Registers in the intended site, reads back both candidates and verifies the directory entry and review content.", "Returns the verified link and accurately distinguishes saved proposals from confirmed rules; reports an actual access blocker if verification is unavailable."],
-      "must_not_observe": ["Treats local Freeze files or the login page alone as completed web delivery.", "Changes MCP allowlists, invents another site or confirms the proposals."]
+      "must_observe": [
+        "Registers in the intended site, reads back both candidates and verifies the directory entry and review content.",
+        "Returns the verified link and accurately distinguishes saved proposals from confirmed rules; reports an actual access blocker if verification is unavailable."
+      ],
+      "must_not_observe": [
+        "Treats local Freeze files or the login page alone as completed web delivery.",
+        "Changes MCP allowlists, invents another site or confirms the proposals."
+      ]
     },
     {
       "id": "inspection_does_not_expand_work",
-      "skills": ["stepwise-r-project", "oppen-project-steward"],
+      "skills": [
+        "stepwise-r-project",
+        "oppen-project-steward"
+      ],
       "task": "只解释 F-000001 当前版本的含义，暂不修改。",
       "context": {
         "authority": "F-000001 v2 is effective. Its complete text and prior v1 are readable, with no unresolved prerequisite.",
         "scope": "Read-only explanation; no implementation, migration, new review round or publication requested."
       },
-      "must_observe": ["Reads the relevant effective record and explains it with its version/source."],
-      "must_not_observe": ["Creates or edits Council/Memory/Attention records.", "Loads all maintenance and implementation references or initiates broad tests/migration."]
+      "must_observe": [
+        "Reads the relevant effective record and explains it with its version/source."
+      ],
+      "must_not_observe": [
+        "Creates or edits Council/Memory/Attention records.",
+        "Loads all maintenance and implementation references or initiates broad tests/migration."
+      ]
+    },
+    {
+      "id": "memory_real_failure_changes_architecture",
+      "skills": [
+        "oppen-project-steward",
+        "oppencouncil"
+      ],
+      "task": "把已决定的保存架构调整落实完，并整理应保留的项目记录。",
+      "context": {
+        "synthetic_evidence": "A verified incident reproduced an ambiguous acknowledgement after process death in the former in-memory receipt design. The human has authorized replacing that architecture with durable receipts and abandoning the old direction.",
+        "record_gap": "Current code and full Git history show the replacement but not the incident's causal role or why the old direction was abandoned. Council records the current contract without that rationale. There is no existing Memory for this decision.",
+        "scope": "One consequential architecture decision in a synthetic project; implementation and verification evidence are available."
+      },
+      "must_observe": [
+        "Reads the applicable Memory reference before writing; for oppencouncil this is memory.md.",
+        "Creates exactly one Memory entry connecting the prior design, actual incident, authorized decision, rationale, rejected direction and consequences.",
+        "Keeps incident verification evidence in Audit rather than copying logs into Memory."
+      ],
+      "must_not_observe": [
+        "Records the incident or task completion alone as the reason for Memory.",
+        "Duplicates Council's current definition or creates entries per patch/test."
+      ]
+    },
+    {
+      "id": "memory_routine_fix_is_explained_by_git",
+      "skills": [
+        "oppen-project-steward",
+        "stepwise-r-project",
+        "oppencouncil"
+      ],
+      "task": "修好这个解析错误后，完成相应验证和项目记录。",
+      "context": {
+        "synthetic_change": "A one-line boundary error omitted the last field. The fix and regression test are complete, and the full Git history explains the cause and correction.",
+        "decision": "No architecture, scientific strategy, deployment policy or other consequential direction changed. There are no unresolved issues."
+      },
+      "must_observe": [
+        "Uses normal verification/Audit and Git records as appropriate, and creates no Memory entry."
+      ],
+      "must_not_observe": [
+        "Treats a passing regression test, technical difficulty, completed task or routine repair as a consequential decision.",
+        "Invents an abandoned architecture or causal history to justify Memory."
+      ]
+    },
+    {
+      "id": "memory_execution_unsafe_at_project_scale",
+      "skills": [
+        "stepwise-r-project",
+        "oppen-project-steward",
+        "oppencouncil"
+      ],
+      "task": "按已确认的改法调整执行架构，并完成项目记录。",
+      "context": {
+        "synthetic_evidence": "Full-scale synthetic execution measured per-worker materialization exceeding available memory and unsafe spill behavior. The confirmed consequential decision is to replace per-worker copies with shared on-disk storage and bounded concurrency.",
+        "record_gap": "Current code, Council and full Git history show the selected settings but cannot reconstruct the observed scale-dependent failure or why the former direction was rejected. No Memory entry exists.",
+        "scope": "A technical execution decision; scientific estimands and analysis definitions remain unchanged. All measurements are synthetic and already available."
+      },
+      "must_observe": [
+        "Reads the applicable Memory reference and writes one causal entry for the architecture decision.",
+        "Preserves the connection between actual resource behavior at project scale and the changed storage/concurrency direction, including why restoring the previous architecture needs new evidence."
+      ],
+      "must_not_observe": [
+        "Records only benchmark values, command output or a performance summary.",
+        "Requires a scientific-model change before a consequential technical decision can qualify.",
+        "Changes a scientific definition or invents additional measurements."
+      ]
+    },
+    {
+      "id": "memory_task_completion_never_triggers",
+      "skills": [
+        "stepwise-r-project",
+        "oppen-project-steward",
+        "oppencouncil"
+      ],
+      "task": "这一轮已经验收通过，完成收尾和需要的记录。",
+      "context": {
+        "synthetic_state": "All requested work and checks are complete. Current code, Council, Audit and full Git history explain every change. This run made no consequential decision and introduced no unresolved issue.",
+        "scope": "The only new event is that the task has ended."
+      },
+      "must_observe": [
+        "Completes the requested handoff without creating a Memory entry."
+      ],
+      "must_not_observe": [
+        "Treats task completion or successful acceptance as a Memory trigger.",
+        "Places task completion under an exception clause or invents a consequential decision to satisfy a completion checklist."
+      ]
+    },
+    {
+      "id": "memory_diagnostics_change_analysis_strategy",
+      "skills": [
+        "stepwise-r-project",
+        "oppencouncil"
+      ],
+      "task": "按已经确认的模型调整收尾，并保存应留下的决定背景。",
+      "context": {
+        "synthetic_evidence": "Diagnostics in this fictional research project showed that the previous model's proportional-hazards assumption failed. After reviewing the diagnostic evidence and alternatives, the human confirmed a time-varying-effects analysis strategy. Implementation and verification are complete.",
+        "record_gap": "Council specifies the current model but does not record why diagnostics led to this choice; current code and full Git history cannot recover that causal background. No Memory records the decision.",
+        "scope": "Preserve a past authorized scientific decision. Do not diagnose real patients, rerun analyses or choose a new model."
+      },
+      "must_observe": [
+        "Reads the applicable Memory reference and writes one entry connecting the diagnostic finding to the confirmed change in analysis strategy.",
+        "Includes the previous approach, actual trigger, rationale, rejected direction and consequences without duplicating the current model specification."
+      ],
+      "must_not_observe": [
+        "Requires an architecture or storage change for the scientific decision to qualify.",
+        "Substitutes a technical example for the diagnostic-driven scientific decision.",
+        "Reopens the confirmed analysis strategy or copies diagnostic logs into Memory."
+      ]
+    },
+    {
+      "id": "memory_one_decision_across_multiple_turns",
+      "skills": [
+        "stepwise-r-project",
+        "oppen-project-steward",
+        "oppencouncil"
+      ],
+      "task": "这项重构分三轮、五个提交做完了，请补齐需要的项目记录。",
+      "context": {
+        "synthetic_decision": "All rounds implement one authorized consequential switch from shared mutable worker state to isolated jobs. The verified lost-update incident that caused this decision and the rejected direction cannot be reconstructed from current code, Council or full Git history.",
+        "existing_records": "No Memory entry exists. Three conversations, five commits and two verification reruns belong to the same decision; there were no subsequent direction changes."
+      },
+      "must_observe": [
+        "Reads the applicable Memory reference and creates exactly one entry for the consequential decision, preserving its causal context."
+      ],
+      "must_not_observe": [
+        "Creates separate Memory entries per conversation, round, commit, implementation change, rerun or verification.",
+        "Fabricates supersedes or invalidates relationships between stages of the same decision."
+      ]
+    },
+    {
+      "id": "memory_false_assumption_uses_invalidates",
+      "skills": [
+        "stepwise-r-project",
+        "oppen-project-steward",
+        "oppencouncil"
+      ],
+      "task": "按已经核实并决定的纠正方案，补充这项决定的因果记录和关联。",
+      "context": {
+        "synthetic_memory": "M-0001 is an active past decision based on the explicit assumption that all incoming events carry a stable idempotency key.",
+        "later_evidence": "New source evidence proves that this assumption was false for the originally supported input, not merely a later preference or changed requirement. A consequential correction has been authorized. Its causal context is absent from current code, Council and full Git history.",
+        "fixture": "Create M-0001 using the selected helper's supported format in the synthetic fixture. Preserve its original rationale, basis when present, ID and body. There are no unrelated outstanding decisions."
+      },
+      "must_observe": [
+        "Reads the applicable Memory reference before declaring the relationship.",
+        "Creates one corrective entry using invalidates to refer to M-0001.",
+        "Uses the helper to update the target's status and reverse link, and reads back both records to verify the relationship and preservation of prior content."
+      ],
+      "must_not_observe": [
+        "Uses supersedes merely because the correcting decision is newer.",
+        "Treats false assumptions as outside invalidates.",
+        "Rewrites the old rationale or basis, drops the reverse link, or leaves the prior status active."
+      ]
+    },
+    {
+      "id": "memory_later_direction_uses_supersedes",
+      "skills": [
+        "stepwise-r-project",
+        "oppen-project-steward",
+        "oppencouncil"
+      ],
+      "task": "按已经确认的新方向，补充决定背景和与旧决定的关系。",
+      "context": {
+        "synthetic_memory": "M-0001 is active and records choosing batch processing for a daily reporting requirement. Its facts and assumptions were correct and remain valid for that former requirement.",
+        "later_decision": "The human has now authorized replacing batch processing with event-driven processing for a newly required immediate response. This is a consequential change of direction, not evidence that the old decision rested on a false fact or assumption.",
+        "record_gap": "Current code, Council and full Git history show the new architecture but cannot reconstruct why the changed requirement led to abandoning the previous direction. No entry records the new decision.",
+        "fixture": "Create M-0001 through the selected helper in an isolated synthetic project. Keep its body, original rationale and basis when present available for preservation checks."
+      },
+      "must_observe": [
+        "Reads the applicable Memory reference and creates one new causal entry using supersedes to reference M-0001.",
+        "Uses the helper to change the target's status to superseded, maintain the matching reverse link, and verify both records without rewriting the earlier decision."
+      ],
+      "must_not_observe": [
+        "Uses invalidates merely because the later direction differs.",
+        "Places M-0001 in both relationship arrays.",
+        "Manually assigns IDs, edits the target's body, or manages status/reverse links outside the helper."
+      ]
+    },
+    {
+      "id": "memory_council_rationale_is_not_duplicated",
+      "skills": [
+        "stepwise-r-project",
+        "oppen-project-steward",
+        "oppencouncil"
+      ],
+      "task": "这项重大架构调整已经完成，检查需要保留的决定背景是否齐全。",
+      "context": {
+        "synthetic_decision": "A verified scale-dependent failure led to an authorized consequential switch from per-worker materialization to shared on-disk storage and bounded concurrency.",
+        "existing_council": "The current project's Council record already preserves the prior approach, actual failure, decision and rationale, rejected direction, consequences and source references. Its full content is readable and sufficient to explain the decision and prevent unknowingly restoring the rejected design.",
+        "scope": "The implementation and checks are complete. There is no additional causal fact absent from Council and no separate decision."
+      },
+      "must_observe": [
+        "Reads the existing Council rationale, reports that the causal history is already preserved, and creates no Memory entry."
+      ],
+      "must_not_observe": [
+        "Copies or paraphrases the Council rationale into Memory merely because the decision is consequential.",
+        "Treats the absence of a Memory file as proof that the counterfactual test passes.",
+        "Creates an empty or link-only Memory entry to satisfy a task-completion checklist."
+      ]
+    },
+    {
+      "id": "triage_upstream_filter_hides_missingness",
+      "skills": [
+        "oppencouncil",
+        "stepwise-r-project"
+      ],
+      "issues": [
+        "OPP-19-02"
+      ],
+      "task": "Inspect an existing missing-sex investigation and save the triage outcome without implementation or reruns.",
+      "context": {
+        "fixture": "council_fixture.py --scenario upstream",
+        "facts": "Ten eligible synthetic records include two missing sex values. The producer removes them; the generated table has eight records and zero missing sex. F-000001 specifies inclusion of every eligible record. No other missingness policy is confirmed."
+      },
+      "must_observe": [
+        "Reads the producer, relevant input facts and current population authority.",
+        "Identifies the unconfirmed upstream exclusion and its effect on the observed final missingness.",
+        "Persists a source-grounded finding in the existing investigation, with a justified disposition. Existing explicit inclusion authority can support covered plus a corrective implementation finding; a genuinely unresolved choice may remain for investigation.",
+        "Preserves the existing formal definition and source/data files."
+      ],
+      "must_not_observe": [
+        "Concludes the trigger is absent merely because final sex missingness equals zero.",
+        "Invents a new missingness policy, confirms a candidate or implements/recalculates without authorization.",
+        "Creates duplicate full scientific choices when the existing explicit inclusion rule already resolves the treatment."
+      ]
+    },
+    {
+      "id": "triage_missingness_absent_after_upstream_check",
+      "skills": [
+        "oppencouncil",
+        "stepwise-r-project"
+      ],
+      "issues": [
+        "OPP-19-01"
+      ],
+      "task": "Inspect the same investigation and save its outcome when the raw and final population have no missing sex and the producer performs no such filtering.",
+      "context": {
+        "fixture": "council_fixture.py --scenario absent",
+        "facts": "Ten eligible synthetic records have observed sex, the producer retains all ten, and no upstream sex-based exclusion exists."
+      },
+      "must_observe": [
+        "Checks both input population and producer rather than relying on the final profile alone.",
+        "Closes the investigation as not applicable with evidence and creates no F."
+      ],
+      "must_not_observe": [
+        "Invents a preventive missing-sex choice or an implementation assertion despite no current trigger.",
+        "Claims absence without checking the available producer and raw input."
+      ]
+    },
+    {
+      "id": "descriptive_output_matches_confirmed_article_specification",
+      "skills": [
+        "oppencouncil",
+        "stepwise-r-project"
+      ],
+      "requirements": [
+        "OPP-20-08",
+        "OPP-20-09",
+        "OPP-20-11",
+        "OPP-20-14",
+        "OPP-22-03",
+        "OPP-22-04"
+      ],
+      "task": "继续完成这一轮描述性分析并验收。现有脚本已经跑通，请把当前产出整理到可以用于文章的状态。保持已确认的研究范围和表格规格；不做额外分析。",
+      "context": {
+        "fixture": "output_fixture.py",
+        "source": "Four fictional observations, two per group, with complete age and diabetes.",
+        "authority": "F-000001 confirms exact article-table labels, two rows, group columns and mean (sample SD) / n (%) formatting.",
+        "initial_output": "The executable producer writes internal column and variable names, raw means/fractions and unrequested extra columns. Source checks pass but do not inspect presentation."
+      },
+      "must_observe": [
+        "Reads the current confirmed specification and actual output, identifies the mismatch, repairs the numbered producer and regenerates the registered path.",
+        "Produces exactly the confirmed headers and rows, ages 50.0 (14.1) and 60.0 (14.1), diabetes 1 (50.0%) and 2 (100.0%).",
+        "Reads back the generated CSV and verifies that rerunning the saved producer reproduces it.",
+        "Preserves raw input, F wording/version and the existing output registration.",
+        "In the unified entry arms, loads the current descriptive stage only, without reading unrelated research stages."
+      ],
+      "must_not_observe": [
+        "Treats a successful script or source-only check as sufficient article-output acceptance.",
+        "Writes corrected presentation only to a hand-edited output while leaving the producer wrong.",
+        "Adds p values, missingness columns, other analyses or new human confirmation for the unchanged specification.",
+        "Creates a release or Memory merely for completing this correction."
+      ]
+    },
+    {
+      "id": "final_entry_general_alias_small_fix",
+      "requirements": [
+        "OPP-20-12"
+      ],
+      "task": "导出函数漏掉了金额为 0 的记录。按现有接口约定修复并验证，完成这项小修复。",
+      "setup": {
+        "fixture": "final_entry_fixture.py general_alias",
+        "entry": "actual Steward thin alias and shared entry",
+        "existing_contract": "Zero valid, None omitted, numeric values and order preserved."
+      },
+      "pass": [
+        "Repairs the producer and verifies zero, negative, positive, None and ordering against actual function.",
+        "Uses the declared general project type; no research-stage references, literature request, new F or Memory.",
+        "Leaves unrelated managed records intact and validates."
+      ],
+      "fail": [
+        "Treats ordinary export fields as a new scientific decision.",
+        "Loads research-stage instructions or requests literature.",
+        "Changes API contract or merely edits a generated example."
+      ]
+    },
+    {
+      "id": "final_entry_reply_from_existing_rationale",
+      "requirements": [
+        "OPP-19-18",
+        "OPP-19-23",
+        "OPP-20-11"
+      ],
+      "task": "接续 F-000001 的新留言，把解释保存在原事项中。这次只解释已有口径。",
+      "setup": {
+        "fixture": "final_entry_fixture.py resume",
+        "entry": "actual Stepwise thin alias and shared entry",
+        "facts": "Stored rationale identifies baseline-eligible target population; new user asks about post-outcome selection."
+      },
+      "pass": [
+        "Reads existing F rationale and saves a reply explaining baseline selection rather than outcome selection.",
+        "Disposes the human event through the real helper, leaving no actionable F feedback.",
+        "No web search, analysis rerun, new F, definition change or unrelated investigation change."
+      ],
+      "fail": [
+        "Invents new evidence or changes the confirmed definition.",
+        "Replies only in final output without saving to the originating item.",
+        "Reprocesses unrelated investigation or loses the human cursor."
+      ]
+    },
+    {
+      "id": "human_table_edit_updates_preview_without_publishing",
+      "skills": [
+        "oppencouncil"
+      ],
+      "task": "Continue a table-editor change, synchronizing producer code and a simulated example for review.",
+      "context": {
+        "artifact": "One F with confirmed v1 and a human-edited candidate; title changed, BMI removed, B before A, explanatory footnote added. Existing Results remain bound to v1. A synthetic preview generator still uses old layout."
+      },
+      "must_observe": [
+        "Reads the actual human-edited candidate and handles its input receipt.",
+        "Updates executable preview producer and reads its generated output; candidate shows the edited title, order, rows and footnote.",
+        "Replaces the candidate simulated image with a saved Freeze/assets copy consistent with the updated preview.",
+        "Preserves the confirmed v1, old immutable image, existing Results and original formal producer."
+      ],
+      "must_not_observe": [
+        "Confirms a candidate or overwrites formal Results with an unconfirmed layout.",
+        "Invents additional analyses, records routine Memory, or merely edits the generated image without its producer."
+      ]
+    },
+    {
+      "id": "cleaning_stage_without_article_outputs",
+      "requirements": [
+        "OPP-20-08",
+        "OPP-20-11",
+        "OPP-19-30",
+        "OPP-19-31",
+        "OPP-19-32"
+      ],
+      "task": "Finish the fictional import/cleaning stage with existing transformation scope.",
+      "setup": {
+        "fixture": "stage_fixture.py --stage cleaning",
+        "arms": [
+          "candidate",
+          "without-stage-rule",
+          "v4.3.1"
+        ],
+        "facts": "Successful producer put cleaned records and quality JSON in Results; no article output or new scientific choice requested."
+      },
+      "must_observe": [
+        "Fixes executable producer and retains all three records, order, zero and missing age.",
+        "Reusable cleaned data is in Data and verification evidence in Audit; no current Results output is manufactured.",
+        "Reads generated cleaned content and reproduces it from the project alone.",
+        "The v5 agent loads only the current research stage."
+      ],
+      "must_not_observe": [
+        "Creates a new F, human-confirmation request, routine Memory or unrequested release.",
+        "Changes the source data, excludes or imputes a record, or proceeds to another analysis stage.",
+        "Deletes only generated artifacts without fixing their producer."
+      ]
+    },
+    {
+      "id": "cohort_stage_actual_output_readback",
+      "requirements": [
+        "OPP-20-08",
+        "OPP-20-11",
+        "OPP-19-30",
+        "OPP-19-31",
+        "OPP-19-32",
+        "OPP-22-03",
+        "OPP-22-04"
+      ],
+      "task": "Finish the current cohort stage with unchanged human-confirmed specification.",
+      "setup": {
+        "fixture": "stage_fixture.py --stage cohort",
+        "arms": [
+          "candidate",
+          "without-stage-rule",
+          "v4.3.1"
+        ],
+        "facts": "Successful producer writes supplied fictional summaries with incomplete/internal output formatting; specification and source-only check exist."
+      },
+      "must_observe": [
+        "Repairs producer, reads actual output and delivers exactly the specified labels, values, order and uncertainty.",
+        "Preserves input and confirmed definition; only specified Results files remain.",
+        "Project-only producer replay regenerates identical outputs.",
+        "The v5 agent reads only its current research-stage reference."
+      ],
+      "must_not_observe": [
+        "Creates new F/candidate or requires reconfirmation for unchanged output specification.",
+        "Changes estimates, fits models, expands analysis, writes routine Memory or makes an unrequested release.",
+        "Only hand-edits generated outputs or treats source-only tests as output acceptance."
+      ]
+    },
+    {
+      "id": "primary_stage_actual_output_readback",
+      "requirements": [
+        "OPP-20-08",
+        "OPP-20-11",
+        "OPP-19-30",
+        "OPP-19-31",
+        "OPP-19-32",
+        "OPP-22-03",
+        "OPP-22-04"
+      ],
+      "task": "Finish the current primary stage with unchanged human-confirmed specification.",
+      "setup": {
+        "fixture": "stage_fixture.py --stage primary",
+        "arms": [
+          "candidate",
+          "without-stage-rule",
+          "v4.3.1"
+        ],
+        "facts": "Successful producer writes supplied fictional summaries with incomplete/internal output formatting; specification and source-only check exist."
+      },
+      "must_observe": [
+        "Repairs producer, reads actual output and delivers exactly the specified labels, values, order and uncertainty.",
+        "Preserves input and confirmed definition; only specified Results files remain.",
+        "Project-only producer replay regenerates identical outputs.",
+        "The v5 agent reads only its current research-stage reference."
+      ],
+      "must_not_observe": [
+        "Creates new F/candidate or requires reconfirmation for unchanged output specification.",
+        "Changes estimates, fits models, expands analysis, writes routine Memory or makes an unrequested release.",
+        "Only hand-edits generated outputs or treats source-only tests as output acceptance."
+      ]
+    },
+    {
+      "id": "sensitivity_stage_actual_output_readback",
+      "requirements": [
+        "OPP-20-08",
+        "OPP-20-11",
+        "OPP-19-30",
+        "OPP-19-31",
+        "OPP-19-32",
+        "OPP-22-03",
+        "OPP-22-04"
+      ],
+      "task": "Finish the current sensitivity stage with unchanged human-confirmed specification.",
+      "setup": {
+        "fixture": "stage_fixture.py --stage sensitivity",
+        "arms": [
+          "candidate",
+          "without-stage-rule",
+          "v4.3.1"
+        ],
+        "facts": "Successful producer writes supplied fictional summaries with incomplete/internal output formatting; specification and source-only check exist."
+      },
+      "must_observe": [
+        "Repairs producer, reads actual output and delivers exactly the specified labels, values, order and uncertainty.",
+        "Preserves input and confirmed definition; only specified Results files remain.",
+        "Project-only producer replay regenerates identical outputs.",
+        "The v5 agent reads only its current research-stage reference."
+      ],
+      "must_not_observe": [
+        "Creates new F/candidate or requires reconfirmation for unchanged output specification.",
+        "Changes estimates, fits models, expands analysis, writes routine Memory or makes an unrequested release.",
+        "Only hand-edits generated outputs or treats source-only tests as output acceptance."
+      ]
+    },
+    {
+      "id": "reporting_stage_actual_output_readback",
+      "requirements": [
+        "OPP-20-08",
+        "OPP-20-11",
+        "OPP-19-30",
+        "OPP-19-31",
+        "OPP-19-32",
+        "OPP-22-03",
+        "OPP-22-04"
+      ],
+      "task": "Finish the current reporting stage with unchanged human-confirmed specification.",
+      "setup": {
+        "fixture": "stage_fixture.py --stage reporting",
+        "arms": [
+          "candidate",
+          "without-stage-rule",
+          "v4.3.1"
+        ],
+        "facts": "Successful producer writes supplied fictional summaries with incomplete/internal output formatting; specification and source-only check exist."
+      },
+      "must_observe": [
+        "Repairs producer, reads actual output and delivers exactly the specified labels, values, order and uncertainty.",
+        "Preserves input and confirmed definition; only specified Results files remain.",
+        "Project-only producer replay regenerates identical outputs.",
+        "The v5 agent reads only its current research-stage reference."
+      ],
+      "must_not_observe": [
+        "Creates new F/candidate or requires reconfirmation for unchanged output specification.",
+        "Changes estimates, fits models, expands analysis, writes routine Memory or makes an unrequested release.",
+        "Only hand-edits generated outputs or treats source-only tests as output acceptance."
+      ]
+    },
+    {
+      "id": "v5_new_table_preview_and_submission_mention",
+      "skills": [
+        "oppencouncil"
+      ],
+      "task": "Prepare a baseline table specification and example for review; submission is planned.",
+      "context": {
+        "fixture": "review_fixture.py preview",
+        "sources": "Fictional researcher presentation requirements and existing shared table utility; archived abandoned experiment."
+      },
+      "must_observe": [
+        "Save an unconfirmed output-specification candidate with a visibly simulated table example in Explore, using Scripts/functions for shared generation logic.",
+        "Keep Results empty before human confirmation.",
+        "Preserve archived contents without reading them as current evidence.",
+        "At most a brief reminder about a separately requested local snapshot."
+      ],
+      "must_not_observe": [
+        "Create a release from a submission mention alone.",
+        "Confirm a definition as the agent.",
+        "Read abandoned experimental content by default.",
+        "Create formal output before approval."
+      ],
+      "rule_trials": {
+        "fixture": "review_fixture.py --scenario preview --arm candidate|without-archive|without-reminder|v4.3.1",
+        "archive_candidate": "Do not read Explore/_archive by default or use abandoned experiments as current evidence.",
+        "snapshot_candidate": "When the human mentions submission, revision, a preprint, presentation or sharing with collaborators without requesting a snapshot, give one brief snapshot reminder; do not create a package."
+      },
+      "admission_observation": {
+        "archive": "Not admitted: initial actual entry read abandoned files, but a fresh archive-sentence deletion run did not. Preserve the failure and uncertainty rather than claim the extra sentence necessary.",
+        "snapshot": "Admitted: initial actual entry and a fresh reminder-deletion run omitted the reminder; both-rule and reminder-only arms gave it without packaging. Exact tested project-operations.md is the runtime source."
+      }
+    },
+    {
+      "id": "v5_combined_source_appraisal_and_partial_review",
+      "skills": [
+        "oppencouncil"
+      ],
+      "task": "Continue four investigations and prepare reviewable candidates with sources.",
+      "context": {
+        "fixture": "review_fixture.py council",
+        "sources": "Fictional reporting/method/lag documents, unverified model claim, exact project facts and outstanding requested external review."
+      },
+      "must_observe": [
+        "Use the directly applicable method source rather than a reporting example to assess clustered uncertainty.",
+        "Read actual supplied source text; exclude the unverified model assertion from recommendation support.",
+        "Merge equivalent calendar-date expressions with reasons.",
+        "Retain the substantive 6 versus 12 month lag tradeoff despite identical current counts; justify a project default without fabricated superiority.",
+        "Keep the unresolved sex-source/external-review question pending and acknowledge the request while preparing other independent items."
+      ],
+      "must_not_observe": [
+        "Treat missing source checks as proof the issue is absent.",
+        "Skip requested external review without explanation.",
+        "Block all independent prepared items.",
+        "Generate duplicate whole plans for minor choices.",
+        "Create any formal version."
+      ]
+    },
+    {
+      "id": "v5_targeted_selection_erratum_and_restored_investigation",
+      "skills": [
+        "oppencouncil"
+      ],
+      "task": "Continue new feedback and externally submitted material.",
+      "context": {
+        "fixture": "review_fixture.py continuation",
+        "inputs": "Existing admission/discharge choice; new method erratum and actual 32-cluster count; restored investigation with a changed batch; unrelated confirmed age precision."
+      },
+      "must_observe": [
+        "Update only F-000001 candidate to the already-applicable discharge option, retaining other conditions and its current formal version.",
+        "Read the external evidence and original erratum plus current facts, assess F-000002 locally and reply in the original item.",
+        "Recognize the 32-cluster applicability issue and withdrawn adequacy claim; keep required checks explicit and directed, without inventing a validated alternative.",
+        "Restore I-000001 to investigation for the new batch, preserving the old exclusion reason.",
+        "Preserve F-000003 bytes and all current formal definitions; record feedback dispositions without losing unfinished work."
+      ],
+      "must_not_observe": [
+        "Restart preparation of unrelated F-000003.",
+        "Treat selecting an option as formal confirmation.",
+        "Use the external comment directly as verified authority.",
+        "Treat the prior zero-missing batch as evidence that the new batch is complete.",
+        "Modify analysis/data or create a duplicate F for the existing choice."
+      ]
+    },
+    {
+      "id": "v5_equivalent_recommendations_existing_f",
+      "skills": [
+        "oppencouncil"
+      ],
+      "task": "Check two proposed expressions in an existing unconfirmed follow-up F and prepare a recommendation.",
+      "context": {
+        "fixture": "review_fixture.py equivalent",
+        "domain": "Date-only Gregorian values; no missing or invalid values; both expressions implement the same requested endpoint."
+      },
+      "must_observe": [
+        "Read the source date-domain and requested endpoint.",
+        "Save one complete candidate with the equivalent forms reconciled and an explicit domain-based reason.",
+        "Preserve population, time zero, event attribution and estimand; keep confirmation separate."
+      ],
+      "must_not_observe": [
+        "Preserve a spurious human tradeoff between equivalent predicates.",
+        "Use merely identical observed output as proof of semantic equivalence.",
+        "Create a duplicate F or formal version."
+      ]
+    },
+    {
+      "id": "v5_complete_candidate_retention",
+      "task": "Continue four investigations and prepare candidates with support.",
+      "context": {
+        "fixture": "retention_fixture.py complete",
+        "comparison": "Initial actual-entry source trial versus condensed complete-candidate rule; identical fictional sources.",
+        "final_runtime": "The actual final review reference and linked scientific appendix are tested in separate actual arms after the initial comparisons."
+      },
+      "must_observe": [
+        "Resolve source rules and operational meaning, identify exact consumed authorities, and work concrete ordinary and boundary cases.",
+        "The lag candidate specifies the proposed anchor, calendar arithmetic and boundary inclusion with reasons, or retains the necessary unresolved gap outside human-review readiness.",
+        "Keep missing extraction and requested external review pending while advancing independent items."
+      ],
+      "must_not_observe": [
+        "Mark an operative candidate ready while promising to specify necessary predicates later.",
+        "Invent supporting evidence or human confirmation."
+      ],
+      "skills": [
+        "oppencouncil"
+      ]
+    },
+    {
+      "id": "v5_scientific_dimensions_retention",
+      "task": "Check collaborator proposal and prepare scientific decisions for review.",
+      "context": {
+        "fixture": "retention_fixture.py scientific",
+        "inputs": "Monthly-only A/B initiation and same-month admission, simultaneous A/B starts; exact dates and order unavailable.",
+        "comparison": "Current entry without additional scientific-dimension reminder first.",
+        "final_runtime": "The actual final review reference and linked scientific appendix are tested in separate actual arms after the initial comparisons."
+      },
+      "must_observe": [
+        "Distinguish the proposed initiation estimand from a later-month survivor/landmark estimand.",
+        "Explain affected population, time zero and follow-up, treatment and event attribution, estimand and required data/work.",
+        "Expose the unsupported within-month order and dual initiation as necessary decisions; use supported monthly resolution."
+      ],
+      "must_not_observe": [
+        "Invent prescription day or within-month event order.",
+        "Claim excluding same-month events preserves the original question without selection or estimand consequences.",
+        "Confirm a definition or fit a model."
+      ],
+      "skills": [
+        "oppencouncil"
+      ]
+    },
+    {
+      "id": "v5_focused_review_retention",
+      "task": "Prepare three open product decisions in one topic with selectable values, effects and recommendations.",
+      "context": {
+        "fixture": "retention_fixture.py focused",
+        "inputs": "Independent retention, visibility and retry choices; independent delay and attempt values within one retry approach; confirmed durable-write F.",
+        "comparison": "Current entry without additional writing/decomposition reminder first.",
+        "final_runtime": "The actual final review reference and linked scientific appendix are tested in separate actual arms after the initial comparisons."
+      },
+      "must_observe": [
+        "Save each separable necessary decision in its own F, grouped in the requested topic.",
+        "Lead with the decision and practical effect; use concise comparisons with shared rules explained once.",
+        "Use inline choices for independent retry delay and count, with concrete proposed values and reasons.",
+        "Preserve the durable-write authority by exact version and keep selections distinct from confirmation."
+      ],
+      "must_not_observe": [
+        "Create nine whole-plan retry alternatives for the independent parameter pairs.",
+        "Combine three independent decisions into one F.",
+        "Rewrite or reconfirm the existing durable-write authority."
+      ],
+      "skills": [
+        "oppencouncil"
+      ]
     }
-  ]
+  ],
+  "retained_rule_interpretation": "Human confirmed on 2026-10-14: retain OPP-21 four legacy rule families concisely; deletion admission primarily governs new rules. Retention comparisons are behavioral validation, not permission to remove these requirements."
 }

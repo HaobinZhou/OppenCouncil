@@ -12,12 +12,12 @@ import threading
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 from . import __version__
 from .auth import AuthError, SiteAuth
 from .registry import Registry
-from .store import FreezeError
+from .store import GOVERNANCE_VERSIONS, FreezeError
 
 ASSETS = Path(__file__).parent / "assets"
 MAX_BODY = 128 * 1024
@@ -47,6 +47,8 @@ def public_origin(value: str) -> str:
 
 
 GROUP_ROUTE = re.compile(r"/api/projects/([0-9a-f]{20})/groups(?:/(B-\d{6}))?/(change|example)")
+ASSET_ROUTE = re.compile(r"/api/projects/([0-9a-f]{20})/assets/([0-9a-f]{64}\.(?:png|svg))")
+WORK_ROUTE = re.compile(r"/api/projects/([0-9a-f]{20})/work(?:/([FIB]-\d{6}))?(?:/(comment))?")
 
 
 class CouncilServer(ThreadingHTTPServer):
@@ -76,7 +78,7 @@ class CouncilHandler(BaseHTTPRequestHandler):
         self.send_header(
             "Content-Security-Policy",
             "default-src 'none'; script-src 'self'; "
-            "style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-src 'self'; "
+            "style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-src 'self'; img-src 'self'; "
             "base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
         )
         self.send_header("Content-Type", kind)
@@ -139,9 +141,11 @@ class CouncilHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = self.request_path()
         if path == "/api/healthz":
+            allowed = self.admin()
             return self.send_json(
-                {"app": "OppenCouncil", "version": __version__} if self.admin() else {"error": "Forbidden"},
-                200 if self.admin() else 403,
+                {"app": "OppenCouncil", "version": __version__,
+                 "governance_versions": list(GOVERNANCE_VERSIONS)} if allowed else {"error": "Forbidden"},
+                200 if allowed else 403,
             )
         if path == "/login.js":
             return self.send_data(
@@ -158,6 +162,7 @@ class CouncilHandler(BaseHTTPRequestHandler):
             return
         assets = {"/": "index.html", "/index.js": "index.js", "/workbench.js": "freeze_workbench.js",
                   "/decision-groups.js": "decision_groups.js", "/markdown.js": "markdown.js",
+                  "/tables.js": "tables.js",
                   "/markdown-it.js": "vendor/markdown-it.min.js"}
         if path in assets:
             content_type = (
@@ -170,6 +175,38 @@ class CouncilHandler(BaseHTTPRequestHandler):
                                        "csrf": self.app.csrf_token, "auth_required": not self.app.no_auth})
             except (FreezeError, OSError, ValueError):
                 return self.send_json({"error": "Site registry is unavailable"}, 503)
+        asset_match = ASSET_ROUTE.fullmatch(path)
+        if asset_match:
+            store = self.project_store(asset_match[1])
+            if store is None:
+                return
+            try:
+                from .assets import read_asset
+
+                raw, content_type = read_asset(store.project, asset_match[2])
+                return self.send_data(raw, content_type)
+            except (FreezeError, OSError, ValueError):
+                return self.send_json({"error": "Example image is unavailable"}, 404)
+        work_match = WORK_ROUTE.fullmatch(path)
+        if work_match and not work_match[3]:
+            store = self.project_store(work_match[1])
+            if store is None:
+                return
+            try:
+                from .workstore import WorkStore
+
+                work = WorkStore(store)
+                if work_match[2]:
+                    return self.send_json(work.read(work_match[2]))
+                query = parse_qs(urlsplit(self.path).query)
+                if set(query) - {"actionable", "offset", "limit"} or any(len(v) != 1 for v in query.values()):
+                    raise FreezeError("Invalid work index query")
+                return self.send_json(work.index(
+                    actionable=query.get("actionable", ["false"])[0] == "true",
+                    offset=int(query.get("offset", ["0"])[0]), limit=int(query.get("limit", ["100"])[0]),
+                ))
+            except (FreezeError, OSError, ValueError) as error:
+                return self.send_json({"error": str(error)}, 400)
         match = PROJECT_ROUTE.fullmatch(path)
         if match:
             identity = match[1]
@@ -186,6 +223,8 @@ class CouncilHandler(BaseHTTPRequestHandler):
             store = self.project_store(group_match[1])
             if store is None:
                 return
+            if store.v5:
+                return self.send_json({"error": "Legacy HTML examples are read-only history"}, 404)
             try:
                 group = store.read_group(group_match[2], include_example=True)
                 return self.send_json({"html": (group.get("example") or {}).get("html", "")})
@@ -201,6 +240,8 @@ class CouncilHandler(BaseHTTPRequestHandler):
                     return self.send_json({"snapshot": store.snapshot(), "csrf": self.app.csrf_token,
                                            "auth_required": not self.app.no_auth})
                 if match[4] == "example":
+                    if store.v5:
+                        return self.send_json({"error": "Legacy HTML examples are read-only history"}, 404)
                     question = store.read_question(match[3], include_example=True)
                     return self.send_json({"html": (question.get("example") or {}).get("html", "")})
             except FreezeError as error:
@@ -250,6 +291,24 @@ class CouncilHandler(BaseHTTPRequestHandler):
             self.app.auth.logout(self.headers.get("Cookie", ""))
             return self.send_json({"ok": True}, cookie=self.app.auth.cookie(
                 "", self.app.public_origin.startswith("https://")))
+        work_match = WORK_ROUTE.fullmatch(path)
+        if work_match and work_match[2] and work_match[3] == "comment":
+            store = self.project_store(work_match[1])
+            if store is None:
+                return
+            try:
+                from .workstore import WorkStore
+
+                work = WorkStore(store)
+                identifier = work_match[2]
+                work.commit_work(
+                    {"read_set": {identifier: body.get("expected_revision")},
+                     "changes": [{"id": identifier, "comments": [body.get("text")]}]},
+                    request_id=body.get("request_id"), actor="user",
+                )
+                return self.send_json({"item": work.read(identifier), "snapshot": store.snapshot()})
+            except (FreezeError, OSError, ValueError) as error:
+                return self.send_json({"error": str(error)}, 409)
         group_match = GROUP_ROUTE.fullmatch(path)
         if group_match and group_match[3] == "change":
             store = self.project_store(group_match[1])

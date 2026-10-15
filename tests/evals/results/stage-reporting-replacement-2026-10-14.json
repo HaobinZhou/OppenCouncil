@@ -1,0 +1,91 @@
+{
+  "measurement": "Actual reads/calls; whitespace words are not model tokens. Project-only replays are separate evaluator checks.",
+  "runs": [
+    {
+      "scenario": "reporting",
+      "arm": "candidate",
+      "directory": "/private/tmp/oppencouncil-stage-reporting-20261014-b/5e69c7b892e5",
+      "checks": {
+        "raw_preserved": true,
+        "no_memory": true,
+        "no_release": true,
+        "producer_fixed": true,
+        "exact_article_table": true,
+        "only_specified_outputs": true,
+        "formal_version_preserved": true,
+        "no_candidate": true,
+        "no_new_f": true,
+        "outputs_read_back": true,
+        "markdown_matches_table": true,
+        "markdown_title_and_footnote": true,
+        "only_current_stage_loaded": true,
+        "project_only_replay_identical": true
+      },
+      "outputs": [
+        "Results/stage.csv",
+        "Results/stage.md"
+      ],
+      "generated_data": [],
+      "validation": {
+        "state": "MANAGED_READY",
+        "project": "/private/tmp/oppencouncil-stage-reporting-20261014-b/5e69c7b892e5/project",
+        "project_type": "research",
+        "errors": [],
+        "warnings": [],
+        "unassigned_files": []
+      },
+      "instruction_reads": [
+        {
+          "at": 1791990091.172639,
+          "operation": "read",
+          "path": "skill/SKILL.md",
+          "bytes": 4741,
+          "whitespace_words": 570,
+          "sha256": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7"
+        },
+        {
+          "at": 1791990094.357742,
+          "operation": "read",
+          "path": "skill/references/research-stage-reporting.md",
+          "bytes": 950,
+          "whitespace_words": 122,
+          "sha256": "01c18045796f69d8057a82774b10fcee5bcc7ddfbf73c393ed3941ecaccde5d2"
+        },
+        {
+          "at": 1791990114.31471,
+          "operation": "read",
+          "path": "skill/references/project-operations.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        },
+        {
+          "at": 1791990094.357364,
+          "operation": "read",
+          "path": "interface.md",
+          "bytes": 5866,
+          "whitespace_words": 719,
+          "sha256": "96eaef88d543d2055f1fbdad55c5bba4e357bda4029f0db43d00ab4bfea63b0a"
+        }
+      ],
+      "metrics": {
+        "skill_words": 1411,
+        "adapter_words": 719,
+        "cli_and_script_calls": 7,
+        "nonzero_calls": 0
+      },
+      "nonzero_calls": [],
+      "replay": {
+        "directory": "/private/tmp/oppencouncil-stage-reporting-replay-20261014-b/5e69c7b892e5",
+        "returncode": 0,
+        "stderr": ""
+      },
+      "hashes": {
+        "manifest": "81896ea920bbedebf81789ce7b755a77ad160ceee3615439cc7c3e5a04401c82",
+        "trace": "fdaca2ae22c097bc8fec5f1f07052779bb24ae0249b624bebce957ccc4349c59",
+        "entry": "a91071713429f780aa499ff014fc380757197d56e2b1146050b7856c01532df7",
+        "outcome": "4dd4ef14751bc3a1f12769e61e829b63eea4202720bfaa167e3807e9a6d51730"
+      }
+    }
+  ]
+}

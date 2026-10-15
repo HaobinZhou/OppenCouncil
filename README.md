@@ -25,18 +25,20 @@
 
 工作台不会自动调用模型。使用本地 AI 准备内容、读取反馈并继续工作；如需让网页 AI 参与，可以加装可选 MCP。
 
-## 选择适合项目的 skill
+## 项目治理与工作台
 
-仓库包含两个可独立使用的 skill，以及它们共用的工作台：
+5.0.0 提供统一的 v5 项目治理。实现和验收范围见 [v5 验收记录](docs/v5-acceptance.md)。已有 v3/v4 项目继续使用原流程，软件升级不改变项目治理代际。
+
+新项目使用统一的 `oppencouncil` skill，在项目中显式声明科研或普通类型；类型不由编程语言决定。两个旧名称保留为兼容入口：
 
 | 组件 | 适合的用途 |
 | --- | --- |
-| **Oppen Project Steward** | 软件、工具、基础设施等长期项目。维护当前约定、交付物、验证记录和重要决策的来由。 |
-| **Stepwise R Project** | 科学 R 分析项目。管理研究口径、分析脚本、结果与验收，保留可追溯的科研决定。 |
-| **Council 工作台** | 在浏览器里比较方案、讨论、编辑候选和确认版本；两个 skill 共用。 |
-| **OppenSteward-MCP（可选）** | 让支持 MCP 的 AI 客户端读取已授权项目、参与讨论和起草候选。 |
+| **OppenCouncil skill** | 统一管理普通与科研项目的口径、证据、产出、验证和重要决定。科研流程不限 R。 |
+| **Oppen Project Steward / Stepwise R Project** | 兼容旧调用名称；未迁移的 v3/v4 项目仍使用原实现，v5 项目使用统一 helper。 |
+| **Council 工作台** | 在浏览器里审阅调查、比较方案、讨论、编辑候选和确认版本。 |
+| **OppenCouncil MCP（可选）** | 让支持 MCP 的 AI 客户端读取已授权项目、提交证据和参与讨论。 |
 
-同一个项目沿用自己的治理 skill。已有 Stepwise R 项目可以直接使用工作台，无需改成 Steward；安装软件也不会自动迁移已有项目。
+已有项目保持原治理代际；安装或更新软件不会自动迁移。v5 迁移先检查并保存计划，再显式应用，详见 [迁移操作](skills/oppencouncil/references/migration.md)。
 
 ## 快速开始
 
@@ -50,17 +52,18 @@ cd OppenCouncil
 uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents/skills"
 ```
 
-也可以从 [Releases](https://github.com/HaobinZhou/OppenCouncil/releases/latest) 下载 `OppenCouncil-4.3.1.zip`，解压到固定目录后进入该目录，运行上面的 `uv run ... scripts/install.py` 安装命令。完整包包含两个 skill、工作台和可选 MCP。
+也可以从 [Releases](https://github.com/HaobinZhou/OppenCouncil/releases/latest) 下载 `OppenCouncil-5.0.0.zip`，解压到固定目录后进入该目录，运行上面的 `uv run ... scripts/install.py` 安装命令。该安装包包含统一 skill、两个兼容入口、工作台和可选 MCP。
 
-`uv` 会按需准备 Python 3.12。安装器创建 Council 的本地运行环境，并把两个 skill **以软链接方式**接入用户级全局目录：
+`uv` 会按需准备 Python 3.12。安装器创建 Council 的本地运行环境，并把统一 skill 和两个兼容名称 **以软链接方式**接入用户级全局目录：
 
 ```text
 ~/.agents/skills/
+├── oppencouncil → <仓库>/skills/oppencouncil
 ├── oppen-project-steward → <仓库>/skills/oppen-project-steward
 └── stepwise-r-project  → <仓库>/skills/stepwise-r-project
 ```
 
-[Codex 支持该目录及软链接](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)。请保留克隆后的仓库目录；移动或删除它会使链接失效。安装成功后，在 Codex 的 skill 选择器中查找这两个名称；若尚未出现，重新启动客户端。
+[Codex 支持该目录及软链接](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)。请保留克隆后的仓库目录；移动或删除它会使链接失效。安装成功后，在 Codex 的 skill 选择器中查找 `oppencouncil` 或原有兼容名称；若尚未出现，重新启动客户端。
 
 - **已有全局目录**：把 `--skill-dir` 改为客户端实际使用的位置。安装器未传此参数时仍使用 `~/.codex/skills`；旧安装请继续指定原位置，避免两处重复安装。
 - **Windows**：创建目录软链接需要启用开发者模式或具备相应权限；安装器不会改用复制目录来代替。
@@ -71,10 +74,10 @@ uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents
 
 ### 2. 让 AI 准备项目
 
-在需要管理的项目目录中打开 Codex，选择适合的 skill，并说明目标。例如软件项目：
+在需要管理的项目目录中打开 Codex，使用统一 skill，并说明项目类型与目标。例如软件项目：
 
 ```text
-使用 $oppen-project-steward 管理当前项目。
+使用 $oppencouncil 管理当前普通项目。
 
 我准备实现一个团队文件共享工具。请先读取已有约定和讨论，
 一次列出当前需要确定的规则，把需要联动决定的内容组织成主题。
@@ -82,9 +85,9 @@ uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents
 准备好后打开 OppenCouncil，返回浏览器可以访问的链接。
 ```
 
-科学 R 项目将第一行改为 `使用 $stepwise-r-project 管理当前项目`，并描述研究目标、现有数据和准备开展的分析。
+科研项目将第一行改为 `使用 $oppencouncil 管理当前科研项目`，并描述研究目标、现有数据和当前分析阶段。既有 v3/v4 项目沿用原类型和流程。
 
-已有项目先由 AI 检查并接入相应 skill；不要为打开网页而覆盖项目入口或已有记录。工作台识别原生 Stepwise R 或 Steward v3/v4 项目，普通文件夹需要先完成项目准备。
+已有项目先由 AI 检查并接入相应 skill；不要为打开网页而覆盖项目入口或已有记录。工作台识别原生 Stepwise R 或 Steward v3/v4 项目以及统一 v5 项目；普通文件夹需要先完成项目准备。
 
 ### 3. 打开并审阅
 
@@ -140,7 +143,7 @@ uv run --project council oppencouncil stop
 uv run --python 3.12 scripts/install.py --with-mcp --no-skills --python 3.12
 ```
 
-然后按 [MCP 接入指南](mcp/README.md#接入与运行) 配置项目允许列表、连接方式和读写权限。AI 可以读讨论、追加问题和修改候选；正式确认仍由人在工作台完成。网页登记和 MCP 授权是独立的，只打开工作台不会自动向 MCP 开放项目。
+然后按 [MCP 接入指南](mcp/README.md#接入与运行) 配置项目允许列表、连接方式和读写权限。外部 AI 可以读取已授权材料、提交证据和留言；本地 Agent 核查后整理候选，正式确认仍由人在工作台完成。网页登记和 MCP 授权是独立的，只打开工作台不会自动向 MCP 开放项目。
 
 ### 只安装 skills
 
@@ -177,8 +180,8 @@ uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents
 
 - [Council 使用与部署](council/README.md)：端口、远程访问、数据与正式版本。
 - [MCP 接入](mcp/README.md)：让网页 AI 访问指定项目。
-- [Oppen Project Steward](skills/oppen-project-steward/SKILL.md)：一般项目的完整工作流程。
-- [Stepwise R Project](skills/stepwise-r-project/SKILL.md)：科学 R 项目的完整工作流程。
+- [OppenCouncil](skills/oppencouncil/SKILL.md)：统一入口与按任务加载的参考。
+- [Oppen Project Steward](skills/oppen-project-steward/SKILL.md) / [Stepwise R Project](skills/stepwise-r-project/SKILL.md)：原调用名称的兼容入口。
 
 遇到问题时，可在仓库的 Issues 中附上系统版本、执行命令和错误信息；请先移除访问链接中的凭据及项目私有内容。
 

@@ -11,7 +11,7 @@ from urllib.parse import urlsplit
 from dotenv import dotenv_values
 
 ROOT = Path(__file__).resolve().parent.parent
-APP_NAME = "OppenSteward-MCP"
+APP_NAME = "OppenCouncil MCP"
 ENV_FIELDS = {
     "TRANSPORT": "transport",
     "PUBLIC_URL": "public_url",
@@ -92,19 +92,18 @@ class Settings:
                 raise ValueError(f"{name} must be a JSON array of nonempty strings")
         self.exclude_roots = [str(Path(p).expanduser().resolve()) for p in self.exclude_roots]
         # Keep exact lexical paths: the catalog also rejects symlinked roots.
-        self.freeze_projects = [str(Path(os.path.abspath(Path(p).expanduser())))
-                                for p in self.freeze_projects]
+        self.freeze_projects = [
+            str(Path(os.path.abspath(Path(p).expanduser()))) for p in self.freeze_projects
+        ]
         if len(set(self.freeze_projects)) != len(self.freeze_projects):
             raise ValueError("freeze_projects contains duplicate roots")
         if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}", self.tunnel_profile):
             raise ValueError("Invalid tunnel profile name")
 
     def skill_guide(self, skill: str, resource: str = "SKILL.md") -> Path:
-        if skill not in {"oppen-project-steward", "stepwise-r-project"}:
+        if skill not in {"oppen-project-steward", "stepwise-r-project", "oppencouncil"}:
             raise ValueError("Unknown skill")
-        if resource != "SKILL.md" and not re.fullmatch(
-            r"references/[A-Za-z0-9][A-Za-z0-9_-]*\.md", resource
-        ):
+        if resource != "SKILL.md" and not re.fullmatch(r"references/[A-Za-z0-9][A-Za-z0-9_-]*\.md", resource):
             raise ValueError("Only SKILL.md or a named references/*.md guide is available")
         roots = (
             [self.skill_root]
@@ -128,6 +127,25 @@ class Settings:
         raise ValueError(
             "Skill guide not installed; configure OPPEN_SKILL_ROOT. Registered projects remain accessible."
         )
+
+    def council_guide(self, skill: str, resource: str = "SKILL.md") -> tuple[Path, str]:
+        if skill not in {"oppencouncil", "stepwise-r-project", "oppen-project-steward"}:
+            raise ValueError("Unknown skill")
+        aliases = {
+            "SKILL.md": "references/council.md",
+            "references/freeze-workbench.md": "references/council.md",
+            "references/freeze-groups.md": "references/groups.md",
+            "references/freeze-operations.md": "references/local-council.md",
+            "references/freeze-examples.md": "references/selectors.md",
+        }
+        resource = aliases.get(resource, resource)
+        if resource not in {
+            "references/council.md", "references/local-council.md", "references/triage.md",
+            "references/evidence.md", "references/review-packet.md", "references/resume.md",
+            "references/groups.md", "references/selectors.md", "references/output-specifications.md",
+        }:
+            raise ValueError("MCP exposes Council workflow references only")
+        return self.skill_guide("oppencouncil", resource), resource
 
     @property
     def resource(self):

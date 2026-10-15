@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Configure, inspect and serve OppenSteward-MCP on Windows, macOS and Linux."""
+"""Configure, inspect and serve OppenCouncil MCP on Windows, macOS and Linux."""
 
 import argparse
 import asyncio
@@ -35,6 +35,8 @@ def main():
     tunnel.add_argument("--dry-run", action="store_true")
     sub.add_parser("projects", help="Check explicitly registered projects without scanning")
     sub.add_parser("scan", help="Compatibility alias for projects; no recursive scan")
+    capabilities = sub.add_parser("capabilities", help="Read-only v5 migration capability check")
+    capabilities.add_argument("--project", required=True)
     sub.add_parser("rotate-password")
     sub.add_parser("revoke-all")
     args = parser.parse_args()
@@ -68,6 +70,11 @@ def main():
     settings = Settings.load(config_path)
     if getattr(args, "transport", None):
         settings = replace(settings, transport=args.transport)
+    if args.command == "capabilities":
+        from oppenproject.capabilities import inspect
+
+        print(json.dumps(inspect(settings, args.project), ensure_ascii=False, indent=2))
+        return
     if args.command == "tunnel":
         return tunnel_command(settings, args.action, config_path, dry_run=args.dry_run)
     if args.command == "setup":

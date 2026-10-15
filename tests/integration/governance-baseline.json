@@ -1,10 +1,64 @@
 {
-  "oppen-project-steward": {
-    "memory_contract_sha256": "cee4a09baf5d7b9659cb03d7c96023117bb2f52c33cc477b2ade4e7ceeb5fa4d",
-    "preserved_helper_ast_sha256": "54b5c549f0878f32e14828240a1422e70fee51481fe796cd00a394be283cefaa"
+  "memory_contract": {
+    "path": "skills/oppencouncil/SKILL.md",
+    "sha256": "a0e027784e6c9188777bf668c903726749fa623b2c1266d62da085428031f274"
   },
-  "stepwise-r-project": {
-    "memory_contract_sha256": "72655b0c1bd3a46e945dcfd62a2ed34c4f35b213a0d499ec5d9c90086009b08e",
-    "preserved_helper_ast_sha256": "d317a9a00511ed4fd0192f720d3a764e811605b8aa1705673aded841abfc0e82"
+  "legacy_helpers": {
+    "oppen-project-steward": {
+      "path": "skills/oppen-project-steward/scripts/legacy_oppen_project_steward.py",
+      "provenance": {
+        "revision": "a871bea87add686eece05ac6ac28c6e58c7ea869",
+        "path": "skills/oppen-project-steward/scripts/oppen_project_steward.py",
+        "former_whole_helper_ast_sha256": "54b5c549f0878f32e14828240a1422e70fee51481fe796cd00a394be283cefaa"
+      },
+      "memory_nodes": [
+        "MEMORY_HIGH_WATER",
+        "MEMORY_ID",
+        "MEMORY_INDEX_MARKER",
+        "MEMORY_METADATA_FIELDS",
+        "MEMORY_PAYLOAD_FIELDS",
+        "MEMORY_SECTIONS",
+        "MEMORY_STATUSES",
+        "MemoryEntry",
+        "add_memory",
+        "ensure_memory_structure_unlocked",
+        "load_memory_entries_unlocked",
+        "memory_metadata",
+        "memory_paths",
+        "parse_memory_entry",
+        "refresh_memory_index_unlocked",
+        "render_memory_index",
+        "render_memory_refresh_unlocked",
+        "validate_memory",
+        "validate_memory_payload",
+        "validate_memory_relationships"
+      ],
+      "memory_ast_sha256": "e850008936848a2db29372ec247b04c459ee1270bbadb36335ae7d39c8c9b4f0"
+    },
+    "stepwise-r-project": {
+      "path": "skills/stepwise-r-project/scripts/legacy_stepwise_r_project.py",
+      "provenance": {
+        "revision": "a871bea87add686eece05ac6ac28c6e58c7ea869",
+        "path": "skills/stepwise-r-project/scripts/stepwise_r_project.py",
+        "former_whole_helper_ast_sha256": "d317a9a00511ed4fd0192f720d3a764e811605b8aa1705673aded841abfc0e82"
+      },
+      "memory_nodes": [
+        "LEGACY_MEMORY_END",
+        "LEGACY_MEMORY_NAME",
+        "LEGACY_MEMORY_START",
+        "MEMORY_ALIASES",
+        "MEMORY_DIRECTORY",
+        "MEMORY_FIELDS",
+        "MEMORY_ID_PATTERN",
+        "MEMORY_STATUSES",
+        "add_decision_memory",
+        "create_or_reuse_memory",
+        "normalize_memory_payload",
+        "render_memory_index",
+        "validate_memory",
+        "validate_v2_memory"
+      ],
+      "memory_ast_sha256": "10a86704589160bf0a819e86f1c8fdaceaa007623f6fef14167132e1200abed2"
+    }
   }
 }
