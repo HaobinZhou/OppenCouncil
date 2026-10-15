@@ -429,12 +429,40 @@ def clean_group(value, questions):
                 "tradeoffs": require_text(option.get("tradeoffs"), "option tradeoffs", 5000),
             }
         )
+        if "evidence_refs" in option:
+            from .workflow import EVIDENCE_PATH
+
+            refs = option["evidence_refs"]
+            if (
+                not isinstance(refs, list)
+                or len(refs) > 100
+                or any(not isinstance(path, str) or not EVIDENCE_PATH.fullmatch(path) for path in refs)
+                or len(refs) != len(set(refs))
+            ):
+                raise FreezeError("Option evidence must list distinct exact source or claim versions")
+            clean[-1]["evidence_refs"] = list(refs)
     return {
         "title": require_text(value.get("title"), "group title", 300),
         "purpose": require_text(value.get("purpose"), "group purpose", 5000),
         "member_ids": members,
         "options": clean,
     }
+
+
+def validate_option_evidence(store, value):
+    options = [option for option in value["options"] if "evidence_refs" in option]
+    if not options:
+        return
+    if not store.v5:
+        raise FreezeError("Option evidence requires a v5 project")
+    from .workstore import WorkStore
+
+    work = WorkStore(store)
+    for option in options:
+        for path in option["evidence_refs"]:
+            record = work.read_json(path)
+            for source in [*record.get("sources", []), *record.get("counter_sources", [])]:
+                work.read_json(source)
 
 
 def change_group(store, group_id, operation, value, *, expected_revision, request_id, actor):
@@ -467,6 +495,8 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
         if operation == "create":
             if group_id is not None or expected_revision != 0:
                 raise FreezeError("New group requires null ID and revision zero")
+            cleaned = clean_group(value, questions)
+            validate_option_evidence(store, cleaned)
             group = {
                 "id": f"B-{max((int(g['id'][2:]) for g in data['groups']), default=0) + 1:06d}",
                 "revision": 0,
@@ -476,7 +506,7 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
                 "example": None,
                 "created_by": actor,
                 "created_at": now(),
-                **clean_group(value, questions),
+                **cleaned,
             }
             if store.v5:
                 from .workflow import initial_work, initialize_progress
@@ -490,6 +520,7 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
             raise FreezeError("Decision group changed since read; reload before editing")
         elif operation == "update":
             cleaned = clean_group(value, questions)
+            validate_option_evidence(store, cleaned)
             group["history"].append({"by": actor, "at": now(), **{k: group[k] for k in cleaned}})
             group.update(cleaned)
             group.pop("selected_option", None)

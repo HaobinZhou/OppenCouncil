@@ -124,3 +124,36 @@ The v5 handoff includes only actionable F/I/B references, ready pending-item ref
 The structured-table editor can reorder sibling row groups (carrying descendants) and sibling column headers, add/remove footnotes, and edit column unit, format description and alignment. Moving columns across header groups uses split, move and regroup. Unit and format descriptions render below the leaf header; format descriptions do not transform cell values. Stable row/column IDs keep cells and footnote references attached when order changes. Saving these edits follows the same human candidate and feedback transaction as other table edits.
 
 The isolated `tests/test_browser_v5.py` fixture creates both supported project layouts, authenticates a fresh Chromium profile, and inspects persisted records after table edits, investigation feedback and current-version reconfirmation. It checks 1440, 1920, 2560 and 390 pixel widths and saves screenshots in the test's temporary directory. Enable it with `OPPENCOUNCIL_PLAYWRIGHT=/path/to/node_modules/playwright`; optionally set `OPPENCOUNCIL_CHROMIUM=/path/to/chromium`. It uses temporary loopback ports and synthetic data only. Node component checks remain part of `scripts/verify.py`; passing them alone is not browser acceptance or Agent behavior evaluation.
+
+### Option evidence and discussion visibility
+
+Preserve navigation, full comparison rules, candidate/current/history documents,
+editors, dependency review, individual and joint confirmation, shared discussion,
+manual handoff and save feedback. In v5 review, show a reference rail beside the
+comparison or individual document. At narrow widths it stacks below the content.
+The default evidence view collapses the discussion sidebar to make room. A
+visible toolbar button opens/closes it; retain the person's choice for that
+project. Hiding discussion must not clear, save or rebuild its pending text.
+Explicit actions that put text into discussion (a preference, parameter choice
+or quotation) reveal the composer. Legacy review and investigations without an
+evidence rail keep their existing default.
+
+`查看此方案依据` selects a single compared option without changing preference,
+writing a comment or confirming anything. The rail and that option's citation
+judgments switch together; the other option's citations are absent. Preference
+selection also selects its evidence, while retaining the existing unsaved
+comment behavior. Candidate documents and confirmation controls remain intact.
+
+The authenticated GET `/api/projects/<id>/review-evidence/<F-or-B-id>` projects
+exact saved evidence versions. B reads require a single `option` index. F reads
+use `review_basis.claims` when present, otherwise their own `evidence_refs`.
+B reads use only `options[index].evidence_refs`; an unbound option has an empty
+state. This endpoint neither substitutes a newer source version nor imports
+external submissions as appraised evidence. Missing versions remain visible.
+
+Display numbers start at 1 for each choice and follow first citation order
+through its saved reference list and each claim's supporting/counter sources.
+Deduplicate by exact source-version path. Display citation, verification method,
+linked judgment, applicability, read scope, original location/link and the
+immutable version. Rapid option switching or a stale response must never paint
+one option's references into another. Local browsing does not change F/B records.

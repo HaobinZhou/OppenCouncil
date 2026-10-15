@@ -17,6 +17,27 @@
     const saved = Number(localStorage.getItem(discussionWidthKey));
     if (Number.isFinite(saved) && saved >= 300) discussionWidth = saved;
   } catch (_) { /* Layout preferences are optional; project drafts use separate storage. */ }
+  let discussionPreference = null, discussionProject = null;
+  const discussionKey = () => 'oppencouncil:discussion-open:v1:' + state.snapshot.project;
+  function updateDiscussionVisibility() {
+    const panel=root.querySelector('#sw2-detail'), column=panel.querySelector('.sw2-discussion-column'), toggle=root.querySelector('#sw2-discussion-toggle');
+    if (discussionProject!==state.snapshot.project) {
+      discussionProject=state.snapshot.project; discussionPreference=null;
+      try { const saved=localStorage.getItem(discussionKey()); if(['true','false'].includes(saved)) discussionPreference=saved==='true'; } catch (_) {}
+    }
+    toggle.hidden=!column;
+    const open=discussionPreference ?? !(isV5() && panel.querySelector('.ce-review'));
+    panel.dataset.discussionOpen=String(open);
+    if(column) { column.id='sw2-discussion-panel'; column.hidden=!open; }
+    toggle.textContent=open?'收起讨论':'显示讨论';
+    toggle.setAttribute('aria-expanded',String(open));
+  }
+  function openDiscussion(open=true) {
+    // Restore this project's preference before applying a deliberate human action.
+    updateDiscussionVisibility(); discussionPreference=open;
+    try { localStorage.setItem(discussionKey(),String(open)); } catch (_) {}
+    updateDiscussionVisibility(); applyDiscussionWidth();
+  }
   const discussionResizerHTML = '<div class="sw2-discussion-resizer" role="separator" tabindex="0" aria-label="调整讨论区宽度" aria-orientation="vertical" aria-description="拖动调整讨论宽度；双击恢复默认。方向键也可调整。"></div>';
   function discussionBounds() {
     const width = root.querySelector('#sw2-detail').getBoundingClientRect().width;
@@ -27,7 +48,7 @@
     if (discussionWidth === null) panel.style.removeProperty('--discussion-width');
     else panel.style.setProperty('--discussion-width', discussionWidth+'px');
     const handle = panel.querySelector('.sw2-discussion-resizer');
-    if (!handle || !discussionMedia.matches) return;
+    if (!handle || !discussionMedia.matches || panel.dataset.discussionOpen==='false') return;
     const {min,max} = discussionBounds(), width = Math.round(panel.querySelector('.sw2-discussion-column').getBoundingClientRect().width);
     for (const [key,value] of Object.entries({valuemin:min,valuemax:max,valuenow:width,valuetext:width+' 像素'})) handle.setAttribute('aria-'+key, String(value));
   }
@@ -255,6 +276,7 @@
   window.addEventListener('resize', () => closeSelect());
   window.visualViewport?.addEventListener('resize', () => closeSelect());
   function appendToDiscussion(text, quoteSource) {
+    openDiscussion();
     const group = groupUI?.selected() || (groupUI && root.querySelector('#sw2-detail').dataset.discussion === 'group' ? state.snapshot.decision_groups?.find(g => g.member_ids.includes(state.selected)) : null);
     const existing = group ? groupUI.message(group.id) : messageDrafts[state.selected];
     const value = quoteSource ? window.CouncilMarkdown.appendQuote(existing, quoteSource, text) : window.CouncilMarkdown.appendPreference(existing, text);
@@ -746,12 +768,13 @@
       root.querySelector('#sw2-answer-status').hidden=true;
     } catch(error) { showNotice(error.message,'error','answer',q.id); }
   }
-  function reviewBasisHTML(q) {
+  const evidenceUI = window.CouncilEvidence?.create({root, api, markdown: text=>renderMarkdown(text)});
+  function reviewBasisHTML(q, showEvidence = false) {
     if(!q.work) return '';
     const packet=q.review_packet || {}, labels={common_practice:'通行做法',support:'依据',applicability:'适用条件',departure_check:'偏离检查',default:'推荐答案',project_reason:'本项目理由',verification:'已核实约束'};
     const entries=Object.entries(labels).filter(([key])=>packet[key]);
     const objections=(packet.objections || []).map(o=>'<div><h4>'+(o.disposition==='explained_tradeoff'?'已说明的取舍':'已处理的异议')+'</h4>'+renderMarkdown(o.reason)+'</div>').join('');
-    return '<div class="sw2-v5-progress">'+workBadge(q)+'</div>'+(entries.length || objections?'<details class="sw2-provenance" data-record="'+q.id+'-review-basis"><summary>推荐与依据</summary><div class="sw2-provenance-body">'+entries.map(([key,label])=>'<h4>'+label+'</h4>'+renderMarkdown(packet[key])).join('')+objections+'</div></details>':'');
+    return '<div class="sw2-v5-progress">'+workBadge(q)+'</div>'+(entries.length || objections?'<details class="sw2-provenance" data-record="'+q.id+'-review-basis"><summary>推荐与依据</summary><div class="sw2-provenance-body">'+entries.map(([key,label])=>'<h4>'+label+'</h4>'+renderMarkdown(packet[key])).join('')+objections+'</div></details>':'')+(showEvidence && q.id.startsWith('F-') ? evidenceUI?.shell(q) || '' : '');
   }
   function renderInvestigation(q,panel) {
     const before=panel.querySelector('.sw2-thread')?.scrollTop || 0, thread=discussionMessages(q), w=q.work;
@@ -769,7 +792,7 @@
   function renderDetail() {
     closeSelect(); hideQuote();
     const q = selected(), panel = root.querySelector("#sw2-detail");
-    if (groupUI?.renderDetail(panel)) { syncRoute(); applyDiscussionWidth(); return; }
+    if (groupUI?.renderDetail(panel)) { syncRoute(); updateDiscussionVisibility(); applyDiscussionWidth(); evidenceUI?.hydrateAll(); return; }
     syncRoute();
     const sameQuestion = panel.dataset.question === (q?.id || "");
     const scrollPositions = sameQuestion ? [".sw2-work-in", ".sw2-thread", ".sw2-review-body"].map(selector => [selector, panel.querySelector(selector)?.scrollTop || 0]) : [];
@@ -779,9 +802,10 @@
     panel.dataset.question = q?.id || "";
     if (!q) {
       panel.innerHTML = '<div class="sw2-empty">' + (questions().length ? "没有匹配的问题，请调整搜索或筛选。" : "尚无问题。请让 AI 读取项目后，一次性补充本轮问题。") + "</div>";
+      updateDiscussionVisibility();
       return;
     }
-    if (q.id.startsWith('I-')) { renderInvestigation(q, panel); applyDiscussionWidth(); return; }
+    if (q.id.startsWith('I-')) { renderInvestigation(q, panel); updateDiscussionVisibility(); applyDiscussionWidth(); return; }
     const thread = discussionMessages(q, true), def = definition(q), draft = def.draft;
     const jointGroup = state.snapshot.decision_groups?.find(g => g.member_ids.includes(q.id));
     const editingNow = Boolean(editing[q.id] || Object.hasOwn(drafts, q.id));
@@ -806,7 +830,7 @@
       '<div class="sw2-work"><div class="sw2-work-in"><header class="sw2-question-context"><div class="sw2-detail-top"><span class="sw2-detail-code">' + q.id + ' · 第 ' + q.round + ' 轮</span>' + (["waiting", "needs_review"].includes(q.readiness?.status) ? '<span class="sw2-pill sw2-pill-discussing">' + escape(groupUI?.status(q) || "待复核") + '</span>' : definition(q).current_version ? '<span class="sw2-pill sw2-pill-answered">有效 v' + definition(q).current_version + '</span>' : (isV5() ? '' : pill(q.status))) + '<span class="sw2-origin">提出 ' + actorBadge(q.created_by) + "</span></div>",
       '<div class="sw2-question-heading"><h2>' + escape(q.title) + '</h2></div>',
       q.why && q.why !== "恢复旧项目口径与讨论记录" ? '<div class="sw2-question-why">' + escape(q.why) + '</div>' : "",
-      reviewBasisHTML(q) + (groupUI?.dependencies(q) || '') + workflowHTML([q]) + '</header>' + '<div class="sw2-review-body"><section class="sw2-decision-column" aria-label="正式口径与候选文档"><div class="sw2-section-title">口径</div><div class="sw2-opinion-scroll" tabindex="0" aria-label="口径版本内容">',
+      reviewBasisHTML(q) + (groupUI?.dependencies(q) || '') + workflowHTML([q]) + '</header>' + '<div class="sw2-review-body'+(isV5() && evidenceUI?' sw2-with-evidence':'')+'"><section class="sw2-decision-column" aria-label="正式口径与候选文档"><div class="sw2-section-title">口径</div><div class="sw2-opinion-scroll" tabindex="0" aria-label="口径版本内容">',
       !draft && !current ? (q.recovered_records?.length ? '<div class="sw2-empty"><strong>已保留历史依据</strong>尚未建立正式版本，既有决定沿用原有依据。</div>' : '<div class="sw2-empty"><strong>候选尚未备齐</strong>AI 尚未写入完整候选口径；应先补齐内容，再交付你审阅。</div>') : '',
       !def.versions.length && q.recovered_records?.length ? recoverySummary(q) : "",
       draft ? '<article class="sw2-definition-candidate sw2-record" data-state="draft">' + recordHeading(def.versions.length + 1, true) + (groupUI?.dependencyReview(q) || '') + '<div class="sw2-definition-text sw2-record-body" data-quote-source="' + q.id + ' · 候选口径 v' + (def.versions.length + 1) + '">' + renderMarkdown(draft.text || "候选已开启，等待编写完整口径。") + '</div><div class="sw2-definition-actions"><button class="sw2-button sw2-button-outline" data-action="edit-definition">修改候选</button><button class="sw2-button sw2-button-outline" data-action="discard-definition">' + (current ? "取消修订" : "撤回候选") + '</button></div><div class="sw2-confirm-actions"><span id="sw2-confirm-hint" role="status">' + escape(confirmationProblem(q) || '仅冻结本条，其他口径保持原状态。') + '</span><button class="sw2-button sw2-button-primary" aria-describedby="sw2-confirm-hint" data-action="approve-definition">确认并冻结本条口径</button></div><div class="sw2-record-end"><details class="sw2-record-details" data-record="candidate-meta"><summary>详情</summary><div class="sw2-record-detail-text">编号：' + q.id + '<br>状态：候选 · 尚未生效</div>' + currentHTML + historyHTML + '</details></div></article>' : '',
@@ -816,7 +840,7 @@
       !draft && !current ? historyHTML : '',
       conflictHTML,
       '</div><div class="sw2-composer sw2-answer-composer"' + (editingNow ? '' : ' hidden') + '><label class="sw2-section-title" for="sw2-answer">编辑完整候选口径<small>支持 Markdown · 保存后需确认</small></label><div id="sw2-table-editors">' + tableEditors(drafts[q.id] ?? (editingNow ? candidateText(q) : "")) + '</div><textarea id="sw2-answer" class="sw2-answer sw2-definition-editor" placeholder="写入可直接进入正式文档的完整规则、范围、条件和例外…">' + escape(drafts[q.id] ?? (editingNow ? candidateText(q) : "")) + '</textarea><details class="sw2-markdown-preview" data-record="local-preview"><summary>预览排版（未保存）</summary><div class="sw2-record-body" id="sw2-answer-preview">' + renderMarkdown(drafts[q.id] ?? (editingNow ? candidateText(q) : "")) + '</div></details><div class="sw2-answer-actions"><span id="sw2-answer-hint"></span><div class="sw2-action-pair"><button class="sw2-button sw2-button-outline" data-action="close-editor">收起编辑</button><button class="sw2-button sw2-button-primary" data-action="save-answer">保存候选</button></div></div></div><div id="sw2-answer-status" class="sw2-action-status" role="status" aria-live="polite" hidden></div>',
-      '</section></div>' + provenanceHTML(q) + '</div></div><aside class="sw2-discussion-column" aria-label="逐项讨论">' + discussionResizerHTML + '<div class="sw2-talk-header"><div class="sw2-section-title">讨论<small>' + thread.length + ' 条记录</small></div><p>建议与交流 · 保存后手动通知 AI 继续</p></div><div class="sw2-thread" tabindex="0" aria-label="' + escape(q.title) + '的讨论记录">',
+      '</section>' + (isV5() && evidenceUI ? '<aside class="sw2-question-evidence">'+evidenceUI.shell(q)+'</aside>' : '') + '</div>' + provenanceHTML(q) + '</div></div><aside class="sw2-discussion-column" aria-label="逐项讨论">' + discussionResizerHTML + '<div class="sw2-talk-header"><div class="sw2-section-title">讨论<small>' + thread.length + ' 条记录</small></div><p>建议与交流 · 保存后手动通知 AI 继续</p></div><div class="sw2-thread" tabindex="0" aria-label="' + escape(q.title) + '的讨论记录">',
       jointGroup ? '<div class="sw2-shared-context">共同讨论：' + escape(jointGroup.title) + '<button class="sw2-button sw2-button-outline" data-action="dg-open" data-id="' + jointGroup.id + '" data-mode="discussion">查看整个主题</button></div>' : '',
       thread.length ? thread.map(message => (q.superseded_presentations?.includes(message.id) ? '<details class="sw2-previous-proposal"><summary>早期方案建议 · 查看完整历史</summary>' : '') + '<div class="sw2-bubble sw2-bubble-' + actorKind(message.actor) + '"><div class="sw2-bubble-head">' + (message.recovered ? historicalBadge(message.actor) : actorBadge(message.actor)) + "<span>" + (message.shared ? "共同讨论 · " + escape(shortTime(message.at)) : message.kind === "legacy_answer" ? "历史答复 · 非正式口径" : message.kind === "proposal" ? "方案建议" : message.recovered ? "历史 · " + escape(shortTime(message.at)) : escape(shortTime(message.at))) + '</span></div><div class="sw2-bubble-body" data-quote-source="' + escape((message.shared ? jointGroup.id : q.id) + ' · ' + actorLabel(message.actor) + ' · ' + (message.at ? shortTime(message.at) : '方案建议')) + '">' + renderMarkdown(message.shared ? message.text : (q.discussion_display?.[message.id] ?? message.text), discussionScope()) + "</div>" + (message.recovered ? '<details class="sw2-message-source"><summary>查看原文来源</summary>' + escape(sourceName(message.source)) + ' · 由 ' + escape(actorLabel(message.recovered_by)) + ' 回填</details>' : "") + "</div>" + (q.superseded_presentations?.includes(message.id) ? "</details>" : "")).join("") : '<div class="sw2-empty"><strong>开始这题的讨论</strong>建议、选项与实际影响都保留在这里。</div>',
       '</div><div class="sw2-composer sw2-discussion-composer">' + ((q.suggestions || []).length ? '<details class="sw2-choices"><summary>选择讨论方向 · ' + q.suggestions.length + ' 个选项</summary><div class="sw2-suggestions">' + q.suggestions.map(value => '<button class="sw2-suggestion" type="button" data-action="suggest" data-value="' + escape(value) + '">' + escape(value) + '</button>').join('') + '</div></details>' : ''),
@@ -829,7 +853,8 @@
     for (const el of panel.querySelectorAll?.('details[data-record]') || []) el.open = expanded.includes(el.dataset.record);
     for (const [selector, top] of scrollPositions) { const el = panel.querySelector(selector); if (el) el.scrollTop = top; }
     panel.querySelector(".sw2-provenance").open = Boolean(sourceOpen);
-    applyDiscussionWidth();
+    updateDiscussionVisibility(); applyDiscussionWidth();
+    evidenceUI?.hydrateAll();
   }
 
   function applyBusy() {
@@ -989,8 +1014,8 @@
     if (returnFocus?.isConnected) returnFocus.focus();
   }
 
-  groupUI = window.CouncilGroups?.({ root, state, api, refresh, render, notice: showNotice, friendlyError, escape, workflowHTML, discussionResizerHTML, discussionShortcut, discussionShortcutAttribute, choiceContext, onOpen: () => showMobileView("detail"), onDraftChange: updateDraftUI, saveCandidate: saveAnswer,
-    reviewBasisHTML, editTable: id => { editing[id] = true; state.selected = id; groupUI.clear(); render(); showMobileView('detail'); },
+  groupUI = window.CouncilGroups?.({ root, state, api, refresh, render, notice: showNotice, friendlyError, escape, workflowHTML, discussionResizerHTML, discussionShortcut, discussionShortcutAttribute, choiceContext, onOpen: () => showMobileView("detail"), onCompose: openDiscussion, onDraftChange: updateDraftUI, saveCandidate: saveAnswer,
+    reviewBasisHTML, evidenceUI, editTable: id => { editing[id] = true; state.selected = id; groupUI.clear(); render(); showMobileView('detail'); },
     discardEdits, setDraft: answerDraft, getDraft: id => drafts[id] ?? candidateText(byId(id)), pendingQuestions });
   root.addEventListener("click", async event => {
     const summary = event.target.closest('summary');
@@ -1014,6 +1039,7 @@
     const action = button.dataset.action;
     // Let the reference link open its new tab without touching this page's state.
     if (action === 'reference-question') return;
+    if (action === 'toggle-discussion') { openDiscussion(root.querySelector('#sw2-detail').dataset.discussionOpen==='false'); return; }
     if (state.busy) return;
     if (action.startsWith('table-')) { applyTableEdit(button, action.slice(6)); return; }
     if (action === 'logout') {
@@ -1057,6 +1083,7 @@
     if (action === "dismiss-notice") { clearTimeout(noticeTimer); root.querySelector("#sw2-notice").hidden = true; return; }
     if (action === "compose" || action === "close-compose") {
       composing[state.selected] = action === "compose";
+      if(composing[state.selected]) openDiscussion();
       const editor = root.querySelector(".sw2-message-editor");
       editor.hidden = !composing[state.selected];
       root.querySelector('[data-action="compose"]').hidden = composing[state.selected];

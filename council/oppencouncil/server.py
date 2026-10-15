@@ -49,6 +49,7 @@ def public_origin(value: str) -> str:
 GROUP_ROUTE = re.compile(r"/api/projects/([0-9a-f]{20})/groups(?:/(B-\d{6}))?/(change|example)")
 ASSET_ROUTE = re.compile(r"/api/projects/([0-9a-f]{20})/assets/([0-9a-f]{64}\.(?:png|svg))")
 WORK_ROUTE = re.compile(r"/api/projects/([0-9a-f]{20})/work(?:/([FIB]-\d{6}))?(?:/(comment))?")
+EVIDENCE_ROUTE = re.compile(r"/api/projects/([0-9a-f]{20})/review-evidence/([FB]-\d{6})")
 
 
 class CouncilServer(ThreadingHTTPServer):
@@ -165,6 +166,7 @@ class CouncilHandler(BaseHTTPRequestHandler):
         assets = {"/": "index.html", "/index.js": "index.js", "/workbench.js": "freeze_workbench.js",
                   "/decision-groups.js": "decision_groups.js", "/markdown.js": "markdown.js",
                   "/tables.js": "tables.js",
+                  "/review-evidence.js": "review_evidence.js",
                   "/markdown-it.js": "vendor/markdown-it.min.js"}
         if path in assets:
             content_type = (
@@ -189,6 +191,21 @@ class CouncilHandler(BaseHTTPRequestHandler):
                 return self.send_data(raw, content_type)
             except (FreezeError, OSError, ValueError):
                 return self.send_json({"error": "Example image is unavailable"}, 404)
+        evidence_match = EVIDENCE_ROUTE.fullmatch(path)
+        if evidence_match:
+            store = self.project_store(evidence_match[1])
+            if store is None:
+                return
+            try:
+                from .review_evidence import review_evidence
+
+                query = parse_qs(urlsplit(self.path).query, keep_blank_values=True)
+                if set(query) - {"option"} or any(len(v) != 1 for v in query.values()):
+                    raise FreezeError("Invalid evidence review query")
+                option = int(query["option"][0]) if "option" in query else None
+                return self.send_json(review_evidence(store, evidence_match[2], option=option))
+            except (FreezeError, OSError, ValueError) as error:
+                return self.send_json({"error": str(error)}, 400)
         work_match = WORK_ROUTE.fullmatch(path)
         if work_match and not work_match[3]:
             store = self.project_store(work_match[1])

@@ -21,7 +21,8 @@ def main():
         (
             ROOT,
             ["node", "--test", "council/tests/test_workbench.cjs", "council/tests/test_decision_groups.cjs",
-             "council/tests/test_login.cjs", "council/tests/test_tables.cjs", "council/tests/test_index.cjs"],
+             "council/tests/test_login.cjs", "council/tests/test_tables.cjs", "council/tests/test_index.cjs",
+             "council/tests/test_review_evidence.cjs"],
         ),
     ]
     if not args.core:

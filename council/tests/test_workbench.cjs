@@ -126,6 +126,7 @@ async function workbench({ governanceVersion = 4, investigations = [], questionW
     value: selector => element(selector).value,
     disabled: selector => element(selector).disabled,
     hidden: selector => element(selector).hidden,
+    attributes: selector => element(selector).attrs,
     tag,historyWrites,url:()=>pageLocation.href,
     pop: url=>{pageLocation.href=url;windowListeners.popstate();},
     layout: () => root.dataset,
@@ -912,4 +913,32 @@ test('v5 excluded investigations retain the reason and human composer without le
  await app.click('select',{id:item.id});
  assert.match(app.html('#sw2-detail'),/已经核实无需新增规则/);assert.match(app.html('#sw2-detail'),/id="sw2-message"/);
  assert.doesNotMatch(app.html('#sw2-question-list'),/>待讨论</);
+});
+
+test('evidence review starts with discussion collapsed; deliberate toggles preserve drafts and survive refresh',async()=>{
+  const prefs=new Map();
+  const app=await workbench({governanceVersion:5,layoutPreferences:prefs,questionWork:{work:{phase:'human_review'},review_basis:{claims:[],summary:'Ready'}},draftMessages:{[questionId]:'An unsaved question'}});
+  assert.equal(app.hidden('.sw2-discussion-column'),true);
+  assert.equal(app.attributes('#sw2-discussion-toggle')['aria-expanded'],'false');
+  await app.click('toggle-discussion');
+  assert.equal(app.hidden('.sw2-discussion-column'),false);
+  app.input('sw2-message','An unsaved question');
+  assert.equal(app.value('#sw2-message'),'An unsaved question');
+  await app.click('refresh');
+  assert.equal(app.hidden('.sw2-discussion-column'),false);
+  await app.click('toggle-discussion');
+  assert.equal(app.hidden('.sw2-discussion-column'),true);
+  assert.equal(app.value('#sw2-message'),'An unsaved question');
+  assert.equal(app.writes.length,0);
+  const restored=await workbench({governanceVersion:5,layoutPreferences:prefs});
+  assert.equal(restored.hidden('.sw2-discussion-column'),true);
+});
+
+test('a deliberate parameter comment opens the hidden discussion without saving',async()=>{
+  const app=await workbench({governanceVersion:5});
+  const parameter=app.parameter('strategy','路线',['A','B']);
+  parameter.select('B'); await parameter.append();
+  assert.equal(app.hidden('.sw2-discussion-column'),false);
+  assert.match(app.value('#sw2-message'),/路线：B/);
+  assert.equal(app.writes.length,0);
 });

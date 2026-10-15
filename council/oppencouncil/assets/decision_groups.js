@@ -1,5 +1,5 @@
 /* Joint review: people discuss and confirm; AI manages membership and proposals. */
-window.CouncilGroups = function ({ root, state, api, refresh, render, notice, friendlyError = error => error.message, escape: esc, editTable, reviewBasisHTML = () => '', setDraft, getDraft, pendingQuestions, saveCandidate, discardEdits, workflowHTML = () => '', discussionResizerHTML = '', discussionShortcut = 'Ctrl+Enter', discussionShortcutAttribute = 'Control+Enter', choiceContext = scope => ({choiceScope:scope}), onOpen = () => {}, onDraftChange = () => {} }) {
+window.CouncilGroups = function ({ root, state, api, refresh, render, notice, friendlyError = error => error.message, escape: esc, editTable, reviewBasisHTML = () => '', evidenceUI, setDraft, getDraft, pendingQuestions, saveCandidate, discardEdits, workflowHTML = () => '', discussionResizerHTML = '', discussionShortcut = 'Ctrl+Enter', discussionShortcutAttribute = 'Control+Enter', choiceContext = scope => ({choiceScope:scope}), onOpen = () => {}, onCompose = () => {}, onDraftChange = () => {} }) {
   let active = null, restored = false, local = {}, failedStorage = false, busy = false;
   const views = {}, composing = {};
   let comparisons = {};
@@ -101,7 +101,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     const tableButton = state.snapshot.governance_version === 5 && /```table\s/.test(getDraft(q.id)) ? button('edit-table', '编辑表格', `data-question="${q.id}"`) : '';
     const candidate = d.draft ? `<div class="dg-candidate"><div class="dg-text sw2-record-body" data-quote-source="${q.id} · 候选口径 v${d.versions.length + 1}">${renderMarkdown(d.draft.text || '等待完整候选')}</div></div><details class="dg-editor" data-record="${q.id}-editor"><summary>修改候选 · Markdown</summary>${tableButton}<textarea aria-label="${esc(q.title)}的候选口径" class="dg-definition" data-question="${q.id}">${esc(getDraft(q.id))}</textarea><details class="sw2-markdown-preview" data-record="${q.id}-preview"><summary>预览排版（未保存）</summary><div class="sw2-record-body" data-preview="${q.id}">${renderMarkdown(getDraft(q.id))}</div></details><div class="dg-actions"><span class="dg-muted">保存后仍需确认才会生效</span>${button('save-candidate','保存候选',`data-question="${q.id}"`)}</div></details>` : '';
     const body = d.draft ? candidate + footer(null, currentReference + history) : current ? `<div class="dg-text sw2-record-body" data-quote-source="${q.id} · 正式口径 v${current.number}">${renderMarkdown(current.text)}</div>${footer(current, history)}` : '<p class="dg-muted">等待 AI 根据讨论起草完整口径</p>';
-    return `<article class="dg-card sw2-record" data-state="${d.draft ? 'draft' : current ? 'effective' : 'empty'}">${heading(d.draft ? d.versions.length + 1 : current?.number, Boolean(d.draft))}${dependencies(q)}${dependencyReview(q)}${reviewBasisHTML(q)}${body}${q.review_required ? '<section class="sw2-conflict"><strong>需要重新审阅</strong><p>'+esc(q.review_required.reason)+'</p></section>' : ''}${d.draft || q.review_required ? approvalHTML(find(active), q.id, q) : ''}</article>`;
+    return `<article class="dg-card sw2-record" data-state="${d.draft ? 'draft' : current ? 'effective' : 'empty'}">${heading(d.draft ? d.versions.length + 1 : current?.number, Boolean(d.draft))}${dependencies(q)}${dependencyReview(q)}${reviewBasisHTML(q,false)}${body}${q.review_required ? '<section class="sw2-conflict"><strong>需要重新审阅</strong><p>'+esc(q.review_required.reason)+'</p></section>' : ''}${d.draft || q.review_required ? approvalHTML(find(active), q.id, q) : ''}</article>`;
   }
   function updateControls() {
     const postButton = root.querySelector('[data-action="dg-post"]');
@@ -149,11 +149,26 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     const each = fn => indices.map((i, slot) => fn(g.options[i], i, slot)).join('');
     const cell = (o, i, slot, content, extra = '', label = '', sourceId = '') => `<div class="dg-option-cell ${extra}" data-quote-source="${esc(g.id+(sourceId ? ' · '+sourceId : '')+' · 方案 '+String.fromCharCode(65+i)+' · '+o.label+(label ? ' · '+label : ''))}" data-option="${i}" data-tone="${i}" data-chosen="${g.selected_option === i}" style="--order:${slot}"${label ? ` data-label="${esc(label)}"` : ''}>${content}</div>`;
     const row = (title, value, id = '') => `<div class="dg-option-label">${esc(title)}${id ? '<small>'+esc(id)+'</small>' : ''}</div>` + each((o,i,slot) => cell(o,i,slot,renderMarkdown(value(o), true), '', title, id));
-    const heads = '<div class="dg-option-label">可选方案</div>' + each((o,i,slot) => cell(o,i,slot,`<span class="dg-option-letter">${String.fromCharCode(65+i)}</span>${g.selected_option === i ? '<span class="dg-preference">此前记录的偏好</span>' : ''}<h4>${esc(o.label)}</h4>`, 'dg-option-head'));
+    const heads = '<div class="dg-option-label">可选方案</div>' + each((o,i,slot) => cell(o,i,slot,`<span class="dg-option-letter">${String.fromCharCode(65+i)}</span>${g.selected_option === i ? '<span class="dg-preference">此前记录的偏好</span>' : ''}<h4>${esc(o.label)}</h4>${state.snapshot.governance_version===5 && evidenceUI ? button('evidence','查看此方案依据',`data-option="${i}" aria-pressed="${evidenceOption(g)===i}"`) : ''}`, 'dg-option-head'));
     const rows = qs.map(q => row(q.title, o => o.rules[q.id], q.id)).join('') + row('实际影响',o => o.consequences) + row('条件与代价',o => o.tradeoffs);
-    const feet = '<div class="dg-option-label"></div>' + each((o,i,slot) => cell(o,i,slot,button('choose','倾向此方案',`data-option="${i}"`), 'dg-option-foot'));
+    const feet = '<div class="dg-option-label"></div>' + each((o,i,slot) => cell(o,i,slot,(state.snapshot.governance_version===5 && evidenceUI ? '<div class="dg-evidence-judgments" data-option="'+i+'">'+(evidenceOption(g)===i?evidenceUI.shell(g,i,'judgments'):'')+'</div>' : '')+button('choose','倾向此方案',`data-option="${i}"`), 'dg-option-foot'));
     const picker = g.options.length > 2 ? `<details class="dg-comparison-picker" data-record="compare-options"><summary>选择比较方案 <span>展示 ${indices.length} / ${g.options.length}</span></summary><div class="dg-picker-body"><p>最多同时比较 2 个方案。先取消一项，即可选入其他方案；这里仅调整展示。</p><div class="dg-picker-options" role="group" aria-label="选择比较方案">${g.options.map((o,i) => button('compare',`<span class="dg-picker-check" aria-hidden="true">${indices.includes(i) ? '✓' : '+'}</span><span><b>${String.fromCharCode(65+i)} · ${esc(o.label)}</b>${g.selected_option === i ? '<small>此前记录的偏好</small>' : ''}</span>`,`data-option="${i}" role="checkbox" aria-checked="${indices.includes(i)}"${(!indices.includes(i) && indices.length >= 2) || (indices.includes(i) && indices.length === 1) ? ' disabled' : ''}`)).join('')}</div></div></details>` : '';
     return picker + `<div class="dg-options"><div class="dg-matrix" style="--option-count:${indices.length};--matrix-min:${130+indices.length*167}px">${heads}${rows}${feet}</div></div>`;
+  }
+  function evidenceOption(g) {
+    const indices=compared(g), view=comparisons[g.id];
+    if (!indices.includes(view.evidenceIndex)) view.evidenceIndex=indices.includes(g.selected_option)?g.selected_option:indices[0];
+    return view.evidenceIndex;
+  }
+  function showEvidence(g,index=evidenceOption(g)) {
+    if (!evidenceUI || state.snapshot.governance_version!==5 || !g.options[index]) return;
+    comparisons[g.id].evidenceIndex=index;
+    saveLocal();
+    const holder=root.querySelector('.dg-option-evidence');
+    if (holder) holder.innerHTML=evidenceUI.shell(g,index);
+    for (const button of root.querySelectorAll('[data-action="dg-evidence"]')) button.setAttribute('aria-pressed',String(Number(button.dataset.option)===index));
+    for (const slot of root.querySelectorAll('.dg-evidence-judgments')) slot.innerHTML=Number(slot.dataset.option)===index?evidenceUI.shell(g,index,'judgments'):'';
+    evidenceUI.hydrateAll();
   }
   function discussionEditor(id) {
     const draft = local[id] || {};
@@ -172,7 +187,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     const hasDraft = qs.some(q => q.definition?.draft), missing = missingWording(g);
     panel.dataset.wording = qs.some(q => q.definition?.draft || q.definition?.current_version) ? 'present' : 'empty';
     const allConfirmed = qs.every(q => q.definition?.current_version);
-    const options = g.options.length ? `<section class="dg-options-section" aria-label="方案比较"><div class="dg-column-head"><h3>方案比较</h3><span>表达偏好后，仍需确认完整口径</span></div><div class="dg-comparison">${comparisonHTML(g,qs)}</div></section>` : '';
+    const options = g.options.length ? `<section class="dg-options-section" aria-label="方案比较"><div class="dg-column-head"><h3>方案比较</h3><span>表达偏好后，仍需确认完整口径</span></div>${state.snapshot.governance_version===5 && evidenceUI ? '<div class="dg-review-layout"><div class="dg-comparison">'+comparisonHTML(g,qs)+'</div><div class="dg-option-evidence">'+evidenceUI.shell(g,evidenceOption(g))+'</div></div>' : comparisonHTML(g,qs)}</section>` : '';
     const wording = `<section class="dg-wording-column" aria-label="本组口径"><div class="dg-column-head"><h3>${hasDraft ? '候选口径' : allConfirmed ? '正式口径' : '候选尚未备齐'}</h3>${hasDraft ? button('discard',allConfirmed ? '取消修订' : '撤回候选') : allConfirmed ? button('begin','修订口径') : ''}</div><div class="dg-members">${missing.length ? `<div class="dg-preparation"><strong>待 AI 补齐 ${missing.length} 条候选口径</strong><p>${missing.map(q => esc(q.id+' · '+q.title)).join('<br>')}</p><p>本组尚未准备好交付确认。完整候选需要写好并核对后，再请你审阅。</p></div>` : ''}${qs.map(memberHTML).join('')}</div><div class="dg-confirm" data-effective="${allConfirmed && !hasDraft}">${(hasDraft || qs.some(q=>q.review_required)) && !missing.length ? approvalHTML(g, 'group') : '<span>'+ (allConfirmed ? '本组口径已确认' : '完整候选准备好后可确认')+'</span>'}</div></section>`;
     const messages = g.messages.map(m => `<article class="sw2-bubble sw2-bubble-${['user','chatgpt'].includes(m.actor) ? m.actor : 'ai'}"><div class="sw2-bubble-head"><strong>${actor(m.actor)}</strong><span>${esc(when(m.at))}${m.question_id ? ' · '+esc(question(m.question_id)?.title || m.question_id) : ''}</span></div><div class="sw2-bubble-body" data-quote-source="${esc(g.id+' · '+actor(m.actor)+' · '+when(m.at))}">${renderMarkdown(m.text, true)}</div></article>`).join('') || '<div class="sw2-empty"><strong>开始共同讨论</strong>比较方案后，在这里留下你的意见。</div>';
     panel.innerHTML = `<div class="sw2-work"><div class="sw2-work-in"><header class="dg-header"><div class="sw2-detail-top"><span>${esc(g.id)} · ${qs.length} 条关联口径</span><span>第 ${state.snapshot.round || 1} 轮</span></div><h2>${esc(g.title)}</h2><p>${esc(g.purpose)}</p>${workflowHTML(qs)}</header><div class="dg-layout${g.options.length ? ' dg-with-options' : ''}">${options}${wording}</div></div></div><aside class="sw2-discussion-column dg-conversation" aria-label="共同讨论">${discussionResizerHTML}<div class="sw2-talk-header"><div class="sw2-section-title">共同讨论<small>${g.messages.length} 条记录</small></div><p>建议与交流 · 保存后手动通知 AI 继续</p></div><div class="dg-thread" tabindex="0" aria-label="共同讨论记录">${messages}</div>${discussionEditor(g.id)}</aside>`;
@@ -202,6 +217,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
   function appendDiscussion(text, quoteSource) {
     const id = discussionGroup()?.id;
     if (!id) return;
+    onCompose();
     local[id] ||= {};
     local[id].message = quoteSource ? window.CouncilMarkdown.appendQuote(local[id].message, quoteSource, text) : window.CouncilMarkdown.appendPreference(local[id].message, text);
     local[id].request_id = uuid(); saveLocal(); composing[id] = true;
@@ -229,9 +245,10 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     if (action === 'select') { active = null; saveLocal(); return; }
     if (!action.startsWith('dg-')) return;
     event.stopImmediatePropagation(); if (busy || state.busy) return;
-    if (action === 'dg-open') { active = b.dataset.id; if (b.dataset.mode) views[active] = b.dataset.mode; saveLocal(); state.mobileView = 'detail'; render(); if (b.dataset.reading) { root.querySelector('#sw2-detail').dataset.reading = b.dataset.reading; render(); } onOpen(); return; }
+    if (action === 'dg-open') { if(b.dataset.mode==='discussion') onCompose(); active = b.dataset.id; if (b.dataset.mode) views[active] = b.dataset.mode; saveLocal(); state.mobileView = 'detail'; render(); if (b.dataset.reading) { root.querySelector('#sw2-detail').dataset.reading = b.dataset.reading; render(); } onOpen(); return; }
     if (action === 'dg-edit-table') { editTable?.(b.dataset.question); return; }
     if (action === 'dg-question') { active = null; state.selected = b.dataset.id; state.mobileView = 'detail'; saveLocal(); render(); onOpen(); return; }
+    if (action === 'dg-evidence') { showEvidence(find(active),Number(b.dataset.option)); return; }
     if (action === 'dg-compare') {
       const g = find(active), index = Number(b.dataset.option), indices = compared(g);
       if (!g.options[index] || (!indices.includes(index) && indices.length >= 2) || (indices.includes(index) && indices.length === 1)) return;
@@ -244,13 +261,16 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
         holder.querySelector?.('[data-action="dg-compare"][data-option="'+index+'"]')?.focus?.({ preventScroll:true });
         if (!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) holder.querySelector?.('.dg-matrix')?.animate?.([{opacity:.5,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],{duration:180,easing:'ease-out'});
       }
+      showEvidence(g);
       return;
     }
     if (action === 'dg-view') { views[active] = b.dataset.mode; render(); const scroll = root.querySelector(views[active] === 'options' ? '.dg-options' : '.dg-thread'); if (scroll) scroll.scrollTop = 0; return; }
-    if (action === 'dg-compose' || action === 'dg-close-compose') { const id = discussionGroup()?.id; if (!id) return; composing[id] = action === 'dg-compose'; root.querySelector('.dg-message-editor').hidden = !composing[id]; root.querySelector('[data-action="dg-compose"]').hidden = composing[id]; if (composing[id]) root.querySelector('#dg-message').focus({preventScroll:true}); return; }
+    if (action === 'dg-compose' || action === 'dg-close-compose') { const id = discussionGroup()?.id; if (!id) return; composing[id] = action === 'dg-compose'; if(composing[id]) onCompose(); root.querySelector('.dg-message-editor').hidden = !composing[id]; root.querySelector('[data-action="dg-compose"]').hidden = composing[id]; if (composing[id]) root.querySelector('#dg-message').focus({preventScroll:true}); return; }
     if (action === 'dg-choose') {
       const g = find(active), index = Number(b.dataset.option), option = g.options[index];
       if (!option) return;
+      showEvidence(g,index);
+      onCompose();
       const text = '倾向方案：'+option.label+'（尚未确认口径）';
       local[active] ||= {};
       // Preserve the person's own prose; repeated clicks on the same option do not duplicate it.

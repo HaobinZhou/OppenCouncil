@@ -5,17 +5,17 @@ const vm = require('node:vm');
 const path = require('node:path');
 const markdown = require('../oppencouncil/assets/markdown.js');
 const source = fs.readFileSync(path.join(__dirname, '../oppencouncil/assets/decision_groups.js'), 'utf8');
-function setup(saved) {
+function setup(saved, extras={}) {
   const handlers={}, storage=new Map(), calls=[], notices=[], unsavedQuestions=[], approveButtons=[{},{}], confirmHints=[{},{}], memberButtons=[{dataset:{question:'F-000001'}}], memberHints=[{dataset:{dgMemberHint:'F-000001'}}];
   if (saved) storage.set('council-groups:drafts:/synthetic/group', saved);
   let count=0, fail=false, resume, waitForResponse;
   const group={id:'B-000001',title:'Together',purpose:'Combined',member_ids:['F-000001'],options:[],messages:[],confirmations:[],revision:1,approval_token:'read-token'};
   const state={snapshot:{project:'/synthetic/group',questions:[{id:'F-000001',title:'One',revision:1,readiness:{status:'ready'},definition:{draft:{text:'Exact rule',approval_token:'member-token'},versions:[]}}],decision_groups:[group]},busy:false};
-  const root={addEventListener:(name,fn)=>handlers[name]=fn,contains:()=>true,querySelector:()=>({textContent:''}),querySelectorAll:selector=>selector==='[data-action="dg-approve"]'?approveButtons:selector==='[data-dg-confirm-hint]'?confirmHints:selector==='[data-action="dg-approve-member"]'?memberButtons:selector==='[data-dg-member-hint]'?memberHints:[]};
+  const root={dataset:{projectId:'synthetic'},addEventListener:(name,fn)=>handlers[name]=fn,contains:()=>true,querySelector:()=>({textContent:''}),querySelectorAll:selector=>selector==='[data-action="dg-approve"]'?approveButtons:selector==='[data-dg-confirm-hint]'?confirmHints:selector==='[data-action="dg-approve-member"]'?memberButtons:selector==='[data-dg-member-hint]'?memberHints:[]};
   const context={window:{CouncilMarkdown:markdown},crypto:{randomUUID:()=>`request-${++count}`},sessionStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)}};
   vm.runInNewContext(source,context);
   const api=async (url,body)=>{calls.push({url,body});if(waitForResponse)await waitForResponse;if(body.operation==='comment')group.messages.push({id:body.request_id,actor:'user',text:body.value.text});if(fail){fail=false;throw new Error('response lost');}return{group,snapshot:state.snapshot};};
-  const ui=context.window.CouncilGroups({root,state,api,refresh:async()=>ui.reconcile(),render(){ui.updateControls();},notice:(...args)=>notices.push(args),escape:s=>s||'',setDraft(){},getDraft:()=>'',discardEdits:()=>({'F-000001':{text:'Unfinished wording',request_id:'edit-1'}}),pendingQuestions:()=>unsavedQuestions});
+  const ui=context.window.CouncilGroups({root,state,api,refresh:async()=>ui.reconcile(),render(){ui.updateControls();},notice:(...args)=>notices.push(args),escape:s=>s||'',setDraft(){},getDraft:()=>'',discardEdits:()=>({'F-000001':{text:'Unfinished wording',request_id:'edit-1'}}),pendingQuestions:()=>unsavedQuestions,...extras});
   ui.listHTML();
   return {ui,state,group,calls,notices,storage,unsavedQuestions,approveButtons,confirmHints,memberButtons,memberHints,loseResponse(){fail=true;}, holdResponse(){waitForResponse=new Promise(resolve=>resume=resolve);}, releaseResponse(){resume();waitForResponse=null;},
     type(text){handlers.input({target:{id:'dg-message',value:text,classList:{contains:()=>false}}});},
@@ -369,4 +369,25 @@ test('v5 member reconfirmation preserves the current-version operation and prepa
  assert.equal(s.calls[0].body.operation,'definition_reconfirm');assert.equal(s.calls[0].body.value,'reconfirm-token');
  q.work.phase='evidence';s.ui.updateControls();assert.equal(s.memberButtons[0].disabled,true);
  await s.click('approve-member',{question:q.id});assert.equal(s.calls.length,1);
+});
+
+
+test('option evidence rendering and selection are scoped to v5 and never save preferences',async()=>{
+  const rendered=[];
+  const evidenceUI={shell:(record,option,view='sources')=>{rendered.push({id:record.id,option,view});return `<section>Evidence ${option}</section>`;},hydrateAll(){}};
+  const s=setup(undefined,{evidenceUI});
+  s.group.options=['A','B'].map(label=>({label,rules:{'F-000001':label},consequences:'Effect',tradeoffs:'Cost'}));
+  const panel={dataset:{},querySelector(){return null;}};
+  s.state.snapshot.governance_version=4; s.ui.renderDetail(panel);
+  assert.doesNotMatch(panel.innerHTML,/dg-review-layout|dg-evidence|dg-option-evidence/);
+  assert.equal(rendered.length,0);
+  s.state.snapshot.governance_version=5; s.ui.renderDetail(panel);
+  assert.match(panel.innerHTML,/dg-option-evidence/);
+  assert.deepEqual(rendered.map(r=>r.option),[0,0]);
+  await s.click('evidence',{option:'1'});
+  assert.equal(rendered.at(-1).option,1);
+  s.ui.renderDetail(panel);
+  assert.deepEqual(rendered.slice(-2).map(r=>r.option),[1,1]);
+  assert.equal(s.calls.length,0);
+  assert.equal(s.group.selected_option,undefined);
 });

@@ -1,0 +1,78 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const {model,content,links,create}=require('../oppencouncil/assets/review_evidence.js');
+const markdown=require('../oppencouncil/assets/markdown.js');
+
+const s=(id,version=1)=>({path:`evidence/sources/S-${id}/r${version}.json`,id:`S-${id}`,version,citation:'Source '+id,verification:'full_text_location',source_type:'method_paper',read_scope:'Checked sections',location:'Section 2'});
+const [one,two,three]=[s('000001'),s('000002'),s('000003')];
+const payload={id:'B-000001',revision:1,option:0,title:'A',bound:true,sources:[one,two,three],claims:[
+  {claim:'First judgment',applicability:'First conditions',sources:[two.path,one.path],counter_sources:[]},
+  {claim:'Second judgment',applicability:'Limits',sources:[one.path],counter_sources:[three.path]},
+],unavailable:[]};
+
+test('numbers follow the displayed judgment order, share repeats, and include counter evidence',()=>{
+  const view=model(payload);
+  assert.deepEqual(view.sources.map(x=>[x.path,x.number]),[[two.path,1],[one.path,2],[three.path,3]]);
+  assert.equal(view.claims[1].citations[0].number,2);
+  assert.equal(view.claims[1].counters[0].number,3);
+  const html=content(payload,three.path,markdown.render);
+  assert.match(html,/依据 \[3\]/);
+  assert.match(html,/相反或限制性依据/);
+  assert.match(html,/Limits/);
+});
+
+test('each option starts at one and excludes the other option and unbound choices',()=>{
+  const b={...payload,option:1,claims:[{claim:'B only',sources:[three.path]}],sources:[three]};
+  assert.equal(model(b).numbers.get(three.path),1);
+  const html=content(b,one.path);
+  assert.doesNotMatch(html,/Source 000001|Source 000002|First judgment/);
+  assert.match(html,/依据 \[1\]/);
+  assert.match(content({...b,claims:[],sources:[],bound:false}),/此方案尚未关联/);
+});
+
+test('versions remain distinct and citations cannot inject markup or unsafe links',()=>{
+  const newer=s('000001',2);
+  assert.equal(model({...payload,claims:[],sources:[one,newer]}).sources.length,2);
+  const malicious={...one,citation:'<img src=x onerror=alert(1)> javascript:alert(1) https://example.org/paper',location:'https://user:secret@example.org/private'};
+  const html=content({...payload,claims:[],sources:[malicious]});
+  assert.doesNotMatch(html,/<img|href="javascript:|href="https:\/\/user:/);
+  assert.deepEqual(links(malicious),['https://example.org/paper']);
+  assert.match(html,/&lt;img/);
+  assert.match(html,/target="_blank" rel="noopener noreferrer"/);
+});
+
+test('missing cited versions stay visible and cannot borrow a different record',()=>{
+  const html=content({...payload,sources:[one],unavailable:[two.path,three.path]});
+  assert.match(html,/部分已关联依据暂时无法读取/);
+  assert.match(html,/依据暂时无法读取/);
+  assert.equal(model({...payload,sources:[one]}).numbers.get(two.path),1);
+});
+
+test('late responses cannot render into a newly selected option; evidence reads do not write',async()=>{
+  let resolveA, resolveB;
+  const nodes=[], requests=[];
+  const root={addEventListener(){},querySelectorAll(){return nodes;}};
+  const controller=create({root,markdown:markdown.render,api:url=>{
+    requests.push(url);
+    return new Promise(resolve=>{if(url.endsWith('=0'))resolveA=resolve;else resolveB=resolve;});
+  }});
+  const boxA={innerHTML:''}, boxB={innerHTML:''};
+  const node=(option,box)=>({isConnected:true,dataset:{evidenceId:'B-000001',evidenceRevision:'1',evidenceOption:String(option)},querySelector:()=>box});
+  const a=node(0,boxA),b=node(1,boxB);
+  nodes.push(a); controller.hydrateAll();
+  a.isConnected=false;nodes.splice(0,1,b);controller.hydrateAll();
+  resolveB({...payload,option:1,claims:[],sources:[three]});
+  await new Promise(setImmediate);
+  resolveA(payload);await new Promise(setImmediate);
+  assert.equal(boxA.innerHTML,'');
+  assert.match(boxB.innerHTML,/Source 000003/);
+  assert.doesNotMatch(boxB.innerHTML,/Source 000001/);
+  assert.deepEqual(requests,['/api/review-evidence/B-000001?option=0','/api/review-evidence/B-000001?option=1']);
+});
+
+test('mixed direct sources and claims follow first reference order without renumbering repeats',()=>{
+  const claim={path:'evidence/claims/E-000001/r000001.json',claim:'Reuse two then one',sources:[two.path,one.path]};
+  const view=model({...payload,claims:[claim],references:[three.path,claim.path,two.path]});
+  assert.deepEqual(view.sources.map(s=>[s.id,s.number]),[[three.id,1],[two.id,2],[one.id,3]]);
+  assert.equal(view.claims[0].citations[0].number,2);
+});
