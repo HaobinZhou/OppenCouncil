@@ -81,6 +81,78 @@ async def test_external_identity_and_narrow_writes_are_server_enforced(context, 
         Freezes(catalog).comment(pid, "F-000001", "Denied", current["revision"], "write-off")
 
 
+@pytest.mark.asyncio
+async def test_web_literature_contribution_does_not_release_research_handoff(context, settings):
+    catalog, pid, local = context
+    q = local.read("F-000001")
+    local.commit_work(
+        {
+            "read_set": q["read_set"],
+            "changes": [
+                {
+                    "id": q["id"],
+                    "external_brief": {
+                        "disclosure": "shared",
+                        "summary": "Checked synthetic facts",
+                        "questions": "Which methods apply?",
+                    },
+                    "pending": [
+                        {
+                            "id": "research-round-1",
+                            "question": "Wait for literature and the human's instruction to continue",
+                            "reason": "The human will arrange web research",
+                            "continue_when": {"kind": "human_continue", "satisfied": False},
+                        }
+                    ],
+                    "phase": {
+                        "phase": "evidence",
+                        "conclusion_type": "needs_check",
+                        "reason": "Facts checked; handing off",
+                        "trigger_refs": ["local-facts"],
+                        "affected_refs": [q["id"]],
+                        "completion_conditions": ["Human asks to continue"],
+                    },
+                }
+            ],
+        },
+        request_id="local-research-handoff",
+    )
+    settings.transport = "stdio"
+    mcp = create_mcp(settings, catalog)
+    _, readback = await mcp.call_tool("council_read_work", {"project_id": pid, "item_id": q["id"]})
+    assert readback["external_brief"]["questions"] == "Which methods apply?"
+    _, submitted = await mcp.call_tool(
+        "council_submit_evidence",
+        {
+            "project_id": pid,
+            "text": "The web research is done; please proceed.",
+            "targets": [q["id"]],
+            "refs": ["Synthetic method source, section 2"],
+            "request_id": "web-literature",
+        },
+    )
+    reopened = WorkStore(FreezeStore(local.store.project))
+    waiting = reopened.read(q["id"])
+    assert waiting["work"]["phase"] == "evidence"
+    assert waiting["actionable"] and not waiting["human_pending"]
+    assert waiting["ready_pending_ids"] == []
+    assert waiting["pending_items"][0]["continue_when"] == {"kind": "human_continue", "satisfied": False}
+    assert reopened.evidence(submitted["path"])["actor"] == "external_ai"
+    with pytest.raises(FreezeError, match="explicit human instruction"):
+        reopened.commit_work(
+            {
+                "read_set": waiting["read_set"],
+                "changes": [
+                    {
+                        "id": q["id"],
+                        "definition": {"operation": "definition_draft", "value": "Premature recommendation"},
+                    }
+                ],
+            },
+            request_id="premature-review",
+        )
+
+
 def source(identifier, disclosure):
     return {
         "schema_version": 1,

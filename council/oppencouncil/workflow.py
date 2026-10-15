@@ -259,7 +259,14 @@ def pending_ready(item, questions, record=None):
             for e in (record or {}).get("feedback_events", [])
         )
     # Semantic conditions require an explicit local assessment, not an external claim.
-    return condition["kind"] == "local_assessment" and bool(condition.get("satisfied"))
+    return condition["kind"] in {"local_assessment", "human_continue"} and bool(condition.get("satisfied"))
+
+
+def waiting_for_human_continue(record):
+    return any(
+        not item.get("resolved") and item["continue_when"]["kind"] == "human_continue"
+        for item in record["pending_items"]
+    )
 
 
 def projection(record, questions):
@@ -294,6 +301,8 @@ def projection(record, questions):
 def transition(record, value, actor):
     if actor != "codex" or not isinstance(value, dict) or value.get("phase") not in PHASES:
         raise FreezeError("A local agent must specify a valid work phase")
+    if value["phase"] in {"prepare_review", "human_review", "closed"} and waiting_for_human_continue(record):
+        raise FreezeError("Research handoff is waiting for an explicit human instruction to continue")
     previous = record["work"]
     reason = require_text(value.get("reason"), "stage change reason", 5000)
     completion = value.get("completion_conditions")
@@ -333,6 +342,8 @@ def transition(record, value, actor):
 
 def automatic_phase(record, phase, reason, trigger, actor):
     """Record mechanical changes caused by a saved edit or human confirmation."""
+    if waiting_for_human_continue(record):
+        phase = "evidence"
     work = record["work"]
     previous = work["phase"]
     if previous == phase:
@@ -432,19 +443,39 @@ def save_progress(record, payload, request_id):
 def update_pending(record, values, request_id, questions):
     if not isinstance(values, list):
         raise FreezeError("Pending updates must be a list")
+    seen = set()
     for value in values:
         if not isinstance(value, dict):
             raise FreezeError("Pending item must be an object")
         identifier = require_text(value.get("id"), "pending ID", 100)
+        if identifier in seen:
+            raise FreezeError("Combine each pending item's updates into one entry")
+        seen.add(identifier)
         old = next((p for p in record["pending_items"] if p["id"] == identifier), None)
         condition = value.get("continue_when", (old or {}).get("continue_when"))
         if not isinstance(condition, dict) or condition.get("kind") not in {
             "definition_confirmed",
             "local_assessment",
             "new_material",
+            "human_continue",
         }:
             raise FreezeError("Pending item requires an explicit continuation condition")
         condition = copy.deepcopy(condition)
+        if (old or {}).get("continue_when", {}).get("kind") == "human_continue" and condition[
+            "kind"
+        ] != "human_continue":
+            raise FreezeError("A human continuation wait cannot be replaced with an automatic condition")
+        if condition["kind"] == "human_continue":
+            if type(condition.get("satisfied")) is not bool:
+                raise FreezeError("Human continuation requires an explicit satisfied boolean")
+            if condition["satisfied"]:
+                if not old or old["continue_when"]["kind"] != "human_continue":
+                    raise FreezeError("Save the handoff before recording the human instruction to continue")
+                require_text(condition.get("instruction"), "human continuation instruction", 5000)
+                if condition.get("source") not in {"conversation", "council"}:
+                    raise FreezeError("Human continuation source must be conversation or council")
+            if value.get("resolved", (old or {}).get("resolved", False)) and not condition["satisfied"]:
+                raise FreezeError("Resolve the handoff only after an explicit human instruction to continue")
         if condition["kind"] == "definition_confirmed":
             question_id = condition.get("question_id")
             if not isinstance(question_id, str) or question_id not in questions:
@@ -538,6 +569,8 @@ def apply_definition(record, operation, value, actor, questions):
     from .assets import freeze_images, validate_tables
     from .decisions import bind_dependencies, candidate_for_approval, check_approval
 
+    if actor == "codex" and operation == "definition_draft" and waiting_for_human_continue(record):
+        raise FreezeError("Research handoff is waiting for an explicit human instruction to continue")
     if operation == "definition_draft":
         value = copy.deepcopy(value) if isinstance(value, dict) else {"text": value}
         validate_tables(value.get("text", ""))
@@ -560,7 +593,8 @@ def apply_definition(record, operation, value, actor, questions):
     change_definition(record, operation, value, actor)
     if operation in {"definition_draft", "definition_begin"} and state(record)["draft"]:
         state(record)["draft"]["review_basis"] = copy.deepcopy(record.get("review_basis"))
-        automatic_phase(record, "prepare_review", "Candidate wording saved", operation, actor)
+        phase = "evidence" if waiting_for_human_continue(record) else "prepare_review"
+        automatic_phase(record, phase, "Candidate wording saved", operation, actor)
     if operation == "definition_discard":
         automatic_phase(
             record,

@@ -679,6 +679,18 @@ class WorkStore:
             k in change for k in allowed - {"id", "comments", "definition", "dependency_review"}
         ):
             raise FreezeError("Work assessment is reserved for the local agent")
+        if "pending" in change:
+            wf.update_pending(record, change["pending"], request_id, questions)
+            if wf.waiting_for_human_continue(record) and record["work"]["phase"] != "evidence":
+                wf.automatic_phase(
+                    record,
+                    "evidence",
+                    "Waiting for the human to continue after external research",
+                    request_id,
+                    actor,
+                )
+        if actor == "codex" and "review_packet" in change and wf.waiting_for_human_continue(record):
+            raise FreezeError("Research handoff is waiting for an explicit human instruction to continue")
         if "definition" in change:
             if not record["id"].startswith("F-") or actor == "external_ai":
                 raise FreezeError("Only local agents and humans may edit F wording")
@@ -775,8 +787,6 @@ class WorkStore:
                 if "review_basis" not in change:
                     raise FreezeError("Reassessment requires the newly checked basis")
                 record["review_required"] = None
-        if "pending" in change:
-            wf.update_pending(record, change["pending"], request_id, questions)
         if "phase" in change:
             wf.transition(record, change["phase"], actor)
             if record["work"]["phase"] == "human_review":
@@ -813,6 +823,8 @@ class WorkStore:
                     raise FreezeError("Research recommendations require original-text verification")
 
     def validate_review(self, record, writes):
+        if wf.waiting_for_human_continue(record):
+            raise FreezeError("Research handoff is waiting for an explicit human instruction to continue")
         if not record.get("definition", {}).get("draft") and not record.get("review_required"):
             raise FreezeError("Human review requires a candidate or effective-version reassessment")
         if not record["work"]["trigger_refs"] or record["work"]["conclusion_type"] == "needs_check":

@@ -42,6 +42,8 @@ Describe the task → AI investigates and prepares proposals → Review, comment
 
 The workbench does not call a model in the background. After saving feedback, return to your AI session or paste the workbench's handoff message into it. The agent reads the new feedback and continues with the affected work.
 
+Research reviews have an earlier handoff by default: the local agent checks project facts, saves shared questions for literature research, and stops. You then ask the web AI to contribute sources. When you explicitly tell the local agent to continue, it checks those sources and prepares the recommendations for review. New evidence alone does not start that next step. You can also explicitly assign the whole round to the local agent.
+
 ## Quick start
 
 ### 1. Install

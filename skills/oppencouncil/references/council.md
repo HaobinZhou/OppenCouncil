@@ -10,6 +10,8 @@ This is the common Council entry for local and external clients. Record interfac
 
 ## External contributions
 
+Research rounds normally arrive here after local fact checking, with shared briefs and a saved wait for the human to resume. Contribute literature, original-text locations, applicability and counterevidence to those questions. Completing or submitting the web research does not release that wait: return to the human, who decides when the local agent should appraise the contributions and prepare the review.
+
 `council_submit_evidence` appends a contribution with citation strings and optional existing target IDs. An untargeted proposal enters the local triage inbox. The local agent decides whether it becomes an investigation or F. Long reports can use the existing Discussion tools and be referenced by document ID and content hash.
 
 `council_comment` appends a short comment to an existing F or group. A group comment may identify an affected member. The server labels these contributions external and unverified. They trigger local assessment without becoming pending human feedback.

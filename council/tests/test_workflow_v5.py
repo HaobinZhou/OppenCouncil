@@ -69,6 +69,137 @@ def approve(work, identifier="F-000001"):
     )
 
 
+def research_handoff():
+    return {
+        "id": "literature-round-1",
+        "question": "Await web research and the human's instruction to continue",
+        "reason": "Local facts and shared questions are ready",
+        "continue_when": {"kind": "human_continue", "satisfied": False},
+    }
+
+
+def resume_research_handoff():
+    return {
+        "id": "literature-round-1",
+        "resolved": True,
+        "continue_when": {
+            "kind": "human_continue",
+            "satisfied": True,
+            "instruction": "The web research is ready. Continue checking it and prepare the review.",
+            "source": "conversation",
+        },
+    }
+
+
+def test_research_handoff_survives_reentry_and_external_material(work):
+    save(work, {"pending": [research_handoff()], "phase": stage("evidence", "needs_check")})
+    work = WorkStore(FreezeStore(work.store.project))
+    save(work, {"comments": ["Web AI: the literature search is complete."]}, "external_ai")
+    save(work, {"comments": ["One more question about the population."]}, "user")
+    read = work.read("F-000001")
+    assert read["ready_pending_ids"] == []
+    assert not read["pending_items"][0]["continue_when"]["satisfied"]
+    assert read["work"]["phase"] == "evidence"
+    before = (work.store.questions / "F-000001.json").read_bytes()
+    for change in (
+        {"phase": stage("prepare_review")},
+        {"phase": stage()},
+        {"phase": stage("closed")},
+        {"definition": {"operation": "definition_draft", "value": "Premature recommendation"}},
+        {"review_packet": {"default": "Premature recommendation"}},
+    ):
+        with pytest.raises(FreezeError, match="explicit human instruction"):
+            save(work, change)
+        assert (work.store.questions / "F-000001.json").read_bytes() == before
+
+
+@pytest.mark.parametrize(
+    "pending",
+    [
+        {"id": "literature-round-1", "resolved": True},
+        {
+            "id": "literature-round-1",
+            "continue_when": {
+                "kind": "local_assessment",
+                "satisfied": True,
+                "assessment": "Enough literature",
+            },
+        },
+        {"id": "literature-round-1", "continue_when": {"kind": "human_continue", "satisfied": True}},
+        {
+            "id": "literature-round-1",
+            "continue_when": {
+                "kind": "human_continue",
+                "satisfied": True,
+                "instruction": "Web AI says done",
+                "source": "external_ai",
+            },
+        },
+    ],
+)
+def test_research_handoff_cannot_be_implicitly_released(work, pending):
+    save(work, {"pending": [research_handoff()]})
+    before = (work.store.questions / "F-000001.json").read_bytes()
+    with pytest.raises(FreezeError):
+        save(work, {"pending": [pending]})
+    assert (work.store.questions / "F-000001.json").read_bytes() == before
+
+
+def test_research_handoff_cannot_be_created_and_finished_in_one_write(work):
+    before = (work.store.questions / "F-000001.json").read_bytes()
+    for values in (
+        [{**research_handoff(), **resume_research_handoff()}],
+        [research_handoff(), resume_research_handoff()],
+    ):
+        with pytest.raises(FreezeError):
+            save(work, {"pending": values})
+        assert (work.store.questions / "F-000001.json").read_bytes() == before
+    with pytest.raises(FreezeError, match="explicit human instruction"):
+        save(
+            work,
+            {
+                "pending": [research_handoff()],
+                "definition": {"operation": "definition_draft", "value": "Premature"},
+            },
+        )
+    assert (work.store.questions / "F-000001.json").read_bytes() == before
+
+
+def test_human_edits_do_not_release_research_handoff_or_replace_formal_version(work):
+    prepare(work)
+    approve(work)
+    original = copy.deepcopy(work.read("F-000001")["current"])
+    save(work, {"pending": [research_handoff()]})
+    save(work, {"definition": {"operation": "definition_draft", "value": "Human's draft edit"}}, "user")
+    assert work.read("F-000001")["work"]["phase"] == "evidence"
+    assert work.read("F-000001")["current"] == original
+    with pytest.raises(FreezeError, match="explicit human instruction"):
+        approve(work)
+    save(work, {"definition": {"operation": "definition_discard"}}, "user")
+    assert work.read("F-000001")["work"]["phase"] == "evidence"
+    save(work, {"pending": [resume_research_handoff()]})
+    prepare(work, "Locally checked proposal after the human resumed")
+    assert work.read("F-000001")["work"]["phase"] == "human_review"
+    assert work.read("F-000001")["current"] == original
+    record = json.loads((work.store.questions / "F-000001.json").read_text())
+    assert (
+        record["pending_items"][0]["continue_when"]["instruction"]
+        == resume_research_handoff()["continue_when"]["instruction"]
+    )
+
+
+def test_research_handoff_is_scoped_and_external_actor_cannot_release_it(work):
+    work.add(
+        [{"title": "Independent item", "why": "Separate request"}], request_id="independent", actor="codex"
+    )
+    save(work, {"pending": [research_handoff()]})
+    prepare(work, identifier="F-000002")
+    assert work.read("F-000002")["work"]["phase"] == "human_review"
+    with pytest.raises(FreezeError):
+        save(work, {"pending": [resume_research_handoff()]}, "external_ai")
+    assert work.read("F-000001")["ready_pending_ids"] == []
+
+
 def test_feedback_reply_and_cursor_commit_together_and_retry(work):
     save(work, {"comments": ["Why this direction?"]}, "user")
     read = work.read("F-000001")

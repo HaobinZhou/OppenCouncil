@@ -1,5 +1,7 @@
 # Candidate and review packet interface
 
+For research projects, complete the human-authorized continuation in [research-handoff.md](research-handoff.md) before synthesizing the recommendation. A saved `human_continue` wait blocks local candidate/packet preparation and entry into human review; adding evidence does not release it.
+
 Local `work-read` returns the current definition, candidate, review basis and packet. These fields are saved with [work-commit](local-council.md); external contributors append evidence or comments through [council.md](council.md).
 
 ## Prepare the decision

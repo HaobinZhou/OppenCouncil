@@ -9,6 +9,8 @@ description: Govern research and general projects through OppenCouncil, includin
 
 The project registry declares `research` or `general`; language and directory layout do not select the type. The helper command is `python ABSOLUTE_SKILL/scripts/oppencouncil.py COMMAND TARGET`. `index` returns the declared type and registered owners; `validate` checks managed structures. Existing v3/v4 markers use their original implementation; their operations are in [legacy-projects.md](references/legacy-projects.md). Product installation does not upgrade a project.
 
+For research Council work, read [research-handoff.md](references/research-handoff.md) first. By default, check local facts, save a shared literature brief and a persistent wait, then **end the turn and hand control back to the human**. Web AI supplies literature; resume appraisal, synthesis and review preparation only after an explicit human instruction to continue. New material or an AI's claim of completion does not release this wait. Follow an explicit human instruction assigning the entire round to the local agent instead. Executing an already-confirmed analysis or routine repair does not start a new review round.
+
 Load the reference for the current task, following an operation link when needed:
 
 | Task | Reference |
