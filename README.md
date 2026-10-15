@@ -174,7 +174,7 @@ uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents
 
 使用其他 skill 目录时沿用原来的 `--skill-dir`；安装过 MCP 时加上 `--with-mcp`。软链接会指向更新后的源码，无需重新复制 skills。如果 Git 提示本地修改或历史分叉，先处理这些修改再更新。
 
-更新完软件，按原有端口和访问配置重启正在运行的服务。已有项目记录继续保留，历史项目的迁移见 [迁移说明](docs/migration.md)。
+更新完软件，按原有端口和访问配置重启正在运行的服务。**更新到 5.0.0 不会把已有项目自动迁移到 v5。** 两个旧 skill 名称继续可用；需要迁移项目时，再看本文末尾的 [升级与迁移](#升级与迁移)。
 
 ## 更多说明
 
@@ -203,3 +203,49 @@ uv build --project council
 ## 许可证
 
 [MIT License](LICENSE)。可以使用、修改和分发，请保留许可证声明。随附第三方库的许可证见其所在目录。
+
+## 升级与迁移
+
+### 只升级软件：已有 v3/v4 项目可以继续使用
+
+**5.0.0 是软件版本，v3/v4/v5 是项目治理格式，两者分别升级。** 本次重构将两个 skill 的通用能力合并到 `oppencouncil`，保留 `oppen-project-steward` 和 `stepwise-r-project` 两个兼容入口。统一 helper 会读取项目原有标记：未迁移的项目继续交给原实现，原目录、口径和 Memory 不变。
+
+按上面的“更新”步骤升级源码和运行环境，再以原配置重启 Council／MCP，即可继续管理旧项目。沿用原来的 skill 安装目录、Council 站点目录、MCP 配置和允许列表；更新不会增加项目授权，也不会创建大型项目副本或自动归档。使用 ZIP、早期独立仓库或复制式 skill 安装的处理方式，见 [详细迁移指南](docs/migration.md)。
+
+只想使用新版工作台、暂时保留项目 v4 时，到这里即可。使用统一 skill 名称也不会自动转换项目；v5 专属操作会要求先明确迁移。
+
+### 决定采用 v5 项目格式后：先检查，再应用
+
+原生 v3/v4 项目可显式迁移到 v5；更早的 v2 或非标准旧记录需要先按原流程整理。迁移前先更新统一 skill、Council，以及项目已连接的 MCP，并确认**实际运行的服务**支持 v5。只下载新源码、不重启旧服务不够。
+
+1. 为一个明确选定的项目生成计划。下面的命令在 OppenCouncil 仓库根目录运行；项目使用绝对路径，计划放在项目外，父目录需存在，文件名必须尚未使用：
+
+   ```sh
+   uv run --project council python skills/oppencouncil/scripts/oppencouncil.py upgrade-v5 "/absolute/path/to/project" --check --plan "/absolute/path/outside-project/v5-plan.json"
+   ```
+
+   `--check` 不修改项目，只保存迁移计划。使用独立站点或外置 MCP 配置时，必须指定实际的 `--council-directory`、`--mcp-root` 和 `--mcp-config`，并在应用时保持一致；没有接入 MCP 的项目无需加装 MCP。完整命令见 [详细迁移指南](docs/migration.md#项目从-v3v4-迁移到-v5)。
+
+2. 阅读计划中的 `project_type`、`writes`、`blockers` 和 `warnings`。先解决阻塞项；遗留提示需要理解和保留，但不代表应自动改代码、补科研决定或关闭未决问题。类型默认沿用原入口：Stepwise 为科研，Steward 为普通；如需改选，在检查阶段指定 `--project-type research` 或 `general`。
+
+3. 明确确认该项目的迁移后，应用刚才审阅的同一份计划：
+
+   ```sh
+   uv run --project council python skills/oppencouncil/scripts/oppencouncil.py upgrade-v5 "/absolute/path/to/project" --apply --plan "/absolute/path/outside-project/v5-plan.json"
+   ```
+
+   应用从计划读取项目类型，不再传 `--project-type`。检查后文件或服务能力发生变化会拒绝应用；重新生成、审阅新计划后再继续。
+
+4. 运行统一 helper 的 `index` 和 `validate`，再在原工作台查看口径、讨论及产出登记。旧候选或未处理讨论首次继续时需要核对接续状态；迁移本身不代替这一步。
+
+### 迁移会保留什么，什么仍需后续处理
+
+| 内容 | 迁移后的处理 |
+| --- | --- |
+| 正式口径、当前版本、历史版本、候选和讨论 | 保留原有内容与确认历史，补入 v5 工作流状态；不会重新替人确认。 |
+| Decision Memory | 读取两种旧格式，原记录保持不动；以后新条目使用 v5 字段规则。 |
+| 未解决的 Attention | 转为调查事项，保留内容及原有阻塞含义；不要求为了迁移先把问题“解决掉”。 |
+| Results／交付登记、数据和脚本 | 保留原位置及已有登记；缺少产出规格、来源未分类、旧未编号脚本等列为遗留事项，不自动重跑分析、搬数据或重编号。脚本允许重复编号。 |
+| 站点、MCP 权限、OAuth 授权和运行配置 | 项目迁移不修改这些设置，也不自动重启服务。 |
+
+迁移只对计划列出的治理文件做事务写入，用同一文件系统内的 `.oppencouncil-migration/` 保存本次写入的恢复信息，**不复制整个科研项目，也不自动生成项目归档**。中断时由 helper 检查并恢复；若出现恢复冲突，保留现场并按 [失败处理](docs/migration.md#失败中断与恢复) 排查。成功迁移后的 v5 项目没有一键退回 v4 的操作，不能靠手改版本标记或调用旧 helper 降级。
