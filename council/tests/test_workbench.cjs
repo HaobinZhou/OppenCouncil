@@ -11,7 +11,7 @@ const questionId = "F-000007";
 const storageKey = "stepwise-freeze:drafts:v1:/synthetic/project";
 const settle = async () => { await new Promise(setImmediate); await new Promise(setImmediate); };
 
-async function workbench({ governanceVersion = 4, investigations = [], questionWork = {}, withGroupUI = false, authRequired = false, platform = 'Win32', layoutPreferences = new Map(), initialUrl = "http://localhost/projects/synthetic/freeze", additionalQuestions = [], drawer = false, reducedMotion = false, decisionGroups = [], reviewNotes = [], display = {}, messages = [], answers = {}, draftMessages = {}, requests = {}, answer = null, definition = { draft: null, versions: [], current_version: null }, definitions = {}, definitionBases = {}, opinion = "" } = {}) {
+async function workbench({ uiBuild, serverBuild, governanceVersion = 4, investigations = [], questionWork = {}, withGroupUI = false, authRequired = false, platform = 'Win32', layoutPreferences = new Map(), initialUrl = "http://localhost/projects/synthetic/freeze", additionalQuestions = [], drawer = false, reducedMotion = false, decisionGroups = [], reviewNotes = [], display = {}, messages = [], answers = {}, draftMessages = {}, requests = {}, answer = null, definition = { draft: null, versions: [], current_version: null }, definitions = {}, definitionBases = {}, opinion = "" } = {}) {
   let selection = null, focused = null, expired = false, reloads = 0;
   const documentListeners = {};
   const elements = new Map(), listeners = {}, storage = new Map(), windowListeners = {}, historyWrites = [], choiceControls = [];
@@ -35,7 +35,7 @@ async function workbench({ governanceVersion = 4, investigations = [], questionW
   const tag = element(".sw2-draft-tag");
   const questionButton = { dataset: { id: questionId }, querySelector: () => tag };
   const root = {
-    dataset: { projectId: "synthetic" }, setAttribute() {}, contains: () => true, setPointerCapture() {},
+    dataset: { projectId: "synthetic", uiBuild }, setAttribute() {}, contains: () => true, setPointerCapture() {},
     querySelector: element,
     querySelectorAll: selector => selector === "[data-action=select]" ? [questionButton] : selector === "[data-choice-control]" ? choiceControls : [],
     addEventListener: (name, callback) => {
@@ -68,6 +68,7 @@ async function workbench({ governanceVersion = 4, investigations = [], questionW
     crypto: { randomUUID: () => "new-request" }, AbortController,
     setTimeout: () => 1, clearTimeout() {}, setInterval() {},
     fetch: async (_url, options) => {
+      if(_url==="/api/ui-build") return {ok:true,json:async()=>({ui_build:serverBuild})};
       if (expired) return {ok:false,status:401,json:async()=>({error:"Login required"})};
       if (_url === "/api/logout") { writes.push({logout:true}); return {ok:true,json:async()=>({ok:true})}; }
       if (options.method === "POST") {
@@ -500,13 +501,13 @@ test('resizing discussion persists across navigation/reload without submitting p
   app.resizeEvent('pointerdown');
   app.resizeEvent('pointermove', {clientX:780});
   app.resizeEvent('pointerup');
-  assert.equal(app.discussionWidth(), 600);
+  assert.equal(app.discussionWidth(), 480);
   await app.click('refresh');
-  assert.equal(app.discussionWidth(), 600);
+  assert.equal(app.discussionWidth(), 480);
   assert.equal(app.drafts().messages[questionId], '需要保留的讨论草稿');
   assert.equal(app.writes.length, 0);
   const reopened = await workbench({layoutPreferences});
-  assert.equal(reopened.discussionWidth(), 600);
+  assert.equal(reopened.discussionWidth(), 480);
   reopened.resizeEvent('dblclick');
   assert.equal(reopened.discussionWidth(), 380);
   assert.equal(layoutPreferences.size, 0);
@@ -517,7 +518,7 @@ test('discussion resizing preserves reading space and supports keyboard and canc
   const app = await workbench({layoutPreferences});
   app.resizeEvent('pointerdown');
   app.resizeEvent('pointermove', {clientX:-3000});
-  assert.equal(app.discussionWidth(), 880);
+  assert.equal(app.discussionWidth(), 480);
   app.resizeEvent('pointercancel');
   assert.equal(app.discussionWidth(), 380);
   assert.equal(layoutPreferences.size, 0);
@@ -941,4 +942,24 @@ test('a deliberate parameter comment opens the hidden discussion without saving'
   assert.equal(app.hidden('.sw2-discussion-column'),false);
   assert.match(app.value('#sw2-message'),/路线：B/);
   assert.equal(app.writes.length,0);
+});
+
+
+test('a new UI build prompts explicitly and keeps unsaved prose until a human reloads', async()=>{
+ const app=await workbench({uiBuild:'5.0.1:old',serverBuild:'5.0.1:new'});
+ assert.equal(app.hidden('#sw2-ui-update'),false);
+ app.input('sw2-message','Keep this local draft');
+ await app.click('refresh');
+ assert.equal(app.reloads(),0);
+ assert.equal(app.drafts().messages[questionId],'Keep this local draft');
+ await app.click('reload-ui');
+ assert.equal(app.reloads(),1);
+ assert.equal(app.drafts().messages[questionId],'Keep this local draft');
+ assert.deepEqual(app.writes,[]);
+});
+
+test('an oversized legacy discussion width is clamped when restored',async()=>{
+ const app=await workbench({layoutPreferences:new Map([['oppencouncil:discussion-width:v1','1018']])});
+ assert.equal(app.discussionWidth(),480);
+ assert.deepEqual(app.writes,[]);
 });

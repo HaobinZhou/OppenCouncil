@@ -319,7 +319,7 @@ wheels = [
 
 [[package]]
 name = "oppencouncil"
-version = "5.0.0"
+version = "5.0.1"
 source = { editable = "../council" }
 
 [package.metadata]
@@ -332,7 +332,7 @@ dev = [
 
 [[package]]
 name = "oppencouncil-mcp"
-version = "5.0.0"
+version = "5.0.1"
 source = { virtual = "." }
 dependencies = [
     { name = "mcp" },

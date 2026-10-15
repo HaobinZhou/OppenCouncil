@@ -1,7 +1,7 @@
 ---
 name: oppencouncil
 metadata:
-  version: "5.0.0"
+  version: "5.0.1"
 description: Govern research and general projects through OppenCouncil, including project operations, evidence review and human-confirmed output specifications.
 ---
 

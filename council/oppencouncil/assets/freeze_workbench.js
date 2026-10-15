@@ -41,12 +41,12 @@
   const discussionResizerHTML = '<div class="sw2-discussion-resizer" role="separator" tabindex="0" aria-label="调整讨论区宽度" aria-orientation="vertical" aria-description="拖动调整讨论宽度；双击恢复默认。方向键也可调整。"></div>';
   function discussionBounds() {
     const width = root.querySelector('#sw2-detail').getBoundingClientRect().width;
-    return { min:300, max:Math.max(300, Math.floor(width * .55)) };
+    return { min:300, max:Math.max(300, Math.min(480, Math.floor(width * .32))) };
   }
   function applyDiscussionWidth() {
     const panel = root.querySelector('#sw2-detail');
     if (discussionWidth === null) panel.style.removeProperty('--discussion-width');
-    else panel.style.setProperty('--discussion-width', discussionWidth+'px');
+    else panel.style.setProperty('--discussion-width', Math.min(discussionWidth,discussionBounds().max)+'px');
     const handle = panel.querySelector('.sw2-discussion-resizer');
     if (!handle || !discussionMedia.matches || panel.dataset.discussionOpen==='false') return;
     const {min,max} = discussionBounds(), width = Math.round(panel.querySelector('.sw2-discussion-column').getBoundingClientRect().width);
@@ -696,7 +696,17 @@
     } finally { clearTimeout(timer); }
   }
 
+  async function checkBuild() {
+    if(!root.dataset.uiBuild) return;
+    try {
+      const data=await api('/api/ui-build',undefined,true);
+      const banner=root.querySelector('#sw2-ui-update');
+      if(banner) banner.hidden=data.ui_build===root.dataset.uiBuild;
+    } catch (_) { /* Data connection status is reported separately. */ }
+  }
+
   async function refresh() {
+    await checkBuild();
     const data = await api("/api/snapshot");
     state.snapshot = data.snapshot; state.csrf = data.csrf;
     root.querySelector('#sw2-logout').hidden = !data.auth_required;
@@ -830,10 +840,10 @@
       '<div class="sw2-work"><div class="sw2-work-in"><header class="sw2-question-context"><div class="sw2-detail-top"><span class="sw2-detail-code">' + q.id + ' · 第 ' + q.round + ' 轮</span>' + (["waiting", "needs_review"].includes(q.readiness?.status) ? '<span class="sw2-pill sw2-pill-discussing">' + escape(groupUI?.status(q) || "待复核") + '</span>' : definition(q).current_version ? '<span class="sw2-pill sw2-pill-answered">有效 v' + definition(q).current_version + '</span>' : (isV5() ? '' : pill(q.status))) + '<span class="sw2-origin">提出 ' + actorBadge(q.created_by) + "</span></div>",
       '<div class="sw2-question-heading"><h2>' + escape(q.title) + '</h2></div>',
       q.why && q.why !== "恢复旧项目口径与讨论记录" ? '<div class="sw2-question-why">' + escape(q.why) + '</div>' : "",
-      reviewBasisHTML(q) + (groupUI?.dependencies(q) || '') + workflowHTML([q]) + '</header>' + '<div class="sw2-review-body'+(isV5() && evidenceUI?' sw2-with-evidence':'')+'"><section class="sw2-decision-column" aria-label="正式口径与候选文档"><div class="sw2-section-title">口径</div><div class="sw2-opinion-scroll" tabindex="0" aria-label="口径版本内容">',
+      (isV5() && evidenceUI ? evidenceUI.jump(q) : '') + (groupUI?.dependencies(q) || '') + workflowHTML([q]) + '</header>' + '<div class="sw2-review-body'+(isV5() && evidenceUI?' sw2-with-evidence':'')+'"><section class="sw2-decision-column" aria-label="正式口径与候选文档">'+(evidenceUI && isV5()?evidenceUI.prose(q,reviewBasisHTML(q))+evidenceUI.shell(q,null,'judgments'):reviewBasisHTML(q))+'<div class="sw2-section-title">口径</div><div class="sw2-opinion-scroll" tabindex="0" aria-label="口径版本内容">',
       !draft && !current ? (q.recovered_records?.length ? '<div class="sw2-empty"><strong>已保留历史依据</strong>尚未建立正式版本，既有决定沿用原有依据。</div>' : '<div class="sw2-empty"><strong>候选尚未备齐</strong>AI 尚未写入完整候选口径；应先补齐内容，再交付你审阅。</div>') : '',
       !def.versions.length && q.recovered_records?.length ? recoverySummary(q) : "",
-      draft ? '<article class="sw2-definition-candidate sw2-record" data-state="draft">' + recordHeading(def.versions.length + 1, true) + (groupUI?.dependencyReview(q) || '') + '<div class="sw2-definition-text sw2-record-body" data-quote-source="' + q.id + ' · 候选口径 v' + (def.versions.length + 1) + '">' + renderMarkdown(draft.text || "候选已开启，等待编写完整口径。") + '</div><div class="sw2-definition-actions"><button class="sw2-button sw2-button-outline" data-action="edit-definition">修改候选</button><button class="sw2-button sw2-button-outline" data-action="discard-definition">' + (current ? "取消修订" : "撤回候选") + '</button></div><div class="sw2-confirm-actions"><span id="sw2-confirm-hint" role="status">' + escape(confirmationProblem(q) || '仅冻结本条，其他口径保持原状态。') + '</span><button class="sw2-button sw2-button-primary" aria-describedby="sw2-confirm-hint" data-action="approve-definition">确认并冻结本条口径</button></div><div class="sw2-record-end"><details class="sw2-record-details" data-record="candidate-meta"><summary>详情</summary><div class="sw2-record-detail-text">编号：' + q.id + '<br>状态：候选 · 尚未生效</div>' + currentHTML + historyHTML + '</details></div></article>' : '',
+      draft ? '<article class="sw2-definition-candidate sw2-record" data-state="draft">' + recordHeading(def.versions.length + 1, true) + (groupUI?.dependencyReview(q) || '') + '<div class="sw2-definition-text sw2-record-body" data-quote-source="' + q.id + ' · 候选口径 v' + (def.versions.length + 1) + '">' + (evidenceUI && isV5()?evidenceUI.prose(q,renderMarkdown(draft.text || '候选已开启，等待编写完整口径。')):renderMarkdown(draft.text || '候选已开启，等待编写完整口径。')) + '</div><div class="sw2-definition-actions"><button class="sw2-button sw2-button-outline" data-action="edit-definition">修改候选</button><button class="sw2-button sw2-button-outline" data-action="discard-definition">' + (current ? "取消修订" : "撤回候选") + '</button></div><div class="sw2-confirm-actions"><span id="sw2-confirm-hint" role="status">' + escape(confirmationProblem(q) || '仅冻结本条，其他口径保持原状态。') + '</span><button class="sw2-button sw2-button-primary" aria-describedby="sw2-confirm-hint" data-action="approve-definition">确认并冻结本条口径</button></div><div class="sw2-record-end"><details class="sw2-record-details" data-record="candidate-meta"><summary>详情</summary><div class="sw2-record-detail-text">编号：' + q.id + '<br>状态：候选 · 尚未生效</div>' + currentHTML + historyHTML + '</details></div></article>' : '',
       !draft ? currentHTML : '',
       q.review_required ? '<section class="sw2-conflict"><strong>需要重新审阅</strong><p>'+escape(q.review_required.reason)+'</p>'+(!draft && current ? '<span id="sw2-confirm-hint">'+escape(confirmationProblem(q) || '正文未变，确认将追加到当前版本。')+'</span><button class="sw2-button sw2-button-primary" data-action="approve-definition">重新确认当前版本</button>' : '')+'</section>' : '',
       !draft && !jointGroup ? '<button class="sw2-button sw2-button-outline sw2-begin-definition" data-action="' + (def.current_version ? "begin-definition" : "edit-definition") + '">' + (def.current_version ? '开启 v' + (def.versions.length + 1) + ' 修订' : "起草候选口径") + '</button>' : '',
@@ -1039,6 +1049,11 @@
     const action = button.dataset.action;
     // Let the reference link open its new tab without touching this page's state.
     if (action === 'reference-question') return;
+    if (action === 'reload-ui') {
+      persistDrafts();
+      if(!storageOK && pending().length) { showNotice('浏览器暂存失败，请先保存修改再更新页面。','error'); return; }
+      leavingForDirectory = true; location.reload(); return;
+    }
     if (action === 'toggle-discussion') { openDiscussion(root.querySelector('#sw2-detail').dataset.discussionOpen==='false'); return; }
     if (state.busy) return;
     if (action.startsWith('table-')) { applyTableEdit(button, action.slice(6)); return; }
@@ -1214,6 +1229,7 @@
   const snapshotVersion = snapshot => JSON.stringify([snapshot.revision, snapshot.round, snapshot.questions.map(q => [q.id, q.revision])]);
   async function checkUpdates() {
     if (state.busy || document.hidden || !state.snapshot.project) return;
+    await checkBuild();
     try {
       const data = await api("/api/snapshot");
       if (snapshotVersion(data.snapshot) !== snapshotVersion(state.snapshot)) {

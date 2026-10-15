@@ -1,7 +1,7 @@
 ---
 name: stepwise-r-project
 metadata:
-  version: "5.0.0"
+  version: "5.0.1"
 description: Compatibility name for OppenCouncil governance. Research project behavior follows the actual project type, in any language.
 ---
 

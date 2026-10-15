@@ -157,3 +157,37 @@ Deduplicate by exact source-version path. Display citation, verification method,
 linked judgment, applicability, read scope, original location/link and the
 immutable version. Rapid option switching or a stale response must never paint
 one option's references into another. Local browsing does not change F/B records.
+
+
+### 5.0.1 — question evidence in both review contexts
+
+Each individual F and each F within a group has its own evidence reader alongside
+its recommendation, judgment and definition. Group option evidence remains scoped
+to that selected option; an empty option offers links to member F readers without
+inheriting their references. Existing editing, history, dependencies, confirmation,
+comparison and shared discussion controls remain available.
+
+Source numbers follow first reference order within the selected F or option.
+Repeated references to the same exact version share a number. Displayed S IDs in
+review prose link only to sources already bound to that record. If the same ID is
+bound at multiple versions, each version receives a separately labelled link;
+unknown IDs, code and existing hyperlinks are left intact. Stored project text and
+citation relationships are never rewritten by rendering.
+
+The reader provides a compact ordered index and a separately scrollable detail.
+Full citations, original links, applicability, reading scope, location and exact
+version remain accessible. The selected exact source path persists per site,
+project, F/option in local browser storage; a removed reference produces an explicit
+fallback notice. Browser storage failure does not prevent reading.
+
+Discussion starts collapsed and remains manually accessible. Both restored and
+new widths are constrained to the available workspace (32%, up to 480px, with a
+300px minimum). Narrow layouts retain all actions in a compact scrolling toolbar
+and provide a nearby question-evidence jump.
+
+The page includes an asset-content build identifier. A changed server build
+produces an explicit update banner instead of silently reloading. The reload action
+persists local drafts first and refuses to proceed when draft storage fails.
+This detection begins with 5.0.1: tabs loaded before this detector existed need one
+normal browser reload to acquire it. Project-record synchronization is separate
+from interface updating.

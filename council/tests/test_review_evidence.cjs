@@ -51,7 +51,7 @@ test('missing cited versions stay visible and cannot borrow a different record',
 test('late responses cannot render into a newly selected option; evidence reads do not write',async()=>{
   let resolveA, resolveB;
   const nodes=[], requests=[];
-  const root={addEventListener(){},querySelectorAll(){return nodes;}};
+  const root={addEventListener(){},querySelectorAll(selector){return selector==='.ce-review'?nodes:[];}};
   const controller=create({root,markdown:markdown.render,api:url=>{
     requests.push(url);
     return new Promise(resolve=>{if(url.endsWith('=0'))resolveA=resolve;else resolveB=resolve;});
@@ -75,4 +75,46 @@ test('mixed direct sources and claims follow first reference order without renum
   const view=model({...payload,claims:[claim],references:[three.path,claim.path,two.path]});
   assert.deepEqual(view.sources.map(s=>[s.id,s.number]),[[three.id,1],[two.id,2],[one.id,3]]);
   assert.equal(view.claims[0].citations[0].number,2);
+});
+
+test('source shorthand resolves only the exact bound unique IDs and leaves code, links and unknown IDs intact',()=>{
+  const {annotate}=require('../oppencouncil/assets/review_evidence.js');
+  const html=annotate('<p>S2、本地S1及S-000003；S99</p><a href="/S2">S2</a><code>S1</code>',payload);
+  assert.match(html,/查看依据 1/);
+  assert.match(html,/本地<button[^>]+查看依据 2/);
+  assert.match(html,/查看依据 3/);
+  assert.match(html,/S99/);
+  assert.match(html,/<a href="\/S2">S2<\/a><code>S1<\/code>/);
+  const multiple=annotate('S1',{...payload,claims:[],sources:[one,s('000001',2)]});
+  assert.match(multiple,/\[1 · v1\]/); assert.match(multiple,/\[2 · v2\]/);
+});
+
+test('missing reading version is explicit, and empty group choices offer F access without borrowing evidence',()=>{
+  assert.match(content(payload,'evidence/sources/S-000001/r99.json'),/上次阅读的引用版本已不在/);
+  const html=content({...payload,claims:[],sources:[],references:[],member_ids:['F-000047']});
+  assert.match(html,/data-evidence-jump="F-000047"/);
+  assert.doesNotMatch(html,/ce-source-detail|此方案引用的判断/);
+});
+
+test('reading position persists per project and question or option across controller reloads',async()=>{
+  const storage=new Map();
+  const old=global.localStorage;
+  global.localStorage={getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)};
+  try {
+    let click;
+    const box={innerHTML:''};
+    const node={isConnected:true,dataset:{evidenceId:'B-000001',evidenceRevision:'1',evidenceOption:'0'},querySelector:()=>box,querySelectorAll:()=>[]};
+    const root={dataset:{projectId:'p1'},contains:()=>true,addEventListener:(_,fn)=>{click=fn;},querySelectorAll:selector=>selector==='.ce-review'?[node]:[]};
+    const init=()=>create({root,markdown:markdown.render,api:async()=>payload});
+    init().hydrateAll(); await new Promise(setImmediate);
+    const button={dataset:{evidenceSource:three.path},classList:{contains:()=>false},closest:()=>node};
+    click({target:{closest:selector=>selector==='[data-evidence-source]'?button:null}});
+    init().hydrateAll();await new Promise(setImmediate);
+    assert.match(box.innerHTML,/ce-detail-heading">依据 \[3\]/);
+    root.dataset.projectId='p2'; init().hydrateAll();await new Promise(setImmediate);
+    assert.match(box.innerHTML,/ce-detail-heading">依据 \[1\]/);
+    root.dataset.projectId='p1';node.dataset.evidenceOption='1';
+    create({root,api:async()=>({...payload,option:1})}).hydrateAll();await new Promise(setImmediate);
+    assert.match(box.innerHTML,/ce-detail-heading">依据 \[1\]/);
+  } finally {global.localStorage=old;}
 });

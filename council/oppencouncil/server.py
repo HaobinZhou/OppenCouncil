@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import hmac
 import html
 import json
@@ -20,6 +21,15 @@ from .registry import Registry
 from .store import GOVERNANCE_VERSIONS, FreezeError
 
 ASSETS = Path(__file__).parent / "assets"
+def ui_build() -> str:
+    digest = hashlib.sha256(__version__.encode())
+    for asset in sorted(ASSETS.rglob("*")):
+        if asset.is_file():
+            digest.update(asset.relative_to(ASSETS).as_posix().encode())
+            digest.update(asset.read_bytes())
+    return __version__ + ":" + digest.hexdigest()[:16]
+
+
 MAX_BODY = 128 * 1024
 PROJECT_ROUTE = re.compile(r"/projects/([0-9a-f]{20})/freeze/?")
 API_ROUTE = re.compile(r"/api/projects/([0-9a-f]{20})/(snapshot|questions/(F-\d{6})/(example|change))")
@@ -143,6 +153,8 @@ class CouncilHandler(BaseHTTPRequestHandler):
         path = self.request_path()
         if path == "/favicon.svg":
             return self.send_data((ASSETS / "logo.svg").read_bytes(), "image/svg+xml")
+        if path == "/api/ui-build":
+            return self.send_json({"ui_build": self.app.ui_build, "version": __version__})
         if path == "/api/healthz":
             allowed = self.admin()
             return self.send_json(
@@ -233,6 +245,7 @@ class CouncilHandler(BaseHTTPRequestHandler):
                 return
             item = self.app.registry.project(identity)
             page = (ASSETS / "freeze_workbench.html").read_text(encoding="utf-8")
+            page = page.replace("__UI_BUILD__", self.app.ui_build)
             page = page.replace("__PROJECT_ID__", identity).replace(
                 "__PROJECT_NAME__", html.escape(item["name"])
             )
@@ -378,6 +391,7 @@ def create_server(
         raise FreezeError("This site has a password; remove --no-auth to start it")
     server = CouncilServer((host, port), CouncilHandler)
     server.daemon_threads = True
+    server.ui_build = ui_build()
     server.registry = registry
     server.public_origin = origin
     server.no_auth = no_auth

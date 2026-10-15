@@ -394,3 +394,21 @@ def test_markdown_assets_are_local_and_loaded_before_workbench(site):
         status, body, headers = request(server, asset)
         assert status == 200 and body
         assert headers.get_content_type() == "application/javascript"
+
+
+def test_ui_build_matches_page_and_changes_with_assets(site, tmp_path, monkeypatch):
+    from oppencouncil import server as module
+    _, server, project, _ = site
+    status, info, _ = request(server, "/api/ui-build")
+    assert status == 200 and info["ui_build"] == server.ui_build
+    response = urllib.request.urlopen(
+        f"http://127.0.0.1:{server.server_port}/projects/{project['id']}/freeze"
+    ).read().decode()
+    assert f'data-ui-build="{info["ui_build"]}"' in response
+    assets = tmp_path / "assets"
+    assets.mkdir()
+    (assets / "workbench.js").write_text("first")
+    monkeypatch.setattr(module, "ASSETS", assets)
+    first = module.ui_build()
+    (assets / "workbench.js").write_text("second")
+    assert module.ui_build() != first

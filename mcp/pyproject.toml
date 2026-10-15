@@ -1,6 +1,6 @@
 [project]
 name = "oppencouncil-mcp"
-version = "5.0.0"
+version = "5.0.1"
 description = "Project governance and writable discussions, with OAuth HTTP and Secure MCP Tunnel"
 readme = "README.md"
 license = "MIT"

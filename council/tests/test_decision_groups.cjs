@@ -374,7 +374,7 @@ test('v5 member reconfirmation preserves the current-version operation and prepa
 
 test('option evidence rendering and selection are scoped to v5 and never save preferences',async()=>{
   const rendered=[];
-  const evidenceUI={shell:(record,option,view='sources')=>{rendered.push({id:record.id,option,view});return `<section>Evidence ${option}</section>`;},hydrateAll(){}};
+  const evidenceUI={jump:record=>'<button>查看 '+record.id+' 依据</button>',prose:(record,html)=>html,shell:(record,option,view='sources')=>{rendered.push({id:record.id,option,view});return `<section>Evidence ${option}</section>`;},hydrateAll(){}};
   const s=setup(undefined,{evidenceUI});
   s.group.options=['A','B'].map(label=>({label,rules:{'F-000001':label},consequences:'Effect',tradeoffs:'Cost'}));
   const panel={dataset:{},querySelector(){return null;}};
@@ -383,11 +383,13 @@ test('option evidence rendering and selection are scoped to v5 and never save pr
   assert.equal(rendered.length,0);
   s.state.snapshot.governance_version=5; s.ui.renderDetail(panel);
   assert.match(panel.innerHTML,/dg-option-evidence/);
-  assert.deepEqual(rendered.map(r=>r.option),[0,0]);
+  assert.match(panel.innerHTML,/dg-member-evidence/);
+  assert.equal(rendered.filter(r=>r.id==='F-000001').length,2);
+  assert.deepEqual(rendered.filter(r=>r.id===s.group.id).map(r=>r.option),[0,0]);
   await s.click('evidence',{option:'1'});
   assert.equal(rendered.at(-1).option,1);
   s.ui.renderDetail(panel);
-  assert.deepEqual(rendered.slice(-2).map(r=>r.option),[1,1]);
+  assert.deepEqual(rendered.filter(r=>r.id===s.group.id).slice(-2).map(r=>r.option),[1,1]);
   assert.equal(s.calls.length,0);
   assert.equal(s.group.selected_option,undefined);
 });

@@ -58,34 +58,76 @@
 
   function judgments(payload, markdown = text=>escape(text)) {
     const view=model(payload);
-    return view.entries.map(entry => entry.claim ? '<article class="ce-claim"><div class="sw2-record-body">'+markdown(entry.claim.claim)+'</div><div class="ce-citations">'+entry.claim.citations.map(cite).join('')+(entry.claim.counters.length?'<span class="ce-counter">相反或限制性依据</span>'+entry.claim.counters.map(cite).join(''):'')+'</div></article>' : cite(entry.citation)).join('');
+    return view.entries.map(entry => entry.claim ? '<article class="ce-claim"><div class="sw2-record-body">'+annotate(markdown(entry.claim.claim),payload)+'</div><div class="ce-citations">'+entry.claim.citations.map(cite).join('')+(entry.claim.counters.length?'<span class="ce-counter">相反或限制性依据</span>'+entry.claim.counters.map(cite).join(''):'')+'</div></article>' : cite(entry.citation)).join('');
+  }
+
+  // Only resolve IDs against this record's exact source versions, including explicitly ambiguous shorthand.
+  function annotate(html, payload) {
+    const byId=new Map();
+    for (const source of model(payload).sources) {
+      const id=Number(source.id?.replace('S-',''));
+      if(id) byId.set(id,[...(byId.get(id) || []),source]);
+    }
+    let blocked=0;
+    return html.split(/(<[^>]*>)/g).map(part=>{
+      if(part.startsWith('<')) {
+        if(/^<(a|button|code|pre)\b/i.test(part)) blocked++;
+        if(/^<\/(a|button|code|pre)>/i.test(part)) blocked=Math.max(0,blocked-1);
+        return part;
+      }
+      if(blocked) return part;
+      return part.replace(/(?<![A-Za-z0-9_-])S(?:-)?(\d+)(?![A-Za-z0-9_-])/g,(original,digits)=>{
+        const ref=byId.get(Number(digits));
+        return !ref?original:ref.length===1?cite(ref[0]):original+'<span class="ce-version-choices" title="同一来源关联了多个版本">'+ref.map(item=>cite(item).replace('['+item.number+']','['+item.number+' · v'+item.version+']')).join('')+'</span>';
+      });
+    }).join('');
   }
 
   function content(payload, selectedPath, markdown = text => escape(text)) {
-    const view = model(payload), selected = view.sources.find(s=>s.path===selectedPath) || view.sources[0];
-    if (!view.sources.length) return '<p class="ce-empty">'+(payload.option == null ? '此条尚未关联文献或核查依据。' : '此方案尚未关联文献或核查依据。')+'</p>'+(payload.unavailable?.length ? '<p class="ce-error">已关联的依据暂时无法读取，请刷新后重试。</p>' : '');
-    const list = view.sources.map(source=>{
-      const active=source.path===selected?.path;
-      const related=view.claims.filter(c=>[...c.citations,...c.counters].some(r=>r.path===source.path));
-      const detail = '<div class="ce-source-detail" aria-label="所选依据详情"><div class="ce-detail-heading">依据 ['+source.number+'] <span>'+escape(types[source.source_type] || '')+'</span></div>'+
-        (source.verification?'<p class="ce-verification">'+escape(checks[source.verification] || source.verification)+'</p>':'')+
-        related.map(claim=>'<div class="ce-related"><h5>'+(claim.counters.some(r=>r.path===source.path)?'相反或限制性依据':'支持的判断')+'</h5><div class="sw2-record-body">'+markdown(claim.claim)+'</div>'+(claim.applicability?'<h5>适用条件与边界</h5><div class="sw2-record-body">'+markdown(claim.applicability)+'</div>':'')+'</div>').join('')+
-        (source.read_scope?'<h5>已核查的范围</h5><div class="sw2-record-body">'+markdown(source.read_scope)+'</div>':'')+
-        (source.location?'<h5>原文位置</h5><div class="ce-location">'+escape(source.location)+'</div>':'')+
-        (links(source).length?'<div class="ce-links">'+links(source).map((url,i)=>'<a href="'+escape(url)+'" target="_blank" rel="noopener noreferrer">'+(i?'原文链接 '+(i+1):'打开原文')+' ↗</a>').join(''):'')+
-        (source.version?'<p class="ce-version">引用版本：'+escape(source.id)+' · 第 '+source.version+' 版'+(source.retrieved_at?'<br>核查日期：'+escape(source.retrieved_at):'')+'</p>':'')+'</div>';
-      return '<article class="ce-source-record"><button type="button" class="ce-source" data-evidence-source="'+escape(source.path)+'" aria-expanded="'+active+'"><span class="ce-number">['+source.number+']</span><span><strong>'+escape(source.citation || '依据暂时无法读取')+'</strong><small>'+escape([types[source.source_type],checks[source.verification]].filter(Boolean).join(' · '))+'</small></span></button>'+(active?detail:'')+'</article>';
-    }).join('');
-    return (payload.unavailable?.length?'<p class="ce-error" role="status">部分已关联依据暂时无法读取；未用其他版本替代。</p>':'')+'<div class="ce-source-list" aria-label="按引用顺序排列的依据">'+list+'</div>';
+    const view=model(payload), selected=view.sources.find(s=>s.path===selectedPath) || view.sources[0];
+    if(!selected) return '<p class="ce-empty">'+(payload.option==null?'此条尚未关联文献或核查依据。':'此方案尚未关联文献或核查依据。可在下方各条 F 中查阅其自身依据。')+'</p>'+ (payload.member_ids || []).map(id=>'<button type="button" class="sw2-button ce-jump" data-evidence-jump="'+escape(id)+'">'+escape(id)+' 的依据</button>').join('')+(payload.unavailable?.length?'<p class="ce-error">已关联的依据暂时无法读取，请刷新后重试。</p>':'');
+    const list=view.sources.map(source=>'<button type="button" class="ce-source" data-evidence-source="'+escape(source.path)+'" aria-pressed="'+(source.path===selected.path)+'"><span class="ce-number">['+source.number+']</span><span><strong>'+escape(source.citation || '依据暂时无法读取')+'</strong><small>'+escape(types[source.source_type] || '')+'</small></span></button>').join('');
+    const related=view.claims.filter(c=>[...c.citations,...c.counters].some(r=>r.path===selected.path));
+    const source=selected;
+    const detail='<article class="ce-source-detail" tabindex="-1" aria-label="所选依据详情"><div class="ce-detail-heading">依据 ['+source.number+'] <span>'+escape(types[source.source_type] || '')+'</span></div><div class="ce-full-citation">'+escape(source.citation || '依据暂时无法读取')+'</div>'+
+      (source.verification?'<p class="ce-verification">'+escape(checks[source.verification] || source.verification)+'</p>':'')+
+      (links(source).length?'<div class="ce-links">'+links(source).map((url,i)=>'<a href="'+escape(url)+'" target="_blank" rel="noopener noreferrer">'+(i?'原文链接 '+(i+1):'打开原文')+' ↗</a>').join(''):'')+
+      related.map(claim=>'<div class="ce-related"><h5>'+(claim.counters.some(r=>r.path===source.path)?'相反或限制性依据':'支持的判断')+'</h5><div class="sw2-record-body">'+markdown(claim.claim)+'</div>'+(claim.applicability?'<h5>适用条件与边界</h5><div class="sw2-record-body">'+markdown(claim.applicability)+'</div>':'')+'</div>').join('')+
+      (source.read_scope?'<h5>已核查的范围</h5><div class="sw2-record-body">'+markdown(source.read_scope)+'</div>':'')+
+      (source.location?'<details class="ce-metadata"><summary>原文位置与记录详情</summary><div class="ce-location">'+escape(source.location)+'</div>':'<details class="ce-metadata"><summary>记录详情</summary>')+
+      '<p class="ce-version">引用记录：'+escape(source.path)+(source.version?'<br>'+escape(source.id)+' · 第 '+source.version+' 版':'')+(source.retrieved_at?'<br>核查日期：'+escape(source.retrieved_at):'')+'</p></details></article>';
+    return (selectedPath && selectedPath!==selected.path?'<p class="ce-error" role="status">上次阅读的引用版本已不在本条依据中，现显示第一条依据。</p>':'')+
+      (payload.unavailable?.length?'<p class="ce-error" role="status">部分已关联依据暂时无法读取；未用其他版本替代。</p>':'')+
+      '<div class="ce-source-list" aria-label="按引用顺序排列的依据">'+list+'</div>'+detail;
   }
 
   function create({root, api, markdown}) {
     const cache = new Map(), selections = new Map();
+    const storageKey=(id,option)=>'oppencouncil:evidence:v1:'+root.dataset?.projectId+':'+id+':'+(option ?? 'question');
+    const selected=(id,option)=>{
+      const k=storageKey(id,option);
+      if(!selections.has(k)) { try { selections.set(k,localStorage.getItem(k)); } catch (_) {} }
+      return selections.get(k);
+    };
+    function remember(id,option,path) {
+      const k=storageKey(id,option); selections.set(k,path);
+      try { localStorage.setItem(k,path); } catch (_) {}
+    }
+    function viewHTML(payload,view,selection) {
+      if(view==='judgments') {
+        const body=judgments(payload,markdown);
+        return body?'<h4>'+(payload.option==null?'此条引用的判断':'此方案引用的判断')+'</h4>'+body:'';
+      }
+      return content(payload,selection,markdown);
+    }
+    const attrs=(record,option=null)=>'data-evidence-id="'+escape(record.id)+'" data-evidence-revision="'+record.revision+'"'+(option==null?'':' data-evidence-option="'+option+'"');
+    function prose(record,html) { return '<div class="ce-prose" '+attrs(record)+'>'+html+'</div>'; }
+    function jump(record) { return '<button type="button" class="sw2-button ce-jump" data-evidence-jump="'+escape(record.id)+'">查看本条依据</button>'; }
     const key = (id, revision, option) => id+':'+revision+':'+(option ?? 'question');
     function shell(record, option=null, view="sources") {
       const k=key(record.id,record.revision,option), cached=cache.get(k);
-      const heading=view==='judgments' ? '<h4>此方案引用的判断</h4>' : '<div class="ce-heading"><h3>'+(option==null?'参考文献与依据':'方案 '+String.fromCharCode(65+option)+' 的引用依据')+'</h3><span>按首次引用排序</span></div>';
-      return '<section class="ce-review ce-'+view+'" data-evidence-view="'+view+'" data-evidence-id="'+escape(record.id)+'" data-evidence-revision="'+record.revision+'"'+(option == null?'':' data-evidence-option="'+option+'"')+'>'+heading+'<div class="ce-content" aria-live="polite">'+(cached?.payload?(view==='judgments'?judgments(cached.payload,markdown):content(cached.payload,selections.get(k),markdown)):'<p class="ce-empty" role="status">正在读取此选择的依据…</p>')+'</div></section>';
+      const heading=view==='judgments' ? '' : '<div class="ce-heading"><h3>'+(option==null?escape(record.id)+' · 参考文献与依据':'方案 '+String.fromCharCode(65+option)+' 的引用依据')+'</h3><span>按首次引用排序</span></div>';
+      return '<section class="ce-review ce-'+view+'" data-evidence-view="'+view+'" data-evidence-id="'+escape(record.id)+'" data-evidence-revision="'+record.revision+'"'+(option == null?'':' data-evidence-option="'+option+'"')+'>'+heading+'<div class="ce-content" aria-live="polite">'+(cached?.payload?viewHTML(cached.payload,view,selected(record.id,option)):'<p class="ce-empty" role="status">正在读取此选择的依据…</p>')+'</div></section>';
 
     }
     function attributes(node) {
@@ -104,29 +146,55 @@
       }
       try {
         const payload=entry.payload || await entry.pending;
-        if (node.isConnected && attributes(node).key===k) node.querySelector('.ce-content').innerHTML=node.dataset.evidenceView==='judgments'?judgments(payload,markdown):content(payload,selections.get(k),markdown);
+        if (node.isConnected && attributes(node).key===k) {
+          node.querySelector('.ce-content').innerHTML=viewHTML(payload,node.dataset.evidenceView,selected(context.id,context.option));
+          if(node.querySelectorAll) revealIndex(node,selected(context.id,context.option));
+          for(const text of root.querySelectorAll('.ce-prose')) {
+            if(attributes(text).key===k && text.dataset.annotated!==k) {
+              text.innerHTML=annotate(text.innerHTML,payload); text.dataset.annotated=k;
+            }
+          }
+        }
       } catch (_) {
         if (node.isConnected && attributes(node).key===k) node.querySelector('.ce-content').innerHTML='<p class="ce-error" role="status">依据暂时无法读取，或记录已更新。请刷新项目记录后重试。</p>';
       }
     }
+    function revealIndex(target,path) {
+      const list=target.querySelector('.ce-source-list');
+      const button=[...target.querySelectorAll('.ce-source')].find(b=>b.dataset.evidenceSource===path);
+      if(!list || !button) return;
+      const y=button.getBoundingClientRect().top-list.getBoundingClientRect().top;
+      if(y<0) list.scrollTop+=y;
+      else if(y+button.offsetHeight>list.clientHeight) list.scrollTop+=y+button.offsetHeight-list.clientHeight;
+    }
     function hydrateAll() { for (const node of root.querySelectorAll('.ce-review')) hydrate(node); }
     root.addEventListener('click',event=>{
+      const jump=event.target.closest('[data-evidence-jump]');
+      if(jump && root.contains(jump)) {
+        const target=[...root.querySelectorAll('.ce-sources')].find(n=>n.dataset.evidenceId===jump.dataset.evidenceJump);
+        target?.scrollIntoView?.({block:'start',behavior:'auto'});
+        target?.querySelector('.ce-source')?.focus({preventScroll:true});
+        return;
+      }
       const button=event.target.closest('[data-evidence-source]');
       if (!button || !root.contains(button)) return;
-      const node=button.closest('.ce-review'), k=attributes(node).key, payload=cache.get(k)?.payload;
+      const node=button.closest('.ce-review,.ce-prose'), k=attributes(node).key, payload=cache.get(k)?.payload;
       if (!payload || !model(payload).sources.some(s=>s.path===button.dataset.evidenceSource)) return;
       const isCitation=button.classList.contains('ce-citation');
-      selections.set(k,button.dataset.evidenceSource);
+      const context=attributes(node); remember(context.id,context.option,button.dataset.evidenceSource);
       for (const target of root.querySelectorAll('.ce-review')) {
         if (attributes(target).key!==k || target.dataset.evidenceView==='judgments') continue;
         target.querySelector('.ce-content').innerHTML=content(payload,button.dataset.evidenceSource,markdown);
+        revealIndex(target,button.dataset.evidenceSource);
         const next=[...target.querySelectorAll('.ce-source')].find(b=>b.dataset.evidenceSource===button.dataset.evidenceSource);
-        if (isCitation) next?.scrollIntoView?.({block:'nearest',behavior:'auto'});
-        next?.focus({preventScroll:true});
+        if(isCitation) {
+          const detail=target.querySelector('.ce-source-detail');
+          target.scrollIntoView?.({block:'nearest',behavior:'auto'}); detail?.focus({preventScroll:true});
+        } else next?.focus({preventScroll:true});
       }
 
     });
-    return {shell,hydrateAll};
+    return {shell,prose,jump,hydrateAll};
   }
-  return {model,links,content,judgments,create};
+  return {model,links,content,judgments,annotate,create};
 });

@@ -65,6 +65,7 @@ def review_evidence(store, identifier, *, option=None):
             "option": option,
             "title": title,
             "bound": bound,
+            "member_ids": list(record.get("member_ids", [])),
             "references": list(refs),
             "claims": claims,
             "sources": sources,

@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>OppenCouncil · __PROJECT_NAME__</title><link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg"></head>
 <body>
-<div id="sw-freeze-v2" data-project-id="__PROJECT_ID__" data-mobile-view="list">
+<div id="sw-freeze-v2" data-project-id="__PROJECT_ID__" data-ui-build="__UI_BUILD__" data-mobile-view="list">
 <main class="sw2-app" aria-label="冻结口径工作台">
 <header class="sw2-header">
   <div class="sw2-brand-block">
@@ -20,6 +20,7 @@
   </div>
   <div class="sw2-hero-actions"><button type="button" class="sw2-button" id="sw2-discussion-toggle" data-action="toggle-discussion" aria-controls="sw2-discussion-panel" aria-expanded="false" hidden>显示讨论</button><span id="sw2-save-label" class="sw2-sync">正在读取项目记录</span><button class="sw2-button" data-action="refresh" id="sw2-update">刷新项目记录</button><button class="sw2-button" data-action="save-all" id="sw2-save-all">保存本轮<span id="sw2-draft-count" class="sw2-draft-count" hidden></span></button><button class="sw2-button sw2-button-light" data-action="handoff">复制交接说明</button><button class="sw2-button" id="sw2-logout" data-action="logout" hidden>退出</button><a class="sw2-button" id="sw2-login" href="" target="_blank" rel="noopener noreferrer" hidden>重新登录</a></div>
 </header>
+<div id="sw2-ui-update" class="sw2-ui-update" role="status" hidden>工作台界面有更新；刷新项目记录不会更新界面。<button type="button" class="sw2-button" data-action="reload-ui">保留草稿并更新界面</button></div>
 <button class="sw2-nav-scrim" id="sw2-nav-scrim" data-action="close-nav" aria-label="关闭问题导航" hidden></button>
 <div class="sw2-workspace">
 <aside class="sw2-list-column" id="sw2-navigation" aria-label="全部问题列表">
@@ -143,7 +144,7 @@ html,body{height:100%;margin:0}
 #sw-freeze-v2 .sw2-draft-tag{display:block;margin-top:3px;font-size:12px;color:#8f5400}
 #sw-freeze-v2 .sw2-nav-footer{padding:10px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
 #sw-freeze-v2 .sw2-nav-close{display:none}
-#sw-freeze-v2 .sw2-detail{flex:1;min-width:0;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(300px,var(--discussion-width,var(--discussion-default,380px)),55%);overflow:hidden;outline:0}
+#sw-freeze-v2 .sw2-detail{flex:1;min-width:0;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(300px,var(--discussion-width,var(--discussion-default,380px)),min(480px,32%));overflow:hidden;outline:0}
 #sw-freeze-v2 .sw2-work{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden;container-type:inline-size;container-name:work}
 #sw-freeze-v2 .sw2-work-in{flex:1;min-height:0;overflow:auto;padding:32px max(32px,calc((100% - 1040px)/2)) 40px;display:flex;flex-direction:column;gap:36px}
 #sw-freeze-v2 .sw2-question-context,#sw-freeze-v2 .dg-header{flex:none}
@@ -541,5 +542,41 @@ html,body{height:100%;margin:0}
  #sw-freeze-v2 .dg-layout.dg-with-options:has(.dg-option-evidence)>section{overflow:visible;flex:none;border-left:0}
 }
 @media(pointer:coarse){#sw-freeze-v2 .ce-citation{min-width:44px;min-height:44px}}
+#sw-freeze-v2 .ce-sources>.ce-content{overflow:hidden}
+#sw-freeze-v2 .ce-source-detail{max-height:calc(100dvh - 465px);min-height:180px;overflow:auto}
+/* Keep every F's review and its exact evidence side by side. */
+#sw-freeze-v2 .dg-member-review{display:grid;grid-template-columns:minmax(0,1fr) minmax(290px,.65fr);gap:24px;align-items:start;margin-top:16px}
+#sw-freeze-v2 .dg-member-review>div{min-width:0}
+#sw-freeze-v2 .dg-member-evidence{position:sticky;top:0;min-width:0}
+#sw-freeze-v2 .ce-jump{font-size:13px;margin:8px 0}
+#sw-freeze-v2 .ce-source-list{max-height:230px;overflow:auto;border-bottom:1px solid var(--line);padding:6px 0}
+#sw-freeze-v2 .ce-source{padding:8px 0;line-height:1.5}
+#sw-freeze-v2 .ce-source strong{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12px}
+#sw-freeze-v2 .ce-source small{font-size:11px;margin-top:2px}
+#sw-freeze-v2 .ce-source[aria-pressed=true]{color:var(--accent);background:var(--accent-soft)}
+#sw-freeze-v2 .ce-source-detail{padding:16px 0;scroll-margin-top:16px}
+#sw-freeze-v2 .ce-full-citation{font-size:13px;line-height:1.65;margin-bottom:8px;overflow-wrap:anywhere}
+#sw-freeze-v2 .ce-metadata{font-size:12px;color:var(--muted);margin-top:14px}
+#sw-freeze-v2 .ce-judgments:has(.ce-content:empty){display:none}
+#sw-freeze-v2 .ce-judgments h4{font-size:13px;color:var(--muted);margin:12px 0}
+#sw-freeze-v2 .sw2-ui-update{padding:8px 16px;background:#fff5d9;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;flex:none}
+@container work (max-width:850px){
+ #sw-freeze-v2 .dg-member-review{grid-template-columns:minmax(0,1fr)}
+ #sw-freeze-v2 .dg-member-evidence{position:static}
+}
+@media(max-width:680px){
+ #sw-freeze-v2 .sw2-header{position:static}
+ #sw-freeze-v2 .sw2-hero-actions{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;width:100%;padding-bottom:4px}
+ #sw-freeze-v2 .sw2-hero-actions>*{flex:none}
+ #sw-freeze-v2 .sw2-hero-actions .sw2-sync{display:none}
+ #sw-freeze-v2 .sw2-work-in{padding:14px 12px;gap:18px}
+ #sw-freeze-v2 .sw2-question-why,#sw-freeze-v2 .dg-header>p{max-height:120px;overflow:auto;font-size:13px}
+ #sw-freeze-v2 .sw2-question-heading h2,#sw-freeze-v2 .dg-header h2{font-size:20px}
+ #sw-freeze-v2 .dg-member-review{display:block}
+ #sw-freeze-v2 .ce-sources{scroll-margin-top:12px}
+ #sw-freeze-v2 .ce-source-list{max-height:180px}
+ #sw-freeze-v2 .ce-source-detail{scroll-margin-top:12px}
+ #sw-freeze-v2 .sw2-ui-update{flex-wrap:wrap}
+}
 </style>
 <script src="/markdown-it.js" defer></script><script src="/tables.js" defer></script><script src="/markdown.js" defer></script><script src="/review-evidence.js" defer></script><script src="/decision-groups.js" defer></script><script src="/workbench.js" defer></script></body></html>
