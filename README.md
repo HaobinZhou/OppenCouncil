@@ -4,47 +4,47 @@
 
 # OppenCouncil
 
-**把与 AI 的项目讨论，变成可以审阅、确认和持续执行的项目规则。**
+**让 AI 先把数据和文献查清楚，你来拍板真正需要权衡的决定。**
 
-做科研、写软件或维护长期项目时，很多决定会散落在聊天记录里：采用哪个定义、遇到例外怎么处理、哪些方案仍有分歧、之前确认的规则是否已经修改。OppenCouncil 把这些内容放回项目，在浏览器里集中审阅，并让本地 AI 和通过 MCP 接入的 AI 使用同一份记录。
+用 AI 跑长期项目，最头疼的往往不是写代码，而是说好的规则过几轮对话就变了。
 
-这里的「口径」是明确、可执行的项目约定。例如研究中的纳入条件和随访起点，或软件中的权限规则和失败处理方式。
+科研项目里，可能是纳排标准、随访起点、缺失值怎么处理、Table 1 放哪些协变量；软件项目里，可能是权限边界、失败重试策略、接口格式。这些决定如果只散落在聊天记录里，过两周连自己都忘了为什么这么定。换个新会话，AI 又可能自作主张换一种做法。
 
-## 可以用它做什么
+直接让 AI 列问题也不省心。它很容易甩出一长串清单：有些问题在数据里根本不存在，有些查一下代码或文献就能解决，最后还是要你逐条判断哪些值得花时间。
 
-- **集中审阅一轮问题**：让 AI 一次准备当前已识别的问题、具体方案和完整候选文本，逐项阅读后再一起反馈。
-- **把相关决定放在一起**：同一个主题下比较完整组合；相互依赖的规则一起决定，每条规则仍有自己的版本。
-- **持续讨论**：方案、讨论和候选正文支持 Markdown；建议、疑问和回复留在原话题里，方便下次继续。
-- **明确什么已经生效**：讨论、候选与正式口径分开。表达偏好和保存草稿后，仍需审阅并确认完整文本。
-- **保留修订历史**：确认后的规则有独立版本。AI 可直接提交完整修订候选；确认前旧版继续有效，确认后新版成为唯一当前版本，旧版保留在历史中。
-- **在多个项目间切换**：一个本地站点提供项目目录，每个项目的记录保存在自己的目录中。
+OppenCouncil 把这些决定从聊天框里拿出来，放进项目自己的 `Freeze/` 目录，保留正文、依据和版本历史。你在本地网页里集中审阅；本地 AI 负责查证、整理候选和执行，通过 MCP 接入的网页 AI 可以在授权范围内补充证据、参与讨论。
 
-典型流程：
+## AI 先做什么，你再看什么
 
-**说明目标 → AI 准备本轮问题与候选 → 网页比较和讨论 → 手动通知 AI 继续 → 确认正式口径 → 按口径推进项目**
+附带的 Skill 要求 AI 在向你提问前，先做几件事：
 
-工作台不会自动调用模型。使用本地 AI 准备内容、读取反馈并继续工作；如需让网页 AI 参与，可以加装可选 MCP。
+1. **检查问题是不是真的存在。** 队列里没有性别缺失，就不用问“性别缺失怎么填补”。但如果“没缺失”是因为上游脚本未经确认就删掉了这批人，那要查的是这个删除动作。
+2. **把已有事实和决定找回来。** 数据分布、现有代码、之前确认过的口径，应先核对清楚，不用让你重复回答。
+3. **有通行做法时，给推荐答案和出处。** 说明为什么适用于当前项目，也写清究竟查到了全文、摘要，还是只有间接材料。证据同样充分的替代方案仍可选。
+4. **遇到真实取舍，再把影响摆出来。** 比如比较 6 个月和 12 个月回看期，除了讲方法差异，还应核对会影响多少人、哪些分析需要重做，再交给你决定。
 
-## 项目治理与工作台
+工作台把事项分成几类，方便先看需要你参与的部分：
 
-5.0.0 提供统一的 v5 项目治理。实现和验收范围见 [v5 验收记录](docs/v5-acceptance.md)。已有 v3/v4 项目继续使用原流程，软件升级不改变项目治理代际。
+| 分类 | 里面是什么 | 怎么处理 |
+| --- | --- | --- |
+| **需要选择** | 有多个说得通的方案，或需要偏离通行做法 | 看影响和代价，决定采用哪种 |
+| **快速确认** | 有依据支持的推荐方案 | 核对推荐理由和完整候选文字后确认 |
+| **补查中／阻塞** | 证据不够，或还缺信息 | 让 AI 继续查；必要时补充背景 |
+| **已排除** | 查过后认为不需要推进的问题 | 保留排除理由，发现新情况再讨论 |
 
-新项目使用统一的 `oppencouncil` skill，在项目中显式声明科研或普通类型；类型不由编程语言决定。两个旧名称保留为兼容入口：
+日常使用的节奏是：
 
-| 组件 | 适合的用途 |
-| --- | --- |
-| **OppenCouncil skill** | 统一管理普通与科研项目的口径、证据、产出、验证和重要决定。科研流程不限 R。 |
-| **Oppen Project Steward / Stepwise R Project** | 兼容旧调用名称；未迁移的 v3/v4 项目仍使用原实现，v5 项目使用统一 helper。 |
-| **Council 工作台** | 在浏览器里审阅调查、比较方案、讨论、编辑候选和确认版本。 |
-| **OppenCouncil MCP（可选）** | 让支持 MCP 的 AI 客户端读取已授权项目、提交证据和参与讨论。 |
+```text
+交代任务 → AI 查证并准备候选 → 在网页里审阅、批注或确认 → 叫 AI 继续 → 按正式口径推进
+```
 
-已有项目保持原治理代际；安装或更新软件不会自动迁移。v5 迁移先检查并保存计划，再显式应用，详见 [迁移操作](skills/oppencouncil/references/migration.md)。
+工作台本身不会在后台调用模型。网页里保存反馈后，回到 AI 会话说一声，或把“复制交接说明”的内容贴过去。AI 再读取新反馈，接着处理受影响的部分。
 
 ## 快速开始
 
-### 1. 安装工作台和全局 skills
+### 1. 安装
 
-准备 [Git](https://git-scm.com/downloads)、[uv](https://docs.astral.sh/uv/getting-started/installation/) 和能使用本地 skills 的 AI 客户端。以下以 Codex 为例，在 macOS、Linux 终端或 Windows PowerShell 中运行：
+准备好 [Git](https://git-scm.com/downloads)、[uv](https://docs.astral.sh/uv/getting-started/installation/) 和支持本地 skills 的 AI 客户端。下面以 Codex 为例，命令适用于 macOS、Linux 和 Windows PowerShell：
 
 ```sh
 git clone https://github.com/HaobinZhou/OppenCouncil.git
@@ -52,143 +52,136 @@ cd OppenCouncil
 uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents/skills"
 ```
 
-也可以从 [Releases](https://github.com/HaobinZhou/OppenCouncil/releases/latest) 下载 `OppenCouncil-5.0.0.zip`，解压到固定目录后进入该目录，运行上面的 `uv run ... scripts/install.py` 安装命令。该安装包包含统一 skill、两个兼容入口、工作台和可选 MCP。
+也可以从 [Releases](https://github.com/HaobinZhou/OppenCouncil/releases/latest) 下载 `OppenCouncil-5.0.0.zip`，解压到固定目录，在该目录运行上面的安装命令。
 
-`uv` 会按需准备 Python 3.12。安装器创建 Council 的本地运行环境，并把统一 skill 和两个兼容名称 **以软链接方式**接入用户级全局目录：
+安装器会准备 Python 环境，并把统一 skill 和两个兼容入口链接到全局目录：
 
 ```text
 ~/.agents/skills/
-├── oppencouncil → <仓库>/skills/oppencouncil
+├── oppencouncil          → <仓库>/skills/oppencouncil
 ├── oppen-project-steward → <仓库>/skills/oppen-project-steward
-└── stepwise-r-project  → <仓库>/skills/stepwise-r-project
+└── stepwise-r-project    → <仓库>/skills/stepwise-r-project
 ```
 
-[Codex 支持该目录及软链接](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)。请保留克隆后的仓库目录；移动或删除它会使链接失效。安装成功后，在 Codex 的 skill 选择器中查找 `oppencouncil` 或原有兼容名称；若尚未出现，重新启动客户端。
+新项目直接用 `oppencouncil`。两个旧名字继续可用，helper 会按项目原有标记选择对应实现。
 
-- **已有全局目录**：把 `--skill-dir` 改为客户端实际使用的位置。安装器未传此参数时仍使用 `~/.codex/skills`；旧安装请继续指定原位置，避免两处重复安装。
-- **Windows**：创建目录软链接需要启用开发者模式或具备相应权限；安装器不会改用复制目录来代替。
-- **替换旧链接**：Windows 会先保留旧链接，再放入新链接；安装失败时恢复旧链接。原技能目录始终保留。
-- **发现同名目录或旧链接**：安装器会停止并保留它们，按 [已有安装迁移说明](docs/migration.md#已安装的-skill) 处理。
+因为用的是软链接，请保留克隆下来的仓库目录。Windows 创建目录软链接需要开发者模式或相应权限。已有安装继续使用原来的 skill 目录；安装器不传 `--skill-dir` 时默认使用 `~/.codex/skills`，不要无意间装到两个位置。遇到同名目录或旧链接，按[迁移指南](docs/migration.md#已安装的-skill)处理。
 
-工作台不需要 Node.js、R 或模型 API key。R 是运行科研分析时的独立环境；AI 客户端和可选 MCP 的连接配置另行准备。
+工作台不需要 Node.js、R 或模型 API key；运行分析和使用 AI 客户端所需的环境另行准备。
 
-### 2. 让 AI 准备项目
+### 2. 初始化或接入项目
 
-在需要管理的项目目录中打开 Codex，使用统一 skill，并说明项目类型与目标。例如软件项目：
+在项目目录打开 AI 客户端。以科研项目为例，可以这样交代：
 
 ```text
-使用 $oppencouncil 管理当前普通项目。
+使用 $oppencouncil 管理当前项目，这是一个科研项目。
 
-我准备实现一个团队文件共享工具。请先读取已有约定和讨论，
-一次列出当前需要确定的规则，把需要联动决定的内容组织成主题。
-每个方案写清具体做法、实际影响和代价，并准备完整候选口径。
-准备好后打开 OppenCouncil，返回浏览器可以访问的链接。
+研究问题是：……；数据在 Data/raw/……。
+请先检查现有数据、代码和已确认的口径，找出真正需要我决定的问题。
+能查清的事实自己查清，有通行做法的给推荐答案和出处。
+准备好后打开 OppenCouncil，把链接给我。
 ```
 
-科研项目将第一行改为 `使用 $oppencouncil 管理当前科研项目`，并描述研究目标、现有数据和当前分析阶段。既有 v3/v4 项目沿用原类型和流程。
+软件或一般工程项目，把第一句改成“这是一个普通项目”即可。已有代码的项目先检查现状，再按接入计划处理；如果已经是 v3/v4 项目，继续使用原流程，是否迁移单独决定。
 
-已有项目先由 AI 检查并接入相应 skill；不要为打开网页而覆盖项目入口或已有记录。工作台识别原生 Stepwise R 或 Steward v3/v4 项目以及统一 v5 项目；普通文件夹需要先完成项目准备。
+### 3. 在浏览器里审阅
 
-### 3. 打开并审阅
-
-AI 可以直接返回工作台链接。也可以回到 **OppenCouncil 仓库根目录**，手动打开已准备的项目：
+AI 准备好内容后会返回项目链接。你也可以在 OppenCouncil 仓库根目录手动打开已接入的项目：
 
 ```sh
 uv run --project council oppencouncil open /absolute/path/to/project --port 5322
 ```
 
-将路径换为实际项目的绝对路径。命令会登记项目，启动或复用本地服务，并返回访问链接。在系统浏览器中打开链接即可。默认地址使用 `127.0.0.1:5322`，首次访问设置站点密码，以后输入密码登录，无需用户名。密码随站点保留，服务重启不会清除。
+默认地址是 `http://127.0.0.1:5322`。首次访问设置站点密码，以后输入同一个密码登录。
 
-按以下顺序审阅：
+点开一条口径，可以查看方案、依据、候选全文和讨论。你可以留言追问、修改候选文字，也可以编辑模拟表格的表头、行列和脚注。改完先保存，再用“复制交接说明”通知 AI 继续。
 
-1. 阅读主题中的方案比较和候选全文。最多同时展示两个方案，其余可从选择菜单切换。
-2. 点击「倾向此方案」会将偏好填入讨论输入框；可补充意见，点击「保存讨论」才提交。
-3. 有分歧时继续留言。候选可以编辑并保存，也可以让 AI 根据反馈重新起草。
-4. 完成一轮后，手动告诉 AI「我已在 Council 保存反馈，请读取并继续」。也可用「复制交接说明」生成并复制说明，粘贴到 AI 对话中。
-5. 候选已经完整、准确且没有待解决的前序问题时，确认该条或整组口径。之后的项目工作按正式版本执行。
+**保存草稿不等于正式确认。** 确认前旧版口径仍然生效；候选文字审阅完整后，点击确认才成为新的正式版本。后续工作以这个版本为准。已登记的依据发生变化时，系统会提示复核；如果正文不变，就在当前版本追加重新确认记录，不为此另造一个版本。
 
-如果 AI 发现新问题，可以追加下一轮。保存成功表示内容已写入项目；正式确认也需要审阅者判断文字是否足以指导实际工作。
+## 科研项目和普通项目有什么不同
 
-## 日常使用
+项目类型与用 R 还是 Python 无关。两类项目用同一个工作台，主要区别在于需要说明的依据，以及正式产出的组织方式。
 
-以下命令均在仓库根目录运行：
+| 内容 | 普通项目 | 科研项目 |
+| --- | --- | --- |
+| 决策依据 | 代码约束、测试、运行测量和实际需求 | 除数据事实外，涉及方法选择时要说明文献依据、证据强弱及偏离通行做法的理由 |
+| 正式产出 | 通常登记在 `Deliverables/` | 正文和补充材料要用的表、图等登记在 `Results/`，绑定已确认的产出规格 |
 
-```sh
-# 查看服务地址与状态
-uv run --project council oppencouncil status
+科研项目的常见目录如下。已有项目保留自己的布局，例如原来的 `R/` 不必改名成 `Scripts/`。
 
-# 打开另一个已准备的项目
-uv run --project council oppencouncil open /absolute/path/to/another-project
-
-# 将一个项目移出站点目录，保留项目文件
-uv run --project council oppencouncil disable /absolute/path/to/project
-
-# 停止工作台服务
-uv run --project council oppencouncil stop
+```text
+项目根目录/
+├── Scripts/          # 带编号的分析脚本；可以使用 R、Python 等语言
+│   ├── 01_import.R
+│   ├── 02_cohort.R
+│   ├── 03_table1.R
+│   └── functions/    # 共享函数，不要求编号
+├── Data/
+│   ├── raw/          # 原始输入，保持只读
+│   └── derived/      # 脚本生成的清洗数据与中间队列
+├── Results/          # 正文和补充材料使用的正式表、图等
+├── Releases/         # 明确要求时才生成的投稿、返修等快照
+├── Explore/          # 探索性工作；放弃后可明确归档到 _archive/
+├── Audit/            # 核查、诊断和验证记录
+├── Freeze/           # 口径、依据、调查事项和讨论；图片副本在 assets/
+└── Memory/           # 重大决定的因果背景，帮助后来的人和 AI 理解取舍
 ```
 
-关闭浏览器标签页不会停止服务。再次 `open` 会复用站点；电脑休眠、关机或网络转发断开时，远程页面不可用。
+脚本允许重复编号；编号用于组织和阅读，不保证把所有文件按名字跑一遍就能复现。实际运行需要结合登记的生成脚本、依赖、原始输入和环境。
 
-### 从另一台电脑访问
+**正式图表先定规格。** 比如 Table 1 的表头、分组、连续变量用均值还是中位数，先用模拟数据做成候选表格给你看。确认后，真实产出才能按这份规格登记到 `Results/`。以后数据更新重跑，规格没变就沿用原确认；中间数据放 `Data/derived/`，核查输出放 `Audit/`。
 
-服务运行在项目文件所在的电脑上。可以通过 SSH 转发、FRP 或 HTTPS 反向代理访问。先完成首次密码设置，再分享转发后的项目链接；审阅者输入同一个站点密码。`--public-origin` 用来生成外部地址，本身不会创建网络转发。
+想试新亚组或新算法，可以在 `Explore/` 中做。决定转成正式产出时，再补齐相应规格与登记。放弃的实验可以明确归档，日常读取不把归档内容当作当前工作。
 
-端口、外部地址、免密访问和独立站点目录的配置见 [Council 部署说明](council/README.md#远程访问)。
+投稿、返修或交接快照也按需生成。只有你明确提出请求，AI 才会先列出打包计划，再生成 `Releases/` 中的快照。它会纳入正式产出、相关脚本、口径、已分类的项目生成数据和环境记录；原始输入不进压缩包，以来源和哈希记录。快照可能很大，不是日常任务结束时的默认动作。详见[快照说明](skills/oppencouncil/references/releases.md)。
 
-### 让网页 AI 参与（可选）
+## 接入网页端 AI（可选，使用 MCP）
 
-加装 MCP 环境：
+如果想让网页端 AI 帮忙查文献、补反例或做交叉复核，可以加装 MCP：
 
 ```sh
 uv run --python 3.12 scripts/install.py --with-mcp --no-skills --python 3.12
 ```
 
-然后按 [MCP 接入指南](mcp/README.md#接入与运行) 配置项目允许列表、连接方式和读写权限。外部 AI 可以读取已授权材料、提交证据和留言；本地 Agent 核查后整理候选，正式确认仍由人在工作台完成。网页登记和 MCP 授权是独立的，只打开工作台不会自动向 MCP 开放项目。
+然后按 [MCP 接入指南](mcp/README.md#接入与运行)配置允许访问的项目、连接方式和读写权限。打开 Council 网页不会自动给 MCP 授权。
 
-### 只安装 skills
+网页 AI 能读取明确共享的项目简报、口径、讨论和证据，也能提交资料或留言。贡献会标为“外部 AI · 未经本地核查”，由本地 Agent 结合项目实际情况核对。
 
-如果暂时只需要项目管理流程：
+MCP 不提供任意文件读取，不能靠一条路径访问 `Data/`、`Results/`、`Audit/` 或源代码；也不能直接创建正式问题、改候选或确认口径。需要给外部 AI 的上下文，由本地 Agent 整理成明确共享的材料。共享材料本身会发送给所连接的客户端，整理时仍需考虑内容是否适合外发。
 
-```sh
-uv run --python 3.12 scripts/install.py --skills-only --skill-dir "$HOME/.agents/skills"
-```
+## 日常管理
 
-以后需要网页审阅时，再运行快速开始中的完整安装命令。
-
-## 数据保存在哪里
-
-口径、候选和讨论保存在**被管理项目自己的 `Freeze/` 目录**中，采用可读 JSON。网页、CLI 和 MCP 共用这些记录；正式口径以已确认的当前版本为准，其他文档引用它或生成只读展示。
-
-软件安装目录保存运行环境和站点登记。默认源码安装使用 `council/projects.local.json` 登记项目，`council/.runtime/` 保存服务状态。可通过 [站点目录设置](council/README.md#站点目录) 把这些运行文件放到别处。
-
-备份项目时应包含完整的项目目录及 `Freeze/`。是否将项目记录纳入 Git，由各项目的规则决定；安装器不会将其复制到这个软件仓库。通过 MCP 使用云端 AI 时，获准读取的内容会发送给该客户端。
-
-## 更新
-
-在仓库目录中运行：
+以下命令均在 OppenCouncil 仓库根目录运行：
 
 ```sh
-git pull --ff-only
-uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents/skills"
+# 查看服务状态和端口
+uv run --project council oppencouncil status
+
+# 打开另一个已接入的项目
+uv run --project council oppencouncil open /absolute/path/to/project
+
+# 从站点目录移除项目，保留项目文件
+uv run --project council oppencouncil disable /absolute/path/to/project
+
+# 停止后台服务
+uv run --project council oppencouncil stop
 ```
 
-使用其他 skill 目录时沿用原来的 `--skill-dir`；安装过 MCP 时加上 `--with-mcp`。软链接会指向更新后的源码，无需重新复制 skills。如果 Git 提示本地修改或历史分叉，先处理这些修改再更新。
+关掉浏览器标签页不会停止后台服务。跨设备访问可用 SSH 转发、FRP 或 HTTPS 反向代理；端口、外部地址和站点目录设置见 [Council 部署说明](council/README.md#远程访问)。
 
-更新完软件，按原有端口和访问配置重启正在运行的服务。**更新到 5.0.0 不会把已有项目自动迁移到 v5。** 两个旧 skill 名称继续可用；需要迁移项目时，再看本文末尾的 [升级与迁移](#升级与迁移)。
+口径等记录跟着项目走，不集中存进软件仓库。站点目录保存 `projects.local.json`、认证和服务状态；MCP 使用自己的配置与授权状态。项目备份的范围按实际需要确定，不必为了更新软件复制整个科研目录。研究快照可能包含个体层面的衍生数据，外发前需要核对所含内容和项目的数据使用约定。
 
-## 更多说明
+## 更多文档与开发测试
 
-- [Council 使用与部署](council/README.md)：端口、远程访问、数据与正式版本。
-- [MCP 接入](mcp/README.md)：让网页 AI 访问指定项目。
-- [OppenCouncil](skills/oppencouncil/SKILL.md)：统一入口与按任务加载的参考。
-- [Oppen Project Steward](skills/oppen-project-steward/SKILL.md) / [Stepwise R Project](skills/stepwise-r-project/SKILL.md)：原调用名称的兼容入口。
+- [Council 使用与部署](council/README.md)
+- [MCP 接入与权限](mcp/README.md)
+- [详细迁移指南](docs/migration.md)
+- [OppenCouncil Skill](skills/oppencouncil/SKILL.md)
+- [V5 验收记录](docs/v5-acceptance.md)
 
-遇到问题时，可在仓库的 Issues 中附上系统版本、执行命令和错误信息；请先移除访问链接中的凭据及项目私有内容。
+提 Issue 时，请附上系统版本、命令和错误信息，并移除密码、令牌及项目私有内容。
 
-<details>
-<summary>参与开发与运行测试</summary>
-
-在仓库根目录安装开发依赖。测试还需要 Node.js 22+：
+完整测试还需要 Node.js 22+：
 
 ```sh
 uv run --python 3.12 scripts/install.py --with-mcp --no-skills --dev --python 3.12
@@ -196,56 +189,58 @@ uv run --python 3.12 scripts/verify.py
 uv build --project council
 ```
 
-只验证 Council 和 skills 时，安装时省略 `--with-mcp`，验证时使用 `scripts/verify.py --core`。CI 配置覆盖 macOS、Linux 和 Windows。
+只验证 Council 和 skills 时，安装省略 `--with-mcp`，验证使用 `scripts/verify.py --core`。
 
-</details>
+本项目采用 [MIT License](LICENSE)。随附第三方库的许可证见其所在目录。
 
-## 许可证
+## 从 v4 升级到 v5
 
-[MIT License](LICENSE)。可以使用、修改和分发，请保留许可证声明。随附第三方库的许可证见其所在目录。
+**软件 5.0.0 和项目格式 v5 是两回事。** 可以先升级工作台和 skills，让现有项目继续留在 v4。两个旧 skill 名称仍可用，原有项目会交给保留的旧实现处理。
 
-## 升级与迁移
+### 1. 更新软件，沿用原配置
 
-### 只升级软件：已有 v3/v4 项目可以继续使用
+在已有 OppenCouncil checkout 中运行：
 
-**5.0.0 是软件版本，v3/v4/v5 是项目治理格式，两者分别升级。** 本次重构将两个 skill 的通用能力合并到 `oppencouncil`，保留 `oppen-project-steward` 和 `stepwise-r-project` 两个兼容入口。统一 helper 会读取项目原有标记：未迁移的项目继续交给原实现，原目录、口径和 Memory 不变。
+```sh
+git pull --ff-only
+uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents/skills"
+```
 
-按上面的“更新”步骤升级源码和运行环境，再以原配置重启 Council／MCP，即可继续管理旧项目。沿用原来的 skill 安装目录、Council 站点目录、MCP 配置和允许列表；更新不会增加项目授权，也不会创建大型项目副本或自动归档。使用 ZIP、早期独立仓库或复制式 skill 安装的处理方式，见 [详细迁移指南](docs/migration.md)。
+沿用原 skill 目录；以前装在 `~/.codex/skills` 就继续用它。安装过 MCP 时加 `--with-mcp`，随后按原来的方式重启 Council 和 MCP，保留站点目录、端口、项目登记、配置文件及 OAuth 授权。只下载源码，不会让正在运行的旧进程自动换成新版。
 
-只想使用新版工作台、暂时保留项目 v4 时，到这里即可。使用统一 skill 名称也不会自动转换项目；v5 专属操作会要求先明确迁移。
+如果想让真实项目暂时留在 v4，到这里即可。ZIP 安装、早期独立仓库和复制式 skill 安装的处理方式见[详细迁移指南](docs/migration.md)。
 
-### 决定采用 v5 项目格式后：先检查，再应用
+### 2. 单独决定要迁移哪个项目
 
-原生 v3/v4 项目可显式迁移到 v5；更早的 v2 或非标准旧记录需要先按原流程整理。迁移前先更新统一 skill、Council，以及项目已连接的 MCP，并确认**实际运行的服务**支持 v5。只下载新源码、不重启旧服务不够。
+准备采用 v5 时，在选定项目的 AI 会话里说：
 
-1. 为一个明确选定的项目生成计划。下面的命令在 OppenCouncil 仓库根目录运行；项目使用绝对路径，计划放在项目外，父目录需存在，文件名必须尚未使用：
+```text
+使用 $oppencouncil 对当前项目执行 upgrade-v5 检查。
+把迁移计划保存在项目外，给我看会改哪些文件、有哪些阻塞和遗留事项，先不要应用。
+```
 
-   ```sh
-   uv run --project council python skills/oppencouncil/scripts/oppencouncil.py upgrade-v5 "/absolute/path/to/project" --check --plan "/absolute/path/outside-project/v5-plan.json"
-   ```
+检查不修改项目。它会核对已连接的 Council／MCP 是否支持 v5，列出确切写入及前后哈希。原 Stepwise 项目默认作为科研项目，原 Steward 默认作为普通项目；需要改选类型时，在检查阶段指定。
 
-   `--check` 不修改项目，只保存迁移计划。使用独立站点或外置 MCP 配置时，必须指定实际的 `--council-directory`、`--mcp-root` 和 `--mcp-config`，并在应用时保持一致；没有接入 MCP 的项目无需加装 MCP。完整命令见 [详细迁移指南](docs/migration.md#项目从-v3v4-迁移到-v5)。
+也可以在软件仓库根目录手动生成计划。目标项目使用绝对路径；计划在项目外，父目录需存在，文件名不能已被使用：
 
-2. 阅读计划中的 `project_type`、`writes`、`blockers` 和 `warnings`。先解决阻塞项；遗留提示需要理解和保留，但不代表应自动改代码、补科研决定或关闭未决问题。类型默认沿用原入口：Stepwise 为科研，Steward 为普通；如需改选，在检查阶段指定 `--project-type research` 或 `general`。
+```sh
+uv run --project council python skills/oppencouncil/scripts/oppencouncil.py upgrade-v5 "/absolute/path/to/project" --check --plan "/absolute/path/outside-project/v5-plan.json"
+```
 
-3. 明确确认该项目的迁移后，应用刚才审阅的同一份计划：
+看过计划、解决阻塞项，并明确确认迁移后，应用同一份计划：
 
-   ```sh
-   uv run --project council python skills/oppencouncil/scripts/oppencouncil.py upgrade-v5 "/absolute/path/to/project" --apply --plan "/absolute/path/outside-project/v5-plan.json"
-   ```
+```sh
+uv run --project council python skills/oppencouncil/scripts/oppencouncil.py upgrade-v5 "/absolute/path/to/project" --apply --plan "/absolute/path/outside-project/v5-plan.json"
+```
 
-   应用从计划读取项目类型，不再传 `--project-type`。检查后文件或服务能力发生变化会拒绝应用；重新生成、审阅新计划后再继续。
+自定义站点或外置 MCP 配置时，检查和应用都要指定相同的 `--council-directory`、`--mcp-root`、`--mcp-config`，详见[完整命令](docs/migration.md#项目从-v3v4-迁移到-v5)。`--project-type` 只在检查时使用，应用从计划读取。输入或连接能力变化会拒绝旧计划，需要重新检查。
 
-4. 运行统一 helper 的 `index` 和 `validate`，再在原工作台查看口径、讨论及产出登记。旧候选或未处理讨论首次继续时需要核对接续状态；迁移本身不代替这一步。
+### 迁移后会怎样
 
-### 迁移会保留什么，什么仍需后续处理
+原有口径及历史版本、候选、讨论、分组关系、Memory 和产出登记都会保留。未解决的 Attention 转为调查事项，保留原内容及阻塞含义；不用为了迁移先把它关闭。旧候选和未处理讨论，在首次继续工作时再核对接续状态。
 
-| 内容 | 迁移后的处理 |
-| --- | --- |
-| 正式口径、当前版本、历史版本、候选和讨论 | 保留原有内容与确认历史，补入 v5 工作流状态；不会重新替人确认。 |
-| Decision Memory | 读取两种旧格式，原记录保持不动；以后新条目使用 v5 字段规则。 |
-| 未解决的 Attention | 转为调查事项，保留内容及原有阻塞含义；不要求为了迁移先把问题“解决掉”。 |
-| Results／交付登记、数据和脚本 | 保留原位置及已有登记；缺少产出规格、来源未分类、旧未编号脚本等列为遗留事项，不自动重跑分析、搬数据或重编号。脚本允许重复编号。 |
-| 站点、MCP 权限、OAuth 授权和运行配置 | 项目迁移不修改这些设置，也不自动重启服务。 |
+迁移不会改 `R/` 目录名、重排脚本编号、搬动数据或重跑分析。旧未编号脚本、缺少规格的产出、待分类的数据等列在报告里，留待后续按需处理。项目的 Git 历史也不由迁移工具改写。
 
-迁移只对计划列出的治理文件做事务写入，用同一文件系统内的 `.oppencouncil-migration/` 保存本次写入的恢复信息，**不复制整个科研项目，也不自动生成项目归档**。中断时由 helper 检查并恢复；若出现恢复冲突，保留现场并按 [失败处理](docs/migration.md#失败中断与恢复) 排查。成功迁移后的 v5 项目没有一键退回 v4 的操作，不能靠手改版本标记或调用旧 helper 降级。
+应用只对计划列出的文件做事务写入，恢复信息放在项目内的 `.oppencouncil-migration/`，不创建整个项目的大型副本或归档。中断后由 helper 检查并恢复；如果遇到后续人工修改或恢复信息损坏，会保留冲突供处理，不能保证任何情况下都自动回滚。成功迁移后没有一键退回 v4 的命令，不能只改版本标记或换回旧 helper。具体处理见[失败、中断与恢复](docs/migration.md#失败中断与恢复)。
+
+最后运行统一 helper 的 `index` 和 `validate`，再到原工作台核对记录。直接迁移支持原生 v3/v4 项目；更早的 v2 或非标准历史记录，先按原流程整理。
