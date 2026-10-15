@@ -140,12 +140,7 @@ class Registry:
                     available=True,
                     round=snapshot["round"],
                     total=len(questions),
-                    open=sum(q["status"] == "open" for q in questions),
-                    discussing=sum(q["status"] == "discussing" for q in questions),
                     formal=sum(bool(q.get("definition", {}).get("current_version")) for q in questions),
-                    answered=sum(q["status"] == "answered" for q in questions),
-                    frozen=sum(q["status"] == "frozen" for q in questions),
-                    historical=sum(q["status"] == "historical" for q in questions),
                     updated_at=datetime.fromtimestamp(
                         max((store.questions / (q["id"] + ".json")).lstat().st_mtime for q in questions),
                         timezone.utc,
@@ -153,6 +148,22 @@ class Registry:
                     if questions
                     else "",
                 )
+                if snapshot.get("governance_version") == 5:
+                    active = [q for q in questions if not q["historical"]]
+                    value.update(
+                        governance_version=5,
+                        in_progress=sum(q["work"]["phase"] != "closed" for q in active),
+                        awaiting_review=sum(q["work"]["phase"] == "human_review" for q in active),
+                        historical=len(questions) - len(active),
+                    )
+                else:
+                    value.update(
+                        open=sum(q["status"] == "open" for q in questions),
+                        discussing=sum(q["status"] == "discussing" for q in questions),
+                        answered=sum(q["status"] == "answered" for q in questions),
+                        frozen=sum(q["status"] == "frozen" for q in questions),
+                        historical=sum(q["status"] == "historical" for q in questions),
+                    )
             except (FreezeError, OSError, ValueError):
                 value.update(available=False)
             summaries.append(value)

@@ -20,8 +20,11 @@
         lastItems = key;
         document.querySelector("#projects").innerHTML = items.length ? items.map((p, index) => {
           const date = p.updated_at ? new Date(p.updated_at).toLocaleString() : "暂无记录";
+          const v5 = p.governance_version === 5;
+          const firstCount = v5 ? p.in_progress : p.open, firstLabel = v5 ? "进行中" : "待讨论";
+          const secondCount = v5 ? p.awaiting_review : p.discussing, secondLabel = v5 ? "待确认" : "讨论中";
           const body = '<div class="meta"><span>' + (p.available ? "第 " + p.round + " 轮 · " + p.total + " 题" : "") + '</span></div><h2>' + escape(p.name) + '</h2>' +
-            (p.available ? '<div class="stats"><div class="stat open"><strong>' + p.open + '</strong>待讨论</div><div class="stat talk"><strong>' + p.discussing + '</strong>讨论中</div><div class="stat answered"><strong>' + (p.formal || 0) + '</strong>正式口径' + '</div></div><div class="meta">' + escape(date) + '</div><span class="enter">进入工作台 <span aria-hidden="true">→</span></span>' : '<div class="unavailable">项目暂不可用，请检查所在磁盘或目录后刷新。</div>');
+            (p.available ? '<div class="stats"><div class="stat open"><strong>' + firstCount + '</strong>' + firstLabel + '</div><div class="stat talk"><strong>' + secondCount + '</strong>' + secondLabel + '</div><div class="stat answered"><strong>' + (p.formal || 0) + '</strong>正式口径' + '</div></div><div class="meta">' + escape(date) + '</div><span class="enter">进入工作台 <span aria-hidden="true">→</span></span>' : '<div class="unavailable">项目暂不可用，请检查所在磁盘或目录后刷新。</div>');
           return p.available ? '<a class="card" style="--accent:' + colors[index % colors.length] + '" href="' + escape(p.url) + '">' + body + '</a>' : '<article class="card" style="--accent:' + colors[index % colors.length] + '">' + body + '</article>';
         }).join("") : '<div class="empty"><strong>还没有协作项目</strong>请让 Codex 为项目打开 Council 工作台，项目会显示在这里。</div>';
       }
