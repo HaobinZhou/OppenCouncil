@@ -6,15 +6,15 @@
 
 [简体中文](README.zh-CN.md)
 
-**Let AI check the data and literature, so you can focus on the decisions that need judgment.**
+**Vibe coding without the knowledge debt**
 
-The hardest part of a long-running project with AI often isn't writing code. It's keeping an agreed decision from changing a few conversations later.
+With an AI agent, a project can move forward for weeks without you reading a line of code. Each time the agent makes a call on its own, though, you understand your project a little less. It might decide which records to drop, how retries behave, or what counts as a duplicate customer. None of these feels important on the day it happens. They pile up until you can no longer say what your project does, why it works the way it does, or what a change would break. That is knowledge debt, and it builds up in any long-running project: research analyses, software, data pipelines, internal tools.
 
-In research, that might mean eligibility criteria, the start of follow-up, missing-data handling, or the covariates in Table 1. In software, it might be permissions, retry behavior, or an API format. Leave those decisions scattered across chats and, two weeks later, even you may have forgotten why you made them. Start a fresh conversation and the AI may quietly choose something else.
+OppenCouncil keeps you in the decisions without sending you back into the code. Any rule that shapes how the project behaves becomes a definition, written in plain language, confirmed by you, and versioned inside the project. The AI works from it and tests check the code against it. If the AI wants to change a definition, it can only propose a revision, and nothing takes effect until you confirm it. The story around those decisions is kept too. When the project takes a major turn, the reason goes into Memory: an approach that failed, a design that was abandoned, a compromise forced by a constraint. Months later, neither you nor a fresh AI session has to rediscover why things are the way they are, or wander back into a dead end. When the AI notices something it shouldn’t settle on its own, such as code that quietly drops data or two scripts that disagree, it logs it under Attention rather than burying it in a chat. It stays visible until it is resolved, ruled out, or turned into a definition.
 
-Asking AI to list every open question doesn't necessarily help. You can end up with a long checklist of problems that don't exist in your data, questions the code already answers, and choices a literature check could resolve. You still have to work out which ones deserve your time.
+Every recommendation comes with what supports it: a checked source, a test result, a measurement, or a fact from your own data. When something is a convention, you can see where the convention comes from. When the options genuinely differ, you can see what each one would change in your project. AI assistants connected over MCP can contribute evidence too, and the local agent verifies it before it reaches you.
 
-OppenCouncil takes those decisions out of the chat and puts them in the project's own `Freeze/` directory, with their wording, supporting evidence, and version history. You review them together in a local web workbench. A local AI agent investigates, prepares proposals, and carries out the work; an AI client connected through MCP can contribute evidence and join the discussion.
+None of this has to take over your day. Every open decision sits on a single web page, and you can work through all of them in one sitting. By the time you open it, the AI has already dropped the questions that don’t apply and answered what the code or data can settle. It has sorted what is left into four groups: decisions to make, quick confirmations, items waiting on information, and things it ruled out. You comment, edit, or confirm, then tell the AI to continue. It picks up only what changed and updates the page, ready for your next pass.
 
 ## What AI does before asking you
 
