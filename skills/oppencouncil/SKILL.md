@@ -11,6 +11,8 @@ The project registry declares `research` or `general`; language and directory la
 
 For research Council work, read [research-handoff.md](references/research-handoff.md) first. By default, check local facts, save a shared literature brief and a persistent wait, then **end the turn and hand control back to the human**. Web AI supplies literature; resume appraisal, synthesis and review preparation only after an explicit human instruction to continue. New material or an AI's claim of completion does not release this wait. Follow an explicit human instruction assigning the entire round to the local agent instead. Executing an already-confirmed analysis or routine repair does not start a new review round.
 
+Put questions that require a project-definition choice in the relevant Council F or group, together with the complete alternatives, recommendation, evidence and practical consequences. Discuss and collect the choice there; in chat, notify the human with the Council link and item ID instead of asking the same choice through a chat question or questionnaire. Use chat questions for operational inputs such as a missing path, login or action authorization, or when the human explicitly asks to discuss the choice in chat.
+
 Load the reference for the current task, following an operation link when needed:
 
 | Task | Reference |
