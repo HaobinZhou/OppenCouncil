@@ -265,11 +265,13 @@ def test_actual_skill_entrypoint_and_cli_share_results(work, tmp_path):
     prepare(work)
     payload = confirm(work)
     path = tmp_path / "action.json"
-    path.write_text(json.dumps(payload))
+    path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     root = Path(__file__).resolve().parents[2]
     script = root / "skills/oppencouncil/scripts/oppencouncil.py"
     run = subprocess.run([sys.executable, str(script), "human-action", str(work.store.project),
-                          "--input", str(path)], capture_output=True, text=True)
+                          "--input", str(path)], capture_output=True, encoding="utf-8")
     assert run.returncode == 0, run.stderr
-    assert json.loads(run.stdout)["channel"] == "conversation"
+    result = json.loads(run.stdout)
+    assert result["channel"] == "conversation"
+    assert result["result"]["human_actions"][0]["instruction"] == payload["authorization"]["instruction"]
     assert work.read("F-000001")["current"]["number"] == 1
