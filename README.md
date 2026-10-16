@@ -56,7 +56,7 @@ cd OppenCouncil
 uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents/skills"
 ```
 
-You can also download `OppenCouncil-5.0.0.zip` from [Releases](https://github.com/HaobinZhou/OppenCouncil/releases/latest), extract it to a permanent location, and run the installation command there.
+You can also download `OppenCouncil-5.0.1.zip` from [Releases](https://github.com/HaobinZhou/OppenCouncil/releases/latest), extract it to a permanent location, and run the installation command there.
 
 The installer prepares the Python environment and links the shared skill and its two compatibility entries into your global skills directory:
 

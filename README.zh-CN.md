@@ -61,7 +61,7 @@ cd OppenCouncil
 uv run --python 3.12 scripts/install.py --python 3.12 --skill-dir "$HOME/.agents/skills"
 ```
 
-也可以从 [Releases](https://github.com/HaobinZhou/OppenCouncil/releases/latest) 下载 `OppenCouncil-5.0.0.zip`，解压到固定目录，在该目录运行上面的安装命令。
+也可以从 [Releases](https://github.com/HaobinZhou/OppenCouncil/releases/latest) 下载 `OppenCouncil-5.0.1.zip`，解压到固定目录，在该目录运行上面的安装命令。
 
 安装器会准备 Python 环境，并把统一 skill 和两个兼容入口链接到全局目录：
 
