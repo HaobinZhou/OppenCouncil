@@ -62,6 +62,19 @@ test('missing cited versions stay visible and cannot borrow a different record',
   assert.equal(model({...payload,sources:[one]}).numbers.get(two.path),1);
 });
 
+test('original links stop before citation punctuation without losing URL paths or fragments',()=>{
+  assert.deepEqual(links({
+    citation:'Guide https://example.org/guide#missing-values（2026-10-16访问）。',
+    location:'https://example.org/guide#categorical-inputs；#missing-values，段落及列表',
+  }),['https://example.org/guide#missing-values','https://example.org/guide#categorical-inputs']);
+  assert.deepEqual(links({citation:'[Paper](https://example.org/paper)，另见《https://example.org/doi/(2020)123》。'}),[
+    'https://example.org/paper','https://example.org/doi/(2020)123',
+  ]);
+  assert.deepEqual(links({citation:'https://example.org/文献?q=a,b&section=2#结果'}),[
+    new URL('https://example.org/文献?q=a,b&section=2#结果').href,
+  ]);
+});
+
 test('late responses cannot render into a newly selected option; evidence reads do not write',async()=>{
   let resolveA, resolveB;
   const nodes=[], requests=[];

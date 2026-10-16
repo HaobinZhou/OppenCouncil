@@ -40,7 +40,7 @@
   }
 
   function links(source) {
-    const matches = [source.citation, source.location].filter(Boolean).join(' ').match(/https?:\/\/[^\s<>"'）】]+/g) || [];
+    const matches = [source.citation, source.location].filter(Boolean).join(' ').match(/https?:\/\/[^\s<>"'（）【】《》“”‘’，。；、]+/g) || [];
     const unique = [];
     for (let value of matches) {
       value = value.replace(/[.,;，。；]+$/, '');
