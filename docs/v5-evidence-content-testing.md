@@ -176,3 +176,15 @@ permission failure was rerun with the required permission; it was not treated as
 a product failure or silently counted as a pass. The Skill entry validator and
 changed-code lint checks passed. Decision Memory and the product version remain
 unchanged.
+
+## Installed workflow observation
+
+Commit 1493600 was installed locally at version 5.0.1. Council and MCP restarted
+and their health checks passed; installed Skill Markdown matched the development
+bundle. An ordinary review request was sent to the existing project chat without
+the evaluator's answers. Three preparation subagents started, but the coordinator
+prepared sixteen historical items while those slots were occupied. Their browser
+readback recovered concrete rules and historical reasons, with repetitive
+source/claim text still present. The role wording now explicitly queues remaining
+preparation scopes for the next available slot; sequential fallback applies when
+the environment cannot run subagents. Live content acceptance is still underway.
