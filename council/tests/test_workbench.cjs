@@ -459,7 +459,7 @@ test("Markdown candidate edits, preview and confirmed history keep the exact sav
 
 function disclosureFixture() {
   const animations=[];
-  const details={tagName:'DETAILS',open:false,style:{height:'',overflow:''},dataset:{},
+  const details={matches:()=>false,tagName:'DETAILS',open:false,style:{height:'',overflow:''},dataset:{},
     getBoundingClientRect:()=>({height:details.open?240:30}),querySelector:()=>({getBoundingClientRect:()=>({height:30})}),
     animate(frames,timing){const a={frames,timing,canceled:false,cancel(){this.canceled=true;}};animations.push(a);return a;}};
   return {details,animations};

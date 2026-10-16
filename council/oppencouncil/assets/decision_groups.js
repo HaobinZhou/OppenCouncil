@@ -1,8 +1,22 @@
 /* Joint review: people discuss and confirm; AI manages membership and proposals. */
-window.CouncilGroups = function ({ root, state, api, refresh, render, notice, friendlyError = error => error.message, escape: esc, editTable, reviewBasisHTML = () => '', evidenceUI, setDraft, getDraft, pendingQuestions, saveCandidate, discardEdits, workflowHTML = () => '', discussionResizerHTML = '', discussionShortcut = 'Ctrl+Enter', discussionShortcutAttribute = 'Control+Enter', choiceContext = scope => ({choiceScope:scope}), onOpen = () => {}, onCompose = () => {}, onDraftChange = () => {} }) {
+window.CouncilGroups = function ({ root, state, api, refresh, render, notice, friendlyError = error => error.message, escape: esc, editTable, reviewBasisHTML = () => '', evidenceUI, setDraft, getDraft, pendingQuestions, saveCandidate, discardEdits, workflowHTML = () => '', contextHTML, discussionResizerHTML = '', discussionShortcut = 'Ctrl+Enter', discussionShortcutAttribute = 'Control+Enter', choiceContext = scope => ({choiceScope:scope}), onOpen = () => {}, onCompose = () => {}, onDraftChange = () => {} }) {
   let active = null, restored = false, local = {}, failedStorage = false, busy = false;
   const views = {}, composing = {};
-  let comparisons = {};
+  let comparisons = {}, reading = {};
+  const readingPositions = new Map();
+  const compact = () => state.snapshot.governance_version === 5;
+  function readingState(g) {
+    const saved = reading[g.id] || {};
+    return reading[g.id] = {
+      member: g.member_ids.includes(saved.member) ? saved.member : g.member_ids[0],
+      mode: saved.mode === 'options' && g.options.length ? 'options' : 'read',
+    };
+  }
+  function readMember(id) {
+    const g = find(active);
+    if (!compact() || !g?.member_ids.includes(id)) return false;
+    reading[g.id] = { member:id, mode:'read' }; saveLocal(); render(); return true;
+  }
   const renderMarkdown = (text, choices = false) => window.CouncilMarkdown ? window.CouncilMarkdown.render(text, {assetBase: state.snapshot.governance_version === 5 ? "/api/projects/"+root.dataset.projectId+"/assets/" : undefined, questionIds: state.snapshot.questions.map(q => q.id), ...(choices ? choiceContext(discussionGroup()?.id) : {})}) : esc(text);
   const groups = () => state.snapshot.decision_groups || [];
   const find = id => groups().find(g => g.id === id);
@@ -15,7 +29,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
   const when = value => value ? new Date(value).toLocaleString('zh-CN', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:false }) : '';
   const actor = value => ({ user:'你', codex:'Codex', chatgpt:'ChatGPT', external_ai:'外部 AI · 未经本地核查' })[value] || '来源未记录';
   function saveLocal() {
-    try { sessionStorage.setItem(key(), JSON.stringify({ active, local, comparisons })); failedStorage = false; }
+    try { sessionStorage.setItem(key(), JSON.stringify({ active, local, comparisons, reading })); failedStorage = false; }
     catch (_) { failedStorage = true; }
   }
   function restore() {
@@ -25,6 +39,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
       const saved = JSON.parse(sessionStorage.getItem(key()) || '{}');
       local = saved.local || {};
       comparisons = saved.comparisons || {};
+      reading = saved.reading || {};
       active = Object.hasOwn(saved, "active") ? (find(saved.active) ? saved.active : null) : groups()[0]?.id || null;
     } catch (_) { failedStorage = true; }
   }
@@ -48,8 +63,10 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
   const memberConfirmLabel = q => q?.review_required && !q.definition?.draft ? '重新确认当前版本' : q?.candidate_dependency_updates?.length ? '确认并采用新版前序' : '确认并冻结本条口径';
   function dependencies(q) {
     const deps = (q.readiness?.dependencies || []).filter(d => d.status === 'waiting' || d.status === 'needs_review');
-    return deps.length ? '<div class="dg-dependencies">' + deps.map(d =>
-      `<p><strong>${d.status === 'waiting' ? '先确认前序' : '需要复核'}：</strong>${button('question',esc(d.title),`data-id="${d.question_id}"`)} ${esc(d.reason)}${d.condition ? '<br>适用条件：'+esc(d.condition) : ''}</p>`).join('') + '</div>' : '';
+    if (!deps.length) return '';
+    const body = '<div class="dg-dependencies">' + deps.map(d =>
+      `<p><strong>${d.status === 'waiting' ? '先确认前序' : '需要复核'}：</strong>${button('question',esc(d.title),`data-id="${d.question_id}"`)} ${esc(d.reason)}${d.condition ? '<br>适用条件：'+esc(d.condition) : ''}</p>`).join('') + '</div>';
+    return compact() ? `<details class="sw2-dependency-disclosure" data-record="${q.id}-dependencies"><summary>前序待确认或复核 · ${deps.map(d=>esc(d.question_id)).join('、')}</summary>${body}</details>` : body;
   }
   function listHTML(items = state.snapshot.questions, questionHTML = q => button('question',esc(q.title),`data-id="${q.id}"`)) {
     reconcile();
@@ -89,7 +106,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     const hint = q ? `data-dg-member-hint="${q.id}"` : 'data-dg-confirm-hint';
     return `<div class="sw2-confirm-actions"><span id="${id}" ${hint} role="status">${esc(reason || (q ? '仅冻结本条，其他口径保持原状态' : '本组关联口径将一并生效'))}</span>${button(q ? 'approve-member' : 'approve',q ? memberConfirmLabel(q) : '确认本组 '+g.member_ids.length+' 条口径',`${q ? 'data-question="'+q.id+'" ' : ''}aria-describedby="${id}"${state.busy || reason ? ' disabled' : ''}`)}</div>`;
   }
-  function memberHTML(q) {
+  function memberHTML(q, selector = '') {
     const d = q.definition || { versions: [], draft: null }, current = d.versions.find(v => v.number === d.current_version);
     const date = v => v.published_at ? new Date(v.published_at).toLocaleDateString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit'}) : '日期未记录';
     const versionMark = number => `<span class="sw2-version-mark" aria-label="版本 v${number}">V${number}</span>`;
@@ -102,7 +119,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     const candidate = d.draft ? `<div class="dg-candidate"><div class="dg-text sw2-record-body" data-quote-source="${q.id} · 候选口径 v${d.versions.length + 1}">${(state.snapshot.governance_version===5 && evidenceUI?evidenceUI.prose(q,renderMarkdown(d.draft.text || '等待完整候选')):renderMarkdown(d.draft.text || '等待完整候选'))}</div></div><details class="dg-editor" data-record="${q.id}-editor"><summary>修改候选 · Markdown</summary>${tableButton}<textarea aria-label="${esc(q.title)}的候选口径" class="dg-definition" data-question="${q.id}">${esc(getDraft(q.id))}</textarea><details class="sw2-markdown-preview" data-record="${q.id}-preview"><summary>预览排版（未保存）</summary><div class="sw2-record-body" data-preview="${q.id}">${renderMarkdown(getDraft(q.id))}</div></details><div class="dg-actions"><span class="dg-muted">保存后仍需确认才会生效</span>${button('save-candidate','保存候选',`data-question="${q.id}"`)}</div></details>` : '';
     const body = d.draft ? candidate + footer(null, currentReference + history) : current ? `<div class="dg-text sw2-record-body" data-quote-source="${q.id} · 正式口径 v${current.number}">${renderMarkdown(current.text)}</div>${footer(current, history)}` : '<p class="dg-muted">等待 AI 根据讨论起草完整口径</p>';
     const literature = state.snapshot.governance_version===5 && evidenceUI;
-    return `<article id="member-${q.id}" class="dg-card sw2-record" data-state="${d.draft ? 'draft' : current ? 'effective' : 'empty'}">${heading(d.draft ? d.versions.length + 1 : current?.number, Boolean(d.draft))}${literature ? evidenceUI.jump(q) : ""}<div class="${literature ? "dg-member-review" : ""}"><div>${dependencies(q)}${dependencyReview(q)}${literature ? evidenceUI.prose(q,reviewBasisHTML(q,false))+evidenceUI.shell(q,null,"judgments") : reviewBasisHTML(q,false)}${body}${q.review_required ? '<section class="sw2-conflict"><strong>需要重新审阅</strong><p>'+esc(q.review_required.reason)+'</p></section>' : ''}${d.draft || q.review_required ? approvalHTML(find(active), q.id, q) : ''}</div>${literature ? '<aside class="dg-member-evidence">'+evidenceUI.shell(q)+'</aside>' : ''}</div></article>`;
+    return `<article id="member-${q.id}" class="dg-card sw2-record" data-state="${d.draft ? 'draft' : current ? 'effective' : 'empty'}">${compact() ? `<div class="dg-reader-toolbar"><span class="dg-reader-id">${q.id}</span>${heading(d.draft ? d.versions.length + 1 : current?.number, Boolean(d.draft))}${literature ? evidenceUI.jump(q) : ""}${selector}</div>` : heading(d.draft ? d.versions.length + 1 : current?.number, Boolean(d.draft))+(literature ? evidenceUI.jump(q) : "")}<div class="${literature ? "dg-member-review" : ""}"><div class="dg-document" tabindex="0" aria-label="${esc(q.title)}的口径与依据判断">${dependencies(q)}${dependencyReview(q)}${literature ? evidenceUI.prose(q,reviewBasisHTML(q,false))+evidenceUI.shell(q,null,"judgments") : reviewBasisHTML(q,false)}${body}${q.review_required ? '<section class="sw2-conflict"><strong>需要重新审阅</strong><p>'+esc(q.review_required.reason)+'</p></section>' : ''}${d.draft || q.review_required ? approvalHTML(find(active), q.id, q) : ''}</div>${literature ? '<aside class="dg-member-evidence">'+evidenceUI.shell(q)+'</aside>' : ''}</div></article>`;
   }
   function updateControls() {
     const postButton = root.querySelector('[data-action="dg-post"]');
@@ -176,24 +193,42 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     return `<div class="dg-discussion">${button('compose','＋ 写讨论留言','hidden')}<div class="dg-message-editor"><div class="sw2-compose-head"><label for="dg-message">讨论留言 · Markdown</label>${button('close-compose','收起')}</div><textarea id="dg-message" aria-label="讨论意见" placeholder="写下你的意见，或指出哪条口径需要修改…">${esc(draft.message || '')}</textarea><details class="sw2-discussion-preview" data-record="discussion-preview"><summary>预览讨论（未保存）</summary><div id="dg-message-preview">${renderMarkdown(draft.message || '', true)}</div></details><div class="dg-actions"><span id="dg-message-state">${draft.message?.trim() ? '留言未保存' : ''}</span><small class="sw2-shortcut">${discussionShortcut} 保存</small>${button('post','保存讨论',`aria-keyshortcuts="${discussionShortcutAttribute}"`)}</div></div></div>`;
   }
   function renderDetail(panel) {
+    if (compact() && panel.dataset.view === 'group' && panel.dataset.readerKey) {
+      readingPositions.set(panel.dataset.readerKey, {
+        scroll: ['.dg-document','.dg-comparison','.dg-options-section','.sw2-work-in'].map(selector=>[selector,panel.querySelector(selector)?.scrollTop || 0]),
+        expanded: Array.from(panel.querySelectorAll?.('details[data-record][open]') || []).map(e=>e.dataset.record),
+      });
+    }
     if (!active) { panel.dataset.view = 'question'; return false; }
     const g = find(active);
     if (!g) { active = null; return false; }
     const same = panel.dataset.view === 'group' && panel.dataset.group === active;
+    const reader = readingState(g), readerKey = active+':'+reader.mode+':'+reader.member;
+    const previous = readingPositions.get(readerKey);
+    panel.dataset.readerKey = compact() ? readerKey : '';
+    panel.dataset.readingMode = reader.mode;
+    panel.dataset.compactReader = String(compact());
     const scrollPositions = ['.sw2-work-in','.dg-options-section','.dg-wording-column','.dg-thread'].map(selector => [selector, same ? panel.querySelector(selector)?.scrollTop || 0 : 0]);
-    const expanded = same ? Array.from(panel.querySelectorAll?.('details[data-record][open]') || []).map(e => e.dataset.record) : [];
+    const expanded = compact() ? previous?.expanded || [] : same ? Array.from(panel.querySelectorAll?.('details[data-record][open]') || []).map(e => e.dataset.record) : [];
     panel.dataset.view = 'group'; panel.dataset.group = active; panel.dataset.question = '';
     if (!same) panel.scrollTop = 0;
     const qs = g.member_ids.map(question);
     const hasDraft = qs.some(q => q.definition?.draft), missing = missingWording(g);
     panel.dataset.wording = qs.some(q => q.definition?.draft || q.definition?.current_version) ? 'present' : 'empty';
     const allConfirmed = qs.every(q => q.definition?.current_version);
-    const options = g.options.length ? `<section class="dg-options-section" aria-label="方案比较"><div class="dg-column-head"><h3>方案比较</h3><span>表达偏好后，仍需确认完整口径</span></div>${state.snapshot.governance_version===5 && evidenceUI ? '<div class="dg-review-layout"><div class="dg-comparison">'+comparisonHTML(g,qs)+'</div><div class="dg-option-evidence">'+evidenceUI.shell(g,evidenceOption(g))+'</div></div>' : comparisonHTML(g,qs)}</section>` : '';
-    const wording = `<section class="dg-wording-column" aria-label="本组口径"><div class="dg-column-head"><h3>${hasDraft ? '候选口径' : allConfirmed ? '正式口径' : '候选尚未备齐'}</h3>${hasDraft ? button('discard',allConfirmed ? '取消修订' : '撤回候选') : allConfirmed ? button('begin','修订口径') : ''}</div><div class="dg-members">${missing.length ? `<div class="dg-preparation"><strong>待 AI 补齐 ${missing.length} 条候选口径</strong><p>${missing.map(q => esc(q.id+' · '+q.title)).join('<br>')}</p><p>本组尚未准备好交付确认。完整候选需要写好并核对后，再请你审阅。</p></div>` : ''}${qs.map(memberHTML).join('')}</div><div class="dg-confirm" data-effective="${allConfirmed && !hasDraft}">${(hasDraft || qs.some(q=>q.review_required)) && !missing.length ? approvalHTML(g, 'group') : '<span>'+ (allConfirmed ? '本组口径已确认' : '完整候选准备好后可确认')+'</span>'}</div></section>`;
+    const options = g.options.length ? `<section class="dg-options-section" aria-label="方案比较"${compact() && reader.mode !== 'options' ? ' hidden' : ''}><div class="dg-column-head"><h3>方案比较</h3><span>表达偏好后，仍需确认完整口径</span></div>${state.snapshot.governance_version===5 && evidenceUI ? '<div class="dg-review-layout"><div class="dg-comparison">'+comparisonHTML(g,qs)+'</div><div class="dg-option-evidence">'+evidenceUI.shell(g,evidenceOption(g))+'</div></div>' : comparisonHTML(g,qs)}</section>` : '';
+    const operations = hasDraft ? button('discard',allConfirmed ? '取消修订' : '撤回候选') : allConfirmed ? button('begin','修订口径') : '';
+    const preparation = missing.length ? `<details class="dg-preparation" data-record="${g.id}-preparation"><summary>待 AI 补齐 ${missing.length} 条候选口径</summary><p>${missing.map(q => esc(q.id+' · '+q.title)).join('<br>')}</p><p>本组尚未准备好交付确认。完整候选需要写好并核对后，再请你审阅。</p></details>` : '';
+    const selector = `<details class="dg-member-picker"><summary>${qs.findIndex(q=>q.id===reader.member)+1}/${qs.length} · ${reader.member}</summary><nav class="dg-member-menu" aria-label="选择本组口径">${qs.map((q,i)=>button('member',`${i+1}/${qs.length} · ${q.id} · ${esc(q.title)}`,`data-id="${q.id}" aria-current="${q.id===reader.member}"`)).join('')}</nav></details>`;
+    const confirmation = `<div class="dg-confirm" data-effective="${allConfirmed && !hasDraft}">${(hasDraft || qs.some(q=>q.review_required)) && !missing.length ? approvalHTML(g, 'group') : '<span>'+ (allConfirmed ? '本组口径已确认' : '完整候选准备好后可确认')+'</span>'}</div>`;
+    const wording = `<section class="dg-wording-column" aria-label="本组口径"${compact() && reader.mode !== 'read' ? ' hidden' : ''}>${compact() ? '' : `<div class="dg-column-head"><h3>${hasDraft ? '候选口径' : allConfirmed ? '正式口径' : '候选尚未备齐'}</h3>${operations}</div>`}<div class="dg-members">${preparation}${compact() ? memberHTML(question(reader.member),selector) : qs.map(q=>memberHTML(q)).join('')}</div>${compact() ? '' : confirmation}</section>`;
+    const groupFooter = compact() ? `<details class="dg-group-controls" data-record="${g.id}-confirmation"><summary>本组操作与确认 · ${qs.length} 条口径</summary><div class="dg-group-actions">${operations}${confirmation}</div></details>` : '';
+    const tabs = `<nav class="dg-reading-tabs" aria-label="审阅视图">${button('view','逐条审阅 · '+qs.length,`data-mode="read" aria-pressed="${reader.mode==='read'}"`)}${g.options.length ? button('view','方案比较',`data-mode="options" aria-pressed="${reader.mode==='options'}"`) : ''}</nav>`;
+    const header = compact() && contextHTML ? contextHTML({title:g.title,meta:`${esc(g.id)} · ${qs.length} 条关联口径 · 第 ${state.snapshot.round || 1} 轮`,description:g.purpose,items:qs,controls:tabs}) : `<header class="dg-header"><div class="sw2-detail-top"><span>${esc(g.id)} · ${qs.length} 条关联口径</span><span>第 ${state.snapshot.round || 1} 轮</span></div><h2>${esc(g.title)}</h2><p>${esc(g.purpose)}</p>${workflowHTML(qs)}</header>`;
     const messages = g.messages.map(m => `<article class="sw2-bubble sw2-bubble-${['user','chatgpt'].includes(m.actor) ? m.actor : 'ai'}"><div class="sw2-bubble-head"><strong>${actor(m.actor)}</strong><span>${esc(when(m.at))}${m.question_id ? ' · '+esc(question(m.question_id)?.title || m.question_id) : ''}</span></div><div class="sw2-bubble-body" data-quote-source="${esc(g.id+' · '+actor(m.actor)+' · '+when(m.at))}">${renderMarkdown(m.text, true)}</div></article>`).join('') || '<div class="sw2-empty"><strong>开始共同讨论</strong>比较方案后，在这里留下你的意见。</div>';
-    panel.innerHTML = `<div class="sw2-work"><div class="sw2-work-in"><header class="dg-header"><div class="sw2-detail-top"><span>${esc(g.id)} · ${qs.length} 条关联口径</span><span>第 ${state.snapshot.round || 1} 轮</span></div><h2>${esc(g.title)}</h2><p>${esc(g.purpose)}</p>${workflowHTML(qs)}</header><div class="dg-layout${g.options.length ? ' dg-with-options' : ''}">${options}${wording}</div></div></div><aside class="sw2-discussion-column dg-conversation" aria-label="共同讨论">${discussionResizerHTML}<div class="sw2-talk-header"><div class="sw2-section-title">共同讨论<small>${g.messages.length} 条记录</small></div><p>建议与交流 · 保存后手动通知 AI 继续</p></div><div class="dg-thread" tabindex="0" aria-label="共同讨论记录">${messages}</div>${discussionEditor(g.id)}</aside>`;
+    panel.innerHTML = `<div class="sw2-work"><div class="sw2-work-in">${header}<div class="dg-layout${g.options.length ? ' dg-with-options' : ''}">${options}${wording}</div>${groupFooter}</div></div><aside class="sw2-discussion-column dg-conversation" aria-label="共同讨论">${discussionResizerHTML}<div class="sw2-talk-header"><div class="sw2-section-title">共同讨论<small>${g.messages.length} 条记录</small></div><p>建议与交流 · 保存后手动通知 AI 继续</p></div><div class="dg-thread" tabindex="0" aria-label="共同讨论记录">${messages}</div>${discussionEditor(g.id)}</aside>`;
     for (const el of panel.querySelectorAll?.('details[data-record]') || []) el.open = expanded.includes(el.dataset.record);
-    for (const [selector, top] of scrollPositions) { const el = panel.querySelector(selector); if (el) el.scrollTop = top; }
+    for (const [selector, top] of (compact() ? [...scrollPositions.filter(([s])=>s==='.dg-thread'),...(previous?.scroll || [])] : scrollPositions)) { const el = panel.querySelector(selector); if (el) el.scrollTop = top; }
     updateControls();
     return true;
   }
@@ -247,6 +282,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
     if (!action.startsWith('dg-')) return;
     event.stopImmediatePropagation(); if (busy || state.busy) return;
     if (action === 'dg-open') { if(b.dataset.mode==='discussion') onCompose(); active = b.dataset.id; if (b.dataset.mode) views[active] = b.dataset.mode; saveLocal(); state.mobileView = 'detail'; render(); if (b.dataset.reading) { root.querySelector('#sw2-detail').dataset.reading = b.dataset.reading; render(); } onOpen(); return; }
+    if (action === 'dg-member') { if(readMember(b.dataset.id)) root.querySelector('.dg-member-picker summary')?.focus?.({preventScroll:true}); return; }
     if (action === 'dg-edit-table') { editTable?.(b.dataset.question); return; }
     if (action === 'dg-question') { active = null; state.selected = b.dataset.id; state.mobileView = 'detail'; saveLocal(); render(); onOpen(); return; }
     if (action === 'dg-evidence') { showEvidence(find(active),Number(b.dataset.option)); return; }
@@ -265,6 +301,7 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
       showEvidence(g);
       return;
     }
+    if (action === 'dg-view' && compact()) { readingState(find(active)).mode = b.dataset.mode === 'options' ? 'options' : 'read'; saveLocal(); render(); root.querySelector('[data-action="dg-view"][data-mode="'+readingState(find(active)).mode+'"]')?.focus?.({preventScroll:true}); return; }
     if (action === 'dg-view') { views[active] = b.dataset.mode; render(); const scroll = root.querySelector(views[active] === 'options' ? '.dg-options' : '.dg-thread'); if (scroll) scroll.scrollTop = 0; return; }
     if (action === 'dg-compose' || action === 'dg-close-compose') { const id = discussionGroup()?.id; if (!id) return; composing[id] = action === 'dg-compose'; if(composing[id]) onCompose(); root.querySelector('.dg-message-editor').hidden = !composing[id]; root.querySelector('[data-action="dg-compose"]').hidden = composing[id]; if (composing[id]) root.querySelector('#dg-message').focus({preventScroll:true}); return; }
     if (action === 'dg-choose') {
@@ -329,7 +366,8 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
   return { listHTML, renderDetail, dependencies, dependencyReview, pending, saveAll, reconcile, updateControls, appendDiscussion, discussionEditor,
     message: id => local[id]?.message || '',
     openDiscussion: id => { active = id; views[id] = 'discussion'; composing[id] = true; saveLocal(); render(); onOpen(); root.querySelector('#dg-message')?.focus(); },
-    select: id => { active = find(id) ? id : null; saveLocal(); },
+    select: (id, member, mode) => { active = find(id) ? id : null; if(active && compact()) { const current=readingState(find(active)); reading[active]={member:member || current.member,mode:mode || current.mode}; readingState(find(active)); } saveLocal(); },
+    readMember, reading: () => active && compact() ? {...readingState(find(active))} : null,
     selected: () => find(active), clear: () => { active = null; saveLocal(); },
     status, missing: g => missingWording(g).length, storageFailed: () => failedStorage,
     handoff: () => groups().map(g => ({ id:g.id, title:g.title, purpose:g.purpose, member_ids:g.member_ids, options:g.options, messages:g.messages, selected_option:g.selected_option })) };

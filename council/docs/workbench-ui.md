@@ -105,7 +105,7 @@ Default sites show a custom first-run password form before exposing the project 
 
 Show a compact Exit control in the directory and workbench for password-protected sites. Workbench Exit asks the reviewer to save pending work before leaving. A 401 shows a new-tab login link, leaves local drafts and the reading context intact, and permits refresh after reauthentication. The backend password/session contract is owned by the Council README's 站点密码 section.
 
-Hide scrollbar chrome on the workbench, project directory and login page, including nested lists, discussion, comparisons, code blocks, dialogs and text areas. Preserve native overflow, wheel, touchpad, touch and keyboard scrolling.
+Keep the project directory and login page scrollbar treatment. In the v5 workbench, use thin visible scrollbars for independently scrolling documents, evidence, comparison and discussion so their scroll boundaries remain discoverable. Preserve native wheel, touchpad, touch and keyboard scrolling.
 
 ## v5 review and investigations
 
@@ -191,3 +191,14 @@ persists local drafts first and refuses to proceed when draft storage fails.
 This detection begins with 5.0.1: tabs loaded before this detector existed need one
 normal browser reload to acquire it. Project-record synchronization is separate
 from interface updating.
+
+
+### Compact v5 reading layout
+
+The approved reading-space preview replaces the always-expanded context and long stack of group members. Use a compact group/question header with the complete purpose and five work phases in “说明与流程”. Keep the phase visible in the disclosure label. Escape and outside clicks dismiss the context overlay. The desktop toolbar is approximately 48px tall and navigation 264px wide; preserve navigation collapse and the phone drawer.
+
+For groups, default to “逐条审阅” with one selected F and a member menu showing its position and ID. The F toolbar retains its title, candidate/version state and evidence jump. “方案比较” exposes the full existing comparison matrix, comparison-set picker, inline choices and preference actions. These presentation switches do not write project records. Group operations and batch confirmation remain in the bottom disclosure; individual confirmation, dependency checks, complete candidate editor, preview, current/historical versions and recovery records remain accessible in the document. Show unresolved dependency IDs in a compact disclosure without removing their reasons or review controls.
+
+On desktop, documents and evidence each fill the available height and scroll independently. Do not calculate evidence height by subtracting a fixed catalog/header estimate from the viewport. Collapse the ordered source catalog by default while keeping the selected source's complete citation, supported judgments, applicability, reading scope, original link and version details visible. Clicking an inline citation or source changes only this F/option's reader. Empty option evidence links switch directly to the chosen F, never borrowing its bindings for the option. Reopening discussion uses the existing resizer and composer. Ordinary 15px document text stays readable; effective versions retain their serif treatment.
+
+Persist group member and reading/comparison mode with browser drafts, and include them in group URLs as `member=F-NNNNNN&view=read|options`. Refresh and Back/Forward restore that scope; invalid members fall back to the first current member. Keep pending candidate and discussion prose when switching views. Preserve document/disclosure positions within a group and source-detail scrolling on same-record refresh. On smaller screens stack document and evidence with natural page scrolling; the evidence jump and full component set remain available without horizontal page overflow.

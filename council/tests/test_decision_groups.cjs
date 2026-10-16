@@ -393,3 +393,39 @@ test('option evidence rendering and selection are scoped to v5 and never save pr
   assert.equal(s.calls.length,0);
   assert.equal(s.group.selected_option,undefined);
 });
+
+test('v5 reads one member at a time and restores its route, drafts and comparison mode without writes',async()=>{
+  const s=setup();s.state.snapshot.governance_version=5;
+  s.group.member_ids.push('F-000002');
+  s.state.snapshot.questions.push({id:'F-000002',title:'Two',revision:1,readiness:{status:'ready'},definition:{draft:{text:'Second exact candidate'},versions:[]}});
+  s.group.options=[{label:'First',rules:{'F-000001':'One','F-000002':'Two'},consequences:'C',tradeoffs:'T'}];
+  s.type('Keep this pending shared discussion');
+  const panel={dataset:{},querySelector(){return null;},querySelectorAll(){return [];}};
+  s.ui.select(s.group.id,'F-000002','read');s.ui.renderDetail(panel);
+  assert.match(panel.innerHTML,/id="member-F-000002"/);
+  assert.doesNotMatch(panel.innerHTML,/id="member-F-000001"/);
+  assert.match(panel.innerHTML,/class="dg-options-section" aria-label="方案比较" hidden/);
+  assert.match(panel.innerHTML,/Second exact candidate/);
+  assert.match(panel.innerHTML,/data-action="dg-save-candidate"/);
+  assert.match(panel.innerHTML,/data-action="dg-approve-member"/);
+  assert.match(panel.innerHTML,/data-action="dg-discard"/);
+  await s.click('view',{mode:'options'});s.ui.renderDetail(panel);
+  assert.match(panel.innerHTML,/class="dg-wording-column" aria-label="本组口径" hidden/);
+  assert.match(panel.innerHTML,/data-action="dg-choose"/);
+  assert.equal(s.ui.reading().member,'F-000002');
+  assert.equal(s.ui.message(s.group.id),'Keep this pending shared discussion');
+  const saved=JSON.parse([...s.storage.values()][0]);
+  assert.deepEqual(saved.reading[s.group.id],{member:'F-000002',mode:'options'});
+  assert.equal(s.ui.readMember('F-999999'),false);
+  assert.equal(s.ui.readMember('F-000001'),true);assert.equal(s.ui.reading().mode,'read');
+  s.ui.select(s.group.id,'F-999999','invalid');
+  assert.equal(s.ui.reading().member,'F-000001');assert.equal(s.ui.reading().mode,'read');
+  assert.equal(s.calls.length,0);
+});
+
+test('reading state survives a new controller without changing pending shared prose',()=>{
+  const s=setup(JSON.stringify({active:'B-000001',local:{'B-000001':{message:'Unsent'}},reading:{'B-000001':{member:'F-000001',mode:'read'}}}));
+  s.state.snapshot.governance_version=5;
+  assert.equal(s.ui.reading().member,'F-000001');assert.equal(s.ui.message('B-000001'),'Unsent');
+  assert.equal(s.calls.length,0);
+});

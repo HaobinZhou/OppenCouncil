@@ -90,6 +90,7 @@
     discussionWidth = null; applyDiscussionWidth(); saveDiscussionWidth();
   });
   root.addEventListener('keydown', event => {
+    if(event.key==='Escape') for(const details of root.querySelectorAll('.sw2-context-disclosure[open],.dg-member-picker[open]')) { details.open=false; details.querySelector('summary')?.focus(); }
     if (selectKey(event)) return;
     if (['sw2-message', 'dg-message'].includes(event.target.id) && event.key === 'Enter' &&
         (event.metaKey || event.ctrlKey) && !(event.metaKey && event.ctrlKey) && !event.altKey && !event.shiftKey) {
@@ -346,7 +347,7 @@
   function applyRoute() {
     const url = new URL(window.location.href), group = url.searchParams.get('group'), question = url.searchParams.get('question');
     if (group && state.snapshot.decision_groups?.some(g => g.id === group)) {
-      groupUI?.select(group); state.group = 'all'; state.status = 'all'; state.search = ''; return;
+      groupUI?.select(group,url.searchParams.get('member'),url.searchParams.get('view')); state.group = 'all'; state.status = 'all'; state.search = ''; return;
     }
     if (question && byId(question)) {
       groupUI?.clear(); state.selected = question;
@@ -358,8 +359,8 @@
   function syncRoute() {
     if (!routeInitialized || !window.history || readingHistory) return;
     const url = new URL(window.location.href), group = groupUI?.selected();
-    url.searchParams.delete('group'); url.searchParams.delete('question');
-    if (group) url.searchParams.set('group', group.id);
+    url.searchParams.delete('group'); url.searchParams.delete('question'); url.searchParams.delete('member'); url.searchParams.delete('view');
+    if (group) { url.searchParams.set('group', group.id); const reader=groupUI.reading?.(); if(reader) { url.searchParams.set('member',reader.member); url.searchParams.set('view',reader.mode); } }
     else if (state.selected) url.searchParams.set('question', state.selected);
     if (url.href === window.location.href) return;
     window.history.pushState({ councilProject: state.snapshot.project }, '', url.href);
@@ -397,7 +398,7 @@
     const records = q.recovered_records || [];
     const superseded = new Set(records.map(record => record.supersedes).filter(Boolean));
     const paths = [...new Set((q.source_summary || "").split(/[；;\n]+/).map(value => value.trim()).filter(Boolean))];
-    return '<details class="sw2-provenance"><summary>来源与恢复记录' + (records.length ? ' · ' + records.length + ' 条' : '') + '</summary><div class="sw2-provenance-body">' +
+    return '<details class="sw2-provenance" data-record="recovery-provenance"><summary>来源与恢复记录' + (records.length ? ' · ' + records.length + ' 条' : '') + '</summary><div class="sw2-provenance-body">' +
       (paths.length ? '<div class="sw2-provenance-paths">' + paths.map(path => '<div>' + escape(path) + '</div>').join("") + '</div>' : '') +
       [...records].reverse().map(record => '<section class="sw2-history"><h3>' + (superseded.has(record.key) ? "原恢复分类 · 已修正" : recoveryTitle(record.kind)) + '</h3><div>' + escape(record.summary) + '</div>' +
         (record.correction ? '<div class="sw2-history-meta">状态修正：' + label(record.correction.before) + ' → ' + label(record.correction.after) + (record.correction.review_preserved ? ' · 保留当前答复与分歧' : '') + '</div>' : '') +
@@ -449,6 +450,11 @@
     const step = hasDraft && !incomplete ? 1 : effective ? 2 : 0;
     const note = incomplete && items.length > 1 ? 'AI 尚未补齐本组候选口径' : needsReview ? '前序依据需要确定或复核' : hasDraft ? (effective ? '修订中，原正式版本继续有效' : '审阅完整候选后确认') : effective ? '正式口径已记录，可开启下一版修订' : '讨论清楚后，由 AI 整理完整候选';
     return '<div class="sw2-workflow" data-effective="'+(effective && !hasDraft)+'"><ol aria-label="口径进度">' + ['讨论与比较','审阅候选','确认生效'].map((text,i) => '<li'+(i === step ? ' aria-current="step"' : '')+'><b>'+(i+1)+'</b>'+text+'</li>').join('')+' </ol><span class="sw2-workflow-note">'+note+'</span></div>';
+  }
+  function contextHTML({title,meta,description,items,controls=''}) {
+    const phases=['triage','evidence','prepare_review','human_review','closed'], labels=['分诊','补查','整理送审','人类审阅','结束'];
+    const phase=Math.min(...items.map(q=>Math.max(0,phases.indexOf(q.work?.phase))));
+    return '<header class="sw2-reader-context"><div class="sw2-reader-title"><div class="sw2-detail-top">'+meta+'</div><h2>'+escape(title)+'</h2></div><div class="sw2-reader-controls">'+controls+'<details class="sw2-context-disclosure" data-record="reader-context"><summary>'+(phase+1)+' · '+labels[phase]+' · 说明与流程</summary><div class="sw2-context-popover">'+(description?'<p>'+escape(description)+'</p>':'')+workflowHTML(items)+'</div></details></div></header>';
   }
   function setNavigation(open) {
     if (drawerMedia.matches) {
@@ -722,8 +728,8 @@
       applyRoute();
       if (!state.selected) state.selected = visible()[0]?.id || null;
       const url = new URL(window.location.href), group = groupUI?.selected();
-      url.searchParams.delete('group'); url.searchParams.delete('question');
-      if (group) url.searchParams.set('group', group.id); else if (state.selected) url.searchParams.set('question', state.selected);
+      url.searchParams.delete('group'); url.searchParams.delete('question'); url.searchParams.delete('member'); url.searchParams.delete('view');
+      if (group) { url.searchParams.set('group', group.id); const reader=groupUI.reading?.(); if(reader) { url.searchParams.set('member',reader.member); url.searchParams.set('view',reader.mode); } } else if (state.selected) url.searchParams.set('question', state.selected);
       window.history?.replaceState({ councilProject: state.snapshot.project }, '', url.href);
       routeInitialized = true;
     }
@@ -778,7 +784,7 @@
       root.querySelector('#sw2-answer-status').hidden=true;
     } catch(error) { showNotice(error.message,'error','answer',q.id); }
   }
-  const evidenceUI = window.CouncilEvidence?.create({root, api, markdown: text=>renderMarkdown(text)});
+  const evidenceUI = window.CouncilEvidence?.create({root, api, markdown: text=>renderMarkdown(text), onJump:id=>{ if(groupUI?.selected() && groupUI.reading?.()?.mode==='options') groupUI.readMember(id); }});
   function reviewBasisHTML(q, showEvidence = false) {
     if(!q.work) return '';
     const packet=q.review_packet || {}, labels={common_practice:'通行做法',support:'依据',applicability:'适用条件',departure_check:'偏离检查',default:'推荐答案',project_reason:'本项目理由',verification:'已核实约束'};
@@ -802,12 +808,14 @@
   function renderDetail() {
     closeSelect(); hideQuote();
     const q = selected(), panel = root.querySelector("#sw2-detail");
+    root.dataset.readerLayout = String(isV5());
+    panel.dataset.compactReader = String(isV5() && !q?.id.startsWith('I-'));
     if (groupUI?.renderDetail(panel)) { syncRoute(); updateDiscussionVisibility(); applyDiscussionWidth(); evidenceUI?.hydrateAll(); return; }
     syncRoute();
     const sameQuestion = panel.dataset.question === (q?.id || "");
-    const scrollPositions = sameQuestion ? [".sw2-work-in", ".sw2-thread", ".sw2-review-body"].map(selector => [selector, panel.querySelector(selector)?.scrollTop || 0]) : [];
+    const scrollPositions = sameQuestion ? [".sw2-work-in", ".sw2-thread", ".sw2-review-body", ".sw2-decision-column"].map(selector => [selector, panel.querySelector(selector)?.scrollTop || 0]) : [];
     const expanded = sameQuestion ? Array.from(panel.querySelectorAll?.('details[data-record][open]') || []).map(e => e.dataset.record) : [];
-    const sourceOpen = sameQuestion && panel.querySelector(".sw2-provenance")?.open;
+
     if (!sameQuestion) { panel.scrollTop = 0; panel.dataset.reading = "discussion"; }
     panel.dataset.question = q?.id || "";
     if (!q) {
@@ -837,10 +845,14 @@
     const historyHTML = history.length ? '<details class="sw2-version-history" data-record="history"><summary>历史版本 · ' + history.length + '</summary>' + history.map(v => versionHTML(v)).join('') + '</details>' : '';
     const currentHTML = current ? (draft ? '<details class="sw2-current-reference" data-record="current"><summary>对照当前有效版本 · v' + current.number + '</summary>' + versionHTML(current) + '</details>' : versionHTML(current, historyHTML)) : '';
     panel.innerHTML = [
-      '<div class="sw2-work"><div class="sw2-work-in"><header class="sw2-question-context"><div class="sw2-detail-top"><span class="sw2-detail-code">' + q.id + ' · 第 ' + q.round + ' 轮</span>' + (["waiting", "needs_review"].includes(q.readiness?.status) ? '<span class="sw2-pill sw2-pill-discussing">' + escape(groupUI?.status(q) || "待复核") + '</span>' : definition(q).current_version ? '<span class="sw2-pill sw2-pill-answered">有效 v' + definition(q).current_version + '</span>' : (isV5() ? '' : pill(q.status))) + '<span class="sw2-origin">提出 ' + actorBadge(q.created_by) + "</span></div>",
+      '<div class="sw2-work"><div class="sw2-work-in">',
+      isV5() ? contextHTML({title:q.title,meta:escape(q.id+' · 第 '+q.round+' 轮')+' · '+escape(groupUI?.status(q) || '')+' · 提出 '+actorBadge(q.created_by),description:q.why,items:[q],controls:evidenceUI?.jump(q) || ''}) : [
+      '<header class="sw2-question-context"><div class="sw2-detail-top"><span class="sw2-detail-code">' + q.id + ' · 第 ' + q.round + ' 轮</span>' + (["waiting", "needs_review"].includes(q.readiness?.status) ? '<span class="sw2-pill sw2-pill-discussing">' + escape(groupUI?.status(q) || "待复核") + '</span>' : definition(q).current_version ? '<span class="sw2-pill sw2-pill-answered">有效 v' + definition(q).current_version + '</span>' : (isV5() ? '' : pill(q.status))) + '<span class="sw2-origin">提出 ' + actorBadge(q.created_by) + "</span></div>",
       '<div class="sw2-question-heading"><h2>' + escape(q.title) + '</h2></div>',
       q.why && q.why !== "恢复旧项目口径与讨论记录" ? '<div class="sw2-question-why">' + escape(q.why) + '</div>' : "",
-      (isV5() && evidenceUI ? evidenceUI.jump(q) : '') + (groupUI?.dependencies(q) || '') + workflowHTML([q]) + '</header>' + '<div class="sw2-review-body'+(isV5() && evidenceUI?' sw2-with-evidence':'')+'"><section class="sw2-decision-column" aria-label="正式口径与候选文档">'+(evidenceUI && isV5()?evidenceUI.prose(q,reviewBasisHTML(q))+evidenceUI.shell(q,null,'judgments'):reviewBasisHTML(q))+'<div class="sw2-section-title">口径</div><div class="sw2-opinion-scroll" tabindex="0" aria-label="口径版本内容">',
+      (isV5() && evidenceUI ? evidenceUI.jump(q) : '') + (groupUI?.dependencies(q) || '') + workflowHTML([q]) + '</header>'
+      ].join(''),
+      '<div class="sw2-review-body'+(isV5() && evidenceUI?' sw2-with-evidence':'')+'"><section class="sw2-decision-column" tabindex="0" aria-label="正式口径与候选文档">'+(isV5() ? groupUI?.dependencies(q) || '' : '')+(evidenceUI && isV5()?evidenceUI.prose(q,reviewBasisHTML(q))+evidenceUI.shell(q,null,'judgments'):reviewBasisHTML(q))+'<div class="sw2-section-title">口径</div><div class="sw2-opinion-scroll" tabindex="0" aria-label="口径版本内容">',
       !draft && !current ? (q.recovered_records?.length ? '<div class="sw2-empty"><strong>已保留历史依据</strong>尚未建立正式版本，既有决定沿用原有依据。</div>' : '<div class="sw2-empty"><strong>候选尚未备齐</strong>AI 尚未写入完整候选口径；应先补齐内容，再交付你审阅。</div>') : '',
       !def.versions.length && q.recovered_records?.length ? recoverySummary(q) : "",
       draft ? '<article class="sw2-definition-candidate sw2-record" data-state="draft">' + recordHeading(def.versions.length + 1, true) + (groupUI?.dependencyReview(q) || '') + '<div class="sw2-definition-text sw2-record-body" data-quote-source="' + q.id + ' · 候选口径 v' + (def.versions.length + 1) + '">' + (evidenceUI && isV5()?evidenceUI.prose(q,renderMarkdown(draft.text || '候选已开启，等待编写完整口径。')):renderMarkdown(draft.text || '候选已开启，等待编写完整口径。')) + '</div><div class="sw2-definition-actions"><button class="sw2-button sw2-button-outline" data-action="edit-definition">修改候选</button><button class="sw2-button sw2-button-outline" data-action="discard-definition">' + (current ? "取消修订" : "撤回候选") + '</button></div><div class="sw2-confirm-actions"><span id="sw2-confirm-hint" role="status">' + escape(confirmationProblem(q) || '仅冻结本条，其他口径保持原状态。') + '</span><button class="sw2-button sw2-button-primary" aria-describedby="sw2-confirm-hint" data-action="approve-definition">确认并冻结本条口径</button></div><div class="sw2-record-end"><details class="sw2-record-details" data-record="candidate-meta"><summary>详情</summary><div class="sw2-record-detail-text">编号：' + q.id + '<br>状态：候选 · 尚未生效</div>' + currentHTML + historyHTML + '</details></div></article>' : '',
@@ -850,7 +862,7 @@
       !draft && !current ? historyHTML : '',
       conflictHTML,
       '</div><div class="sw2-composer sw2-answer-composer"' + (editingNow ? '' : ' hidden') + '><label class="sw2-section-title" for="sw2-answer">编辑完整候选口径<small>支持 Markdown · 保存后需确认</small></label><div id="sw2-table-editors">' + tableEditors(drafts[q.id] ?? (editingNow ? candidateText(q) : "")) + '</div><textarea id="sw2-answer" class="sw2-answer sw2-definition-editor" placeholder="写入可直接进入正式文档的完整规则、范围、条件和例外…">' + escape(drafts[q.id] ?? (editingNow ? candidateText(q) : "")) + '</textarea><details class="sw2-markdown-preview" data-record="local-preview"><summary>预览排版（未保存）</summary><div class="sw2-record-body" id="sw2-answer-preview">' + renderMarkdown(drafts[q.id] ?? (editingNow ? candidateText(q) : "")) + '</div></details><div class="sw2-answer-actions"><span id="sw2-answer-hint"></span><div class="sw2-action-pair"><button class="sw2-button sw2-button-outline" data-action="close-editor">收起编辑</button><button class="sw2-button sw2-button-primary" data-action="save-answer">保存候选</button></div></div></div><div id="sw2-answer-status" class="sw2-action-status" role="status" aria-live="polite" hidden></div>',
-      '</section>' + (isV5() && evidenceUI ? '<aside class="sw2-question-evidence">'+evidenceUI.shell(q)+'</aside>' : '') + '</div>' + provenanceHTML(q) + '</div></div><aside class="sw2-discussion-column" aria-label="逐项讨论">' + discussionResizerHTML + '<div class="sw2-talk-header"><div class="sw2-section-title">讨论<small>' + thread.length + ' 条记录</small></div><p>建议与交流 · 保存后手动通知 AI 继续</p></div><div class="sw2-thread" tabindex="0" aria-label="' + escape(q.title) + '的讨论记录">',
+      provenanceHTML(q) + '</section>' + (isV5() && evidenceUI ? '<aside class="sw2-question-evidence">'+evidenceUI.shell(q)+'</aside>' : '') + '</div></div></div><aside class="sw2-discussion-column" aria-label="逐项讨论">' + discussionResizerHTML + '<div class="sw2-talk-header"><div class="sw2-section-title">讨论<small>' + thread.length + ' 条记录</small></div><p>建议与交流 · 保存后手动通知 AI 继续</p></div><div class="sw2-thread" tabindex="0" aria-label="' + escape(q.title) + '的讨论记录">',
       jointGroup ? '<div class="sw2-shared-context">共同讨论：' + escape(jointGroup.title) + '<button class="sw2-button sw2-button-outline" data-action="dg-open" data-id="' + jointGroup.id + '" data-mode="discussion">查看整个主题</button></div>' : '',
       thread.length ? thread.map(message => (q.superseded_presentations?.includes(message.id) ? '<details class="sw2-previous-proposal"><summary>早期方案建议 · 查看完整历史</summary>' : '') + '<div class="sw2-bubble sw2-bubble-' + actorKind(message.actor) + '"><div class="sw2-bubble-head">' + (message.recovered ? historicalBadge(message.actor) : actorBadge(message.actor)) + "<span>" + (message.shared ? "共同讨论 · " + escape(shortTime(message.at)) : message.kind === "legacy_answer" ? "历史答复 · 非正式口径" : message.kind === "proposal" ? "方案建议" : message.recovered ? "历史 · " + escape(shortTime(message.at)) : escape(shortTime(message.at))) + '</span></div><div class="sw2-bubble-body" data-quote-source="' + escape((message.shared ? jointGroup.id : q.id) + ' · ' + actorLabel(message.actor) + ' · ' + (message.at ? shortTime(message.at) : '方案建议')) + '">' + renderMarkdown(message.shared ? message.text : (q.discussion_display?.[message.id] ?? message.text), discussionScope()) + "</div>" + (message.recovered ? '<details class="sw2-message-source"><summary>查看原文来源</summary>' + escape(sourceName(message.source)) + ' · 由 ' + escape(actorLabel(message.recovered_by)) + ' 回填</details>' : "") + "</div>" + (q.superseded_presentations?.includes(message.id) ? "</details>" : "")).join("") : '<div class="sw2-empty"><strong>开始这题的讨论</strong>建议、选项与实际影响都保留在这里。</div>',
       '</div><div class="sw2-composer sw2-discussion-composer">' + ((q.suggestions || []).length ? '<details class="sw2-choices"><summary>选择讨论方向 · ' + q.suggestions.length + ' 个选项</summary><div class="sw2-suggestions">' + q.suggestions.map(value => '<button class="sw2-suggestion" type="button" data-action="suggest" data-value="' + escape(value) + '">' + escape(value) + '</button>').join('') + '</div></details>' : ''),
@@ -862,7 +874,6 @@
     ].join("");
     for (const el of panel.querySelectorAll?.('details[data-record]') || []) el.open = expanded.includes(el.dataset.record);
     for (const [selector, top] of scrollPositions) { const el = panel.querySelector(selector); if (el) el.scrollTop = top; }
-    panel.querySelector(".sw2-provenance").open = Boolean(sourceOpen);
     updateDiscussionVisibility(); applyDiscussionWidth();
     evidenceUI?.hydrateAll();
   }
@@ -1024,14 +1035,15 @@
     if (returnFocus?.isConnected) returnFocus.focus();
   }
 
-  groupUI = window.CouncilGroups?.({ root, state, api, refresh, render, notice: showNotice, friendlyError, escape, workflowHTML, discussionResizerHTML, discussionShortcut, discussionShortcutAttribute, choiceContext, onOpen: () => showMobileView("detail"), onCompose: openDiscussion, onDraftChange: updateDraftUI, saveCandidate: saveAnswer,
+  groupUI = window.CouncilGroups?.({ root, state, api, refresh, render, notice: showNotice, friendlyError, escape, workflowHTML, contextHTML, discussionResizerHTML, discussionShortcut, discussionShortcutAttribute, choiceContext, onOpen: () => showMobileView("detail"), onCompose: openDiscussion, onDraftChange: updateDraftUI, saveCandidate: saveAnswer,
     reviewBasisHTML, evidenceUI, editTable: id => { editing[id] = true; state.selected = id; groupUI.clear(); render(); showMobileView('detail'); },
     discardEdits, setDraft: answerDraft, getDraft: id => drafts[id] ?? candidateText(byId(id)), pendingQuestions });
   root.addEventListener("click", async event => {
+    for(const details of root.querySelectorAll('.sw2-context-disclosure[open],.dg-member-picker[open]')) if(!details.contains(event.target)) details.open=false;
     const summary = event.target.closest('summary');
     if (summary && root.contains(summary) && summary.parentElement?.tagName === 'DETAILS' && !event.target.closest('a,button,input,select,textarea')) {
       const details = summary.parentElement;
-      if (details.animate) { event.preventDefault(); setDisclosure(details, !(disclosureMotions.get(details)?.expanded ?? details.open)); }
+      if (details.animate && !details.matches('.sw2-context-disclosure,.ce-source-picker,.dg-group-controls,.dg-member-picker')) { event.preventDefault(); setDisclosure(details, !(disclosureMotions.get(details)?.expanded ?? details.open)); }
       return;
     }
     const directoryLink = event.target.closest(".sw2-directory-link");

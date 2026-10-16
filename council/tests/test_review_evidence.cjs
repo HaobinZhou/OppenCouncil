@@ -102,7 +102,7 @@ test('reading position persists per project and question or option across contro
   global.localStorage={getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)};
   try {
     let click;
-    const box={innerHTML:''};
+    const box={innerHTML:'',focus(){}};
     const node={isConnected:true,dataset:{evidenceId:'B-000001',evidenceRevision:'1',evidenceOption:'0'},querySelector:()=>box,querySelectorAll:()=>[]};
     const root={dataset:{projectId:'p1'},contains:()=>true,addEventListener:(_,fn)=>{click=fn;},querySelectorAll:selector=>selector==='.ce-review'?[node]:[]};
     const init=()=>create({root,markdown:markdown.render,api:async()=>payload});
@@ -117,4 +117,28 @@ test('reading position persists per project and question or option across contro
     create({root,api:async()=>({...payload,option:1})}).hydrateAll();await new Promise(setImmediate);
     assert.match(box.innerHTML,/ce-detail-heading">依据 \[1\]/);
   } finally {global.localStorage=old;}
+});
+
+test('catalog is collapsed by default while selected full citation and exact record stay readable',()=>{
+  const html=content(payload,three.path);
+  assert.match(html,/<details class="ce-source-picker"><summary>/);
+  assert.doesNotMatch(html,/<details class="ce-source-picker" open/);
+  assert.match(html,/全部 3 条依据/);
+  assert.match(html,/ce-detail-heading">依据 \[3\]/);
+  assert.match(html,new RegExp(three.path.replaceAll('.','\\.')));
+  assert.ok(html.indexOf('</details><article class="ce-source-detail"')>0);
+});
+
+test('refresh restores source detail scroll without moving the source catalog',async()=>{
+  const handlers={}, box={innerHTML:''}, picker={open:false};
+  let node;
+  const detail={scrollTop:0,classList:{contains:name=>name==='ce-source-detail'},closest:()=>node};
+  node={isConnected:true,dataset:{evidenceId:payload.id,evidenceRevision:String(payload.revision),evidenceOption:String(payload.option)},querySelector:s=>s==='.ce-content'?box:s==='.ce-source-detail'?detail:s==='.ce-source-picker'?picker:null,querySelectorAll:()=>[]};
+  const root={dataset:{projectId:'scroll-test'},addEventListener:(name,fn)=>handlers[name]=fn,querySelectorAll:s=>s==='.ce-review'?[node]:[]};
+  const ui=create({root,api:async()=>payload});
+  ui.hydrateAll();await new Promise(setImmediate);
+  detail.scrollTop=240;handlers.scroll({target:detail});
+  detail.scrollTop=0;
+  ui.hydrateAll();await new Promise(setImmediate);
+  assert.equal(detail.scrollTop,240);assert.equal(picker.open,false);
 });

@@ -85,7 +85,7 @@
 
   function content(payload, selectedPath, markdown = text => escape(text)) {
     const view=model(payload), selected=view.sources.find(s=>s.path===selectedPath) || view.sources[0];
-    if(!selected) return '<p class="ce-empty">'+(payload.option==null?'此条尚未关联文献或核查依据。':'此方案尚未关联文献或核查依据。可在下方各条 F 中查阅其自身依据。')+'</p>'+ (payload.member_ids || []).map(id=>'<button type="button" class="sw2-button ce-jump" data-evidence-jump="'+escape(id)+'">'+escape(id)+' 的依据</button>').join('')+(payload.unavailable?.length?'<p class="ce-error">已关联的依据暂时无法读取，请刷新后重试。</p>':'');
+    if(!selected) return '<p class="ce-empty">'+(payload.option==null?'此条尚未关联文献或核查依据。':'此方案尚未关联文献或核查依据。可切换到各条 F 查阅其自身依据。')+'</p>'+ (payload.member_ids || []).map(id=>'<button type="button" class="sw2-button ce-jump" data-evidence-jump="'+escape(id)+'">'+escape(id)+' 的依据</button>').join('')+(payload.unavailable?.length?'<p class="ce-error">已关联的依据暂时无法读取，请刷新后重试。</p>':'');
     const list=view.sources.map(source=>'<button type="button" class="ce-source" data-evidence-source="'+escape(source.path)+'" aria-pressed="'+(source.path===selected.path)+'"><span class="ce-number">['+source.number+']</span><span><strong>'+escape(source.citation || '依据暂时无法读取')+'</strong><small>'+escape(types[source.source_type] || '')+'</small></span></button>').join('');
     const related=view.claims.filter(c=>[...c.citations,...c.counters].some(r=>r.path===selected.path));
     const source=selected;
@@ -98,11 +98,11 @@
       '<p class="ce-version">引用记录：'+escape(source.path)+(source.version?'<br>'+escape(source.id)+' · 第 '+source.version+' 版':'')+(source.retrieved_at?'<br>核查日期：'+escape(source.retrieved_at):'')+'</p></details></article>';
     return (selectedPath && selectedPath!==selected.path?'<p class="ce-error" role="status">上次阅读的引用版本已不在本条依据中，现显示第一条依据。</p>':'')+
       (payload.unavailable?.length?'<p class="ce-error" role="status">部分已关联依据暂时无法读取；未用其他版本替代。</p>':'')+
-      '<div class="ce-source-list" aria-label="按引用顺序排列的依据">'+list+'</div>'+detail;
+      '<details class="ce-source-picker"><summary><span class="ce-source-current">['+source.number+'] '+escape(source.citation || '依据暂时无法读取')+'</span><span class="ce-source-count">全部 '+view.sources.length+' 条依据</span></summary><div class="ce-source-list" aria-label="按引用顺序排列的依据">'+list+'</div></details>'+detail;
   }
 
-  function create({root, api, markdown}) {
-    const cache = new Map(), selections = new Map();
+  function create({root, api, markdown, onJump = () => {}}) {
+    const cache = new Map(), selections = new Map(), readingPositions = new Map();
     const storageKey=(id,option)=>'oppencouncil:evidence:v1:'+root.dataset?.projectId+':'+id+':'+(option ?? 'question');
     const selected=(id,option)=>{
       const k=storageKey(id,option);
@@ -127,7 +127,7 @@
     function shell(record, option=null, view="sources") {
       const k=key(record.id,record.revision,option), cached=cache.get(k);
       const heading=view==='judgments' ? '' : '<div class="ce-heading"><h3>'+(option==null?escape(record.id)+' · 参考文献与依据':'方案 '+String.fromCharCode(65+option)+' 的引用依据')+'</h3><span>按首次引用排序</span></div>';
-      return '<section class="ce-review ce-'+view+'" data-evidence-view="'+view+'" data-evidence-id="'+escape(record.id)+'" data-evidence-revision="'+record.revision+'"'+(option == null?'':' data-evidence-option="'+option+'"')+'>'+heading+'<div class="ce-content" aria-live="polite">'+(cached?.payload?viewHTML(cached.payload,view,selected(record.id,option)):'<p class="ce-empty" role="status">正在读取此选择的依据…</p>')+'</div></section>';
+      return '<section class="ce-review ce-'+view+'" tabindex="-1" data-evidence-view="'+view+'" data-evidence-id="'+escape(record.id)+'" data-evidence-revision="'+record.revision+'"'+(option == null?'':' data-evidence-option="'+option+'"')+'>'+heading+'<div class="ce-content" aria-live="polite">'+(cached?.payload?viewHTML(cached.payload,view,selected(record.id,option)):'<p class="ce-empty" role="status">正在读取此选择的依据…</p>')+'</div></section>';
 
     }
     function attributes(node) {
@@ -147,7 +147,13 @@
       try {
         const payload=entry.payload || await entry.pending;
         if (node.isConnected && attributes(node).key===k) {
+          const path=selected(context.id,context.option) || model(payload).sources[0]?.path;
+          const detailTop=readingPositions.get(k+':'+path) || 0;
+          const pickerOpen=node.querySelector('.ce-source-picker')?.open || false;
           node.querySelector('.ce-content').innerHTML=viewHTML(payload,node.dataset.evidenceView,selected(context.id,context.option));
+          const detail=node.querySelector('.ce-source-detail'), picker=node.querySelector('.ce-source-picker');
+          if(detail) detail.scrollTop=detailTop;
+          if(picker) picker.open=pickerOpen;
           if(node.querySelectorAll) revealIndex(node,selected(context.id,context.option));
           for(const text of root.querySelectorAll('.ce-prose')) {
             if(attributes(text).key===k && text.dataset.annotated!==k) {
@@ -168,12 +174,19 @@
       else if(y+button.offsetHeight>list.clientHeight) list.scrollTop+=y+button.offsetHeight-list.clientHeight;
     }
     function hydrateAll() { for (const node of root.querySelectorAll('.ce-review')) hydrate(node); }
+    root.addEventListener('scroll',event=>{
+      if (!event.target.classList?.contains('ce-source-detail')) return;
+      const context=attributes(event.target.closest('.ce-review')), payload=cache.get(context.key)?.payload;
+      const path=selected(context.id,context.option) || (payload && model(payload).sources[0]?.path);
+      if(path) readingPositions.set(context.key+':'+path,event.target.scrollTop);
+    },true);
     root.addEventListener('click',event=>{
       const jump=event.target.closest('[data-evidence-jump]');
       if(jump && root.contains(jump)) {
+        onJump(jump.dataset.evidenceJump);
         const target=[...root.querySelectorAll('.ce-sources')].find(n=>n.dataset.evidenceId===jump.dataset.evidenceJump);
         target?.scrollIntoView?.({block:'start',behavior:'auto'});
-        target?.querySelector('.ce-source')?.focus({preventScroll:true});
+        (target?.querySelector('.ce-source-picker summary') || target)?.focus?.({preventScroll:true});
         return;
       }
       const button=event.target.closest('[data-evidence-source]');
@@ -182,15 +195,15 @@
       if (!payload || !model(payload).sources.some(s=>s.path===button.dataset.evidenceSource)) return;
       const isCitation=button.classList.contains('ce-citation');
       const context=attributes(node); remember(context.id,context.option,button.dataset.evidenceSource);
+      readingPositions.delete(k+':'+button.dataset.evidenceSource);
       for (const target of root.querySelectorAll('.ce-review')) {
         if (attributes(target).key!==k || target.dataset.evidenceView==='judgments') continue;
         target.querySelector('.ce-content').innerHTML=content(payload,button.dataset.evidenceSource,markdown);
         revealIndex(target,button.dataset.evidenceSource);
-        const next=[...target.querySelectorAll('.ce-source')].find(b=>b.dataset.evidenceSource===button.dataset.evidenceSource);
         if(isCitation) {
           const detail=target.querySelector('.ce-source-detail');
           target.scrollIntoView?.({block:'nearest',behavior:'auto'}); detail?.focus({preventScroll:true});
-        } else next?.focus({preventScroll:true});
+        } else target.querySelector('.ce-source-picker summary')?.focus({preventScroll:true});
       }
 
     });
