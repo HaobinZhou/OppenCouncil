@@ -253,3 +253,16 @@ findings are outside the link layout. The relevant 102 frontend checks passed.
 The actual installed webpage was inspected at desktop and narrow widths; no
 document-wide horizontal overflow was observed. Source-paragraph organization is
 also part of the Skill, rather than a renderer-generated rewrite of the evidence.
+
+In the bounded readability continuation, 38 long source summaries received
+paragraphs, headings and selective emphasis; 23 already readable source versions
+were retained. Removing the added formatting reproduced every original character
+in order. The three formatting scope owners each completed preparation, self-check
+and their own saved-page readback with the same responsibilities. The unchanged
+history scope completed its record checks but could not access its browser; this
+is recorded as a limitation, not counted as owner-side webpage acceptance. The
+coordinator inspected the resulting question and option panels, and the evaluator
+opened all 38 changed source cards in the actual installed webpage. Formal
+versions, candidate rules, human choices, old evidence and protected project files
+were preserved. This supports this bounded formatting outcome, not a general
+claim that task-parallel delegation guarantees scientific quality.
