@@ -91,7 +91,7 @@
     const source=selected;
     const detail='<article class="ce-source-detail" tabindex="-1" aria-label="所选依据详情"><div class="ce-detail-heading">依据 ['+source.number+'] <span>'+escape(types[source.source_type] || '')+'</span></div><div class="ce-full-citation">'+escape(source.citation || '依据暂时无法读取')+'</div>'+
       (source.verification?'<p class="ce-verification">'+escape(checks[source.verification] || source.verification)+'</p>':'')+
-      (links(source).length?'<div class="ce-links">'+links(source).map((url,i)=>'<a href="'+escape(url)+'" target="_blank" rel="noopener noreferrer">'+(i?'原文链接 '+(i+1):'打开原文')+' ↗</a>').join(''):'')+
+      (links(source).length?'<div class="ce-links">'+links(source).map((url,i)=>'<a href="'+escape(url)+'" target="_blank" rel="noopener noreferrer">'+(i?'原文链接 '+(i+1):'打开原文')+' ↗</a>').join('')+'</div>':'')+
       (source.summary?'<section class="ce-source-summary"><h5>'+(source.source_type==='project_fact'||source.source_type==='engineering_constraint'?'实际依据':'文献内容')+'</h5><div class="sw2-record-body">'+markdown(source.summary)+'</div></section>':'')+
       related.map(claim=>'<div class="ce-related"><h5>'+(claim.counters.some(r=>r.path===source.path)?'相反或限制性依据':'支持的判断')+'</h5><div class="sw2-record-body">'+markdown(claim.claim)+'</div>'+(claim.applicability?'<h5>适用条件与边界</h5><div class="sw2-record-body">'+markdown(claim.applicability)+'</div>':'')+'</div>').join('')+
       (!source.summary&&source.read_scope?'<h5>来源说明（旧记录）</h5><div class="sw2-record-body">'+markdown(source.read_scope)+'</div>':'')+

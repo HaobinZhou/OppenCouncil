@@ -55,6 +55,12 @@ test('versions remain distinct and citations cannot inject markup or unsafe link
   assert.match(html,/target="_blank" rel="noopener noreferrer"/);
 });
 
+test('original-link controls close before the source findings and their interpretations',()=>{
+  const source={...one,citation:'Study https://example.org/paper',summary:'Relevant study findings'};
+  const html=content({...payload,sources:[source],claims:[]},source.path,markdown.render);
+  assert.match(html,/<div class="ce-links"><a [^>]+>打开原文 ↗<\/a><\/div><section class="ce-source-summary">/);
+});
+
 test('missing cited versions stay visible and cannot borrow a different record',()=>{
   const html=content({...payload,sources:[one],unavailable:[two.path,three.path]});
   assert.match(html,/部分已关联依据暂时无法读取/);
