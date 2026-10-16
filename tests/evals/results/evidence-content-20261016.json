@@ -1,8 +1,8 @@
 {
   "date": "2026-10-16",
   "protocol": "Fresh agents with no inherited conversation; ordinary task and actual Skill plus bounded private review-record inputs. No corrective feedback. Normal helper commits and actual browser inspection. Raw private records excluded from product source.",
-  "scope_limit": "Seven completed runs, including two full-project content failures. A fresh trial with an independent review role is pending. Live content submission and local installation are not established by this file.",
-  "observed_admission": "Longer first-round guidance not admitted. Focused guidance improved a small pair and transferred to one group. Scoped delegation plus source/claim guidance improved substance but still failed full-scope content acceptance. A separate fresh reviewer role is under evaluation.",
+  "scope_limit": "Fourteen completed trial records, including earlier full-project content failures and two later paired review-only checks. These are historical experiments; they do not establish a flawless first pass or validate later user-required task-parallel delegation.",
+  "observed_admission": "Longer first-round guidance and both later additional reviewer reminders were not admitted. Focused guidance and normal-path corrective review improved inspected content. Subsequent user requirements route definition choices to Council, organize source-card paragraphs, and give all task-parallel scope owners identical end-to-end responsibilities; the separate reviewer-agent role is removed.",
   "runs": [
     {
       "round": "initial_pair",
@@ -730,6 +730,110 @@
         "Original source substance was inherited from input, not newly produced by this rule.",
         "Final every-scope fresh-context wording was not present in this snapshot."
       ]
+    },
+    {
+      "round": "rendered_existing_content_review",
+      "arm": "candidate",
+      "reference_sha256": "0ee214bb80b17702a0724290c5f0ea59de7f6b408b972fe93d3c85a767ea2e0e",
+      "outcome_sha256": "ed4e2ea4d4a4d3a605c2b5c5c975fa89864d40e727d1a44b3a6af64e2991b0cd",
+      "scope": {
+        "questions": 12,
+        "groups": 1,
+        "options": 1,
+        "inline_alternatives": 2
+      },
+      "mode": "fresh_context_read_only_review",
+      "ordinary_prompt_without_expected_findings": true,
+      "helper_submission_exit_codes": [],
+      "parent_acceptance": "no_additional_runtime_wording_admitted",
+      "findings_count": 4,
+      "comparison_decision": "Both arms identified the same core coverage and confirmation-state problems. No clear additional benefit from the candidate wording in this small text-export review; do not add it to the runtime Skill.",
+      "limits": [
+        "Both arms received real rendered text up front, so this does not test whether a reviewer independently chooses to open the browser.",
+        "This is a read-only review trial, not an end-to-end repair pass.",
+        "Missing export expansion is not evidence of missing product data. Parent subsequently opened eight history views and the inline control in the actual browser."
+      ],
+      "input_files_unchanged": true,
+      "rendered_export_supplied": true
+    },
+    {
+      "round": "rendered_existing_content_review",
+      "arm": "deletion",
+      "reference_sha256": "8cf82779897bf79e41bfe27a047b7a55c10090eb22f2126f6a9174bf0420b0e4",
+      "outcome_sha256": "46104b8c0453627d4d185f1c4fd4add9302cc1bbd457bb4e05a3cfef97c73e64",
+      "scope": {
+        "questions": 12,
+        "groups": 1,
+        "options": 1,
+        "inline_alternatives": 2
+      },
+      "mode": "fresh_context_read_only_review",
+      "ordinary_prompt_without_expected_findings": true,
+      "helper_submission_exit_codes": [],
+      "parent_acceptance": "no_additional_runtime_wording_admitted",
+      "findings_count": 3,
+      "comparison_decision": "Both arms identified the same core coverage and confirmation-state problems. No clear additional benefit from the candidate wording in this small text-export review; do not add it to the runtime Skill.",
+      "limits": [
+        "Both arms received real rendered text up front, so this does not test whether a reviewer independently chooses to open the browser.",
+        "This is a read-only review trial, not an end-to-end repair pass.",
+        "Missing export expansion is not evidence of missing product data. Parent subsequently opened eight history views and the inline control in the actual browser."
+      ],
+      "input_files_unchanged": true,
+      "rendered_export_supplied": true
+    },
+    {
+      "round": "explicit_browser_review_wording",
+      "arm": "candidate",
+      "reference_sha256": "d3841e11a652b4ec14f84ba7d8a42bf2c4d93be63d66e241cbfef188bc69e797",
+      "outcome_sha256": "e6d4a9d8d10ce121dc043739fdc884c54052fe3c908cbc82ba1f4cda3a1cd267",
+      "scope": {
+        "questions": 12,
+        "groups": 1,
+        "options": 1,
+        "inline_alternatives": 2
+      },
+      "mode": "fresh_context_read_only_review",
+      "ordinary_prompt_without_expected_findings": true,
+      "helper_submission_exit_codes": [],
+      "parent_acceptance": "no_additional_runtime_wording_admitted",
+      "findings_count": 3,
+      "comparison_decision": "Do not admit the replacement: both arms used the real webpage and found actionable content/status inconsistencies. The current-Skill arm inspected expanded recovered content and gave the more precise missing-rule finding.",
+      "limits": [
+        "One pair of read-only reviews cannot establish reliability across projects.",
+        "No scientific answer or suspected defect was supplied in either review prompt.",
+        "Reviews are inputs to the normal correction workflow, not accepted as authoritative without checking.",
+        "This comparison does not measure preparation quality or token savings."
+      ],
+      "input_files_unchanged_at_post_review_check": true,
+      "actual_browser_used": true,
+      "rendered_export_supplied": false
+    },
+    {
+      "round": "explicit_browser_review_wording",
+      "arm": "deletion",
+      "reference_sha256": "8cf82779897bf79e41bfe27a047b7a55c10090eb22f2126f6a9174bf0420b0e4",
+      "outcome_sha256": "010f1b4ee28754e9408997fb6ea22196f73cb0bed894bf9821c9a268618f6bd1",
+      "scope": {
+        "questions": 12,
+        "groups": 1,
+        "options": 1,
+        "inline_alternatives": 2
+      },
+      "mode": "fresh_context_read_only_review",
+      "ordinary_prompt_without_expected_findings": true,
+      "helper_submission_exit_codes": [],
+      "parent_acceptance": "no_additional_runtime_wording_admitted",
+      "findings_count": 3,
+      "comparison_decision": "Do not admit the replacement: both arms used the real webpage and found actionable content/status inconsistencies. The current-Skill arm inspected expanded recovered content and gave the more precise missing-rule finding.",
+      "limits": [
+        "One pair of read-only reviews cannot establish reliability across projects.",
+        "No scientific answer or suspected defect was supplied in either review prompt.",
+        "Reviews are inputs to the normal correction workflow, not accepted as authoritative without checking.",
+        "This comparison does not measure preparation quality or token savings."
+      ],
+      "input_files_unchanged_at_post_review_check": true,
+      "actual_browser_used": true,
+      "rendered_export_supplied": false
     }
   ]
 }

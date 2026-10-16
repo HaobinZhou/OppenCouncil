@@ -188,3 +188,68 @@ readback recovered concrete rules and historical reasons, with repetitive
 source/claim text still present. The role wording now explicitly queues remaining
 preparation scopes for the next available slot; sequential fallback applies when
 the environment cannot run subagents. Live content acceptance is still underway.
+
+## Independent browser-review wording checks
+
+Two subsequent pairs tested additional review wording without supplying expected
+defects or correction text. Each covered twelve existing questions and one group
+with two inline alternatives. These were read-only reviews, not new preparation
+or repair runs.
+
+The first pair received identical rendered exports and original records. Both
+arms identified incomplete export coverage and inconsistent historical status
+wording. Neither established an advantage for adding a reminder to apply the
+completeness checks to existing displayed content. The evaluator then opened the
+recovered-source sections and inline control in the real webpage: the full table
+and categorical definitions were present. Missing export content was not evidence
+that the product lacked those records. The extra wording was not admitted.
+
+The second pair could independently use the actual browser. Its candidate changed
+the reviewer sentence from reading saved records to explicitly reading questions,
+options and cited source cards in the webpage. Both arms used the browser. The
+unchanged-Skill arm inspected expanded history and identified a missing current
+cleaning paragraph; the candidate overstated the issue as an absent table. Both
+found current-versus-historical explanation problems. This pair did not support
+the replacement, which also was not admitted.
+
+The original reports were passed to the existing coordinator as normal review
+inputs under the installed Skill, with instructions to check them rather than
+treat them as authority. No evaluator-authored scientific answer was supplied.
+The coordinator independently rejected the overbroad missing-table finding and
+completed the normal correction/readback cycle for the missing current rules and
+historical-status explanations. This is a repeated review workflow,
+not evidence of a flawless first pass. It does not measure token savings or prove
+that delegation prevents compression.
+
+The evaluator also read the question-specific source context for all 51 questions
+and all ten option-specific panels. Reading a shared source once is insufficient
+to verify every claim attached to it. This final pass found a deterministic link
+extraction defect: citation punctuation and a parenthesized access date could be
+included in a generated original-source URL. The renderer now terminates URLs at
+those delimiters while retaining legitimate paths, queries and fragments. All 13
+source-panel unit tests passed, including this regression; no source record or
+scientific choice is rewritten by the rendering fix.
+
+## Human review and task boundaries
+
+The user subsequently required project-definition choices to be discussed and
+collected in Council, with chat used to link to the pending item. Operational
+questions and an explicit request to discuss a choice in chat remain exceptions.
+The live workflow produced a plain-language choice with two working options in
+Council; the evaluator opened the options without selecting or saving one.
+
+The user also required task parallelism with identical responsibilities for every
+scope owner. The current Skill therefore assigns each complete decision scope to
+one agent for source checks, complete preparation, self-review and webpage readback.
+The coordinator integrates through the normal helper and performs final webpage
+acceptance. The former separate reviewer-agent role is removed. Earlier trials
+above describe the earlier workflow and are not evidence for this revised one.
+
+Readability changes retain the existing navigation, full text, option comparison,
+discussion and source controls. Substantive text uses dark ink, larger type and
+clear section spacing; source interpretations are visually grouped with their
+conditions. A missing closing tag in the original-link controls was also fixed so
+findings are outside the link layout. The relevant 102 frontend checks passed.
+The actual installed webpage was inspected at desktop and narrow widths; no
+document-wide horizontal overflow was observed. Source-paragraph organization is
+also part of the Skill, rather than a renderer-generated rewrite of the evidence.
