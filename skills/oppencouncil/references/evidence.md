@@ -8,6 +8,8 @@ Source value: `schema_version:1`, `id`, `version`, `source_type`, `verification`
 
 For curated sources, `summary` explains what the source found before applying it to this project. For an empirical study, give the relevant population and setting, design or comparison, and results with the numbers and uncertainty needed to interpret them. For a method, explain its result and assumptions; for a local check, report the observations and their scope. Select enough substance for a reader to assess the cited inference. A topic description or a list of limitations alone is incomplete.
 
+Make the source card readable in Council: use short paragraphs and descriptive Markdown headings to separate the study or method, relevant findings, and applicability. Emphasize the few results that carry the inference; retain the numbers, qualifications and context needed to interpret them instead of compressing them into one dense paragraph.
+
 `read_scope` records what was inspected; `location` identifies the relevant passage or result. `summary` is optional in storage (1–10000 characters) so old versions remain readable; add a new version to improve an existing source, preserving the old one.
 
 Research recommendation bases require original-text verification for literature sources. A `project_fact` or `engineering_constraint` can instead use `code_check`, `data_check` or `measurement`; abstract-only and model-only material cannot establish those facts. The type describes the actual source, not a way to bypass its verification requirement.
