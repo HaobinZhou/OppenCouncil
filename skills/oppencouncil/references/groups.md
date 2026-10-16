@@ -44,6 +44,11 @@ repeat paths within one array are not. The source and claim versions must exist.
 An omitted or empty array shows no option evidence: the web page does not infer
 an option's references from the group, other options, or member questions.
 
+Write option-specific claims wherever the reasoning differs from a member's
+default. Each option's reference list follows those claims and any genuinely
+shared findings. When citing another approach to explain a trade-off, identify
+that approach and the comparison in the claim.
+
 List references in first-use order. The page expands each claim's `sources`,
 then `counter_sources`, and assigns display numbers by first occurrence of an
 exact source-version path. Repeated citations reuse their number; each option

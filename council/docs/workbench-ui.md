@@ -154,7 +154,7 @@ external submissions as appraised evidence. Missing versions remain visible.
 Display numbers start at 1 for each choice and follow first citation order
 through its saved reference list and each claim's supporting/counter sources.
 Deduplicate by exact source-version path. Display citation, verification method,
-linked judgment, applicability, read scope, original location/link and the
+source summary, linked judgment, applicability, original location/link and the
 immutable version. Rapid option switching or a stale response must never paint
 one option's references into another. Local browsing does not change F/B records.
 
@@ -175,10 +175,18 @@ unknown IDs, code and existing hyperlinks are left intact. Stored project text a
 citation relationships are never rewritten by rendering.
 
 The reader provides a compact ordered index and a separately scrollable detail.
-Full citations, original links, applicability, reading scope, location and exact
+Full citations, source summaries, original links, applicability, location and exact
 version remain accessible. The selected exact source path persists per site,
 project, F/option in local browser storage; a removed reference produces an explicit
 fallback notice. Browser storage failure does not prevent reading.
+
+Source `summary` contains the actual findings or methodological guidance, before
+the linked project judgment. `read_scope` is a record of what was inspected, not
+the source's conclusion. Legacy versions without a summary retain their original
+source description; rendering never invents a summary or changes the binding.
+Content repair appends source/claim versions through the ordinary work transaction
+and checks the result in the browser. A passing field validator does not establish
+that the summary, inference or recommendation is scientifically adequate.
 
 Discussion starts collapsed and remains manually accessible. Both restored and
 new widths are constrained to the available workspace (32%, up to 480px, with a

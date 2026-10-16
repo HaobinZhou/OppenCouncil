@@ -197,6 +197,7 @@ class Freezes:
             "source_type",
             "verification",
             "citation",
+            "summary",
             "read_scope",
             "retrieved_at",
             "location",

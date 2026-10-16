@@ -52,6 +52,8 @@ def validate_evidence(path, value):
             raise FreezeError("Source requires a source type and verification method")
         require_text(value.get("citation"), "source citation", 5000)
         require_text(value.get("read_scope"), "source reading scope", 5000)
+        if "summary" in value:
+            require_text(value["summary"], "source summary", 10000)
         require_text(value.get("retrieved_at"), "source retrieval time", 100)
         if value.get("disclosure") not in {"local", "shared"}:
             raise FreezeError("Source must declare local or shared disclosure")

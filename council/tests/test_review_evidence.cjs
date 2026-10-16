@@ -30,6 +30,20 @@ test('each option starts at one and excludes the other option and unbound choice
   assert.match(content({...b,claims:[],sources:[],bound:false}),/此方案尚未关联/);
 });
 
+test('source findings precede interpretation and checking notes do not substitute for findings',()=>{
+  const source={...one,summary:'Among **30** synthetic observations, 18 had a measurement.',read_scope:'Audit-only process note'};
+  const input={...payload,sources:[source],claims:[{claim:'Coverage differs by group',applicability:'Compare measured groups',sources:[one.path]}]};
+  const html=content(input,one.path,markdown.render);
+  assert.match(html,/Among <strong>30<\/strong> synthetic observations, 18 had a measurement/);
+  assert.ok(html.indexOf('Among')<html.indexOf('Coverage differs'));
+  assert.doesNotMatch(html,/Audit-only process note/);
+  assert.match(html,/Section 2/);
+  assert.match(html,new RegExp(one.path.replaceAll('.','\\.')));
+  const legacy=content({...input,sources:[{...one,read_scope:'Legacy substantive observation'}]},one.path,markdown.render);
+  assert.match(legacy,/Legacy substantive observation/);
+  assert.doesNotMatch(legacy,/Among|ce-source-summary/);
+});
+
 test('versions remain distinct and citations cannot inject markup or unsafe links',()=>{
   const newer=s('000001',2);
   assert.equal(model({...payload,claims:[],sources:[one,newer]}).sources.length,2);

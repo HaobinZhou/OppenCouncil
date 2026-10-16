@@ -29,6 +29,18 @@ test('group save reconciles an uncertain response by request, actor and exact te
   await s.click('post');assert.equal(s.ui.pending().length,0);assert.equal(s.group.messages.length,2);
   assert.equal(s.state.busy,false);
 });
+
+test('closed v5 historical items do not claim to await discussion or gain formal approval',()=>{
+  const s=setup();s.state.snapshot.governance_version=5;
+  const q={work:{phase:'closed'},readiness:{status:'discuss'}};
+  assert.equal(s.ui.status(q),'已结束');
+  assert.equal(s.ui.status({...q,readiness:{status:'effective'}}),'已确认');
+  assert.equal(s.ui.status({...q,readiness:{status:'needs_review'}}),'依据已更新 · 待复核');
+  assert.equal(s.ui.status({...q,work:{phase:'triage'}}),'待讨论');
+  s.state.snapshot.governance_version=4;
+  assert.equal(s.ui.status(q),'待讨论');
+  assert.equal(s.calls.length,0);
+});
 test('joint approval blocks local unsaved data and submits the reviewed token',async()=>{
   const s=setup();s.type('Unsaved');await s.click('approve');assert.equal(s.calls.length,0);
   await s.click('post');await s.click('approve');

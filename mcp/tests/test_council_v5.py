@@ -161,6 +161,7 @@ def source(identifier, disclosure):
         "source_type": "project_fact",
         "verification": "measurement",
         "citation": "SECRET-local-fact" if disclosure == "local" else "Public source",
+        "summary": "SECRET-local-summary" if disclosure == "local" else "18 of 30 synthetic records measured",
         "read_scope": "Observed synthetic measurement",
         "retrieved_at": "2026-10-14",
         "disclosure": disclosure,
@@ -222,6 +223,7 @@ def test_local_evidence_and_machine_notes_never_leak_through_any_export(context)
     ]
     assert "SECRET" not in json.dumps(views)
     read_claim = adapter.read_evidence(pid, claim)
+    assert adapter.read_evidence(pid, public)["summary"] == "18 of 30 synthetic records measured"
     assert read_claim["sources"] == [public] and read_claim["has_undisclosed_sources"]
     assert private not in adapter.read_work(pid, q["id"])["evidence_refs"]
     assert adapter.work_index(pid)["total"] == 1

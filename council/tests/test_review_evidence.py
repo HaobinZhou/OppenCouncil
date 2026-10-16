@@ -78,6 +78,40 @@ def test_new_source_version_never_substitutes_for_the_version_under_review(work)
     assert all(s["version"] == 1 for s in missing["sources"])
 
 
+def test_source_summary_survives_normal_commit_and_exact_review_binding(work):  # noqa: F811
+    first, _, claim, _, group = seed_evidence(work)
+    original_source = work.evidence(first["path"])
+    newer = evidence_records(version=2)[0]
+    newer["value"]["summary"] = "In the synthetic cohort, 18 of 30 records had a measurement."
+    revised = copy.deepcopy(claim)
+    revised["path"] = claim["path"].replace("r000001", "r000002")
+    revised["value"].update(version=2, sources=[newer["path"]], counter_sources=[])
+    work.commit_work(
+        {"read_set": work.read("F-000001")["read_set"],
+         "evidence": [newer, revised],
+         "changes": [{"id": "F-000001", "review_basis": {
+             "claims": [revised["path"]], "summary": "Measurement coverage"}}]},
+        request_id="source-substance",
+    )
+    result = review_evidence(work.store, "F-000001")
+    assert result["sources"][0]["summary"] == newer["value"]["summary"]
+    assert work.evidence(first["path"]) == original_source
+    older = review_evidence(work.store, group["id"], option=0)
+    assert all("summary" not in source for source in older["sources"])
+
+
+@pytest.mark.parametrize("summary", [None, "", "  ", [], "x" * 10001])
+def test_malformed_optional_source_summary_rejects_whole_transaction(work, summary):  # noqa: F811
+    source = evidence_records()[0]
+    source["value"]["summary"] = summary
+    before = work.store.snapshot()
+    with pytest.raises(FreezeError, match="source summary"):
+        work.commit_work({"read_set": {}, "changes": [], "evidence": [source]},
+                         request_id="invalid-summary")
+    assert work.store.snapshot() == before
+    assert not (work.store.root / source["path"]).exists()
+
+
 @pytest.mark.parametrize("option", [None, -1, 99, True, "0"])
 def test_group_requires_one_valid_option(work, option):  # noqa: F811
     *_, group = seed_evidence(work)

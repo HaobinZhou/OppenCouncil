@@ -25,7 +25,9 @@ window.CouncilGroups = function ({ root, state, api, refresh, render, notice, fr
   const key = () => 'council-groups:drafts:' + state.snapshot.project;
   const uuid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random();
   const button = (action, text, data = '') => `<button type="button" class="sw2-button ${['post','save-candidate','approve','approve-member'].includes(action) ? 'sw2-button-primary' : 'sw2-button-outline'}" data-action="dg-${action}" ${data}>${text}</button>`;
-  const status = q => ({ waiting: '等待前序', needs_review: '依据已更新 · 待复核', ready: '候选可审阅', effective: '已确认', discuss: '待讨论' })[q.readiness?.status] || '待讨论';
+  const status = q => compact() && q.work?.phase === 'closed' && [undefined,'discuss'].includes(q.readiness?.status)
+    ? '已结束'
+    : ({ waiting: '等待前序', needs_review: '依据已更新 · 待复核', ready: '候选可审阅', effective: '已确认', discuss: '待讨论' })[q.readiness?.status] || '待讨论';
   const when = value => value ? new Date(value).toLocaleString('zh-CN', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:false }) : '';
   const actor = value => ({ user:'你', codex:'Codex', chatgpt:'ChatGPT', external_ai:'外部 AI · 未经本地核查' })[value] || '来源未记录';
   function saveLocal() {
