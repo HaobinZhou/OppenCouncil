@@ -10,9 +10,9 @@ Read [evidence.md](evidence.md) when preparing or reassessing a review basis, in
 
 For a review spanning several independent questions or groups, parallelize complete decision scopes, keeping linked members, alternatives and evidence together. Every subagent has the same end-to-end responsibility for its assigned scope. Do not divide agents into different roles such as literature search, analysis, writing or review, or pass one scope through a chain of specialist agents. Start each with a fresh context, its scope and file pointers. Assign a shared source to one of the scope owners so other scopes can reuse its checked findings.
 
-Each scope owner reads this Skill and the relevant references, checks the original sources, prepares the full source and claim content and complete alternatives, and checks its own result against the originals. After integration, the same owner reads its saved F or options and cited evidence in the webpage and resolves deficiencies within that scope. Retain the substance needed for judgment throughout; a short handoff summary does not replace the complete work. Scope owners do not coordinate another full review.
+Each scope owner reads this Skill and the relevant references, checks the original sources, prepares the full source and claim content and complete alternatives, and checks its own result against the originals. After integration, the same owner reads back its saved F or options and cited evidence, checks the presentation in the chosen review channel, and resolves deficiencies within that scope. Retain the substance needed for judgment throughout; a short handoff summary does not replace the complete work. Scope owners do not coordinate another full review.
 
-The coordinating agent integrates the separate drafts, resolves cross-scope conflicts and performs managed writes through the normal helper. It remains responsible for final acceptance of every resulting F or option and its cited evidence in the webpage; unresolved substantive gaps remain explicit. Queue remaining scopes for the next available slot rather than changing agent roles or absorbing all remaining scopes into the coordinator. If the environment cannot run subagents, complete bounded scopes sequentially, retaining their full content before continuing.
+The coordinating agent integrates the separate drafts, resolves cross-scope conflicts and performs managed writes through the normal helper. It remains responsible for final acceptance of every resulting F or option and its cited evidence in the chosen review channel; unresolved substantive gaps remain explicit. Queue remaining scopes for the next available slot rather than changing agent roles or absorbing all remaining scopes into the coordinator. If the environment cannot run subagents, complete bounded scopes sequentially, retaining their full content before continuing.
 
 ## Prepare the decision
 
@@ -44,7 +44,7 @@ Available change fields:
 | `evidence_impact` | `{classification: non_material\|needs_check\|weakened\|reassessed, reason, refs}` |
 | `external_brief` | `{disclosure: "shared", summary, questions?, uncertainties?, applicability?, excluded_directions?}`; optional values are text |
 
-Research/output-specification review requires checked source versions and a completed review packet; engineering review requires `review_packet.verification`. Human confirmation is a separate UI action. A changed basis with unchanged wording requests reconfirmation on the current version, without a new formal version.
+Research/output-specification review requires checked source versions and a completed review packet; engineering review requires `review_packet.verification`. Human confirmation is a separate authorized action in either the webpage or local conversation; use [local-review.md](local-review.md). A changed basis with unchanged wording requests reconfirmation on the current version, without a new formal version.
 
 For `human_review`, each decisive objection uses `disposition: "resolved"` or `"explained_tradeoff"` with its `reason`; `tradeoff` is a conclusion value, not an objection disposition.
 

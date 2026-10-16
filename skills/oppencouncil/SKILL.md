@@ -11,7 +11,7 @@ The project registry declares `research` or `general`; language and directory la
 
 For research Council work, read [research-handoff.md](references/research-handoff.md) first. By default, check local facts, save a shared literature brief and a persistent wait, then **end the turn and hand control back to the human**. Web AI supplies literature; resume appraisal, synthesis and review preparation only after an explicit human instruction to continue. New material or an AI's claim of completion does not release this wait. Follow an explicit human instruction assigning the entire round to the local agent instead. Executing an already-confirmed analysis or routine repair does not start a new review round.
 
-Put questions that require a project-definition choice in the relevant Council F or group, together with the complete alternatives, recommendation, evidence and practical consequences. Discuss and collect the choice there; in chat, notify the human with the Council link and item ID instead of asking the same choice through a chat question or questionnaire. Use chat questions for operational inputs such as a missing path, login or action authorization, or when the human explicitly asks to discuss the choice in chat.
+Complete the prerequisite investigation, evidence appraisal and full candidate preparation before offering human review; the review channel does not shorten that work or release a research handoff. Then report what is ready. The human may discuss, edit and confirm through the Council webpage or the local Codex conversation, switching between them without duplicate confirmation. Keep both channels on the same saved records; use the local review step below when the human chooses conversation.
 
 Load the reference for the current task, following an operation link when needed:
 
@@ -19,7 +19,8 @@ Load the reference for the current task, following an operation link when needed
 | --- | --- |
 | Council investigation | [triage.md](references/triage.md) |
 | Source or claim appraisal | [evidence.md](references/evidence.md) |
-| Candidate and human review | [review-packet.md](references/review-packet.md) |
+| Prepare candidates for human review | [review-packet.md](references/review-packet.md) |
+| Local conversation review after preparation | [local-review.md](references/local-review.md) |
 | Feedback or unfinished work | [resume.md](references/resume.md) |
 | External Council contribution over MCP | [council.md](references/council.md) |
 | General project work, ownership or registration | [project-operations.md](references/project-operations.md) |

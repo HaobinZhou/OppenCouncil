@@ -165,3 +165,44 @@ def test_v5_hides_legacy_html_without_deleting_historical_files(site):
     path.write_text("<p>Historical example</p>")
     assert request(server, f"/api/projects/{identity}/questions/F-000001/example", cookie)[0] == 404
     assert path.read_text() == "<p>Historical example</p>"
+
+
+def test_web_and_authorized_conversation_share_versions_and_conflicts(site):
+    from oppencouncil.human_actions import execute
+    from oppencouncil.store import FreezeError
+
+    work, server, identity, cookie = site
+    work_fixtures.prepare(work)
+    q = work.read("F-000001")
+    payload = {
+        "id": q["id"], "operation": "definition_approve", "value": q["candidate"]["approval_token"],
+        "expected_revision": q["revision"], "request_id": "chat-confirm",
+        "authorization": {"source": "conversation", "instruction": "确认完整规则"},
+    }
+    execute(work.store, payload)
+    base = f"/api/projects/{identity}"
+    status, snapshot, _ = request(server, base + "/snapshot", cookie)
+    assert status == 200
+    record = snapshot["snapshot"]["questions"][0]
+    assert record["definition"]["current_version"] == 1
+    assert record["human_actions"][-1]["instruction"] == "确认完整规则"
+    endpoint = base + "/questions/F-000001/change"
+    status, _, _ = request(server, endpoint, cookie, {
+        "operation": "definition_begin", "value": None, "request_id": "web-revise",
+        "expected_revision": record["revision"],
+    })
+    assert status == 200
+    assert work.read(q["id"])["candidate"] is not None
+    with pytest.raises(FreezeError):
+        execute(work.store, {**payload, "request_id": "stale-chat-confirm"})
+    work_fixtures.prepare(work, "Revised rule approved through browser")
+    current = work.read(q["id"])
+    status, _, _ = request(server, endpoint, cookie, {
+        "operation": "definition_approve", "value": current["candidate"]["approval_token"],
+        "expected_revision": current["revision"], "request_id": "web-confirm",
+    })
+    assert status == 200
+    versions = work.store.read_question(q["id"])["definition"]["versions"]
+    assert [v["number"] for v in versions] == [1, 2]
+    assert versions[0]["approval"]["authorization"]["source"] == "conversation"
+    assert "authorization" not in versions[1]["approval"]

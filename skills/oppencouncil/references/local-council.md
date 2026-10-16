@@ -45,6 +45,10 @@ The `phase` object contains `phase`, `conclusion_type`, `reason`, `trigger_refs`
 
 Fields for a candidate and its review packet are in [review-packet.md](review-packet.md). Reply dispositions, pending work and cursors are in [resume.md](resume.md). Sources and claims use [evidence.md](evidence.md).
 
+## Authorized conversation operations
+
+`human-action TARGET --input FILE.json` executes an explicit human instruction through the same mutation and confirmation checks as the webpage. It is also available through the Skill helper. See [local-review.md](local-review.md) for its payload, review pacing and provenance. Ordinary `work-commit`, `ai-change` and `group-change` remain AI operations.
+
 ## Site and legacy operations
 
 `register TARGET` registers existing records without duplication. `status TARGET` reports the selected site's project state and URLs. `open TARGET` starts or reuses that site. Reading a login page alone does not establish that project review content is accessible.

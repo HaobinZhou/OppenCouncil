@@ -2,7 +2,7 @@
 
 For research review, read [research-handoff.md](research-handoff.md) and inspect saved `human_continue` waits first. An actionable input is work to inspect, not permission to close a handoff or prepare the final recommendation.
 
-Use `work-index TARGET --actionable` to list items with unread inputs, ready pending work or migration reconciliation. `work-read TARGET --id ID` returns the current read set, relevant messages and unfinished items. Local updates use the atomic [work-commit interface](local-council.md).
+Use `work-index TARGET --actionable` to list items with unread inputs, ready pending work or migration reconciliation. `work-read TARGET --id ID` returns the current read set, relevant messages and unfinished items. Local updates use the atomic [work-commit interface](local-council.md). Human feedback in the local conversation follows [local-review.md](local-review.md), so it enters the same saved discussion and pending-input workflow.
 
 `comments` append local replies. For a group, a comment may be `{text, question_id}` to identify an affected member. A saved reply ID is `REQUEST_ID:ITEM_ID:ZERO_BASED_COMMENT_INDEX`.
 

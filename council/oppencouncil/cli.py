@@ -32,12 +32,13 @@ def parser():
         "ai-change",
         "group-change",
         "definition",
+        "human-action",
     ):
         command = commands.add_parser(name)
         command.add_argument("project", type=Path)
         if name in {"open", "register"}:
             command.add_argument("--name")
-        if name in {"import", "recover", "reconcile", "ai-change", "group-change"}:
+        if name in {"import", "recover", "reconcile", "ai-change", "group-change", "human-action"}:
             command.add_argument("--input", type=Path, required=True)
         if name in {"recover", "reconcile"}:
             command.add_argument("--check", action="store_true", help="Validate and preview without writing")
@@ -142,6 +143,10 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 result = {}
             result.update(urls(current, identity) if current else {"running": False})
+        elif args.command == "human-action":
+            from .human_actions import execute
+
+            result = execute(FreezeStore(args.project), json.loads(args.input.read_text(encoding="utf-8")))
         elif args.command == "definition":
             result = read_definition(FreezeStore(args.project), args.question, args.version_number)
             if args.format == "markdown":

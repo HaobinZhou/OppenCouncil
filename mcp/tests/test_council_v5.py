@@ -319,3 +319,23 @@ async def test_group_comment_does_not_edit_members_or_count_as_human_feedback(co
     assert not local.read("B-000001")["human_pending"]
     assert local.read("B-000001")["messages"][-1]["question_id"] == "F-000001"
     assert local.read("F-000001")["revision"] == original["revision"]
+
+
+def test_conversation_feedback_is_shared_without_local_execution_receipts(context):
+    from oppencouncil.human_actions import execute
+
+    catalog, pid, local = context
+    q = local.read("F-000001")
+    execute(local.store, {
+        "id": q["id"], "operation": "comment", "value": "Please explain this choice",
+        "request_id": "human-chat", "expected_revision": q["revision"],
+        "authorization": {"source": "conversation", "instruction": "Record this question",
+                          "thread_id": "private-thread"},
+    })
+    assert local.read(q["id"])["human_actions"]
+    access = Freezes(catalog)
+    for result in (access.read_work(pid, q["id"]), access.read(pid, q["id"]), access.snapshot(pid)):
+        encoded = json.dumps(result)
+        assert "Please explain this choice" in encoded
+        assert "human_actions" not in encoded and "authorization" not in encoded
+        assert "private-thread" not in encoded

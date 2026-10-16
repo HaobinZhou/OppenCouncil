@@ -14,7 +14,7 @@ OppenCouncil keeps you in the decisions without sending you back into the code. 
 
 Every recommendation comes with what supports it: a checked source, a test result, a measurement, or a fact from your own data. When something is a convention, you can see where the convention comes from. When the options genuinely differ, you can see what each one would change in your project. AI assistants connected over MCP can contribute evidence too, and the local agent verifies it before it reaches you.
 
-None of this has to take over your day. Every open decision sits on a single web page, and you can work through all of them in one sitting. By the time you open it, the AI has already dropped the questions that don’t apply and answered what the code or data can settle. It has sorted what is left into four groups: decisions to make, quick confirmations, items waiting on information, and things it ruled out. You comment, edit, or confirm, then tell the AI to continue. It picks up only what changed and updates the page, ready for your next pass.
+None of this has to take over your day. The AI first drops questions that don’t apply and answers what the code or data can settle. You can then review the prepared decisions in the browser or discuss them directly in Codex. In conversation, the agent presents one related group at a time, or up to three independent questions. You can ask for an explanation, revise the wording, or authorize confirmation. Both channels update the same project records, so you can switch between them without confirming twice.
 
 ## What AI does before asking you
 
@@ -37,7 +37,7 @@ The workbench groups items so you can find the ones that need your attention:
 A typical session looks like this:
 
 ```text
-Describe the task → AI investigates and prepares proposals → Review, comment, or confirm in the browser → Ask AI to continue → Work from the confirmed decisions
+Describe the task → AI investigates and prepares proposals → Review, discuss, or confirm in the browser or Codex → Ask AI to continue → Work from the confirmed decisions
 ```
 
 The workbench does not call a model in the background. After saving feedback, return to your AI session or paste the workbench's handoff message into it. The agent reads the new feedback and continues with the affected work.

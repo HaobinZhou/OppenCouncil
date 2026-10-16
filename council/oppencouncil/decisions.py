@@ -465,7 +465,12 @@ def validate_option_evidence(store, value):
                 work.read_json(source)
 
 
-def change_group(store, group_id, operation, value, *, expected_revision, request_id, actor):
+def change_group(
+    store, group_id, operation, value, *, expected_revision, request_id, actor, authorization=None
+):
+    from .human_actions import normalize_authorization, record_action
+
+    authorization = normalize_authorization(authorization, actor)
     if store.v5:
         if actor not in {"codex", "user", "external_ai"}:
             raise FreezeError("Unknown v5 actor")
@@ -480,7 +485,9 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
     if operation in {"approve", "begin", "discard", "select_option"} and actor != "user":
         raise FreezeError("Only the user may choose, open revisions or confirm a decision group")
     require_text(request_id, "request_id", 100)
-    fingerprint = request_fingerprint(operation, [group_id, value])
+    fingerprint = request_fingerprint(
+        operation, [group_id, value, authorization] if authorization else [group_id, value]
+    )
     with store.locked(create=True):
         data, questions = catalog(store), all_questions(store)
         previous_versions = {qid: state(q)["current_version"] for qid, q in questions.items()}
@@ -739,6 +746,16 @@ def change_group(store, group_id, operation, value, *, expected_revision, reques
         members = group["member_ids"]
         if any(set(members).intersection(g["member_ids"]) for g in data["groups"] if g is not group):
             raise FreezeError("A question already belongs to another decision group")
+        record_action(group, authorization, operation, value, expected_revision, request_id)
+        if authorization:
+            for name, record in writes.items():
+                if name.startswith("questions/"):
+                    record_action(
+                        record, authorization, "group_" + operation, value,
+                        record["revision"] - 1, request_id, group_id=group["id"],
+                        approved=operation == "approve" and record["id"] in proposed,
+                        reconfirmed=operation == "approve" and record["id"] in reconfirmed,
+                    )
         group["revision"] += 1
         group.update(updated_at=now(), updated_by=actor)
         data["revision"] += 1

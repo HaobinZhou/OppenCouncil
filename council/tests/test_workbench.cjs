@@ -963,3 +963,16 @@ test('an oversized legacy discussion width is clamped when restored',async()=>{
  assert.equal(app.discussionWidth(),480);
  assert.deepEqual(app.writes,[]);
 });
+
+test('conversation receipts stay below wording and identify the human instruction and executor',async()=>{
+  const app=await workbench({governanceVersion:5,
+    definition:{draft:null,current_version:1,versions:[{number:1,text:'Reviewed full rule',published_by:'user'}]},
+    questionWork:{human_actions:[{operation:'definition_approve',version:1,at:'2026-10-16T09:00:00Z',instruction:'确认这份完整规则 <script>alert(1)</script>'}]},
+    messages:[{id:'chat-message',actor:'user',text:'请解释',authorization:{source:'conversation'}}]});
+  const html=app.html('#sw2-detail');
+  assert.ok(html.indexOf('Reviewed full rule')<html.indexOf('对话操作记录'));
+  assert.match(html,/人类通过 Codex 对话授权 · Codex 执行/);
+  assert.match(html,/确认口径 · v1/);
+  assert.match(html,/来自 Codex 对话/);
+  assert.doesNotMatch(html,/<script>/);
+});

@@ -100,6 +100,10 @@ def main(argv=None, *, alias="oppencouncil", entry_path=None):
             stream.reconfigure(encoding="utf-8")
     try:
         command = argv[0] if argv else None
+        if command == "human-action":
+            from .cli import main as council_main
+
+            return council_main(argv)
         target = target_argument(argv)
         skill, version = generation(target, recover="--check" not in argv)
         if version is not None and version < 5 and command != "upgrade-v5":

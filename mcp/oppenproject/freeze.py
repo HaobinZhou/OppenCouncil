@@ -14,6 +14,16 @@ from .catalog import AccessDenied
 GOVERNANCE_VERSIONS = (3, 4, 5)
 
 
+def without_conversation_receipts(value):
+    """Keep local execution provenance private; shared discussion text remains readable."""
+    if isinstance(value, dict):
+        return {k: without_conversation_receipts(v) for k, v in value.items()
+                if k not in {"human_actions", "authorization"}}
+    if isinstance(value, list):
+        return [without_conversation_receipts(v) for v in value]
+    return value
+
+
 def public_definition(value):
     if not value:
         return None
@@ -98,7 +108,7 @@ class Freezes:
 
     def snapshot(self, project_id: str):
         store = self.store(project_id)
-        result = store.snapshot()
+        result = without_conversation_receipts(store.snapshot())
         if store.v5:
             return {
                 "governance_version": 5,
@@ -122,7 +132,9 @@ class Freezes:
     def read(self, project_id: str, question_id: str, include_example: bool = False):
         store = self.store(project_id)
         self.check_path(project_id, self.item_path(question_id))
-        record = store.read_question(question_id, include_example if not store.v5 else False)
+        record = without_conversation_receipts(
+            store.read_question(question_id, include_example if not store.v5 else False)
+        )
         return self.question_view(record) if store.v5 else record
 
     def work_index(self, project_id, offset=0, limit=100):
@@ -163,7 +175,7 @@ class Freezes:
             "current": public_definition(record["current"]),
             "external_brief": record.get("external_brief"),
             "evidence_refs": shared,
-            "messages": record["messages"],
+            "messages": without_conversation_receipts(record["messages"]),
             "inputs": [e for e in record["inputs"] if e["actor"] in {"user", "external_ai"}],
             "review_required": bool(record.get("review_required")),
         }

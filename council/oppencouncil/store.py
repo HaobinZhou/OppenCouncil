@@ -470,7 +470,11 @@ class FreezeStore:
         expected_revision: int,
         request_id: str,
         actor: str,
+        authorization: dict | None = None,
     ) -> dict:
+        from .human_actions import normalize_authorization, record_action
+
+        authorization = normalize_authorization(authorization, actor)
         if self.v5:
             from .workstore import WorkStore
 
@@ -481,11 +485,12 @@ class FreezeStore:
                 expected_revision=expected_revision,
                 request_id=request_id,
                 actor=actor,
+                authorization=authorization,
             )
         if actor not in AI_ACTORS | {"user"}:
             raise FreezeError("Operation is unavailable to this actor")
         require_text(request_id, "request_id", 100)
-        fingerprint = request_fingerprint(operation, value)
+        fingerprint = request_fingerprint(operation, [value, authorization] if authorization else value)
         with self.locked(create=True):
             if question_id not in self._manifest()["question_ids"]:
                 raise FreezeError("Question not found")
@@ -666,6 +671,8 @@ class FreezeStore:
                 candidate = question.get("definition", {}).get("draft")
                 if candidate:
                     candidate["approval"] = None
+            record_action(question, authorization, operation, value, expected_revision, request_id,
+                          approved=operation == "definition_approve")
             question["revision"] += 1
             question["requests"][request_id] = fingerprint
             question.setdefault("request_actors", {})[request_id] = actor

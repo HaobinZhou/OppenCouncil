@@ -290,6 +290,7 @@ class WorkStore:
                 "work": copy.deepcopy(record["work"]),
                 "inputs": copy.deepcopy(inputs),
                 "messages": copy.deepcopy(messages),
+                "human_actions": copy.deepcopy(record.get("human_actions", [])),
                 "pending_items": copy.deepcopy(pending),
                 "candidate": candidate,
                 "current": current_view,
@@ -493,7 +494,10 @@ class WorkStore:
             directory = "questions" if identifier.startswith("F-") else "investigations"
             writes[f"{directory}/{identifier}.json"] = record
 
-    def commit_work(self, payload, *, request_id, actor="codex"):
+    def commit_work(self, payload, *, request_id, actor="codex", authorization=None):
+        from .human_actions import normalize_authorization, record_action
+
+        authorization = normalize_authorization(authorization, actor)
         require_text(request_id, "request_id", 100)
         if actor not in {"codex", "user", "external_ai"}:
             raise FreezeError("Invalid work actor")
@@ -514,7 +518,7 @@ class WorkStore:
         ids = [change.get("id") if isinstance(change, dict) else None for change in payload["changes"]]
         if any(not isinstance(i, str) for i in ids) or len(set(ids)) != len(ids):
             raise FreezeError("Combine each item's changes into one transaction entry")
-        fp = request_fingerprint("v5:work", payload)
+        fp = request_fingerprint("v5:work", [payload, authorization] if authorization else payload)
         with self.store.locked(create=True):
             manifest = self.store._manifest()
             previous = self.replay(manifest, request_id, fp, actor)
@@ -575,6 +579,15 @@ class WorkStore:
                     raise FreezeError("Each changed item must have a read revision")
                 record = self.locate(identifier, questions, groups, investigations)
                 self.apply_change(record, change, actor, request_id, questions, writes)
+                definition = change.get("definition", {})
+                operation = definition.get("operation", "comment")
+                record_action(
+                    record, authorization, operation,
+                    definition.get("value") if definition else change.get("comments"),
+                    read_set[identifier], request_id,
+                    approved=operation == "definition_approve",
+                    reconfirmed=operation == "definition_reconfirm",
+                )
                 if identifier not in changed:
                     record["revision"] += 1
                     changed.append(identifier)
@@ -861,7 +874,9 @@ class WorkStore:
                 10000,
             )
 
-    def change_question(self, question_id, operation, value, *, expected_revision, request_id, actor):
+    def change_question(
+        self, question_id, operation, value, *, expected_revision, request_id, actor, authorization=None
+    ):
         if operation == "comment":
             change = {"id": question_id, "comments": [value]}
         elif operation in {
@@ -882,5 +897,6 @@ class WorkStore:
             {"read_set": {question_id: expected_revision}, "changes": [change]},
             request_id=request_id,
             actor=actor,
+            authorization=authorization,
         )
         return {**self.store.read_question(question_id), "replayed": result["replayed"]}
